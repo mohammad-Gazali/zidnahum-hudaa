@@ -51,6 +51,7 @@ class TestAccountsApp(TestCase):
         self.assertEqual(res.status_code, 200, f"response = {res.json()}")
 
         new_access_token = res.json()["access"]
+        new_refresh_token = res.json()["refresh"]
 
         res = self.client.get(url_details, HTTP_AUTHORIZATION=f"Bearer {access_token}")
 
@@ -66,3 +67,17 @@ class TestAccountsApp(TestCase):
         self.assertEqual(res.json()["last_name"], self.last_name)
         self.assertEqual(res.json()["is_superuser"], self.user.is_superuser)
         self.assertEqual(res.json()["groups"], [])
+
+
+        # failed because token was added to blacklist
+        failed_response = self.client.post(url_refresh, {
+            "refresh": refresh_token,
+        }, content_type="application/json")
+
+        self.assertEqual(failed_response.status_code, 401)
+
+        successful_response = self.client.post(url_refresh, {
+            "refresh": new_refresh_token,
+        }, content_type="application/json")
+
+        self.assertEqual(successful_response.status_code, 200)
