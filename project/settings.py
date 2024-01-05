@@ -49,7 +49,6 @@ INSTALLED_APPS = [
 
     # installed apps
     "rest_framework",
-    "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
 ]
 
@@ -169,8 +168,6 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(weeks=4),
-    "ROTATE_REFRESH_TOKENS": True,
-    "BLACKLIST_AFTER_ROTATION": True,
 }
 
 # here 5173 is the default port of vite app in development mode
