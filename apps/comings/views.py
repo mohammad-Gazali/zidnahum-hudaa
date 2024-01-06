@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView
+from rest_framework.generics import ListAPIView, DestroyAPIView, ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from comings.serializers import ComingCategorySerializer, ComingSerializer
 from comings.models import ComingCategory, Coming
@@ -13,10 +13,12 @@ class ComingCategroyListView(ListAPIView):
 
 
 # TODO: test
-class ComingCreateView(CreateAPIView):
+class ComingListCreateView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Coming.objects.all()
     serializer_class = ComingSerializer
+
+    def get_queryset(self):
+        return Coming.objects.filter(master=self.request.user)
 
     def perform_create(self, serializer: ComingSerializer):
         Coming.objects.create(
@@ -24,14 +26,6 @@ class ComingCreateView(CreateAPIView):
             is_doubled=ControlSettings.get_double_points(),
             **serializer.validated_data,
         )
-
-
-# TODO: test
-class ComingListView(ListAPIView):
-    permission_classes = [IsAuthenticated]
-    
-    def get_queryset(self):
-        return Coming.objects.filter(master=self.request.user)
 
 
 # TODO: test
