@@ -1,7 +1,8 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.conf.global_settings import AUTH_USER_MODEL
-from apps.students.utils import json_default_value_618, json_default_value_240, json_default_value_30
+from students.utils import json_default_value_618, json_default_value_240, json_default_value_30
+import re
 
 
 class StudentCategory(models.Model):
@@ -60,6 +61,31 @@ class Student(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+
+    @classmethod
+    def search_student(cls, text: str):
+        try:
+            # if the input is a valid number then we search by id
+            pk = int(text)
+            return cls.objects.filter(pk=pk)
+
+        except ValueError:
+            # here we search by regex
+            regex = ""
+
+            # looping over words and replace each  "ا"  "أ"  "إ"  by union of them
+            # and escape characters for safety purpose
+            for word in re.split(r"\s+", text.strip()):
+                regex += (
+                    re.escape(word)
+                    .replace("\u0623", "(\u0623|\u0625|\u0627)")
+                    .replace("\u0625", "(\u0623|\u0625|\u0627)")
+                    .replace("\u0627", "(\u0623|\u0625|\u0627)")
+                )
+                regex += r".*"
+
+            return cls.objects.filter(name__iregex=regex)
 
 
     class Meta:

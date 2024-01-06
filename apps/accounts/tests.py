@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 
 
-class TestAccountsApp(TestCase):
+class AccountsAppTestCase(TestCase):
     def setUp(self) -> None:
         User = get_user_model()
 
@@ -28,11 +28,7 @@ class TestAccountsApp(TestCase):
         self.assertEqual(self.last_name, self.user.last_name)
         self.assertNotEqual(self.password, self.user.password)
 
-    
-    def test_token_and_refresh_and_user_details_endpoints(self):
         url_token = reverse("accounts_token_obtain_pair")
-        url_refresh = reverse("accounts_token_refresh")
-        url_details = reverse("accounts_user_details")
 
         res = self.client.post(url_token, {
             "username": self.username,
@@ -41,23 +37,54 @@ class TestAccountsApp(TestCase):
 
         self.assertEqual(res.status_code, 200, res.json())
 
-        access_token = res.json()["access"]
-        refresh_token = res.json()["refresh"]
+        self.token = res.json()["access"]
+        self.refresh_token = res.json()["refresh"]
 
-        res = self.client.post(url_refresh, {
-            "refresh": refresh_token,
+    
+    def test_create_token(self):
+        url = reverse("accounts_token_obtain_pair")
+        
+        res = self.client.post(url, {
+            "username": self.username,
+            "password": self.password,
         }, content_type="application/json")
 
+        self.assertEqual(res.status_code, 200, res.json())
+
+        res.json()["access"]
+        res.json()["refresh"]
+
         self.assertEqual(res.status_code, 200, f"response = {res.json()}")
 
-        new_access_token = res.json()["access"]
+
+    def test_token_refresh(self):
+        url = reverse("accounts_token_refresh")
+
+        res = self.client.post(url, {
+            "refresh": self.refresh_token,
+        }, content_type="application/json")
+
+        res.json()["access"]
         new_refresh_token = res.json()["refresh"]
 
-        res = self.client.get(url_details, HTTP_AUTHORIZATION=f"Bearer {access_token}")
+        # failed because token was added to blacklist
+        failed_response = self.client.post(url, {
+            "refresh": self.refresh_token,
+        }, content_type="application/json")
 
-        self.assertEqual(res.status_code, 200, f"response = {res.json()}")
+        self.assertEqual(failed_response.status_code, 401)
 
-        res = self.client.get(url_details, HTTP_AUTHORIZATION=f"Bearer {new_access_token}")
+        successful_response = self.client.post(url, {
+            "refresh": new_refresh_token,
+        }, content_type="application/json")
+
+        self.assertEqual(successful_response.status_code, 200)
+
+
+    def test_user_details(self):
+        url = reverse("accounts_user_details")
+
+        res = self.client.get(url, HTTP_AUTHORIZATION=f"Bearer {self.token}")
 
         self.assertEqual(res.status_code, 200, f"response = {res.json()}")
         
@@ -67,17 +94,3 @@ class TestAccountsApp(TestCase):
         self.assertEqual(res.json()["last_name"], self.last_name)
         self.assertEqual(res.json()["is_superuser"], self.user.is_superuser)
         self.assertEqual(res.json()["groups"], [])
-
-
-        # failed because token was added to blacklist
-        failed_response = self.client.post(url_refresh, {
-            "refresh": refresh_token,
-        }, content_type="application/json")
-
-        self.assertEqual(failed_response.status_code, 401)
-
-        successful_response = self.client.post(url_refresh, {
-            "refresh": new_refresh_token,
-        }, content_type="application/json")
-
-        self.assertEqual(successful_response.status_code, 200)
