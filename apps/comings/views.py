@@ -2,7 +2,7 @@ from rest_framework.generics import ListAPIView, DestroyAPIView, ListCreateAPIVi
 from rest_framework.permissions import IsAuthenticated
 from comings.serializers import ComingCategorySerializer, ComingSerializer
 from comings.models import ComingCategory, Coming
-from comings.permissions import IsMaster
+from comings.permissions import IsMasterForComing
 from adminstration.models import ControlSettings
 
 
@@ -30,6 +30,6 @@ class ComingListCreateView(ListCreateAPIView):
 
 # TODO: test
 class ComingDeleteView(DestroyAPIView):
-    permission_classes = [IsAuthenticated, IsMaster]
+    permission_classes = [IsAuthenticated, IsMasterForComing]
     queryset = Coming.objects.all()
 

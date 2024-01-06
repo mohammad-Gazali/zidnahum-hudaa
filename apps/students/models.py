@@ -82,10 +82,9 @@ class Student(models.Model):
                     .replace("\u0623", "(\u0623|\u0625|\u0627)")
                     .replace("\u0625", "(\u0623|\u0625|\u0627)")
                     .replace("\u0627", "(\u0623|\u0625|\u0627)")
-                )
-                regex += r".*"
-
-            return cls.objects.filter(name__iregex=regex)
+                ) + r".*"
+            
+            return cls.objects.filter(name__iregex="{}".format(regex))
 
 
     class Meta:
