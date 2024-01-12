@@ -2,5 +2,9 @@ from django.apps import AppConfig
 
 
 class StudentsConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'students'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "students"
+    verbose_name = "الطلاب"
+
+    def ready(self):
+        import students.signals as _

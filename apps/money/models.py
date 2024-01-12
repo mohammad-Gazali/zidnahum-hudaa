@@ -1,7 +1,6 @@
 from django.db import models
 
 
-
 class MoneyDeletingCause(models.Model):
     name = models.CharField(max_length=80, verbose_name="الاسم")
 

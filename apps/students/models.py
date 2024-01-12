@@ -27,6 +27,12 @@ class StudentGroup(models.Model):
         verbose_name_plural = "مجموعات الطلاب"
 
 
+class StudentMasjedChoice(models.IntegerChoices):
+    HASANIN = 1, "الحسنين"
+    SALAM = 2, "السلام"
+    QAZZAZ = 3, "القزاز"
+    
+
 class Student(models.Model):
     name = models.CharField(max_length=80, verbose_name="الاسم الثلاثي")
     mother_name = models.CharField(max_length=30, verbose_name="اسم الأم", null=True, blank=True)
@@ -58,6 +64,7 @@ class Student(models.Model):
     category = models.ForeignKey(StudentCategory, on_delete=models.SET_NULL, verbose_name="الفئة", null=True, blank=True)
     group = models.ForeignKey(StudentGroup, on_delete=models.SET_NULL, verbose_name="المجموعة", null=True, blank=True)
 
+    masjed = models.IntegerField(verbose_name="المسجد", choices=StudentMasjedChoice.choices, default=StudentMasjedChoice.HASANIN)
 
     def __str__(self) -> str:
         return self.name
