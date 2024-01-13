@@ -59,6 +59,10 @@ class StudentUpdateQTestSerializer(serializers.Serializer):
     )
 
 
+class StudentUpdatePartsReceivedSerializer(serializers.Serializer):
+    parts_received = serializers.CharField(max_length=50)
+
+
 class MemorizeMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = MemorizeMessage

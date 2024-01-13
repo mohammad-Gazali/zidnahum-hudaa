@@ -5,7 +5,7 @@ from accounts.serializers import UserSerilizer
 
 
 class UserDetailsView(APIView):
-    http_method_names = ["GET"]
+    http_method_names = ["get"]
     permission_classes = [IsAuthenticated]
 
     def get(self, *args, **kwargs) -> Response:

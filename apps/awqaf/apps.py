@@ -2,5 +2,6 @@ from django.apps import AppConfig
 
 
 class AwqafConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'awqaf'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "awqaf"
+    verbose_name = "الأوقاف"

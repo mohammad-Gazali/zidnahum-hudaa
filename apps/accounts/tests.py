@@ -20,7 +20,6 @@ class AccountsAppTestCase(TestCase):
 
         self.user.set_password(self.password)
 
-        self.user.is_active = True
         self.user.save()
 
         self.assertEqual(self.username, self.user.username)

@@ -8,6 +8,7 @@ urlpatterns = [
     path("non-reg-today", views.StudentNonRegisterdTodayListView.as_view(), name="students_non_reg_today_list_view"),
     path("qmemo/<int:pk>", views.StudentUpdateQMemoView.as_view(), name="students_update_qmemo_view"),
     path("qtest/<int:pk>", views.StudentUpdateQTestView.as_view(), name="students_update_qtest_view"),
+    path("parts-received/<int:pk>", views.StudentUpdatePartsReceivedView.as_view(), name="students_update_parts_received_view"),
 
     # notes urls
     path("notes", views.MemorizeNotesCreateView.as_view(), name="students_notes_create_view"),

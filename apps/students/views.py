@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
-from students.serializers import StudentListSerializer, StudentDetailsSerializer, MemorizeNotesCreateSerializer, StudentUpdateQMemoSerializer, StudentUpdateQTestSerializer, MemorizeMessageSerializer
+from students.serializers import StudentListSerializer, StudentDetailsSerializer, MemorizeNotesCreateSerializer, StudentUpdateQMemoSerializer, StudentUpdateQTestSerializer, MemorizeMessageSerializer, StudentUpdatePartsReceivedSerializer
 from students.models import Student, MemorizeNotes, MemorizeMessage, MessageTypeChoice
 from students.constants import NON, NEW
 from students.permissions import IsMasterForMessage
@@ -14,17 +14,19 @@ from adminstration.models import ControlSettings
 from typing import List
 
 
-# TODO: test
 class StudentListView(ListAPIView):
     serializer_class = StudentListSerializer
 
     def get_queryset(self):
         query = self.request.GET.get("query")
 
+        if query is None:
+            return
+
         if self.request.user.is_authenticated:
-            return Student.search_student(query)
+            return Student.search_student(query).order_by("id")
         else:
-            return Student.search_student(query).exclude(pk__in=ControlSettings.get_hidden_ids())
+            return Student.search_student(query).exclude(pk__in=ControlSettings.get_hidden_ids()).order_by("id")
 
 
 # TODO: test
@@ -43,7 +45,7 @@ class StudentNonRegisterdTodayListView(ListAPIView):
             registered_today = Coming.objects.filter(registered_at__date=timezone.now().date(), category_id=category_id)
             registered_today_ids = set(map(lambda x: x.student_id, registered_today))
 
-            return Student.search_student(query).exclude(pk__in=registered_today_ids)
+            return Student.search_student(query).exclude(pk__in=registered_today_ids).order_by("id")
 
 
 # TODO: test
@@ -154,6 +156,26 @@ class StudentUpdateQTestView(APIView):
             return Response({
                 "repeated_test": repeated_test,
             }, HTTP_200_OK)
+
+        return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
+
+
+# TODO: test
+class StudentUpdatePartsReceivedView(APIView):
+    permission_classes = [IsAuthenticated]
+    http_method_names = ["put"]
+
+    def put(self, *args, **kwargs):
+        pk: int = kwargs.get("pk")
+        student: Student = get_object_or_404(Student, pk=pk)
+
+        serializer = StudentUpdatePartsReceivedSerializer(data=self.request.data)
+
+        if serializer.is_valid():
+            student.parts_received = serializer.validated_data["parts_received"]
+            student.save()
+
+            return Response(status=HTTP_200_OK)
 
         return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
 
