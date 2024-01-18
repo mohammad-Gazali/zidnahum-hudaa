@@ -1,7 +1,6 @@
 from datetime import timedelta
 from pathlib import Path
 import dotenv
-import sys
 import os
 
 
@@ -10,9 +9,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # reading .env files
 dotenv.read_dotenv(BASE_DIR / ".env", True)
-
-# adding "apps" folder to paths in python
-sys.path.insert(0, os.path.join(BASE_DIR, "apps"))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -38,14 +34,14 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     # project's apps
-    "apps.accounts.apps.AccountsConfig",
-    "apps.adminstration.apps.AdminstrationConfig",
-    "apps.awqaf.apps.AwqafConfig",
-    "apps.comings.apps.ComingsConfig",
-    "apps.globals.apps.GlobalsConfig",
-    "apps.money.apps.MoneyConfig",
-    "apps.points.apps.PointsConfig",
-    "apps.students.apps.StudentsConfig",
+    "accounts.apps.AccountsConfig",
+    "adminstration.apps.AdminstrationConfig",
+    "awqaf.apps.AwqafConfig",
+    "comings.apps.ComingsConfig",
+    "globals.apps.GlobalsConfig",
+    "money.apps.MoneyConfig",
+    "points.apps.PointsConfig",
+    "students.apps.StudentsConfig",
 
     # installed apps
     "rest_framework",
@@ -67,7 +63,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "project.urls"
+ROOT_URLCONF = "backend.urls"
 
 TEMPLATES = [
     {
@@ -85,7 +81,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "project.wsgi.application"
+WSGI_APPLICATION = "backend.wsgi.application"
 
 
 # Database
@@ -95,7 +91,7 @@ WSGI_APPLICATION = "project.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR.parent / "db.sqlite3",
     }
 }
 
@@ -135,10 +131,10 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATICFILES_DIRS = []
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = BASE_DIR.parent / "staticfiles"
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = BASE_DIR.parent / "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

@@ -1,11 +1,11 @@
 run:
-	@python manage.py runserver
+	@python ./backend/manage.py runserver
 
 migrate:
-	@python manage.py migrate
+	@python ./backend/manage.py migrate
 
 migrations:
-	@python manage.py makemigrations
+	@python ./backend/manage.py makemigrations
 
 test:
-	@python manage.py test
+	@python ./backend/manage.py test ./backend
