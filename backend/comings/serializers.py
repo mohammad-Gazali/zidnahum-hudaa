@@ -8,10 +8,9 @@ class ComingCategorySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class ComingCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Coming
-        fields = ["student", "category"]
+class ComingCreateSerializer(serializers.Serializer):
+    student = serializers.IntegerField()
+    category = serializers.IntegerField()
 
 
 class ComingListSerializer(serializers.ModelSerializer):

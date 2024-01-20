@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from rest_framework.exceptions import ValidationError
 from students.serializers import StudentListSerializer, StudentDetailsSerializer, MemorizeNotesCreateSerializer, StudentUpdateQMemoSerializer, StudentUpdateQTestSerializer, MemorizeMessageSerializer, StudentUpdatePartsReceivedSerializer
 from students.models import Student, MemorizeNotes, MemorizeMessage, MessageTypeChoice
 from students.constants import NON, NEW
@@ -17,11 +18,18 @@ from typing import List
 class StudentListView(ListAPIView):
     serializer_class = StudentListSerializer
 
+    def handle_exception(self, exc):
+
+        if isinstance(exc, ValidationError):
+            return Response({ "detail": exc.detail }, status=HTTP_400_BAD_REQUEST)
+
+        return super().handle_exception(exc)
+
     def get_queryset(self):
         query = self.request.GET.get("query")
 
         if query is None:
-            return
+            raise ValidationError("query param is required")
 
         if self.request.user.is_authenticated:
             return Student.search_student(query).order_by("id")
@@ -29,26 +37,35 @@ class StudentListView(ListAPIView):
             return Student.search_student(query).exclude(pk__in=ControlSettings.get_hidden_ids()).order_by("id")
 
 
-# TODO: test
 class StudentNonRegisterdTodayListView(ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = StudentListSerializer
 
+    def handle_exception(self, exc):
+
+        if isinstance(exc, ValidationError):
+            return Response({ "detail": exc.detail }, status=HTTP_400_BAD_REQUEST)
+
+        return super().handle_exception(exc)
+
     def get_queryset(self):
         query = self.request.GET.get("query")
-        category_id = self.request.GET.get("coming_category_id")
+        category_id: int = self.kwargs["coming_category_id"]
 
-        if query is not None and category_id is not None:
+        if query is None:
+            raise ValidationError("query param is required")
+
             
-            # getting students ids of regestired students in the same day
-            # and this is for excluding them from the result
-            registered_today = Coming.objects.filter(registered_at__date=timezone.now().date(), category_id=category_id)
-            registered_today_ids = set(map(lambda x: x.student_id, registered_today))
+        # getting students ids of regestired students in the same day
+        # and this is for excluding them from the result
+        registered_today = Coming.objects.filter(registered_at__date=timezone.now().date(), category_id=category_id)
+        registered_today_ids = set(map(lambda x: x.student_id, registered_today))
 
-            return Student.search_student(query).exclude(pk__in=registered_today_ids).order_by("id")
+        return Student.search_student(query).exclude(pk__in=registered_today_ids).order_by("id")
 
 
-# TODO: test
+# TODO: add last_week q_memo and other extra values
+# TODO: add tests to the nested fields
 class StudentDetailsView(RetrieveAPIView):
     serializer_class = StudentDetailsSerializer
 
@@ -59,26 +76,6 @@ class StudentDetailsView(RetrieveAPIView):
         return Student.objects.exclude(pk__in=ControlSettings.get_hidden_ids())
 
 
-# TODO: test
-class MemorizeNotesCreateView(CreateAPIView):
-    permission_classes = [IsAuthenticated]
-    serializer_class = MemorizeNotesCreateSerializer
-    queryset = MemorizeNotes.objects.all()
-
-    def perform_create(self, serializer: MemorizeNotesCreateSerializer):
-        MemorizeNotes.objects.create(
-            master_id=self.request.user.pk,
-            **serializer.validated_data,
-        )
-
-
-# TODO: test
-class MemorizeNotesDeleteView(DestroyAPIView):
-    permission_classes = [IsAuthenticated]
-    queryset = MemorizeNotes.objects.all()
-
-
-# TODO: test
 class StudentUpdateQMemoView(APIView):
     permission_classes = [IsAuthenticated]
     http_method_names = ["put"]
@@ -91,7 +88,7 @@ class StudentUpdateQMemoView(APIView):
         serializer = StudentUpdateQMemoSerializer(data=self.request.data)
 
         if serializer.is_valid():
-            new_qmemo: List[int] = serializer.validated_data["q_memo"]
+            new_qmemo: List[int] = list(set(serializer.validated_data["q_memo"]))
             repeated_memo = []
             added_memo = []
 
@@ -119,7 +116,6 @@ class StudentUpdateQMemoView(APIView):
         return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
 
 
-# TODO: test
 class StudentUpdateQTestView(APIView):
     permission_classes = [IsAuthenticated]
     http_method_names = ["put"]
@@ -132,7 +128,7 @@ class StudentUpdateQTestView(APIView):
         serializer = StudentUpdateQTestSerializer(data=self.request.data)
 
         if serializer.is_valid():
-            new_test: List[int] = serializer.validated_data["q_test"]
+            new_test: List[int] = list(set(serializer.validated_data["q_test"]))
             repeated_test = []
             added_test = []
 
@@ -141,7 +137,7 @@ class StudentUpdateQTestView(APIView):
                     repeated_test.append(item)
                 else:
                     added_test.append(item)
-                    student.q_memorizing[item] = NEW
+                    student.q_test[item] = NEW
 
             student.save()
 
@@ -160,7 +156,6 @@ class StudentUpdateQTestView(APIView):
         return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
 
 
-# TODO: test
 class StudentUpdatePartsReceivedView(APIView):
     permission_classes = [IsAuthenticated]
     http_method_names = ["put"]
@@ -180,16 +175,31 @@ class StudentUpdatePartsReceivedView(APIView):
         return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
 
 
-# TODO: test
 class MemorizeMessageListView(ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = MemorizeMessageSerializer
 
     def get_queryset(self):
-        return MemorizeMessage.objects.filter(master=self.request.user)
+        return MemorizeMessage.objects.filter(master=self.request.user).order_by("-sended_at")
 
 
-# TODO: test
 class MemorizeMessageDeleteView(DestroyAPIView):
     permission_classes = [IsAuthenticated, IsMasterForMessage]
     queryset = MemorizeMessage.objects.all()
+
+
+class MemorizeNotesCreateView(CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = MemorizeNotesCreateSerializer
+    queryset = MemorizeNotes.objects.all()
+
+    def perform_create(self, serializer: MemorizeNotesCreateSerializer):
+        MemorizeNotes.objects.create(
+            master_id=self.request.user.pk,
+            **serializer.validated_data,
+        )
+
+
+class MemorizeNotesDeleteView(DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset = MemorizeNotes.objects.all()

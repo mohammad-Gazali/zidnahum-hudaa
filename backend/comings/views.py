@@ -23,7 +23,7 @@ class ComingListCreateView(ListCreateAPIView):
             return ComingListSerializer
 
     def get_queryset(self):
-        return Coming.objects.filter(master=self.request.user)
+        return Coming.objects.filter(master=self.request.user).order_by("-registered_at")
 
     def perform_create(self, serializer: ComingCreateSerializer):
         Coming.objects.create(

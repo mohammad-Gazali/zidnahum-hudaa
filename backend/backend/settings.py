@@ -173,5 +173,5 @@ CORS_ALLOWED_ORIGINS = [
 
 
 # constants
-
+# TODO: move to ControlSettings model
 Q_COMING_CATEGORY_ID = os.getenv("Q_COMING_CATEGORY_ID")
