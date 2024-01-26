@@ -63,6 +63,14 @@ class StudentUpdatePartsReceivedSerializer(serializers.Serializer):
     parts_received = serializers.CharField(max_length=50)
 
 
+class StudentUpdateAlarbaeinAlnawawiaSerializer(serializers.Serializer):
+    value = serializers.IntegerField(min_value=0, max_value=50)
+
+
+class StudentUpdateRiadAlsaalihinSerializer(serializers.Serializer):
+    value = serializers.IntegerField(min_value=0)
+
+
 class MemorizeMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = MemorizeMessage

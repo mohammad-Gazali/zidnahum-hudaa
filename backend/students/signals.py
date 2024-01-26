@@ -4,7 +4,6 @@ from students.models import MemorizeMessage, MessageTypeChoice
 from students.constants import NON
 
 
-# TODO: test
 @receiver(pre_delete, sender=MemorizeMessage)
 def pre_delete_message(sender, instance: MemorizeMessage, **kwargs):
     student = instance.student
@@ -20,10 +19,13 @@ def pre_delete_message(sender, instance: MemorizeMessage, **kwargs):
         student.save()
 
     elif instance.message_type == MessageTypeChoice.ALNAWAWIA:
-        pass
+        student.alarbaein_alnawawia_new = instance.changes[1]
+        student.save()
 
     elif instance.message_type == MessageTypeChoice.ALSAALIHIN:
-        pass
+        student.riad_alsaalihin_new = instance.changes[1]
+        student.save()
 
     elif instance.message_type == MessageTypeChoice.ALLAH_NAMES:
-        pass
+        student.allah_names_new = False
+        student.save()

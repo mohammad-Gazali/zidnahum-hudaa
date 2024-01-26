@@ -125,7 +125,12 @@ class MemorizeMessage(models.Model):
     master = models.ForeignKey(AUTH_USER_MODEL, verbose_name="اسم الأستاذ", on_delete=models.CASCADE, null=True)
     student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="اسم الطالب")
     sended_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الإرسال")
+
+    # for type MEMO, TEST the changes is the "list" of changed indexes in the related field
+    # for type ALNAWAWIA, ALSAALIHIN the changes is the "list" of three numbers where the first item is the old value of the related field and the second is the new value before edit and the third is the new value after edit
+    # for type ALLAH_NAMES the changes is empty list
     changes = models.JSONField(default=list, verbose_name="التعديلات")
+
     message_type = models.IntegerField(verbose_name="نوع الرسالة", choices=MessageTypeChoice.choices, default=MessageTypeChoice.MEMO)
     is_doubled = models.BooleanField(verbose_name="القيمة مضاعفة", default=False)
     
