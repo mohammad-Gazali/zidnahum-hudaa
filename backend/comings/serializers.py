@@ -18,3 +18,9 @@ class ComingListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Coming
         exclude = ["master"]
+
+
+class ComingListForStudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Coming
+        fields = ["id", "registered_at"]

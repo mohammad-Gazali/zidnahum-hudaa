@@ -1,12 +1,17 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from django.conf import settings
+from django.utils import timezone
 from rest_framework.status import HTTP_200_OK
-from students.models import Student, StudentCategory, StudentGroup
+from students.models import Student, StudentCategory, StudentGroup, MemorizeMessage
 from comings.models import Coming, ComingCategory
 from adminstration.models import ControlSettings
+from awqaf.models import AwqafTestNoQ, AwqafNoQStudentRelation
 from typing import List
 from random import randint
+from time import sleep
+import pytz
 
 
 class StudentListAndDetailsTestCase(TestCase):
@@ -62,7 +67,7 @@ class StudentListAndDetailsTestCase(TestCase):
             name="test 2"
         )
 
-        self.coming_category = ComingCategory.objects.create()
+        self.coming_category = ComingCategory.objects.create(id=settings.Q_COMING_CATEGORY_ID)
 
         self.students: List[Student] = []
         self.total_count = 100
@@ -186,3 +191,113 @@ class StudentListAndDetailsTestCase(TestCase):
             self.assertEqual(res.status_code, HTTP_200_OK, res.json())
 
             self.assertEqual(rand, res.json()["id"])
+
+
+    def test_student_details_for_nested_relations(self):
+        student = Student.objects.create(
+            name="testy testy"
+        )
+
+        for _ in range(11):
+            Coming.objects.create(master=self.user, student=student, category=self.coming_category)
+            sleep(0.1)
+
+        test1 = AwqafTestNoQ.objects.create(name="test1", points=10)
+        test2 = AwqafTestNoQ.objects.create(name="test2", points=10)
+
+        awqaf_relations_ids = [
+            AwqafNoQStudentRelation.objects.create(student=student, test=test1).pk,
+            AwqafNoQStudentRelation.objects.create(student=student, test=test2).pk,
+        ]
+
+        current_week_messages: List[MemorizeMessage] = []
+        previous_week_messages: List[MemorizeMessage] = []
+
+        for _ in range(3):
+            current_week_messages.append(
+                MemorizeMessage.objects.create(
+                    master=self.user,
+                    student=student,
+                    changes=[1],
+                )
+            )
+
+        for _ in range(3):
+            message = MemorizeMessage.objects.create(
+                master=self.user,
+                student=student,
+                changes=[1],
+            )
+            message.sended_at = timezone.now() - timezone.timedelta(days=7)
+            message.save()
+
+            previous_week_messages.append(message)
+
+        url = reverse("students_details_view", args=[student.pk])
+
+        res = self.client.get(url)
+
+        self.assertEqual(res.status_code, HTTP_200_OK, res.json())
+
+        self.assertEqual(len(res.json()["last_comings"]), 10)
+
+        res_awqaf_relations_ids = set(map(lambda r: r["id"], res.json()["awqaf_relations"]))
+
+        self.assertSetEqual(res_awqaf_relations_ids, set(awqaf_relations_ids))
+
+        expected_current_week_messages_ids = set(map(lambda m: m.pk, current_week_messages))
+        res_current_week_messages_ids = set(map(lambda m: m["id"], res.json()["current_week_messages"]))
+
+        expected_previous_week_messages_ids = set(map(lambda m: m.pk, previous_week_messages))
+        res_previous_week_messages_ids = set(map(lambda m: m["id"], res.json()["previous_week_messages"]))
+
+        self.assertSetEqual(expected_current_week_messages_ids, res_current_week_messages_ids)
+        self.assertSetEqual(expected_previous_week_messages_ids, res_previous_week_messages_ids)
+
+        # reset memorize messges
+        MemorizeMessage.objects.all().delete()
+
+        first_half_month_messages: List[MemorizeMessage] = []
+        second_half_month_messages: List[MemorizeMessage] = []
+
+        current_year = timezone.now().year
+        current_month = timezone.now().month
+
+        for _ in range(3):
+            message = MemorizeMessage.objects.create(
+                master=self.user,
+                student=student,
+                changes=[1],
+            )
+
+            message.sended_at = timezone.datetime(year=current_year, month=current_month, day=10, tzinfo=pytz.UTC)
+            message.save()
+
+            first_half_month_messages.append(message)
+
+        for _ in range(3):
+            message = MemorizeMessage.objects.create(
+                master=self.user,
+                student=student,
+                changes=[1],
+            )
+
+            message.sended_at = timezone.datetime(year=current_year, month=current_month, day=20, tzinfo=pytz.UTC)
+            message.save()
+
+            second_half_month_messages.append(message)
+
+        url = reverse("students_details_view", args=[student.pk])
+
+        res = self.client.get(url)
+
+        self.assertEqual(res.status_code, HTTP_200_OK, res.json())
+
+        expected_first_half_month_messages_ids = set(map(lambda m: m.pk, first_half_month_messages))
+        res_first_half_month_messages_ids = set(map(lambda m: m["id"], res.json()["first_half_month_messages"]))
+
+        expected_second_half_month_messages_ids = set(map(lambda m: m.pk, second_half_month_messages))
+        res_second_half_month_messages_ids = set(map(lambda m: m["id"], res.json()["second_half_month_messages"]))
+
+        self.assertSetEqual(expected_first_half_month_messages_ids, res_first_half_month_messages_ids)
+        self.assertSetEqual(expected_second_half_month_messages_ids, res_second_half_month_messages_ids)

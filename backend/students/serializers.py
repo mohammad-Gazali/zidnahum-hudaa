@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from students.models import StudentCategory, StudentGroup, MemorizeNotes, Student, MemorizeMessage
+from awqaf.serializers import AwqafRelationSerializer
+from comings.serializers import ComingListForStudentSerializer
 
 
 class StudentCategorySerializer(serializers.ModelSerializer):
@@ -35,10 +37,26 @@ class StudentListSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "category", "group", "mother_name", "birthdate", "parts_received"]
 
 
+class MemorizeMessageForStudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MemorizeMessage
+        fields = ["id", "message_type", "changes"]
+
+
 class StudentDetailsSerializer(serializers.ModelSerializer):
     category = StudentCategorySerializer()
     group = StudentGroupSerializer()
     notes = MemorizeNotesGetSerializer(many=True)
+    
+    awqaf_relations = AwqafRelationSerializer(many=True)
+    last_comings = ComingListForStudentSerializer(many=True)
+
+    previous_week_messages = MemorizeMessageForStudentSerializer(many=True)
+    current_week_messages = MemorizeMessageForStudentSerializer(many=True)
+    first_half_month_messages = MemorizeMessageForStudentSerializer(many=True)
+    second_half_month_messages = MemorizeMessageForStudentSerializer(many=True)
+
+    current_date = serializers.DateField()
 
     class Meta:
         model = Student
