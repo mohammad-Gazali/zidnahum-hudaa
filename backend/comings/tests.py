@@ -74,7 +74,11 @@ class ComingsAppTestCase(TestCase):
         self.comings.append(Coming.objects.create(id=2, master=self.user2, student=self.student, category=self.categories[0]))
         sleep(0.1) # for making "registered_at" different in Coming instances, so the list view can return them by desc order relatively to "registered_at"
 
-        self.comings.append(Coming.objects.create(id=3, master=self.user1, student=self.student, category=self.categories[0]))
+        # here we made the category different from others to follow the same way when we don't sign the creating of coming
+        # to the same category and student in the same day
+        # we can make a signal for this but there is a chance where we must sign the students in the same day for the same category
+        # so we can do this special case from the terminal, and if we made the preventing occur in the signal we can't do it even from terminal (as I know at least)
+        self.comings.append(Coming.objects.create(id=3, master=self.user1, student=self.student, category=self.categories[2]))
 
 
     def test_coming_categories_list_view(self):
@@ -125,6 +129,21 @@ class ComingsAppTestCase(TestCase):
 
         self.assertEqual(new_coming.master.pk, self.user2.pk)
         self.assertEqual(new_coming.category.pk, category.pk)
+
+        # trying to create another coming in the same day
+        failed_res = self.client.post(url, {
+            "student": self.student.pk,
+            "category": category.pk,
+        }, HTTP_AUTHORIZATION=f"Bearer {self.token1}", content_type="application/json")
+
+        self.assertEqual(failed_res.status_code, HTTP_403_FORBIDDEN)
+
+        failed_res = self.client.post(url, {
+            "student": self.student.pk,
+            "category": category.pk,
+        }, HTTP_AUTHORIZATION=f"Bearer {self.token2}", content_type="application/json")
+
+        self.assertEqual(failed_res.status_code, HTTP_403_FORBIDDEN)
 
 
     def test_coming_delete_view(self):

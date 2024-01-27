@@ -1,5 +1,9 @@
+from django.utils import timezone
 from rest_framework.generics import ListAPIView, DestroyAPIView, ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.status import HTTP_403_FORBIDDEN
+from rest_framework.exceptions import ValidationError
 from comings.serializers import ComingCategorySerializer, ComingCreateSerializer, ComingListSerializer
 from comings.models import ComingCategory, Coming
 from comings.permissions import IsMasterForComing
@@ -24,7 +28,17 @@ class ComingListCreateView(ListCreateAPIView):
     def get_queryset(self):
         return Coming.objects.filter(master=self.request.user).order_by("-registered_at")
 
+    def handle_exception(self, exc):
+
+        if isinstance(exc, ValidationError):
+            return Response({"detail": exc.detail}, HTTP_403_FORBIDDEN)
+
+        return super().handle_exception(exc)
+
     def perform_create(self, serializer: ComingCreateSerializer):
+        if Coming.objects.filter(**serializer.validated_data, registered_at__date=timezone.now().date()):
+            raise ValidationError("you can't register a coming in for the same student and category in the same day")
+
         Coming.objects.create(
             master=self.request.user,
             is_doubled=ControlSettings.get_double_points(),
