@@ -11,7 +11,7 @@ class MemorizeNotesCreateView(CreateAPIView):
 
     def perform_create(self, serializer: MemorizeNotesCreateSerializer):
         MemorizeNotes.objects.create(
-            master_id=self.request.user.pk,
+            master=self.request.user,
             **serializer.validated_data,
         )
 

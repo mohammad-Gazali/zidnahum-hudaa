@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
 from students.models import Student, MemorizeMessage
 from students.constants import NEW
 from adminstration.models import ControlSettings
@@ -34,7 +35,7 @@ class StudentUpdateTestCase(TestCase):
             "password": self.password,
         }, content_type="application/json")
 
-        self.assertEqual(res.status_code, 200, res.json())
+        self.assertEqual(res.status_code, HTTP_200_OK, res.json())
 
         self.token = res.json()["access"]
 
@@ -66,7 +67,7 @@ class StudentUpdateTestCase(TestCase):
                 "q_memo": q_memo
             }, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
 
-            self.assertEqual(res.status_code, 200, res.json())
+            self.assertEqual(res.status_code, HTTP_200_OK, res.json())
 
             refetched_student = Student.objects.get(pk=student.pk)
 
@@ -96,7 +97,7 @@ class StudentUpdateTestCase(TestCase):
                 "q_test": q_test
             }, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
 
-            self.assertEqual(res.status_code, 200, res.json())
+            self.assertEqual(res.status_code, HTTP_200_OK, res.json())
 
             refetched_student = Student.objects.get(pk=student.pk)
 
@@ -120,7 +121,7 @@ class StudentUpdateTestCase(TestCase):
                 "value": value,
             }, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
 
-            self.assertEqual(res.status_code, 204)
+            self.assertEqual(res.status_code, HTTP_204_NO_CONTENT)
 
             new_fetched_student = Student.objects.get(pk=student.pk)
 
@@ -142,13 +143,13 @@ class StudentUpdateTestCase(TestCase):
             "value": 51,
         }, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
 
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, HTTP_400_BAD_REQUEST)
 
         res = self.client.put(url, {
             "value": 40,
         }, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
 
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, HTTP_400_BAD_REQUEST)
 
         # success request body for single student with old value
         value = 43
@@ -157,7 +158,7 @@ class StudentUpdateTestCase(TestCase):
             "value": value,
         }, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
 
-        self.assertEqual(res.status_code, 204)
+        self.assertEqual(res.status_code, HTTP_204_NO_CONTENT)
 
         new_fetched_student = Student.objects.get(pk=student.pk)
 
@@ -174,7 +175,7 @@ class StudentUpdateTestCase(TestCase):
                 "value": value,
             }, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
 
-            self.assertEqual(res.status_code, 204)
+            self.assertEqual(res.status_code, HTTP_204_NO_CONTENT)
 
             new_fetched_student = Student.objects.get(pk=student.pk)
 
@@ -196,7 +197,7 @@ class StudentUpdateTestCase(TestCase):
             "value": 40,
         }, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
 
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, HTTP_400_BAD_REQUEST)
 
         # success request body for single student with old value
         value = 43
@@ -205,7 +206,7 @@ class StudentUpdateTestCase(TestCase):
             "value": value,
         }, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
 
-        self.assertEqual(res.status_code, 204)
+        self.assertEqual(res.status_code, HTTP_204_NO_CONTENT)
 
         new_fetched_student = Student.objects.get(pk=student.pk)
 
@@ -218,7 +219,7 @@ class StudentUpdateTestCase(TestCase):
 
             res = self.client.put(url, HTTP_AUTHORIZATION=f"Bearer {self.token}")
 
-            self.assertEqual(res.status_code, 204)
+            self.assertEqual(res.status_code, HTTP_204_NO_CONTENT)
 
             new_fetched_student = Student.objects.get(pk=student.pk)
 
@@ -233,7 +234,7 @@ class StudentUpdateTestCase(TestCase):
 
         res = self.client.put(url, HTTP_AUTHORIZATION=f"Bearer {self.token}")
 
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, HTTP_400_BAD_REQUEST)
 
         student.allah_names_new = True
         student.allah_names_old = False
@@ -241,7 +242,7 @@ class StudentUpdateTestCase(TestCase):
 
         res = self.client.put(url, HTTP_AUTHORIZATION=f"Bearer {self.token}")
 
-        self.assertEqual(res.status_code, 400)
+        self.assertEqual(res.status_code, HTTP_400_BAD_REQUEST)
 
         # success for one student
         student.allah_names_new = False
@@ -249,7 +250,7 @@ class StudentUpdateTestCase(TestCase):
 
         res = self.client.put(url, HTTP_AUTHORIZATION=f"Bearer {self.token}")
 
-        self.assertEqual(res.status_code, 204)
+        self.assertEqual(res.status_code, HTTP_204_NO_CONTENT)
 
         new_fetched_student = Student.objects.get(pk=student.pk)
 
@@ -267,7 +268,7 @@ class StudentUpdateTestCase(TestCase):
             "parts_received": parts_received
         }, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
 
-        self.assertEqual(res.status_code, 204)
+        self.assertEqual(res.status_code, HTTP_204_NO_CONTENT)
 
         new_fetched_student = Student.objects.get(pk=student.pk)
 

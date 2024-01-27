@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT
 from students.models import Student, MemorizeNotes
 from adminstration.models import ControlSettings
 from typing import List
@@ -32,7 +33,7 @@ class MemorizeNotesTestCase(TestCase):
             "password": self.password,
         }, content_type="application/json")
 
-        self.assertEqual(res.status_code, 200, res.json())
+        self.assertEqual(res.status_code, HTTP_200_OK, res.json())
 
         self.token = res.json()["access"]
 
@@ -57,7 +58,7 @@ class MemorizeNotesTestCase(TestCase):
             "content": content,
         }, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
 
-        self.assertEqual(res.status_code, 201)
+        self.assertEqual(res.status_code, HTTP_201_CREATED)
 
         new_note = MemorizeNotes.objects.exclude(pk__in=map(lambda n: n.pk, self.notes)).first()
 
@@ -69,7 +70,7 @@ class MemorizeNotesTestCase(TestCase):
 
         res = self.client.delete(url, HTTP_AUTHORIZATION=f"Bearer {self.token}")
 
-        self.assertEqual(res.status_code, 204)
+        self.assertEqual(res.status_code, HTTP_204_NO_CONTENT)
 
         ids = set(map(lambda m: m.pk, MemorizeNotes.objects.all()))
 

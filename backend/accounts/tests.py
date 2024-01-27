@@ -1,10 +1,11 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from rest_framework.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
 
 
 class AccountsAppTestCase(TestCase):
-    def setUp(self) -> None:
+    def setUp(self):
         User = get_user_model()
 
         self.username = "test"
@@ -34,7 +35,7 @@ class AccountsAppTestCase(TestCase):
             "password": self.password,
         }, content_type="application/json")
 
-        self.assertEqual(res.status_code, 200, res.json())
+        self.assertEqual(res.status_code, HTTP_200_OK, res.json())
 
         self.token = res.json()["access"]
         self.refresh_token = res.json()["refresh"]
@@ -48,12 +49,12 @@ class AccountsAppTestCase(TestCase):
             "password": self.password,
         }, content_type="application/json")
 
-        self.assertEqual(res.status_code, 200, res.json())
+        self.assertEqual(res.status_code, HTTP_200_OK, res.json())
 
         res.json()["access"]
         res.json()["refresh"]
 
-        self.assertEqual(res.status_code, 200, f"response = {res.json()}")
+        self.assertEqual(res.status_code, HTTP_200_OK, res.json())
 
 
     def test_token_refresh(self):
@@ -71,13 +72,13 @@ class AccountsAppTestCase(TestCase):
             "refresh": self.refresh_token,
         }, content_type="application/json")
 
-        self.assertEqual(failed_response.status_code, 401)
+        self.assertEqual(failed_response.status_code, HTTP_401_UNAUTHORIZED)
 
         successful_response = self.client.post(url, {
             "refresh": new_refresh_token,
         }, content_type="application/json")
 
-        self.assertEqual(successful_response.status_code, 200)
+        self.assertEqual(successful_response.status_code, HTTP_200_OK)
 
 
     def test_user_details(self):
@@ -85,7 +86,7 @@ class AccountsAppTestCase(TestCase):
 
         res = self.client.get(url, HTTP_AUTHORIZATION=f"Bearer {self.token}")
 
-        self.assertEqual(res.status_code, 200, f"response = {res.json()}")
+        self.assertEqual(res.status_code, HTTP_200_OK, res.json())
         
         self.assertEqual(res.json()["id"], self.user.pk)
         self.assertEqual(res.json()["username"], self.username)

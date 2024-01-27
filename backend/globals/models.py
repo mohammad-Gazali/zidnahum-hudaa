@@ -14,7 +14,7 @@ class AssetsCategory(models.Model):
 
 class AssetFile(models.Model):
     name = models.CharField(max_length=255, verbose_name="الاسم")
-    category = models.ForeignKey(AssetsCategory, on_delete=models.PROTECT, verbose_name="الفئة")
+    category = models.ForeignKey(AssetsCategory, on_delete=models.PROTECT, verbose_name="الفئة", related_name="files")
     file = models.FileField(upload_to="assets", verbose_name="الملف")
 
     def __str__(self) -> str:

@@ -5,21 +5,20 @@ from points.serializers import PointsAddingCauseSerializer, PointsDeletingCauseS
 from points.permissions import IsMasterForPointsAddingOrDeleting
 
 
-# TODO: test
 class PointsAddingCauseListView(ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = PointsAddingCauseSerializer
     queryset = PointsAddingCause.objects.all()
+    pagination_class = None
 
 
-# TODO: test
 class PointsDeletingCauseListView(ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = PointsDeletingCauseSerializer
     queryset = PointsDeletingCause.objects.all()
+    pagination_class = None
 
 
-# TODO: test
 class PointsAddingListCreateView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     
@@ -30,7 +29,7 @@ class PointsAddingListCreateView(ListCreateAPIView):
             return PointsAddingListSerializer
 
     def get_queryset(self):
-        return PointsAdding.objects.filter(master=self.request.user)
+        return PointsAdding.objects.filter(master=self.request.user).order_by("-created_at")
     
     def perform_create(self, serializer: PointsAddingCreateSerializer):
         PointsAdding.objects.create(
@@ -39,7 +38,6 @@ class PointsAddingListCreateView(ListCreateAPIView):
         )
 
 
-# TODO: test
 class PointsDeletingListCreateView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     
@@ -50,7 +48,7 @@ class PointsDeletingListCreateView(ListCreateAPIView):
             return PointsDeletingListSerializer
 
     def get_queryset(self):
-        return PointsDeleting.objects.filter(master=self.request.user)
+        return PointsDeleting.objects.filter(master=self.request.user).order_by("-created_at")
     
     def perform_create(self, serializer: PointsDeletingCreateSerializer):
         PointsDeleting.objects.create(
@@ -59,13 +57,11 @@ class PointsDeletingListCreateView(ListCreateAPIView):
         )
 
 
-# TODO: test
 class PointsAddingDeleteView(DestroyAPIView):
     permission_classes = [IsAuthenticated, IsMasterForPointsAddingOrDeleting]
     queryset = PointsAdding.objects.all()
 
 
-# TODO: test
 class PointsDeletingDeleteView(DestroyAPIView):
     permission_classes = [IsAuthenticated, IsMasterForPointsAddingOrDeleting]
     queryset = PointsDeleting.objects.all()

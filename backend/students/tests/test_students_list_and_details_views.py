@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from rest_framework.status import HTTP_200_OK
 from students.models import Student, StudentCategory, StudentGroup
 from comings.models import Coming, ComingCategory
 from adminstration.models import ControlSettings
@@ -34,7 +35,7 @@ class StudentListAndDetailsTestCase(TestCase):
             "password": self.password,
         }, content_type="application/json")
 
-        self.assertEqual(res.status_code, 200, res.json())
+        self.assertEqual(res.status_code, HTTP_200_OK, res.json())
 
         self.token = res.json()["access"]
 
@@ -104,7 +105,7 @@ class StudentListAndDetailsTestCase(TestCase):
 
         res = self.client.get(url)
 
-        self.assertEqual(res.status_code, 200, res.json())
+        self.assertEqual(res.status_code, HTTP_200_OK, res.json())
 
         self.assertEqual(res.json()["count"], self.total_count - self.hidden_count)
 
@@ -124,7 +125,7 @@ class StudentListAndDetailsTestCase(TestCase):
 
         res = self.client.get(url, HTTP_AUTHORIZATION=f"Bearer {self.token}")
 
-        self.assertEqual(res.status_code, 200, res.json())
+        self.assertEqual(res.status_code, HTTP_200_OK, res.json())
 
         self.assertEqual(res.json()["count"], self.total_count)
 
@@ -144,7 +145,7 @@ class StudentListAndDetailsTestCase(TestCase):
 
         res = self.client.get(url, HTTP_AUTHORIZATION=f"Bearer {self.token}")
 
-        self.assertEqual(res.status_code, 200, res.json())
+        self.assertEqual(res.status_code, HTTP_200_OK, res.json())
 
         self.assertEqual(res.json()["count"], self.total_count - self.registerd_count)
 
@@ -182,6 +183,6 @@ class StudentListAndDetailsTestCase(TestCase):
             # we used token here to display even the hidden ids
             res = self.client.get(url, HTTP_AUTHORIZATION=f"Bearer {self.token}")
 
-            self.assertEqual(res.status_code, 200, res.json())
+            self.assertEqual(res.status_code, HTTP_200_OK, res.json())
 
             self.assertEqual(rand, res.json()["id"])

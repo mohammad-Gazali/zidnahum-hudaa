@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT
 from students.models import Student, MemorizeMessage
 from students.constants import NEW, NON
 from adminstration.models import ControlSettings
@@ -32,7 +33,7 @@ class MemorizeMessageSignal(TestCase):
             "password": self.password,
         }, content_type="application/json")
 
-        self.assertEqual(res.status_code, 200, res.json())
+        self.assertEqual(res.status_code, HTTP_200_OK, res.json())
 
         self.token = res.json()["access"]
 
@@ -76,11 +77,11 @@ class MemorizeMessageSignal(TestCase):
         res4 = self.client.put(url4, {"value": self.value4}, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
         res5 = self.client.put(url5, HTTP_AUTHORIZATION=f"Bearer {self.token}")
 
-        self.assertEqual(res1.status_code, 200)
-        self.assertEqual(res2.status_code, 200)
-        self.assertEqual(res3.status_code, 204)
-        self.assertEqual(res4.status_code, 204)
-        self.assertEqual(res5.status_code, 204)
+        self.assertEqual(res1.status_code, HTTP_200_OK)
+        self.assertEqual(res2.status_code, HTTP_200_OK)
+        self.assertEqual(res3.status_code, HTTP_204_NO_CONTENT)
+        self.assertEqual(res4.status_code, HTTP_204_NO_CONTENT)
+        self.assertEqual(res5.status_code, HTTP_204_NO_CONTENT)
 
 
     def test_delete_memorize_message_signal(self):

@@ -5,15 +5,16 @@ from comings.models import ComingCategory, Coming
 class ComingCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = ComingCategory
-        fields = "__all__"
+        fields = ["id", "name"]
 
 
-class ComingCreateSerializer(serializers.Serializer):
-    student = serializers.IntegerField()
-    category = serializers.IntegerField()
+class ComingCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Coming
+        fields = ["student", "category"]
 
 
 class ComingListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Coming
-        fields = "__all__"
+        exclude = ["master"]

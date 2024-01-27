@@ -6,13 +6,12 @@ from comings.permissions import IsMasterForComing
 from adminstration.models import ControlSettings
 
 
-# TODO: test
 class ComingCategroyListView(ListAPIView):
-    queryset = ComingCategory.objects.all()
+    queryset = ComingCategory.objects.all().order_by("id")
+    pagination_class = None
     serializer_class = ComingCategorySerializer
 
 
-# TODO: test
 class ComingListCreateView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
@@ -27,14 +26,12 @@ class ComingListCreateView(ListCreateAPIView):
 
     def perform_create(self, serializer: ComingCreateSerializer):
         Coming.objects.create(
-            master_id=self.request.user.pk,
+            master=self.request.user,
             is_doubled=ControlSettings.get_double_points(),
             **serializer.validated_data,
         )
 
 
-# TODO: test
 class ComingDeleteView(DestroyAPIView):
     permission_classes = [IsAuthenticated, IsMasterForComing]
     queryset = Coming.objects.all()
-
