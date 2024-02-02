@@ -11,8 +11,8 @@ from students.models import Student
 from typing import Type, List, Literal, Any
 
 
-class BaseViewSet(ModelViewSet):...
-    # permission_classes = [IsAdminUser]
+class BaseViewSet(ModelViewSet):
+    permission_classes = [IsAdminUser]
 
 def create_serializer(model_class: Type[Model], serializer_fields: List[str] | Literal["__all__"], exclude: bool = False, extra_ref: Any = None) -> Type[ModelSerializer]:
     if exclude:
