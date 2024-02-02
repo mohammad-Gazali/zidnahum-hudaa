@@ -1,5 +1,6 @@
 from django.db import models
-from django.core.validators import MinValueValidator
+from django.core.validators import MaxValueValidator
+from django.core.exceptions import ValidationError
 from django.conf.global_settings import AUTH_USER_MODEL
 from students.utils import json_default_value_618, json_default_value_240, json_default_value_30
 import re
@@ -46,7 +47,7 @@ class Student(models.Model):
     father_work = models.CharField(max_length=80, null=True, blank=True, verbose_name="عمل الأب")
     notes = models.CharField(max_length=60, null=True, blank=True, verbose_name="ملاحظات")
     bring_him = models.CharField(max_length=80, verbose_name="أحضره", null=True, blank=True)
-    parts_received = models.CharField(max_length=50, default="", verbose_name="الأجزاء المستلمة")
+    parts_received = models.CharField(max_length=50, default="", verbose_name="الأجزاء المستلمة", blank=True)
     
     q_memorizing = models.JSONField(default=json_default_value_618, verbose_name="حفظ القرآن")
     q_test = models.JSONField(default=json_default_value_240, verbose_name="السبر في المسجد")
@@ -54,10 +55,10 @@ class Student(models.Model):
     q_awqaf_test_looking = models.JSONField(default=json_default_value_30, verbose_name="سبر القرآن نظراً في الأوقاف")
     q_awqaf_test_explaining = models.JSONField(default=json_default_value_30, verbose_name="سبر القرآن تفسيراً في الأوقاف")
     
-    alarbaein_alnawawia_old = models.IntegerField(verbose_name="الأربعين النووية قديم", default=0, validators=[MinValueValidator(0)])
-    alarbaein_alnawawia_new = models.IntegerField(verbose_name="الأربعين النووية جديد", default=0, validators=[MinValueValidator(0)])
-    riad_alsaalihin_old = models.IntegerField(verbose_name="رياض الصالحين قديم", default=0, validators=[MinValueValidator(0)])
-    riad_alsaalihin_new = models.IntegerField(verbose_name="رياض الصالحين جديد", default=0, validators=[MinValueValidator(0)])
+    alarbaein_alnawawia_old = models.PositiveIntegerField(verbose_name="الأربعين النووية قديم", default=0, validators=[MaxValueValidator(50)])
+    alarbaein_alnawawia_new = models.PositiveIntegerField(verbose_name="الأربعين النووية جديد", default=0, validators=[MaxValueValidator(50)])
+    riad_alsaalihin_old = models.PositiveIntegerField(verbose_name="رياض الصالحين قديم", default=0)
+    riad_alsaalihin_new = models.PositiveIntegerField(verbose_name="رياض الصالحين جديد", default=0)
     allah_names_old = models.BooleanField(verbose_name="أسماء الله الحسنى قديم", default=False)
     allah_names_new = models.BooleanField(verbose_name="أسماء الله الحسنى جديد", default=False)
     
@@ -71,6 +72,24 @@ class Student(models.Model):
 
 
     @classmethod
+    def search_student_regex(cls, text: str) -> str:
+        # here we search by regex
+        regex = ""
+
+        # looping over words and replace each  "ا"  "أ"  "إ"  by union of them
+        # and escape characters for safety purpose
+        for word in re.split(r"\s+", text.strip()):
+            if word == "": continue
+            regex += (
+                re.escape(word)
+                .replace("\u0623", "(\u0623|\u0625|\u0627)")
+                .replace("\u0625", "(\u0623|\u0625|\u0627)")
+                .replace("\u0627", "(\u0623|\u0625|\u0627)")
+            ) + r".*"
+        
+        return regex
+
+    @classmethod
     def search_student(cls, text: str):
         try:
             # if the input is a valid number then we search by id
@@ -78,21 +97,19 @@ class Student(models.Model):
             return cls.objects.filter(pk=pk)
 
         except ValueError:
-            # here we search by regex
-            regex = ""
+            return cls.objects.filter(
+                name__iregex="{}".format(cls.search_student_regex(text))
+            )
 
-            # looping over words and replace each  "ا"  "أ"  "إ"  by union of them
-            # and escape characters for safety purpose
-            for word in re.split(r"\s+", text.strip()):
-                regex += (
-                    re.escape(word)
-                    .replace("\u0623", "(\u0623|\u0625|\u0627)")
-                    .replace("\u0625", "(\u0623|\u0625|\u0627)")
-                    .replace("\u0627", "(\u0623|\u0625|\u0627)")
-                ) + r".*"
-            
-            return cls.objects.filter(name__iregex="{}".format(regex))
 
+    def clean(self):
+        if self.alarbaein_alnawawia_new + self.alarbaein_alnawawia_old > 50:
+            raise ValidationError("sum of alarbaein_alnawawia_new and alarbaein_alnawawia_old must be less than or equal to 50")
+
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "طالب"
