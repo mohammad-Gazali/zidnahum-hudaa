@@ -8,6 +8,7 @@ export class TranslateService {
 
     constructor () {
         this.translateMap.set('zidnahum hudaa dashboard', 'لوحة تحكم وزدناهم هدى');
+        this.translateMap.set('zidnahum hudaa', 'وزدناهم هدى');
         this.translateMap.set('all rights reserved &copy; zidnhaum hudaa 2023 - 2024', 'جميع الحقوق محفوظة &copy; وزدناهم هدى 2023 - 2024');
 
         this.translateMap.set('username', 'اسم المستخدم');

@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LayoutComponent } from './layout/layout.component';
 import { AccountsService } from './services/api/accounts/accounts.service';
+import { SnackbarService } from './services/snackbar.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,7 @@ import { AccountsService } from './services/api/accounts/accounts.service';
 })
 export class AppComponent implements OnInit {
   private accounts = inject(AccountsService);
-  private snackbar = inject(MatSnackBar);
+  private snackbar = inject(SnackbarService);
   private router = inject(Router);
 
   public loading = signal(true);
@@ -62,9 +63,7 @@ export class AppComponent implements OnInit {
           })
 
         } else {
-          this.snackbar.open(detail, 'إغلاق', {
-            duration: 5000,
-          })
+          this.snackbar.open(detail);
         }
       },
     })

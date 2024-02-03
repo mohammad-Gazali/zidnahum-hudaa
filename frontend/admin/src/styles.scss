@@ -28,10 +28,22 @@ $admin-theme: mat.define-light-theme((
   )
 ));
 
+$admin-dark-theme: mat.define-dark-theme((
+  color: (
+    primary: $admin-primary,
+    accent: $admin-accent,
+    warn: $admin-warn,
+  )
+));
+
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include mat.all-component-themes($admin-theme);
+
+.dark {
+  @include mat.all-component-colors($admin-dark-theme);
+}
 
 * {
   margin: 0;
@@ -41,8 +53,15 @@ $admin-theme: mat.define-light-theme((
 
 body { 
   font-family: 'Noto Kufi Arabic', "Helvetica Neue", sans-serif;
+  background-color: var(--mat-app-background-color);
+  color: var(--mat-app-text-color);
 }
 
 ul {
   list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
