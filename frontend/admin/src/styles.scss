@@ -33,6 +33,16 @@ $admin-theme: mat.define-light-theme((
 // that you are using.
 @include mat.all-component-themes($admin-theme);
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: 'Noto Kufi Arabic', "Helvetica Neue", sans-serif; }
+body { 
+  font-family: 'Noto Kufi Arabic', "Helvetica Neue", sans-serif;
+}
+
+ul {
+  list-style: none;
+}

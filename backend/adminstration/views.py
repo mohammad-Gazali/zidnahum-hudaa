@@ -37,7 +37,7 @@ AdminPointsDeletingViewSet = create_model_view_set(PointsDeleting, methods=["get
 
 # students view sets
 AdminStudentCategoryViewSet = create_model_view_set(StudentCategory)
-AdminStudentGroupViewSet = create_model_view_set(StudentGroup);Student.allah_names_new;
+AdminStudentGroupViewSet = create_model_view_set(StudentGroup)
 
 AdminCreateStudentSerializer = create_serializer(Student, serializer_fields=[
         "q_memorizing", "q_test", "q_awqaf_test",

@@ -18,13 +18,13 @@ def create_serializer(model_class: Type[Model], serializer_fields: List[str] | L
     if exclude:
         class Result(ModelSerializer):
             class Meta:
-                ref_name = f"{model_class}-{extra_ref}" if extra_ref is not None else str(extra_ref)
+                ref_name = f"{model_class.__name__}-{extra_ref}" if extra_ref is not None else model_class.__name__
                 model = model_class
                 exclude = serializer_fields
     else:
         class Result(ModelSerializer):
             class Meta:
-                ref_name = f"{model_class}-{extra_ref}" if extra_ref is not None else str(model_class)
+                ref_name = f"{model_class.__name__}-{extra_ref}" if extra_ref is not None else model_class.__name__
                 model = model_class
                 fields = serializer_fields
 

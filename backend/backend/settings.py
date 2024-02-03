@@ -154,7 +154,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(weeks=4),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -164,8 +164,10 @@ SIMPLE_JWT = {
 # and 8000 port is for django app in development mode
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
+    "http://localhost:4200",
     "http://localhost:5173",
     "http://127.0.0.1:8000",
+    "http://127.0.0.1:4200",
     "http://127.0.0.1:5173",
     f"https://{os.getenv('ALLOWED_HOST')}",
     f"http://{os.getenv('ALLOWED_HOST')}",

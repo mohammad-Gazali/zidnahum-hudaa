@@ -1,0 +1,15 @@
+<mat-toolbar color="primary" class="mat-elevation-z3">
+    <a [routerLink]="isAuth() ? '/' : null" class="toolbar-brand">
+        {{ title | translate }}
+    </a>
+    <div class="spacer"></div>
+    @if (isAuth()) {
+        <ul>
+            <li>
+                <button mat-button (click)="logout()">
+                    {{ 'logout' | translate }}        
+                </button>
+            </li>
+        </ul>
+    }
+</mat-toolbar>

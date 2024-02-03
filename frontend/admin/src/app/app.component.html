@@ -1,4 +1,9 @@
-<div>
-  {{ counter }}
-</div>
-<button mat-raised-button color="primary" (click)="increment()">أضف</button>
+<app-layout>
+    @if (loading()) {
+        <div class="spinner-container">
+            <mat-spinner></mat-spinner>
+        </div>
+    } @else {
+        <router-outlet></router-outlet>
+    }
+</app-layout>
