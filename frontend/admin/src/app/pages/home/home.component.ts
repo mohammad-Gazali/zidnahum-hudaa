@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { groups } from './groups';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { HomeGroupComponent } from './group/group.component';
+import { GroupsService } from '../../services/groups.service';
 
 
 @Component({
@@ -12,5 +12,5 @@ import { HomeGroupComponent } from './group/group.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent {
-  groups = groups;
+  public groupsService = inject(GroupsService);
 }

@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '../../services/translate.service';
 import { SnackbarService } from '../../services/snackbar.service';
 import { type Subscription } from 'rxjs';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-login',
@@ -31,12 +32,14 @@ export class LoginComponent implements OnDestroy {
   private snackbar = inject(SnackbarService);
   private router = inject(Router);
   private translateService = inject(TranslateService);
+  public loading = inject(LoadingService).loading;
 
   username = '';
   password = '';
   subscriptions: Subscription[] = [];
 
   submit() {
+    this.loading.set(true);
     const subscription = this.accounts.tokenObtainPair({
       username: this.username,
       password: this.password,
@@ -52,6 +55,8 @@ export class LoginComponent implements OnDestroy {
             this.snackbar.open('تم تسجيل الدخول بنجاح')
 
             this.router.navigateByUrl('/');
+            
+            this.loading.set(false);
           },
           error: ({ status, error: { detail } }: { status: number; error: { detail: string } }) => {
             if (status === 401) {
@@ -62,6 +67,7 @@ export class LoginComponent implements OnDestroy {
             } else {
               this.snackbar.open(this.translateService.translate(detail))
             }
+            this.loading.set(false);
           }
         })
 
@@ -69,6 +75,7 @@ export class LoginComponent implements OnDestroy {
       },
       error: ({ error: { detail } }) => {
         this.snackbar.open(this.translateService.translate(detail))
+        this.loading.set(false);
       }
     });
 

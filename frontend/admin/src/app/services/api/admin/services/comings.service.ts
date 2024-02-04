@@ -1,6 +1,6 @@
 /* tslint:disable */
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { BaseService as __BaseService } from '../base-service';
 import { ApiConfiguration as __Configuration } from '../api-configuration';
 import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-response';
@@ -27,6 +27,8 @@ class ComingsService extends __BaseService {
   /**
    * @param params The `ComingsService.ComingsCategoryListParams` containing the following parameters:
    *
+   * - `ordering`: Which field to use when ordering the results.
+   *
    * - `offset`: The initial index from which to return the results.
    *
    * - `limit`: Number of results to return per page.
@@ -35,6 +37,7 @@ class ComingsService extends __BaseService {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+    if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
     let req = new HttpRequest<any>(
@@ -56,6 +59,8 @@ class ComingsService extends __BaseService {
   }
   /**
    * @param params The `ComingsService.ComingsCategoryListParams` containing the following parameters:
+   *
+   * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
@@ -215,6 +220,8 @@ class ComingsService extends __BaseService {
   /**
    * @param params The `ComingsService.ComingsComingListParams` containing the following parameters:
    *
+   * - `ordering`: Which field to use when ordering the results.
+   *
    * - `offset`: The initial index from which to return the results.
    *
    * - `limit`: Number of results to return per page.
@@ -223,6 +230,7 @@ class ComingsService extends __BaseService {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+    if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
     let req = new HttpRequest<any>(
@@ -244,6 +252,8 @@ class ComingsService extends __BaseService {
   }
   /**
    * @param params The `ComingsService.ComingsComingListParams` containing the following parameters:
+   *
+   * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
@@ -332,6 +342,11 @@ module ComingsService {
   export interface ComingsCategoryListParams {
 
     /**
+     * Which field to use when ordering the results.
+     */
+    ordering?: string;
+
+    /**
      * The initial index from which to return the results.
      */
     offset?: number;
@@ -358,6 +373,11 @@ module ComingsService {
    * Parameters for comingsComingList
    */
   export interface ComingsComingListParams {
+
+    /**
+     * Which field to use when ordering the results.
+     */
+    ordering?: string;
 
     /**
      * The initial index from which to return the results.

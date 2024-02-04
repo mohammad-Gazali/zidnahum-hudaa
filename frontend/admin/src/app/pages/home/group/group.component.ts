@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
-import { Group } from '../groups';
+import { Group } from '../../../services/groups.service';
 
 @Component({
   selector: 'app-home-group',

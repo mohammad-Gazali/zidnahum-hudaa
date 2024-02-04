@@ -1,6 +1,6 @@
 /* tslint:disable */
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { BaseService as __BaseService } from '../base-service';
 import { ApiConfiguration as __Configuration } from '../api-configuration';
 import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-response';
@@ -43,6 +43,8 @@ class PointsService extends __BaseService {
   /**
    * @param params The `PointsService.PointsAddingCauseListParams` containing the following parameters:
    *
+   * - `ordering`: Which field to use when ordering the results.
+   *
    * - `offset`: The initial index from which to return the results.
    *
    * - `limit`: Number of results to return per page.
@@ -51,6 +53,7 @@ class PointsService extends __BaseService {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+    if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
     let req = new HttpRequest<any>(
@@ -72,6 +75,8 @@ class PointsService extends __BaseService {
   }
   /**
    * @param params The `PointsService.PointsAddingCauseListParams` containing the following parameters:
+   *
+   * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
@@ -231,6 +236,8 @@ class PointsService extends __BaseService {
   /**
    * @param params The `PointsService.PointsAddingListParams` containing the following parameters:
    *
+   * - `ordering`: Which field to use when ordering the results.
+   *
    * - `offset`: The initial index from which to return the results.
    *
    * - `limit`: Number of results to return per page.
@@ -239,6 +246,7 @@ class PointsService extends __BaseService {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+    if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
     let req = new HttpRequest<any>(
@@ -260,6 +268,8 @@ class PointsService extends __BaseService {
   }
   /**
    * @param params The `PointsService.PointsAddingListParams` containing the following parameters:
+   *
+   * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
@@ -385,6 +395,8 @@ class PointsService extends __BaseService {
   /**
    * @param params The `PointsService.PointsDeletingCauseListParams` containing the following parameters:
    *
+   * - `ordering`: Which field to use when ordering the results.
+   *
    * - `offset`: The initial index from which to return the results.
    *
    * - `limit`: Number of results to return per page.
@@ -393,6 +405,7 @@ class PointsService extends __BaseService {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+    if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
     let req = new HttpRequest<any>(
@@ -414,6 +427,8 @@ class PointsService extends __BaseService {
   }
   /**
    * @param params The `PointsService.PointsDeletingCauseListParams` containing the following parameters:
+   *
+   * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
@@ -573,6 +588,8 @@ class PointsService extends __BaseService {
   /**
    * @param params The `PointsService.PointsDeletingListParams` containing the following parameters:
    *
+   * - `ordering`: Which field to use when ordering the results.
+   *
    * - `offset`: The initial index from which to return the results.
    *
    * - `limit`: Number of results to return per page.
@@ -581,6 +598,7 @@ class PointsService extends __BaseService {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+    if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
     let req = new HttpRequest<any>(
@@ -602,6 +620,8 @@ class PointsService extends __BaseService {
   }
   /**
    * @param params The `PointsService.PointsDeletingListParams` containing the following parameters:
+   *
+   * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
@@ -733,6 +753,11 @@ module PointsService {
   export interface PointsAddingCauseListParams {
 
     /**
+     * Which field to use when ordering the results.
+     */
+    ordering?: string;
+
+    /**
      * The initial index from which to return the results.
      */
     offset?: number;
@@ -759,6 +784,11 @@ module PointsService {
    * Parameters for pointsAddingList
    */
   export interface PointsAddingListParams {
+
+    /**
+     * Which field to use when ordering the results.
+     */
+    ordering?: string;
 
     /**
      * The initial index from which to return the results.
@@ -789,6 +819,11 @@ module PointsService {
   export interface PointsDeletingCauseListParams {
 
     /**
+     * Which field to use when ordering the results.
+     */
+    ordering?: string;
+
+    /**
      * The initial index from which to return the results.
      */
     offset?: number;
@@ -815,6 +850,11 @@ module PointsService {
    * Parameters for pointsDeletingList
    */
   export interface PointsDeletingListParams {
+
+    /**
+     * Which field to use when ordering the results.
+     */
+    ordering?: string;
 
     /**
      * The initial index from which to return the results.

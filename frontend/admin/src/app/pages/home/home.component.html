@@ -1,5 +1,5 @@
 <div class="groups-container">
-    @for (group of groups; track group.name) {
+    @for (group of groupsService.groups; track group.name) {
         <app-home-group [group]="group"></app-home-group>
     }
 </div>

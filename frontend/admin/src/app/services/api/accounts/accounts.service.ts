@@ -10,6 +10,7 @@ export class AccountsService {
     private rootUrl = 'http://127.0.0.1:8000/api/v1/accounts'
 
     public details = signal<UserDetailsResponse | null>(null);
+    public loading = signal(true);
 
     public tokenObtainPair(body: TokenObtainPairBody) {
         return this.http.post<TokenObtainPairResponse>(`${this.rootUrl}/token`, body);

@@ -1,5 +1,12 @@
-<app-navbar></app-navbar>
-<main>
-    <ng-content></ng-content>
-</main>
-<app-footer></app-footer>
+<mat-sidenav-container>
+    <mat-sidenav [mode]="mode()" #sidenav>
+        <app-sidenav></app-sidenav>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <app-navbar (clickMenu)="sidenav.toggle()"></app-navbar>
+        <main>
+            <ng-content></ng-content>
+        </main>
+        <app-footer></app-footer>
+    </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LayoutComponent } from './layout/layout.component';
 import { AccountsService } from './services/api/accounts/accounts.service';
@@ -19,7 +18,7 @@ export class AppComponent implements OnInit {
   private snackbar = inject(SnackbarService);
   private router = inject(Router);
 
-  public loading = signal(true);
+  public loading = this.accounts.loading;
 
   ngOnInit(): void {
     this.init();

@@ -7,12 +7,16 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
+from rest_framework.filters import OrderingFilter
 from students.models import Student
 from typing import Type, List, Literal, Any
 
 
 class BaseViewSet(ModelViewSet):
     permission_classes = [IsAdminUser]
+    filter_backends = [OrderingFilter]
+    ordering_fields = "__all__"
+
 
 def create_serializer(model_class: Type[Model], serializer_fields: List[str] | Literal["__all__"], exclude: bool = False, extra_ref: Any = None) -> Type[ModelSerializer]:
     if exclude:

@@ -1,7 +1,9 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   OnDestroy,
+  Output,
   computed,
   inject,
   signal,
@@ -9,12 +11,14 @@ import {
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { AccountsService } from '../../services/api/accounts/accounts.service';
 import { Router, RouterLink } from '@angular/router';
 import { ThemeService } from '../../services/theme.service';
 import { Subscription } from 'rxjs';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-navbar',
@@ -23,6 +27,7 @@ import { Subscription } from 'rxjs';
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
+    MatProgressBarModule,
     TranslatePipe,
     RouterLink,
   ],
@@ -35,6 +40,9 @@ export class NavbarComponent implements OnDestroy {
   private router = inject(Router);
   public theme = inject(ThemeService);
   public breakpointObserver = inject(BreakpointObserver);
+  public loading = inject(LoadingService).loading;
+
+  @Output() clickMenu = new EventEmitter();
 
   private subscription: Subscription;
   public title = computed(() => {
