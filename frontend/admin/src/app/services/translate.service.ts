@@ -18,6 +18,15 @@ export class TranslateService {
         this.translateMap.set('no active account found with the given credentials', 'لا يوجد حساب بهذه التفاصيل');
 
         this.translateMap.set('this field is required', 'هذا الحقل مطلوب');
+
+        // ====== students group ======
+        // student model
+        this.translateMap.set('id', 'المعرف');
+        this.translateMap.set('name', 'الاسم');
+        this.translateMap.set('mother_name', 'اسم الأم');
+        this.translateMap.set('category', 'الفئة');
+        this.translateMap.set('group', 'المجموعة');
+        this.translateMap.set('registered_at', 'تاريخ التسجيل');
     }
 
     translate(value: string): string {
