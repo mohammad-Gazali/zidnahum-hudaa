@@ -111,9 +111,9 @@ class AuthService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this مجموعة.
+   * @param id undefined
    */
-  authGroupReadResponse(id: number): __Observable<__StrictHttpResponse<GroupList>> {
+  authGroupReadResponse(id: string): __Observable<__StrictHttpResponse<GroupList>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -136,9 +136,9 @@ class AuthService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this مجموعة.
+   * @param id undefined
    */
-  authGroupRead(id: number): __Observable<GroupList> {
+  authGroupRead(id: string): __Observable<GroupList> {
     return this.authGroupReadResponse(id).pipe(
       __map(_r => _r.body as GroupList)
     );
@@ -147,7 +147,7 @@ class AuthService extends __BaseService {
   /**
    * @param params The `AuthService.AuthGroupUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this مجموعة.
+   * - `id`:
    *
    * - `data`:
    */
@@ -177,7 +177,7 @@ class AuthService extends __BaseService {
   /**
    * @param params The `AuthService.AuthGroupUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this مجموعة.
+   * - `id`:
    *
    * - `data`:
    */
@@ -188,9 +188,9 @@ class AuthService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this مجموعة.
+   * @param id undefined
    */
-  authGroupDeleteResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+  authGroupDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -213,9 +213,9 @@ class AuthService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this مجموعة.
+   * @param id undefined
    */
-  authGroupDelete(id: number): __Observable<null> {
+  authGroupDelete(id: string): __Observable<null> {
     return this.authGroupDeleteResponse(id).pipe(
       __map(_r => _r.body as null)
     );
@@ -229,6 +229,10 @@ class AuthService extends __BaseService {
    * - `offset`: The initial index from which to return the results.
    *
    * - `limit`: Number of results to return per page.
+   *
+   * - `is_superuser`: is_superuser
+   *
+   * - `is_active`: is_active
    */
   authUserListResponse(params: AuthService.AuthUserListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<UserList>}>> {
     let __params = this.newParams();
@@ -237,6 +241,8 @@ class AuthService extends __BaseService {
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (params.isSuperuser != null) __params = __params.set('is_superuser', params.isSuperuser.toString());
+    if (params.isActive != null) __params = __params.set('is_active', params.isActive.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/auth/user/`,
@@ -262,6 +268,10 @@ class AuthService extends __BaseService {
    * - `offset`: The initial index from which to return the results.
    *
    * - `limit`: Number of results to return per page.
+   *
+   * - `is_superuser`: is_superuser
+   *
+   * - `is_active`: is_active
    */
   authUserList(params: AuthService.AuthUserListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<UserList>}> {
     return this.authUserListResponse(params).pipe(
@@ -304,9 +314,9 @@ class AuthService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this المستخدم.
+   * @param id undefined
    */
-  authUserReadResponse(id: number): __Observable<__StrictHttpResponse<UserList>> {
+  authUserReadResponse(id: string): __Observable<__StrictHttpResponse<UserList>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -329,9 +339,9 @@ class AuthService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this المستخدم.
+   * @param id undefined
    */
-  authUserRead(id: number): __Observable<UserList> {
+  authUserRead(id: string): __Observable<UserList> {
     return this.authUserReadResponse(id).pipe(
       __map(_r => _r.body as UserList)
     );
@@ -340,7 +350,7 @@ class AuthService extends __BaseService {
   /**
    * @param params The `AuthService.AuthUserUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this المستخدم.
+   * - `id`:
    *
    * - `data`:
    */
@@ -370,7 +380,7 @@ class AuthService extends __BaseService {
   /**
    * @param params The `AuthService.AuthUserUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this المستخدم.
+   * - `id`:
    *
    * - `data`:
    */
@@ -381,9 +391,9 @@ class AuthService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this المستخدم.
+   * @param id undefined
    */
-  authUserDeleteResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+  authUserDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -406,9 +416,9 @@ class AuthService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this المستخدم.
+   * @param id undefined
    */
-  authUserDelete(id: number): __Observable<null> {
+  authUserDelete(id: string): __Observable<null> {
     return this.authUserDeleteResponse(id).pipe(
       __map(_r => _r.body as null)
     );
@@ -442,11 +452,7 @@ module AuthService {
    * Parameters for authGroupUpdate
    */
   export interface AuthGroupUpdateParams {
-
-    /**
-     * A unique integer value identifying this مجموعة.
-     */
-    id: number;
+    id: string;
     data: GroupUpdate;
   }
 
@@ -469,17 +475,23 @@ module AuthService {
      * Number of results to return per page.
      */
     limit?: number;
+
+    /**
+     * is_superuser
+     */
+    isSuperuser?: string;
+
+    /**
+     * is_active
+     */
+    isActive?: string;
   }
 
   /**
    * Parameters for authUserUpdate
    */
   export interface AuthUserUpdateParams {
-
-    /**
-     * A unique integer value identifying this المستخدم.
-     */
-    id: number;
+    id: string;
     data: UserUpdate;
   }
 }

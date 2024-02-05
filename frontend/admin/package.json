@@ -7,7 +7,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "generate:services": "ng-swagger-gen -i http://127.0.0.1:8000?format=openapi -o ./src/app/services/api/admin"
   },
   "private": true,
   "dependencies": {

@@ -31,19 +31,28 @@ class AwqafService extends __BaseService {
   /**
    * @param params The `AwqafService.AwqafStudentNoQRelationListParams` containing the following parameters:
    *
+   * - `test`: test
+   *
+   * - `student__name`: param for filtering result via student name or student id
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
    * - `limit`: Number of results to return per page.
+   *
+   * - `is_old`: is_old
    */
   awqafStudentNoQRelationListResponse(params: AwqafService.AwqafStudentNoQRelationListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<AwqafNoQStudentRelationList>}>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+    if (params.test != null) __params = __params.set('test', params.test.toString());
+    if (params.studentName != null) __params = __params.set('student__name', params.studentName.toString());
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (params.isOld != null) __params = __params.set('is_old', params.isOld.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/awqaf/student-no-q-relation/`,
@@ -64,11 +73,17 @@ class AwqafService extends __BaseService {
   /**
    * @param params The `AwqafService.AwqafStudentNoQRelationListParams` containing the following parameters:
    *
+   * - `test`: test
+   *
+   * - `student__name`: param for filtering result via student name or student id
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
    * - `limit`: Number of results to return per page.
+   *
+   * - `is_old`: is_old
    */
   awqafStudentNoQRelationList(params: AwqafService.AwqafStudentNoQRelationListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<AwqafNoQStudentRelationList>}> {
     return this.awqafStudentNoQRelationListResponse(params).pipe(
@@ -111,9 +126,9 @@ class AwqafService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this awqaf no q student relation.
+   * @param id undefined
    */
-  awqafStudentNoQRelationReadResponse(id: number): __Observable<__StrictHttpResponse<AwqafNoQStudentRelationList>> {
+  awqafStudentNoQRelationReadResponse(id: string): __Observable<__StrictHttpResponse<AwqafNoQStudentRelationList>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -136,9 +151,9 @@ class AwqafService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this awqaf no q student relation.
+   * @param id undefined
    */
-  awqafStudentNoQRelationRead(id: number): __Observable<AwqafNoQStudentRelationList> {
+  awqafStudentNoQRelationRead(id: string): __Observable<AwqafNoQStudentRelationList> {
     return this.awqafStudentNoQRelationReadResponse(id).pipe(
       __map(_r => _r.body as AwqafNoQStudentRelationList)
     );
@@ -147,7 +162,7 @@ class AwqafService extends __BaseService {
   /**
    * @param params The `AwqafService.AwqafStudentNoQRelationUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this awqaf no q student relation.
+   * - `id`:
    *
    * - `data`:
    */
@@ -177,7 +192,7 @@ class AwqafService extends __BaseService {
   /**
    * @param params The `AwqafService.AwqafStudentNoQRelationUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this awqaf no q student relation.
+   * - `id`:
    *
    * - `data`:
    */
@@ -188,9 +203,9 @@ class AwqafService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this awqaf no q student relation.
+   * @param id undefined
    */
-  awqafStudentNoQRelationDeleteResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+  awqafStudentNoQRelationDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -213,9 +228,9 @@ class AwqafService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this awqaf no q student relation.
+   * @param id undefined
    */
-  awqafStudentNoQRelationDelete(id: number): __Observable<null> {
+  awqafStudentNoQRelationDelete(id: string): __Observable<null> {
     return this.awqafStudentNoQRelationDeleteResponse(id).pipe(
       __map(_r => _r.body as null)
     );
@@ -304,9 +319,9 @@ class AwqafService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this سبر أوقاف بغير القرآن.
+   * @param id undefined
    */
-  awqafTestNoQReadResponse(id: number): __Observable<__StrictHttpResponse<AwqafTestNoQList>> {
+  awqafTestNoQReadResponse(id: string): __Observable<__StrictHttpResponse<AwqafTestNoQList>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -329,9 +344,9 @@ class AwqafService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this سبر أوقاف بغير القرآن.
+   * @param id undefined
    */
-  awqafTestNoQRead(id: number): __Observable<AwqafTestNoQList> {
+  awqafTestNoQRead(id: string): __Observable<AwqafTestNoQList> {
     return this.awqafTestNoQReadResponse(id).pipe(
       __map(_r => _r.body as AwqafTestNoQList)
     );
@@ -340,7 +355,7 @@ class AwqafService extends __BaseService {
   /**
    * @param params The `AwqafService.AwqafTestNoQUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this سبر أوقاف بغير القرآن.
+   * - `id`:
    *
    * - `data`:
    */
@@ -370,7 +385,7 @@ class AwqafService extends __BaseService {
   /**
    * @param params The `AwqafService.AwqafTestNoQUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this سبر أوقاف بغير القرآن.
+   * - `id`:
    *
    * - `data`:
    */
@@ -381,9 +396,9 @@ class AwqafService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this سبر أوقاف بغير القرآن.
+   * @param id undefined
    */
-  awqafTestNoQDeleteResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+  awqafTestNoQDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -406,9 +421,9 @@ class AwqafService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this سبر أوقاف بغير القرآن.
+   * @param id undefined
    */
-  awqafTestNoQDelete(id: number): __Observable<null> {
+  awqafTestNoQDelete(id: string): __Observable<null> {
     return this.awqafTestNoQDeleteResponse(id).pipe(
       __map(_r => _r.body as null)
     );
@@ -421,6 +436,16 @@ module AwqafService {
    * Parameters for awqafStudentNoQRelationList
    */
   export interface AwqafStudentNoQRelationListParams {
+
+    /**
+     * test
+     */
+    test?: string;
+
+    /**
+     * param for filtering result via student name or student id
+     */
+    studentName?: string;
 
     /**
      * Which field to use when ordering the results.
@@ -436,17 +461,18 @@ module AwqafService {
      * Number of results to return per page.
      */
     limit?: number;
+
+    /**
+     * is_old
+     */
+    isOld?: string;
   }
 
   /**
    * Parameters for awqafStudentNoQRelationUpdate
    */
   export interface AwqafStudentNoQRelationUpdateParams {
-
-    /**
-     * A unique integer value identifying this awqaf no q student relation.
-     */
-    id: number;
+    id: string;
     data: AwqafNoQStudentRelationUpdate;
   }
 
@@ -475,11 +501,7 @@ module AwqafService {
    * Parameters for awqafTestNoQUpdate
    */
   export interface AwqafTestNoQUpdateParams {
-
-    /**
-     * A unique integer value identifying this سبر أوقاف بغير القرآن.
-     */
-    id: number;
+    id: string;
     data: AwqafTestNoQUpdate;
   }
 }

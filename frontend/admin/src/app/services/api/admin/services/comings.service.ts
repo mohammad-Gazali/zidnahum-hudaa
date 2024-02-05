@@ -107,9 +107,9 @@ class ComingsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this سبب الحضور.
+   * @param id undefined
    */
-  comingsCategoryReadResponse(id: number): __Observable<__StrictHttpResponse<ComingCategoryList>> {
+  comingsCategoryReadResponse(id: string): __Observable<__StrictHttpResponse<ComingCategoryList>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -132,9 +132,9 @@ class ComingsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this سبب الحضور.
+   * @param id undefined
    */
-  comingsCategoryRead(id: number): __Observable<ComingCategoryList> {
+  comingsCategoryRead(id: string): __Observable<ComingCategoryList> {
     return this.comingsCategoryReadResponse(id).pipe(
       __map(_r => _r.body as ComingCategoryList)
     );
@@ -143,7 +143,7 @@ class ComingsService extends __BaseService {
   /**
    * @param params The `ComingsService.ComingsCategoryUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this سبب الحضور.
+   * - `id`:
    *
    * - `data`:
    */
@@ -173,7 +173,7 @@ class ComingsService extends __BaseService {
   /**
    * @param params The `ComingsService.ComingsCategoryUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this سبب الحضور.
+   * - `id`:
    *
    * - `data`:
    */
@@ -184,9 +184,9 @@ class ComingsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this سبب الحضور.
+   * @param id undefined
    */
-  comingsCategoryDeleteResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+  comingsCategoryDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -209,9 +209,9 @@ class ComingsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this سبب الحضور.
+   * @param id undefined
    */
-  comingsCategoryDelete(id: number): __Observable<null> {
+  comingsCategoryDelete(id: string): __Observable<null> {
     return this.comingsCategoryDeleteResponse(id).pipe(
       __map(_r => _r.body as null)
     );
@@ -220,19 +220,37 @@ class ComingsService extends __BaseService {
   /**
    * @param params The `ComingsService.ComingsComingListParams` containing the following parameters:
    *
+   * - `student__name`: param for filtering result via student name or student id
+   *
+   * - `registered_at__lt`: registered_at__lt
+   *
+   * - `registered_at__gt`: registered_at__gt
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
+   * - `master`: master
+   *
    * - `limit`: Number of results to return per page.
+   *
+   * - `is_doubled`: is_doubled
+   *
+   * - `category`: category
    */
   comingsComingListResponse(params: ComingsService.ComingsComingListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<ComingList>}>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+    if (params.studentName != null) __params = __params.set('student__name', params.studentName.toString());
+    if (params.registeredAtLt != null) __params = __params.set('registered_at__lt', params.registeredAtLt.toString());
+    if (params.registeredAtGt != null) __params = __params.set('registered_at__gt', params.registeredAtGt.toString());
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
+    if (params.master != null) __params = __params.set('master', params.master.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (params.isDoubled != null) __params = __params.set('is_doubled', params.isDoubled.toString());
+    if (params.category != null) __params = __params.set('category', params.category.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/comings/coming/`,
@@ -253,11 +271,23 @@ class ComingsService extends __BaseService {
   /**
    * @param params The `ComingsService.ComingsComingListParams` containing the following parameters:
    *
+   * - `student__name`: param for filtering result via student name or student id
+   *
+   * - `registered_at__lt`: registered_at__lt
+   *
+   * - `registered_at__gt`: registered_at__gt
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
+   * - `master`: master
+   *
    * - `limit`: Number of results to return per page.
+   *
+   * - `is_doubled`: is_doubled
+   *
+   * - `category`: category
    */
   comingsComingList(params: ComingsService.ComingsComingListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<ComingList>}> {
     return this.comingsComingListResponse(params).pipe(
@@ -266,9 +296,9 @@ class ComingsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this تسجيل حضور.
+   * @param id undefined
    */
-  comingsComingReadResponse(id: number): __Observable<__StrictHttpResponse<ComingList>> {
+  comingsComingReadResponse(id: string): __Observable<__StrictHttpResponse<ComingList>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -291,18 +321,18 @@ class ComingsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this تسجيل حضور.
+   * @param id undefined
    */
-  comingsComingRead(id: number): __Observable<ComingList> {
+  comingsComingRead(id: string): __Observable<ComingList> {
     return this.comingsComingReadResponse(id).pipe(
       __map(_r => _r.body as ComingList)
     );
   }
 
   /**
-   * @param id A unique integer value identifying this تسجيل حضور.
+   * @param id undefined
    */
-  comingsComingDeleteResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+  comingsComingDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -325,9 +355,9 @@ class ComingsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this تسجيل حضور.
+   * @param id undefined
    */
-  comingsComingDelete(id: number): __Observable<null> {
+  comingsComingDelete(id: string): __Observable<null> {
     return this.comingsComingDeleteResponse(id).pipe(
       __map(_r => _r.body as null)
     );
@@ -361,11 +391,7 @@ module ComingsService {
    * Parameters for comingsCategoryUpdate
    */
   export interface ComingsCategoryUpdateParams {
-
-    /**
-     * A unique integer value identifying this سبب الحضور.
-     */
-    id: number;
+    id: string;
     data: ComingCategoryUpdate;
   }
 
@@ -373,6 +399,21 @@ module ComingsService {
    * Parameters for comingsComingList
    */
   export interface ComingsComingListParams {
+
+    /**
+     * param for filtering result via student name or student id
+     */
+    studentName?: string;
+
+    /**
+     * registered_at__lt
+     */
+    registeredAtLt?: string;
+
+    /**
+     * registered_at__gt
+     */
+    registeredAtGt?: string;
 
     /**
      * Which field to use when ordering the results.
@@ -385,9 +426,24 @@ module ComingsService {
     offset?: number;
 
     /**
+     * master
+     */
+    master?: string;
+
+    /**
      * Number of results to return per page.
      */
     limit?: number;
+
+    /**
+     * is_doubled
+     */
+    isDoubled?: string;
+
+    /**
+     * category
+     */
+    category?: string;
   }
 }
 

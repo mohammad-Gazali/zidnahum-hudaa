@@ -1,6 +1,6 @@
 /* tslint:disable */
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { BaseService as __BaseService } from '../base-service';
 import { ApiConfiguration as __Configuration } from '../api-configuration';
 import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-response';
@@ -123,9 +123,9 @@ class PointsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this سبب إضافة.
+   * @param id undefined
    */
-  pointsAddingCauseReadResponse(id: number): __Observable<__StrictHttpResponse<PointsAddingCauseList>> {
+  pointsAddingCauseReadResponse(id: string): __Observable<__StrictHttpResponse<PointsAddingCauseList>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -148,9 +148,9 @@ class PointsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this سبب إضافة.
+   * @param id undefined
    */
-  pointsAddingCauseRead(id: number): __Observable<PointsAddingCauseList> {
+  pointsAddingCauseRead(id: string): __Observable<PointsAddingCauseList> {
     return this.pointsAddingCauseReadResponse(id).pipe(
       __map(_r => _r.body as PointsAddingCauseList)
     );
@@ -159,7 +159,7 @@ class PointsService extends __BaseService {
   /**
    * @param params The `PointsService.PointsAddingCauseUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this سبب إضافة.
+   * - `id`:
    *
    * - `data`:
    */
@@ -189,7 +189,7 @@ class PointsService extends __BaseService {
   /**
    * @param params The `PointsService.PointsAddingCauseUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this سبب إضافة.
+   * - `id`:
    *
    * - `data`:
    */
@@ -200,9 +200,9 @@ class PointsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this سبب إضافة.
+   * @param id undefined
    */
-  pointsAddingCauseDeleteResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+  pointsAddingCauseDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -225,9 +225,9 @@ class PointsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this سبب إضافة.
+   * @param id undefined
    */
-  pointsAddingCauseDelete(id: number): __Observable<null> {
+  pointsAddingCauseDelete(id: string): __Observable<null> {
     return this.pointsAddingCauseDeleteResponse(id).pipe(
       __map(_r => _r.body as null)
     );
@@ -236,19 +236,34 @@ class PointsService extends __BaseService {
   /**
    * @param params The `PointsService.PointsAddingListParams` containing the following parameters:
    *
+   * - `student__name`: param for filtering result via student name or student id
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
+   * - `master`: master
+   *
    * - `limit`: Number of results to return per page.
+   *
+   * - `created_at__lt`: created_at__lt
+   *
+   * - `created_at__gt`: created_at__gt
+   *
+   * - `cause`: cause
    */
   pointsAddingListResponse(params: PointsService.PointsAddingListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<PointsAddingList>}>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+    if (params.studentName != null) __params = __params.set('student__name', params.studentName.toString());
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
+    if (params.master != null) __params = __params.set('master', params.master.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (params.createdAtLt != null) __params = __params.set('created_at__lt', params.createdAtLt.toString());
+    if (params.createdAtGt != null) __params = __params.set('created_at__gt', params.createdAtGt.toString());
+    if (params.cause != null) __params = __params.set('cause', params.cause.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/points/adding/`,
@@ -269,11 +284,21 @@ class PointsService extends __BaseService {
   /**
    * @param params The `PointsService.PointsAddingListParams` containing the following parameters:
    *
+   * - `student__name`: param for filtering result via student name or student id
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
+   * - `master`: master
+   *
    * - `limit`: Number of results to return per page.
+   *
+   * - `created_at__lt`: created_at__lt
+   *
+   * - `created_at__gt`: created_at__gt
+   *
+   * - `cause`: cause
    */
   pointsAddingList(params: PointsService.PointsAddingListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<PointsAddingList>}> {
     return this.pointsAddingListResponse(params).pipe(
@@ -282,9 +307,9 @@ class PointsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this إضافة نقاط.
+   * @param id undefined
    */
-  pointsAddingReadResponse(id: number): __Observable<__StrictHttpResponse<PointsAddingList>> {
+  pointsAddingReadResponse(id: string): __Observable<__StrictHttpResponse<PointsAddingList>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -307,9 +332,9 @@ class PointsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this إضافة نقاط.
+   * @param id undefined
    */
-  pointsAddingRead(id: number): __Observable<PointsAddingList> {
+  pointsAddingRead(id: string): __Observable<PointsAddingList> {
     return this.pointsAddingReadResponse(id).pipe(
       __map(_r => _r.body as PointsAddingList)
     );
@@ -318,7 +343,7 @@ class PointsService extends __BaseService {
   /**
    * @param params The `PointsService.PointsAddingUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this إضافة نقاط.
+   * - `id`:
    *
    * - `data`:
    */
@@ -348,7 +373,7 @@ class PointsService extends __BaseService {
   /**
    * @param params The `PointsService.PointsAddingUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this إضافة نقاط.
+   * - `id`:
    *
    * - `data`:
    */
@@ -359,9 +384,9 @@ class PointsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this إضافة نقاط.
+   * @param id undefined
    */
-  pointsAddingDeleteResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+  pointsAddingDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -384,9 +409,9 @@ class PointsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this إضافة نقاط.
+   * @param id undefined
    */
-  pointsAddingDelete(id: number): __Observable<null> {
+  pointsAddingDelete(id: string): __Observable<null> {
     return this.pointsAddingDeleteResponse(id).pipe(
       __map(_r => _r.body as null)
     );
@@ -475,9 +500,9 @@ class PointsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this سبب حذف.
+   * @param id undefined
    */
-  pointsDeletingCauseReadResponse(id: number): __Observable<__StrictHttpResponse<PointsDeletingCauseList>> {
+  pointsDeletingCauseReadResponse(id: string): __Observable<__StrictHttpResponse<PointsDeletingCauseList>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -500,9 +525,9 @@ class PointsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this سبب حذف.
+   * @param id undefined
    */
-  pointsDeletingCauseRead(id: number): __Observable<PointsDeletingCauseList> {
+  pointsDeletingCauseRead(id: string): __Observable<PointsDeletingCauseList> {
     return this.pointsDeletingCauseReadResponse(id).pipe(
       __map(_r => _r.body as PointsDeletingCauseList)
     );
@@ -511,7 +536,7 @@ class PointsService extends __BaseService {
   /**
    * @param params The `PointsService.PointsDeletingCauseUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this سبب حذف.
+   * - `id`:
    *
    * - `data`:
    */
@@ -541,7 +566,7 @@ class PointsService extends __BaseService {
   /**
    * @param params The `PointsService.PointsDeletingCauseUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this سبب حذف.
+   * - `id`:
    *
    * - `data`:
    */
@@ -552,9 +577,9 @@ class PointsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this سبب حذف.
+   * @param id undefined
    */
-  pointsDeletingCauseDeleteResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+  pointsDeletingCauseDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -577,9 +602,9 @@ class PointsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this سبب حذف.
+   * @param id undefined
    */
-  pointsDeletingCauseDelete(id: number): __Observable<null> {
+  pointsDeletingCauseDelete(id: string): __Observable<null> {
     return this.pointsDeletingCauseDeleteResponse(id).pipe(
       __map(_r => _r.body as null)
     );
@@ -588,19 +613,34 @@ class PointsService extends __BaseService {
   /**
    * @param params The `PointsService.PointsDeletingListParams` containing the following parameters:
    *
+   * - `student__name`: param for filtering result via student name or student id
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
+   * - `master`: master
+   *
    * - `limit`: Number of results to return per page.
+   *
+   * - `created_at__lt`: created_at__lt
+   *
+   * - `created_at__gt`: created_at__gt
+   *
+   * - `cause`: cause
    */
   pointsDeletingListResponse(params: PointsService.PointsDeletingListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<PointsDeletingList>}>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+    if (params.studentName != null) __params = __params.set('student__name', params.studentName.toString());
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
+    if (params.master != null) __params = __params.set('master', params.master.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (params.createdAtLt != null) __params = __params.set('created_at__lt', params.createdAtLt.toString());
+    if (params.createdAtGt != null) __params = __params.set('created_at__gt', params.createdAtGt.toString());
+    if (params.cause != null) __params = __params.set('cause', params.cause.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/points/deleting/`,
@@ -621,11 +661,21 @@ class PointsService extends __BaseService {
   /**
    * @param params The `PointsService.PointsDeletingListParams` containing the following parameters:
    *
+   * - `student__name`: param for filtering result via student name or student id
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
+   * - `master`: master
+   *
    * - `limit`: Number of results to return per page.
+   *
+   * - `created_at__lt`: created_at__lt
+   *
+   * - `created_at__gt`: created_at__gt
+   *
+   * - `cause`: cause
    */
   pointsDeletingList(params: PointsService.PointsDeletingListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<PointsDeletingList>}> {
     return this.pointsDeletingListResponse(params).pipe(
@@ -634,9 +684,9 @@ class PointsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this حذف نقاط.
+   * @param id undefined
    */
-  pointsDeletingReadResponse(id: number): __Observable<__StrictHttpResponse<PointsDeletingList>> {
+  pointsDeletingReadResponse(id: string): __Observable<__StrictHttpResponse<PointsDeletingList>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -659,9 +709,9 @@ class PointsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this حذف نقاط.
+   * @param id undefined
    */
-  pointsDeletingRead(id: number): __Observable<PointsDeletingList> {
+  pointsDeletingRead(id: string): __Observable<PointsDeletingList> {
     return this.pointsDeletingReadResponse(id).pipe(
       __map(_r => _r.body as PointsDeletingList)
     );
@@ -670,7 +720,7 @@ class PointsService extends __BaseService {
   /**
    * @param params The `PointsService.PointsDeletingUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this حذف نقاط.
+   * - `id`:
    *
    * - `data`:
    */
@@ -700,7 +750,7 @@ class PointsService extends __BaseService {
   /**
    * @param params The `PointsService.PointsDeletingUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this حذف نقاط.
+   * - `id`:
    *
    * - `data`:
    */
@@ -711,9 +761,9 @@ class PointsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this حذف نقاط.
+   * @param id undefined
    */
-  pointsDeletingDeleteResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+  pointsDeletingDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -736,9 +786,9 @@ class PointsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this حذف نقاط.
+   * @param id undefined
    */
-  pointsDeletingDelete(id: number): __Observable<null> {
+  pointsDeletingDelete(id: string): __Observable<null> {
     return this.pointsDeletingDeleteResponse(id).pipe(
       __map(_r => _r.body as null)
     );
@@ -772,11 +822,7 @@ module PointsService {
    * Parameters for pointsAddingCauseUpdate
    */
   export interface PointsAddingCauseUpdateParams {
-
-    /**
-     * A unique integer value identifying this سبب إضافة.
-     */
-    id: number;
+    id: string;
     data: PointsAddingCauseUpdate;
   }
 
@@ -784,6 +830,11 @@ module PointsService {
    * Parameters for pointsAddingList
    */
   export interface PointsAddingListParams {
+
+    /**
+     * param for filtering result via student name or student id
+     */
+    studentName?: string;
 
     /**
      * Which field to use when ordering the results.
@@ -796,20 +847,36 @@ module PointsService {
     offset?: number;
 
     /**
+     * master
+     */
+    master?: string;
+
+    /**
      * Number of results to return per page.
      */
     limit?: number;
+
+    /**
+     * created_at__lt
+     */
+    createdAtLt?: string;
+
+    /**
+     * created_at__gt
+     */
+    createdAtGt?: string;
+
+    /**
+     * cause
+     */
+    cause?: string;
   }
 
   /**
    * Parameters for pointsAddingUpdate
    */
   export interface PointsAddingUpdateParams {
-
-    /**
-     * A unique integer value identifying this إضافة نقاط.
-     */
-    id: number;
+    id: string;
     data: PointsAddingUpdate;
   }
 
@@ -838,11 +905,7 @@ module PointsService {
    * Parameters for pointsDeletingCauseUpdate
    */
   export interface PointsDeletingCauseUpdateParams {
-
-    /**
-     * A unique integer value identifying this سبب حذف.
-     */
-    id: number;
+    id: string;
     data: PointsDeletingCauseUpdate;
   }
 
@@ -850,6 +913,11 @@ module PointsService {
    * Parameters for pointsDeletingList
    */
   export interface PointsDeletingListParams {
+
+    /**
+     * param for filtering result via student name or student id
+     */
+    studentName?: string;
 
     /**
      * Which field to use when ordering the results.
@@ -862,20 +930,36 @@ module PointsService {
     offset?: number;
 
     /**
+     * master
+     */
+    master?: string;
+
+    /**
      * Number of results to return per page.
      */
     limit?: number;
+
+    /**
+     * created_at__lt
+     */
+    createdAtLt?: string;
+
+    /**
+     * created_at__gt
+     */
+    createdAtGt?: string;
+
+    /**
+     * cause
+     */
+    cause?: string;
   }
 
   /**
    * Parameters for pointsDeletingUpdate
    */
   export interface PointsDeletingUpdateParams {
-
-    /**
-     * A unique integer value identifying this حذف نقاط.
-     */
-    id: number;
+    id: string;
     data: PointsDeletingUpdate;
   }
 }

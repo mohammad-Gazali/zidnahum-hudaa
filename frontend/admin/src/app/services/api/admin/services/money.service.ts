@@ -1,6 +1,6 @@
 /* tslint:disable */
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { BaseService as __BaseService } from '../base-service';
 import { ApiConfiguration as __Configuration } from '../api-configuration';
 import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-response';
@@ -111,9 +111,9 @@ class MoneyService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this سبب غرامة.
+   * @param id undefined
    */
-  moneyDeletingCauseReadResponse(id: number): __Observable<__StrictHttpResponse<MoneyDeletingCauseList>> {
+  moneyDeletingCauseReadResponse(id: string): __Observable<__StrictHttpResponse<MoneyDeletingCauseList>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -136,9 +136,9 @@ class MoneyService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this سبب غرامة.
+   * @param id undefined
    */
-  moneyDeletingCauseRead(id: number): __Observable<MoneyDeletingCauseList> {
+  moneyDeletingCauseRead(id: string): __Observable<MoneyDeletingCauseList> {
     return this.moneyDeletingCauseReadResponse(id).pipe(
       __map(_r => _r.body as MoneyDeletingCauseList)
     );
@@ -147,7 +147,7 @@ class MoneyService extends __BaseService {
   /**
    * @param params The `MoneyService.MoneyDeletingCauseUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this سبب غرامة.
+   * - `id`:
    *
    * - `data`:
    */
@@ -177,7 +177,7 @@ class MoneyService extends __BaseService {
   /**
    * @param params The `MoneyService.MoneyDeletingCauseUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this سبب غرامة.
+   * - `id`:
    *
    * - `data`:
    */
@@ -188,9 +188,9 @@ class MoneyService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this سبب غرامة.
+   * @param id undefined
    */
-  moneyDeletingCauseDeleteResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+  moneyDeletingCauseDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -213,9 +213,9 @@ class MoneyService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this سبب غرامة.
+   * @param id undefined
    */
-  moneyDeletingCauseDelete(id: number): __Observable<null> {
+  moneyDeletingCauseDelete(id: string): __Observable<null> {
     return this.moneyDeletingCauseDeleteResponse(id).pipe(
       __map(_r => _r.body as null)
     );
@@ -224,19 +224,25 @@ class MoneyService extends __BaseService {
   /**
    * @param params The `MoneyService.MoneyDeletingListParams` containing the following parameters:
    *
+   * - `student__name`: param for filtering result via student name or student id
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
    * - `limit`: Number of results to return per page.
+   *
+   * - `cause`: cause
    */
   moneyDeletingListResponse(params: MoneyService.MoneyDeletingListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<MoneyDeletingList>}>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+    if (params.studentName != null) __params = __params.set('student__name', params.studentName.toString());
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (params.cause != null) __params = __params.set('cause', params.cause.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/money/deleting/`,
@@ -257,11 +263,15 @@ class MoneyService extends __BaseService {
   /**
    * @param params The `MoneyService.MoneyDeletingListParams` containing the following parameters:
    *
+   * - `student__name`: param for filtering result via student name or student id
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
    * - `limit`: Number of results to return per page.
+   *
+   * - `cause`: cause
    */
   moneyDeletingList(params: MoneyService.MoneyDeletingListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<MoneyDeletingList>}> {
     return this.moneyDeletingListResponse(params).pipe(
@@ -304,9 +314,9 @@ class MoneyService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this غرامة.
+   * @param id undefined
    */
-  moneyDeletingReadResponse(id: number): __Observable<__StrictHttpResponse<MoneyDeletingList>> {
+  moneyDeletingReadResponse(id: string): __Observable<__StrictHttpResponse<MoneyDeletingList>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -329,9 +339,9 @@ class MoneyService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this غرامة.
+   * @param id undefined
    */
-  moneyDeletingRead(id: number): __Observable<MoneyDeletingList> {
+  moneyDeletingRead(id: string): __Observable<MoneyDeletingList> {
     return this.moneyDeletingReadResponse(id).pipe(
       __map(_r => _r.body as MoneyDeletingList)
     );
@@ -340,7 +350,7 @@ class MoneyService extends __BaseService {
   /**
    * @param params The `MoneyService.MoneyDeletingUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this غرامة.
+   * - `id`:
    *
    * - `data`:
    */
@@ -370,7 +380,7 @@ class MoneyService extends __BaseService {
   /**
    * @param params The `MoneyService.MoneyDeletingUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this غرامة.
+   * - `id`:
    *
    * - `data`:
    */
@@ -381,9 +391,9 @@ class MoneyService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this غرامة.
+   * @param id undefined
    */
-  moneyDeletingDeleteResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+  moneyDeletingDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -406,9 +416,9 @@ class MoneyService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this غرامة.
+   * @param id undefined
    */
-  moneyDeletingDelete(id: number): __Observable<null> {
+  moneyDeletingDelete(id: string): __Observable<null> {
     return this.moneyDeletingDeleteResponse(id).pipe(
       __map(_r => _r.body as null)
     );
@@ -442,11 +452,7 @@ module MoneyService {
    * Parameters for moneyDeletingCauseUpdate
    */
   export interface MoneyDeletingCauseUpdateParams {
-
-    /**
-     * A unique integer value identifying this سبب غرامة.
-     */
-    id: number;
+    id: string;
     data: MoneyDeletingCauseUpdate;
   }
 
@@ -454,6 +460,11 @@ module MoneyService {
    * Parameters for moneyDeletingList
    */
   export interface MoneyDeletingListParams {
+
+    /**
+     * param for filtering result via student name or student id
+     */
+    studentName?: string;
 
     /**
      * Which field to use when ordering the results.
@@ -469,17 +480,18 @@ module MoneyService {
      * Number of results to return per page.
      */
     limit?: number;
+
+    /**
+     * cause
+     */
+    cause?: string;
   }
 
   /**
    * Parameters for moneyDeletingUpdate
    */
   export interface MoneyDeletingUpdateParams {
-
-    /**
-     * A unique integer value identifying this غرامة.
-     */
-    id: number;
+    id: string;
     data: MoneyDeletingUpdate;
   }
 }

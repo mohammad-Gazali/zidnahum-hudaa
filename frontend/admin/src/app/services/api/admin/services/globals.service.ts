@@ -36,6 +36,8 @@ class GlobalsService extends __BaseService {
    * - `offset`: The initial index from which to return the results.
    *
    * - `limit`: Number of results to return per page.
+   *
+   * - `category`: category
    */
   globalsAssetFileListResponse(params: GlobalsService.GlobalsAssetFileListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<AssetFileList>}>> {
     let __params = this.newParams();
@@ -44,6 +46,7 @@ class GlobalsService extends __BaseService {
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (params.category != null) __params = __params.set('category', params.category.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/globals/asset-file/`,
@@ -69,6 +72,8 @@ class GlobalsService extends __BaseService {
    * - `offset`: The initial index from which to return the results.
    *
    * - `limit`: Number of results to return per page.
+   *
+   * - `category`: category
    */
   globalsAssetFileList(params: GlobalsService.GlobalsAssetFileListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<AssetFileList>}> {
     return this.globalsAssetFileListResponse(params).pipe(
@@ -111,9 +116,9 @@ class GlobalsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this ملف للتحميل.
+   * @param id undefined
    */
-  globalsAssetFileReadResponse(id: number): __Observable<__StrictHttpResponse<AssetFileList>> {
+  globalsAssetFileReadResponse(id: string): __Observable<__StrictHttpResponse<AssetFileList>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -136,9 +141,9 @@ class GlobalsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this ملف للتحميل.
+   * @param id undefined
    */
-  globalsAssetFileRead(id: number): __Observable<AssetFileList> {
+  globalsAssetFileRead(id: string): __Observable<AssetFileList> {
     return this.globalsAssetFileReadResponse(id).pipe(
       __map(_r => _r.body as AssetFileList)
     );
@@ -147,7 +152,7 @@ class GlobalsService extends __BaseService {
   /**
    * @param params The `GlobalsService.GlobalsAssetFileUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this ملف للتحميل.
+   * - `id`:
    *
    * - `data`:
    */
@@ -177,7 +182,7 @@ class GlobalsService extends __BaseService {
   /**
    * @param params The `GlobalsService.GlobalsAssetFileUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this ملف للتحميل.
+   * - `id`:
    *
    * - `data`:
    */
@@ -188,9 +193,9 @@ class GlobalsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this ملف للتحميل.
+   * @param id undefined
    */
-  globalsAssetFileDeleteResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+  globalsAssetFileDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -213,9 +218,9 @@ class GlobalsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this ملف للتحميل.
+   * @param id undefined
    */
-  globalsAssetFileDelete(id: number): __Observable<null> {
+  globalsAssetFileDelete(id: string): __Observable<null> {
     return this.globalsAssetFileDeleteResponse(id).pipe(
       __map(_r => _r.body as null)
     );
@@ -304,9 +309,9 @@ class GlobalsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this فئة ملفات.
+   * @param id undefined
    */
-  globalsAssetsCategoryReadResponse(id: number): __Observable<__StrictHttpResponse<AssetsCategoryList>> {
+  globalsAssetsCategoryReadResponse(id: string): __Observable<__StrictHttpResponse<AssetsCategoryList>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -329,9 +334,9 @@ class GlobalsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this فئة ملفات.
+   * @param id undefined
    */
-  globalsAssetsCategoryRead(id: number): __Observable<AssetsCategoryList> {
+  globalsAssetsCategoryRead(id: string): __Observable<AssetsCategoryList> {
     return this.globalsAssetsCategoryReadResponse(id).pipe(
       __map(_r => _r.body as AssetsCategoryList)
     );
@@ -340,7 +345,7 @@ class GlobalsService extends __BaseService {
   /**
    * @param params The `GlobalsService.GlobalsAssetsCategoryUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this فئة ملفات.
+   * - `id`:
    *
    * - `data`:
    */
@@ -370,7 +375,7 @@ class GlobalsService extends __BaseService {
   /**
    * @param params The `GlobalsService.GlobalsAssetsCategoryUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this فئة ملفات.
+   * - `id`:
    *
    * - `data`:
    */
@@ -381,9 +386,9 @@ class GlobalsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this فئة ملفات.
+   * @param id undefined
    */
-  globalsAssetsCategoryDeleteResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+  globalsAssetsCategoryDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -406,9 +411,9 @@ class GlobalsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this فئة ملفات.
+   * @param id undefined
    */
-  globalsAssetsCategoryDelete(id: number): __Observable<null> {
+  globalsAssetsCategoryDelete(id: string): __Observable<null> {
     return this.globalsAssetsCategoryDeleteResponse(id).pipe(
       __map(_r => _r.body as null)
     );
@@ -436,17 +441,18 @@ module GlobalsService {
      * Number of results to return per page.
      */
     limit?: number;
+
+    /**
+     * category
+     */
+    category?: string;
   }
 
   /**
    * Parameters for globalsAssetFileUpdate
    */
   export interface GlobalsAssetFileUpdateParams {
-
-    /**
-     * A unique integer value identifying this ملف للتحميل.
-     */
-    id: number;
+    id: string;
     data: AssetFileUpdate;
   }
 
@@ -475,11 +481,7 @@ module GlobalsService {
    * Parameters for globalsAssetsCategoryUpdate
    */
   export interface GlobalsAssetsCategoryUpdateParams {
-
-    /**
-     * A unique integer value identifying this فئة ملفات.
-     */
-    id: number;
+    id: string;
     data: AssetsCategoryUpdate;
   }
 }

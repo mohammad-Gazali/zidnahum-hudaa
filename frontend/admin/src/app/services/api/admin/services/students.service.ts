@@ -1,6 +1,6 @@
 /* tslint:disable */
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { BaseService as __BaseService } from '../base-service';
 import { ApiConfiguration as __Configuration } from '../api-configuration';
 import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-response';
@@ -15,7 +15,7 @@ import { StudentGroupCreate } from '../models/student-group-create';
 import { StudentGroupUpdate } from '../models/student-group-update';
 import { MemorizeMessageList } from '../models/memorize-message-list';
 import { MemorizeNotesList } from '../models/memorize-notes-list';
-import { StudentList } from '../models/student-list';
+import { Student } from '../models/student';
 import { StudentCreate } from '../models/student-create';
 import { StudentUpdate } from '../models/student-update';
 @Injectable({
@@ -127,9 +127,9 @@ class StudentsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this فئة الطلاب.
+   * @param id undefined
    */
-  studentsCategoryReadResponse(id: number): __Observable<__StrictHttpResponse<StudentCategoryList>> {
+  studentsCategoryReadResponse(id: string): __Observable<__StrictHttpResponse<StudentCategoryList>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -152,9 +152,9 @@ class StudentsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this فئة الطلاب.
+   * @param id undefined
    */
-  studentsCategoryRead(id: number): __Observable<StudentCategoryList> {
+  studentsCategoryRead(id: string): __Observable<StudentCategoryList> {
     return this.studentsCategoryReadResponse(id).pipe(
       __map(_r => _r.body as StudentCategoryList)
     );
@@ -163,7 +163,7 @@ class StudentsService extends __BaseService {
   /**
    * @param params The `StudentsService.StudentsCategoryUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this فئة الطلاب.
+   * - `id`:
    *
    * - `data`:
    */
@@ -193,7 +193,7 @@ class StudentsService extends __BaseService {
   /**
    * @param params The `StudentsService.StudentsCategoryUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this فئة الطلاب.
+   * - `id`:
    *
    * - `data`:
    */
@@ -204,9 +204,9 @@ class StudentsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this فئة الطلاب.
+   * @param id undefined
    */
-  studentsCategoryDeleteResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+  studentsCategoryDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -229,9 +229,9 @@ class StudentsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this فئة الطلاب.
+   * @param id undefined
    */
-  studentsCategoryDelete(id: number): __Observable<null> {
+  studentsCategoryDelete(id: string): __Observable<null> {
     return this.studentsCategoryDeleteResponse(id).pipe(
       __map(_r => _r.body as null)
     );
@@ -320,9 +320,9 @@ class StudentsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this مجموعة الطلاب.
+   * @param id undefined
    */
-  studentsGroupReadResponse(id: number): __Observable<__StrictHttpResponse<StudentGroupList>> {
+  studentsGroupReadResponse(id: string): __Observable<__StrictHttpResponse<StudentGroupList>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -345,9 +345,9 @@ class StudentsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this مجموعة الطلاب.
+   * @param id undefined
    */
-  studentsGroupRead(id: number): __Observable<StudentGroupList> {
+  studentsGroupRead(id: string): __Observable<StudentGroupList> {
     return this.studentsGroupReadResponse(id).pipe(
       __map(_r => _r.body as StudentGroupList)
     );
@@ -356,7 +356,7 @@ class StudentsService extends __BaseService {
   /**
    * @param params The `StudentsService.StudentsGroupUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this مجموعة الطلاب.
+   * - `id`:
    *
    * - `data`:
    */
@@ -386,7 +386,7 @@ class StudentsService extends __BaseService {
   /**
    * @param params The `StudentsService.StudentsGroupUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this مجموعة الطلاب.
+   * - `id`:
    *
    * - `data`:
    */
@@ -397,9 +397,9 @@ class StudentsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this مجموعة الطلاب.
+   * @param id undefined
    */
-  studentsGroupDeleteResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+  studentsGroupDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -422,9 +422,9 @@ class StudentsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this مجموعة الطلاب.
+   * @param id undefined
    */
-  studentsGroupDelete(id: number): __Observable<null> {
+  studentsGroupDelete(id: string): __Observable<null> {
     return this.studentsGroupDeleteResponse(id).pipe(
       __map(_r => _r.body as null)
     );
@@ -433,19 +433,37 @@ class StudentsService extends __BaseService {
   /**
    * @param params The `StudentsService.StudentsMemorizeMessageListParams` containing the following parameters:
    *
+   * - `student__name`: param for filtering result via student name or student id
+   *
+   * - `sended_at__lt`: sended_at__lt
+   *
+   * - `sended_at__gt`: sended_at__gt
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
+   * - `message_type`: message_type
+   *
+   * - `master`: master
+   *
    * - `limit`: Number of results to return per page.
+   *
+   * - `is_doubled`: is_doubled
    */
   studentsMemorizeMessageListResponse(params: StudentsService.StudentsMemorizeMessageListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<MemorizeMessageList>}>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+    if (params.studentName != null) __params = __params.set('student__name', params.studentName.toString());
+    if (params.sendedAtLt != null) __params = __params.set('sended_at__lt', params.sendedAtLt.toString());
+    if (params.sendedAtGt != null) __params = __params.set('sended_at__gt', params.sendedAtGt.toString());
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
+    if (params.messageType != null) __params = __params.set('message_type', params.messageType.toString());
+    if (params.master != null) __params = __params.set('master', params.master.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (params.isDoubled != null) __params = __params.set('is_doubled', params.isDoubled.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/students/memorize-message/`,
@@ -466,11 +484,23 @@ class StudentsService extends __BaseService {
   /**
    * @param params The `StudentsService.StudentsMemorizeMessageListParams` containing the following parameters:
    *
+   * - `student__name`: param for filtering result via student name or student id
+   *
+   * - `sended_at__lt`: sended_at__lt
+   *
+   * - `sended_at__gt`: sended_at__gt
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
+   * - `message_type`: message_type
+   *
+   * - `master`: master
+   *
    * - `limit`: Number of results to return per page.
+   *
+   * - `is_doubled`: is_doubled
    */
   studentsMemorizeMessageList(params: StudentsService.StudentsMemorizeMessageListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<MemorizeMessageList>}> {
     return this.studentsMemorizeMessageListResponse(params).pipe(
@@ -479,9 +509,9 @@ class StudentsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this رسالة تسميع.
+   * @param id undefined
    */
-  studentsMemorizeMessageReadResponse(id: number): __Observable<__StrictHttpResponse<MemorizeMessageList>> {
+  studentsMemorizeMessageReadResponse(id: string): __Observable<__StrictHttpResponse<MemorizeMessageList>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -504,18 +534,18 @@ class StudentsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this رسالة تسميع.
+   * @param id undefined
    */
-  studentsMemorizeMessageRead(id: number): __Observable<MemorizeMessageList> {
+  studentsMemorizeMessageRead(id: string): __Observable<MemorizeMessageList> {
     return this.studentsMemorizeMessageReadResponse(id).pipe(
       __map(_r => _r.body as MemorizeMessageList)
     );
   }
 
   /**
-   * @param id A unique integer value identifying this رسالة تسميع.
+   * @param id undefined
    */
-  studentsMemorizeMessageDeleteResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+  studentsMemorizeMessageDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -538,9 +568,9 @@ class StudentsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this رسالة تسميع.
+   * @param id undefined
    */
-  studentsMemorizeMessageDelete(id: number): __Observable<null> {
+  studentsMemorizeMessageDelete(id: string): __Observable<null> {
     return this.studentsMemorizeMessageDeleteResponse(id).pipe(
       __map(_r => _r.body as null)
     );
@@ -549,9 +579,17 @@ class StudentsService extends __BaseService {
   /**
    * @param params The `StudentsService.StudentsMemorizeNotesListParams` containing the following parameters:
    *
+   * - `student__name`: param for filtering result via student name or student id
+   *
+   * - `sended_at__lt`: sended_at__lt
+   *
+   * - `sended_at__gt`: sended_at__gt
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
+   *
+   * - `master`: master
    *
    * - `limit`: Number of results to return per page.
    */
@@ -559,8 +597,12 @@ class StudentsService extends __BaseService {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+    if (params.studentName != null) __params = __params.set('student__name', params.studentName.toString());
+    if (params.sendedAtLt != null) __params = __params.set('sended_at__lt', params.sendedAtLt.toString());
+    if (params.sendedAtGt != null) __params = __params.set('sended_at__gt', params.sendedAtGt.toString());
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
+    if (params.master != null) __params = __params.set('master', params.master.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
     let req = new HttpRequest<any>(
       'GET',
@@ -582,9 +624,17 @@ class StudentsService extends __BaseService {
   /**
    * @param params The `StudentsService.StudentsMemorizeNotesListParams` containing the following parameters:
    *
+   * - `student__name`: param for filtering result via student name or student id
+   *
+   * - `sended_at__lt`: sended_at__lt
+   *
+   * - `sended_at__gt`: sended_at__gt
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
+   *
+   * - `master`: master
    *
    * - `limit`: Number of results to return per page.
    */
@@ -595,9 +645,9 @@ class StudentsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this ملاحظة تسميع.
+   * @param id undefined
    */
-  studentsMemorizeNotesReadResponse(id: number): __Observable<__StrictHttpResponse<MemorizeNotesList>> {
+  studentsMemorizeNotesReadResponse(id: string): __Observable<__StrictHttpResponse<MemorizeNotesList>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -620,18 +670,18 @@ class StudentsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this ملاحظة تسميع.
+   * @param id undefined
    */
-  studentsMemorizeNotesRead(id: number): __Observable<MemorizeNotesList> {
+  studentsMemorizeNotesRead(id: string): __Observable<MemorizeNotesList> {
     return this.studentsMemorizeNotesReadResponse(id).pipe(
       __map(_r => _r.body as MemorizeNotesList)
     );
   }
 
   /**
-   * @param id A unique integer value identifying this ملاحظة تسميع.
+   * @param id undefined
    */
-  studentsMemorizeNotesDeleteResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+  studentsMemorizeNotesDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -654,9 +704,9 @@ class StudentsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this ملاحظة تسميع.
+   * @param id undefined
    */
-  studentsMemorizeNotesDelete(id: number): __Observable<null> {
+  studentsMemorizeNotesDelete(id: string): __Observable<null> {
     return this.studentsMemorizeNotesDeleteResponse(id).pipe(
       __map(_r => _r.body as null)
     );
@@ -665,19 +715,40 @@ class StudentsService extends __BaseService {
   /**
    * @param params The `StudentsService.StudentsStudentListParams` containing the following parameters:
    *
+   * - `registered_at__lt`: registered_at__lt
+   *
+   * - `registered_at__gt`: registered_at__gt
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
+   * - `name`: param for filtering student via his name or his id
+   *
    * - `limit`: Number of results to return per page.
+   *
+   * - `group__isnull`: group__isnull
+   *
+   * - `group`: group
+   *
+   * - `category__isnull`: category__isnull
+   *
+   * - `category`: category
    */
-  studentsStudentListResponse(params: StudentsService.StudentsStudentListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<StudentList>}>> {
+  studentsStudentListResponse(params: StudentsService.StudentsStudentListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<Student>}>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+    if (params.registeredAtLt != null) __params = __params.set('registered_at__lt', params.registeredAtLt.toString());
+    if (params.registeredAtGt != null) __params = __params.set('registered_at__gt', params.registeredAtGt.toString());
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
+    if (params.name != null) __params = __params.set('name', params.name.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (params.groupIsnull != null) __params = __params.set('group__isnull', params.groupIsnull.toString());
+    if (params.group != null) __params = __params.set('group', params.group.toString());
+    if (params.categoryIsnull != null) __params = __params.set('category__isnull', params.categoryIsnull.toString());
+    if (params.category != null) __params = __params.set('category', params.category.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/students/student/`,
@@ -691,22 +762,36 @@ class StudentsService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<StudentList>}>;
+        return _r as __StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<Student>}>;
       })
     );
   }
   /**
    * @param params The `StudentsService.StudentsStudentListParams` containing the following parameters:
    *
+   * - `registered_at__lt`: registered_at__lt
+   *
+   * - `registered_at__gt`: registered_at__gt
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
    *
+   * - `name`: param for filtering student via his name or his id
+   *
    * - `limit`: Number of results to return per page.
+   *
+   * - `group__isnull`: group__isnull
+   *
+   * - `group`: group
+   *
+   * - `category__isnull`: category__isnull
+   *
+   * - `category`: category
    */
-  studentsStudentList(params: StudentsService.StudentsStudentListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<StudentList>}> {
+  studentsStudentList(params: StudentsService.StudentsStudentListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<Student>}> {
     return this.studentsStudentListResponse(params).pipe(
-      __map(_r => _r.body as {count: number, next?: null | string, previous?: null | string, results: Array<StudentList>})
+      __map(_r => _r.body as {count: number, next?: null | string, previous?: null | string, results: Array<Student>})
     );
   }
 
@@ -745,9 +830,9 @@ class StudentsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this طالب.
+   * @param id undefined
    */
-  studentsStudentReadResponse(id: number): __Observable<__StrictHttpResponse<StudentList>> {
+  studentsStudentReadResponse(id: string): __Observable<__StrictHttpResponse<Student>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -765,23 +850,23 @@ class StudentsService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<StudentList>;
+        return _r as __StrictHttpResponse<Student>;
       })
     );
   }
   /**
-   * @param id A unique integer value identifying this طالب.
+   * @param id undefined
    */
-  studentsStudentRead(id: number): __Observable<StudentList> {
+  studentsStudentRead(id: string): __Observable<Student> {
     return this.studentsStudentReadResponse(id).pipe(
-      __map(_r => _r.body as StudentList)
+      __map(_r => _r.body as Student)
     );
   }
 
   /**
    * @param params The `StudentsService.StudentsStudentUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this طالب.
+   * - `id`:
    *
    * - `data`:
    */
@@ -811,7 +896,7 @@ class StudentsService extends __BaseService {
   /**
    * @param params The `StudentsService.StudentsStudentUpdateParams` containing the following parameters:
    *
-   * - `id`: A unique integer value identifying this طالب.
+   * - `id`:
    *
    * - `data`:
    */
@@ -822,9 +907,9 @@ class StudentsService extends __BaseService {
   }
 
   /**
-   * @param id A unique integer value identifying this طالب.
+   * @param id undefined
    */
-  studentsStudentDeleteResponse(id: number): __Observable<__StrictHttpResponse<null>> {
+  studentsStudentDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -847,9 +932,9 @@ class StudentsService extends __BaseService {
     );
   }
   /**
-   * @param id A unique integer value identifying this طالب.
+   * @param id undefined
    */
-  studentsStudentDelete(id: number): __Observable<null> {
+  studentsStudentDelete(id: string): __Observable<null> {
     return this.studentsStudentDeleteResponse(id).pipe(
       __map(_r => _r.body as null)
     );
@@ -883,11 +968,7 @@ module StudentsService {
    * Parameters for studentsCategoryUpdate
    */
   export interface StudentsCategoryUpdateParams {
-
-    /**
-     * A unique integer value identifying this فئة الطلاب.
-     */
-    id: number;
+    id: string;
     data: StudentCategoryUpdate;
   }
 
@@ -916,11 +997,7 @@ module StudentsService {
    * Parameters for studentsGroupUpdate
    */
   export interface StudentsGroupUpdateParams {
-
-    /**
-     * A unique integer value identifying this مجموعة الطلاب.
-     */
-    id: number;
+    id: string;
     data: StudentGroupUpdate;
   }
 
@@ -930,6 +1007,21 @@ module StudentsService {
   export interface StudentsMemorizeMessageListParams {
 
     /**
+     * param for filtering result via student name or student id
+     */
+    studentName?: string;
+
+    /**
+     * sended_at__lt
+     */
+    sendedAtLt?: string;
+
+    /**
+     * sended_at__gt
+     */
+    sendedAtGt?: string;
+
+    /**
      * Which field to use when ordering the results.
      */
     ordering?: string;
@@ -940,9 +1032,24 @@ module StudentsService {
     offset?: number;
 
     /**
+     * message_type
+     */
+    messageType?: '1' | '2' | '3' | '4' | '5';
+
+    /**
+     * master
+     */
+    master?: string;
+
+    /**
      * Number of results to return per page.
      */
     limit?: number;
+
+    /**
+     * is_doubled
+     */
+    isDoubled?: string;
   }
 
   /**
@@ -951,6 +1058,21 @@ module StudentsService {
   export interface StudentsMemorizeNotesListParams {
 
     /**
+     * param for filtering result via student name or student id
+     */
+    studentName?: string;
+
+    /**
+     * sended_at__lt
+     */
+    sendedAtLt?: string;
+
+    /**
+     * sended_at__gt
+     */
+    sendedAtGt?: string;
+
+    /**
      * Which field to use when ordering the results.
      */
     ordering?: string;
@@ -959,6 +1081,11 @@ module StudentsService {
      * The initial index from which to return the results.
      */
     offset?: number;
+
+    /**
+     * master
+     */
+    master?: string;
 
     /**
      * Number of results to return per page.
@@ -972,6 +1099,16 @@ module StudentsService {
   export interface StudentsStudentListParams {
 
     /**
+     * registered_at__lt
+     */
+    registeredAtLt?: string;
+
+    /**
+     * registered_at__gt
+     */
+    registeredAtGt?: string;
+
+    /**
      * Which field to use when ordering the results.
      */
     ordering?: string;
@@ -982,20 +1119,41 @@ module StudentsService {
     offset?: number;
 
     /**
+     * param for filtering student via his name or his id
+     */
+    name?: string;
+
+    /**
      * Number of results to return per page.
      */
     limit?: number;
+
+    /**
+     * group__isnull
+     */
+    groupIsnull?: string;
+
+    /**
+     * group
+     */
+    group?: string;
+
+    /**
+     * category__isnull
+     */
+    categoryIsnull?: string;
+
+    /**
+     * category
+     */
+    category?: string;
   }
 
   /**
    * Parameters for studentsStudentUpdate
    */
   export interface StudentsStudentUpdateParams {
-
-    /**
-     * A unique integer value identifying this طالب.
-     */
-    id: number;
+    id: string;
     data: StudentUpdate;
   }
 }
