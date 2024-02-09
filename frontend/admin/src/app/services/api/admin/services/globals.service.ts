@@ -1,6 +1,6 @@
 /* tslint:disable */
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { BaseService as __BaseService } from '../base-service';
 import { ApiConfiguration as __Configuration } from '../api-configuration';
 import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-response';
@@ -27,6 +27,13 @@ class GlobalsService extends __BaseService {
   static readonly globalsAssetsCategoryReadPath = '/globals/assets-category/{id}/';
   static readonly globalsAssetsCategoryUpdatePath = '/globals/assets-category/{id}/';
   static readonly globalsAssetsCategoryDeletePath = '/globals/assets-category/{id}/';
+
+  constructor(
+    config: __Configuration,
+    http: HttpClient
+  ) {
+    super(config, http);
+  }
 
   /**
    * @param params The `GlobalsService.GlobalsAssetFileListParams` containing the following parameters:
@@ -227,21 +234,13 @@ class GlobalsService extends __BaseService {
   }
 
   /**
-   * @param params The `GlobalsService.GlobalsAssetsCategoryListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  globalsAssetsCategoryListResponse(params: GlobalsService.GlobalsAssetsCategoryListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<AssetsCategoryList>}>> {
+  globalsAssetsCategoryListResponse(ordering?: string): __Observable<__StrictHttpResponse<Array<AssetsCategoryList>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
-    if (params.offset != null) __params = __params.set('offset', params.offset.toString());
-    if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (ordering != null) __params = __params.set('ordering', ordering.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/globals/assets-category/`,
@@ -255,22 +254,16 @@ class GlobalsService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<AssetsCategoryList>}>;
+        return _r as __StrictHttpResponse<Array<AssetsCategoryList>>;
       })
     );
   }
   /**
-   * @param params The `GlobalsService.GlobalsAssetsCategoryListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  globalsAssetsCategoryList(params: GlobalsService.GlobalsAssetsCategoryListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<AssetsCategoryList>}> {
-    return this.globalsAssetsCategoryListResponse(params).pipe(
-      __map(_r => _r.body as {count: number, next?: null | string, previous?: null | string, results: Array<AssetsCategoryList>})
+  globalsAssetsCategoryList(ordering?: string): __Observable<Array<AssetsCategoryList>> {
+    return this.globalsAssetsCategoryListResponse(ordering).pipe(
+      __map(_r => _r.body as Array<AssetsCategoryList>)
     );
   }
 
@@ -454,27 +447,6 @@ module GlobalsService {
   export interface GlobalsAssetFileUpdateParams {
     id: string;
     data: AssetFileUpdate;
-  }
-
-  /**
-   * Parameters for globalsAssetsCategoryList
-   */
-  export interface GlobalsAssetsCategoryListParams {
-
-    /**
-     * Which field to use when ordering the results.
-     */
-    ordering?: string;
-
-    /**
-     * The initial index from which to return the results.
-     */
-    offset?: number;
-
-    /**
-     * Number of results to return per page.
-     */
-    limit?: number;
   }
 
   /**

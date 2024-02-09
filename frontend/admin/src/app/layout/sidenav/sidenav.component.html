@@ -1,4 +1,4 @@
-<img class="logo" src="/assets/logo.svg" alt="logo">
+<img class="logo" [src]="theme.isDarkMode() ? '/assets/logo-dark.svg' : '/assets/logo.svg'" alt="logo">
 <mat-nav-list>    
     @for (group of groupsService.groups; track group.name) {
         <span mat-subheader>{{ group.name }}</span>

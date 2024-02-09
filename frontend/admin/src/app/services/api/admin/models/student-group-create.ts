@@ -1,5 +1,5 @@
 /* tslint:disable */
 export interface StudentGroupCreate {
-  id?: number;
+  id: number;
   name: string;
 }

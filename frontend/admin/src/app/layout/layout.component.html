@@ -1,5 +1,5 @@
 <mat-sidenav-container>
-    <mat-sidenav [mode]="mode()" #sidenav>
+    <mat-sidenav (openedChange)="hanldeSidenavChange($event)" [mode]="mode()">
         <app-sidenav></app-sidenav>
     </mat-sidenav>
     <mat-sidenav-content>

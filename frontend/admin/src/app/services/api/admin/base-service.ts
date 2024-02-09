@@ -1,7 +1,6 @@
 /* tslint:disable */
 import { HttpClient, HttpParameterCodec, HttpParams } from '@angular/common/http';
 import { ApiConfiguration } from './api-configuration';
-import { inject } from '@angular/core';
 
 /**
  * Custom parameter codec to correctly handle the plus sign in parameter
@@ -30,8 +29,11 @@ const PARAMETER_CODEC = new ParameterCodec();
  * Base class for API services
  */
 export class BaseService {
-  protected config = inject(ApiConfiguration);
-  protected http = inject(HttpClient);
+  constructor(
+    protected config: ApiConfiguration,
+    protected http: HttpClient
+  ) {
+  }
 
   private _rootUrl: string = '';
 

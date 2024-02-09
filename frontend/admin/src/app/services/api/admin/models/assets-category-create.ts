@@ -1,5 +1,5 @@
 /* tslint:disable */
 export interface AssetsCategoryCreate {
-  id?: number;
+  id: number;
   name: string;
 }

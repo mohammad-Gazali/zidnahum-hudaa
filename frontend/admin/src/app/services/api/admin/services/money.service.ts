@@ -28,22 +28,21 @@ class MoneyService extends __BaseService {
   static readonly moneyDeletingUpdatePath = '/money/deleting/{id}/';
   static readonly moneyDeletingDeletePath = '/money/deleting/{id}/';
 
+  constructor(
+    config: __Configuration,
+    http: HttpClient
+  ) {
+    super(config, http);
+  }
+
   /**
-   * @param params The `MoneyService.MoneyDeletingCauseListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  moneyDeletingCauseListResponse(params: MoneyService.MoneyDeletingCauseListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<MoneyDeletingCauseList>}>> {
+  moneyDeletingCauseListResponse(ordering?: string): __Observable<__StrictHttpResponse<Array<MoneyDeletingCauseList>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
-    if (params.offset != null) __params = __params.set('offset', params.offset.toString());
-    if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (ordering != null) __params = __params.set('ordering', ordering.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/money/deleting-cause/`,
@@ -57,22 +56,16 @@ class MoneyService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<MoneyDeletingCauseList>}>;
+        return _r as __StrictHttpResponse<Array<MoneyDeletingCauseList>>;
       })
     );
   }
   /**
-   * @param params The `MoneyService.MoneyDeletingCauseListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  moneyDeletingCauseList(params: MoneyService.MoneyDeletingCauseListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<MoneyDeletingCauseList>}> {
-    return this.moneyDeletingCauseListResponse(params).pipe(
-      __map(_r => _r.body as {count: number, next?: null | string, previous?: null | string, results: Array<MoneyDeletingCauseList>})
+  moneyDeletingCauseList(ordering?: string): __Observable<Array<MoneyDeletingCauseList>> {
+    return this.moneyDeletingCauseListResponse(ordering).pipe(
+      __map(_r => _r.body as Array<MoneyDeletingCauseList>)
     );
   }
 
@@ -426,27 +419,6 @@ class MoneyService extends __BaseService {
 }
 
 module MoneyService {
-
-  /**
-   * Parameters for moneyDeletingCauseList
-   */
-  export interface MoneyDeletingCauseListParams {
-
-    /**
-     * Which field to use when ordering the results.
-     */
-    ordering?: string;
-
-    /**
-     * The initial index from which to return the results.
-     */
-    offset?: number;
-
-    /**
-     * Number of results to return per page.
-     */
-    limit?: number;
-  }
 
   /**
    * Parameters for moneyDeletingCauseUpdate

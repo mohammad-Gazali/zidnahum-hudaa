@@ -2,7 +2,7 @@
 export interface PointsDeletingUpdate {
   cause?: null | number;
   created_at?: string;
-  id?: number;
+  id: number;
   master?: null | number;
   student: number;
   value: number;

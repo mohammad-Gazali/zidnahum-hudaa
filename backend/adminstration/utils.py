@@ -2,10 +2,11 @@ from django.db.models import Model
 from django.http import QueryDict
 from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, IntegerField
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser
 from rest_framework.filters import OrderingFilter
+from rest_framework.pagination import LimitOffsetPagination
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg.openapi import Parameter, IN_QUERY, TYPE_STRING
 from students.models import Student
@@ -19,6 +20,7 @@ class BaseViewSet(ModelViewSet):
     django filter package filters and ordering filter
     """
     permission_classes = [IsAdminUser]
+    pagination_class = LimitOffsetPagination
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     ordering_fields = "__all__"
 
@@ -55,12 +57,16 @@ def create_serializer(
 
     if exclude_fields:
         class Result(ModelSerializer):
+            id = IntegerField()
+
             class Meta:
                 ref_name = f"{model_class.__name__}-{extra_ref}" if extra_ref is not None else model_class.__name__
                 model = model_class
                 exclude = serializer_fields
     else:
         class Result(ModelSerializer):
+            id = IntegerField()
+            
             class Meta:
                 ref_name = f"{model_class.__name__}-{extra_ref}" if extra_ref is not None else model_class.__name__
                 model = model_class
@@ -80,6 +86,7 @@ def create_model_view_set(
     updating_serializer: Type[ModelSerializer] = None,
     listing_serializer: Type[ModelSerializer] = None,
     details_serializer: Type[ModelSerializer] = None,
+    no_pagination: bool = False,
 ) -> Type[BaseViewSet]:
     """
     a helper function for creating view sets without declaring an
@@ -108,6 +115,9 @@ def create_model_view_set(
     class Result(BaseViewSet):
         http_method_names = methods or ["get", "post", "put", "delete"]
         filterset_fields = filter_fields
+
+        if no_pagination:
+            pagination_class = None
 
         # here we made a condition to determine the desired decorator we want to use with list method
         if model == Student:

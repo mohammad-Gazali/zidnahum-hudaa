@@ -1,5 +1,5 @@
 /* tslint:disable */
 export interface StudentCategoryList {
-  id?: number;
+  id: number;
   name: string;
 }

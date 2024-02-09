@@ -1,6 +1,6 @@
 /* tslint:disable */
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { BaseService as __BaseService } from '../base-service';
 import { ApiConfiguration as __Configuration } from '../api-configuration';
 import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-response';
@@ -28,22 +28,21 @@ class AuthService extends __BaseService {
   static readonly authUserUpdatePath = '/auth/user/{id}/';
   static readonly authUserDeletePath = '/auth/user/{id}/';
 
+  constructor(
+    config: __Configuration,
+    http: HttpClient
+  ) {
+    super(config, http);
+  }
+
   /**
-   * @param params The `AuthService.AuthGroupListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  authGroupListResponse(params: AuthService.AuthGroupListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<GroupList>}>> {
+  authGroupListResponse(ordering?: string): __Observable<__StrictHttpResponse<Array<GroupList>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
-    if (params.offset != null) __params = __params.set('offset', params.offset.toString());
-    if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (ordering != null) __params = __params.set('ordering', ordering.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/auth/group/`,
@@ -57,22 +56,16 @@ class AuthService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<GroupList>}>;
+        return _r as __StrictHttpResponse<Array<GroupList>>;
       })
     );
   }
   /**
-   * @param params The `AuthService.AuthGroupListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  authGroupList(params: AuthService.AuthGroupListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<GroupList>}> {
-    return this.authGroupListResponse(params).pipe(
-      __map(_r => _r.body as {count: number, next?: null | string, previous?: null | string, results: Array<GroupList>})
+  authGroupList(ordering?: string): __Observable<Array<GroupList>> {
+    return this.authGroupListResponse(ordering).pipe(
+      __map(_r => _r.body as Array<GroupList>)
     );
   }
 
@@ -426,27 +419,6 @@ class AuthService extends __BaseService {
 }
 
 module AuthService {
-
-  /**
-   * Parameters for authGroupList
-   */
-  export interface AuthGroupListParams {
-
-    /**
-     * Which field to use when ordering the results.
-     */
-    ordering?: string;
-
-    /**
-     * The initial index from which to return the results.
-     */
-    offset?: number;
-
-    /**
-     * Number of results to return per page.
-     */
-    limit?: number;
-  }
 
   /**
    * Parameters for authGroupUpdate

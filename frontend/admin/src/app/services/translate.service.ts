@@ -19,6 +19,15 @@ export class TranslateService {
 
         this.translateMap.set('this field is required', 'هذا الحقل مطلوب');
 
+        // ====== paginator ======
+        this.translateMap.set('next page', 'الصفحة التالية');
+        this.translateMap.set('previous page', 'الصفحة السابقة');
+        this.translateMap.set('items per page', 'عدد العناصر في الصفحة');
+        this.translateMap.set('first page', 'الصفحة الأولى');
+        this.translateMap.set('last page', 'الصفحة الأخيرة');
+        this.translateMap.set('page', 'صفحة');
+        this.translateMap.set('of', 'من');
+
         // ====== students group ======
         // student model
         this.translateMap.set('id', 'المعرف');

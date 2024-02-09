@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  inject,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -9,7 +14,7 @@ import { AccountsService } from '../../services/api/accounts/accounts.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '../../services/translate.service';
 import { SnackbarService } from '../../services/snackbar.service';
-import { type Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { LoadingService } from '../../services/loading.service';
 
 @Component({
@@ -36,53 +41,60 @@ export class LoginComponent implements OnDestroy {
 
   username = '';
   password = '';
-  subscriptions: Subscription[] = [];
+  destroyed$ = new Subject<void>();
 
   submit() {
     this.loading.set(true);
-    const subscription = this.accounts.tokenObtainPair({
-      username: this.username,
-      password: this.password,
-    }).subscribe({
-      next: (res) => {
-        localStorage.setItem('token', res.access);
-        localStorage.setItem('refresh-token', res.refresh);
+    this.accounts
+      .tokenObtainPair({
+        username: this.username,
+        password: this.password,
+      })
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe({
+        next: (res) => {
+          localStorage.setItem('token', res.access);
+          localStorage.setItem('refresh-token', res.refresh);
 
-        const subscription = this.accounts.userDetails().subscribe({
-          next: (res) => {
-            this.accounts.details.set(res);
+          this.accounts
+            .userDetails()
+            .pipe(takeUntil(this.destroyed$))
+            .subscribe({
+              next: (res) => {
+                this.accounts.details.set(res);
 
-            this.snackbar.open('تم تسجيل الدخول بنجاح')
+                this.snackbar.open('تم تسجيل الدخول بنجاح');
 
-            this.router.navigateByUrl('/');
-            
-            this.loading.set(false);
-          },
-          error: ({ status, error: { detail } }: { status: number; error: { detail: string } }) => {
-            if (status === 401) {
-              if (location.pathname !== '/login') {
-                this.router.navigateByUrl('login')
-              }
-    
-            } else {
-              this.snackbar.open(this.translateService.translate(detail))
-            }
-            this.loading.set(false);
-          }
-        })
+                this.router.navigateByUrl('/');
 
-        this.subscriptions.push(subscription);
-      },
-      error: ({ error: { detail } }) => {
-        this.snackbar.open(this.translateService.translate(detail))
-        this.loading.set(false);
-      }
-    });
-
-    this.subscriptions.push(subscription);
+                this.loading.set(false);
+              },
+              error: ({
+                status,
+                error: { detail },
+              }: {
+                status: number;
+                error: { detail: string };
+              }) => {
+                if (status === 401) {
+                  if (location.pathname !== '/login') {
+                    this.router.navigateByUrl('login');
+                  }
+                } else {
+                  this.snackbar.open(this.translateService.translate(detail));
+                }
+                this.loading.set(false);
+              },
+            });
+        },
+        error: ({ error: { detail } }) => {
+          this.snackbar.open(this.translateService.translate(detail));
+          this.loading.set(false);
+        },
+      });
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(s => s.unsubscribe());
+    this.destroyed$.next();
   }
 }

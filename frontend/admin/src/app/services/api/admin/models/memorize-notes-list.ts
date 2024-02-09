@@ -1,7 +1,7 @@
 /* tslint:disable */
 export interface MemorizeNotesList {
   content: string;
-  id?: number;
+  id: number;
   master?: null | number;
   sended_at?: string;
   student: number;

@@ -1,5 +1,5 @@
 /* tslint:disable */
 export interface PointsDeletingCauseCreate {
-  id?: number;
+  id: number;
   name: string;
 }

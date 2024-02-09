@@ -1,6 +1,6 @@
 /* tslint:disable */
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { BaseService as __BaseService } from '../base-service';
 import { ApiConfiguration as __Configuration } from '../api-configuration';
 import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-response';
@@ -24,22 +24,21 @@ class ComingsService extends __BaseService {
   static readonly comingsComingReadPath = '/comings/coming/{id}/';
   static readonly comingsComingDeletePath = '/comings/coming/{id}/';
 
+  constructor(
+    config: __Configuration,
+    http: HttpClient
+  ) {
+    super(config, http);
+  }
+
   /**
-   * @param params The `ComingsService.ComingsCategoryListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  comingsCategoryListResponse(params: ComingsService.ComingsCategoryListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<ComingCategoryList>}>> {
+  comingsCategoryListResponse(ordering?: string): __Observable<__StrictHttpResponse<Array<ComingCategoryList>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
-    if (params.offset != null) __params = __params.set('offset', params.offset.toString());
-    if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (ordering != null) __params = __params.set('ordering', ordering.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/comings/category/`,
@@ -53,22 +52,16 @@ class ComingsService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<ComingCategoryList>}>;
+        return _r as __StrictHttpResponse<Array<ComingCategoryList>>;
       })
     );
   }
   /**
-   * @param params The `ComingsService.ComingsCategoryListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  comingsCategoryList(params: ComingsService.ComingsCategoryListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<ComingCategoryList>}> {
-    return this.comingsCategoryListResponse(params).pipe(
-      __map(_r => _r.body as {count: number, next?: null | string, previous?: null | string, results: Array<ComingCategoryList>})
+  comingsCategoryList(ordering?: string): __Observable<Array<ComingCategoryList>> {
+    return this.comingsCategoryListResponse(ordering).pipe(
+      __map(_r => _r.body as Array<ComingCategoryList>)
     );
   }
 
@@ -365,27 +358,6 @@ class ComingsService extends __BaseService {
 }
 
 module ComingsService {
-
-  /**
-   * Parameters for comingsCategoryList
-   */
-  export interface ComingsCategoryListParams {
-
-    /**
-     * Which field to use when ordering the results.
-     */
-    ordering?: string;
-
-    /**
-     * The initial index from which to return the results.
-     */
-    offset?: number;
-
-    /**
-     * Number of results to return per page.
-     */
-    limit?: number;
-  }
 
   /**
    * Parameters for comingsCategoryUpdate

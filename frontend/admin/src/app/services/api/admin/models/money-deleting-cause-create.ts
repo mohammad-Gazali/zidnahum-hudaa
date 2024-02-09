@@ -1,5 +1,5 @@
 /* tslint:disable */
 export interface MoneyDeletingCauseCreate {
-  id?: number;
+  id: number;
   name: string;
 }

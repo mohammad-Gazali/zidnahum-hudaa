@@ -44,22 +44,21 @@ class StudentsService extends __BaseService {
   static readonly studentsStudentUpdatePath = '/students/student/{id}/';
   static readonly studentsStudentDeletePath = '/students/student/{id}/';
 
+  constructor(
+    config: __Configuration,
+    http: HttpClient
+  ) {
+    super(config, http);
+  }
+
   /**
-   * @param params The `StudentsService.StudentsCategoryListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  studentsCategoryListResponse(params: StudentsService.StudentsCategoryListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<StudentCategoryList>}>> {
+  studentsCategoryListResponse(ordering?: string): __Observable<__StrictHttpResponse<Array<StudentCategoryList>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
-    if (params.offset != null) __params = __params.set('offset', params.offset.toString());
-    if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (ordering != null) __params = __params.set('ordering', ordering.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/students/category/`,
@@ -73,22 +72,16 @@ class StudentsService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<StudentCategoryList>}>;
+        return _r as __StrictHttpResponse<Array<StudentCategoryList>>;
       })
     );
   }
   /**
-   * @param params The `StudentsService.StudentsCategoryListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  studentsCategoryList(params: StudentsService.StudentsCategoryListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<StudentCategoryList>}> {
-    return this.studentsCategoryListResponse(params).pipe(
-      __map(_r => _r.body as {count: number, next?: null | string, previous?: null | string, results: Array<StudentCategoryList>})
+  studentsCategoryList(ordering?: string): __Observable<Array<StudentCategoryList>> {
+    return this.studentsCategoryListResponse(ordering).pipe(
+      __map(_r => _r.body as Array<StudentCategoryList>)
     );
   }
 
@@ -238,21 +231,13 @@ class StudentsService extends __BaseService {
   }
 
   /**
-   * @param params The `StudentsService.StudentsGroupListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  studentsGroupListResponse(params: StudentsService.StudentsGroupListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<StudentGroupList>}>> {
+  studentsGroupListResponse(ordering?: string): __Observable<__StrictHttpResponse<Array<StudentGroupList>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
-    if (params.offset != null) __params = __params.set('offset', params.offset.toString());
-    if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (ordering != null) __params = __params.set('ordering', ordering.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/students/group/`,
@@ -266,22 +251,16 @@ class StudentsService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<StudentGroupList>}>;
+        return _r as __StrictHttpResponse<Array<StudentGroupList>>;
       })
     );
   }
   /**
-   * @param params The `StudentsService.StudentsGroupListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  studentsGroupList(params: StudentsService.StudentsGroupListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<StudentGroupList>}> {
-    return this.studentsGroupListResponse(params).pipe(
-      __map(_r => _r.body as {count: number, next?: null | string, previous?: null | string, results: Array<StudentGroupList>})
+  studentsGroupList(ordering?: string): __Observable<Array<StudentGroupList>> {
+    return this.studentsGroupListResponse(ordering).pipe(
+      __map(_r => _r.body as Array<StudentGroupList>)
     );
   }
 
@@ -944,53 +923,11 @@ class StudentsService extends __BaseService {
 module StudentsService {
 
   /**
-   * Parameters for studentsCategoryList
-   */
-  export interface StudentsCategoryListParams {
-
-    /**
-     * Which field to use when ordering the results.
-     */
-    ordering?: string;
-
-    /**
-     * The initial index from which to return the results.
-     */
-    offset?: number;
-
-    /**
-     * Number of results to return per page.
-     */
-    limit?: number;
-  }
-
-  /**
    * Parameters for studentsCategoryUpdate
    */
   export interface StudentsCategoryUpdateParams {
     id: string;
     data: StudentCategoryUpdate;
-  }
-
-  /**
-   * Parameters for studentsGroupList
-   */
-  export interface StudentsGroupListParams {
-
-    /**
-     * Which field to use when ordering the results.
-     */
-    ordering?: string;
-
-    /**
-     * The initial index from which to return the results.
-     */
-    offset?: number;
-
-    /**
-     * Number of results to return per page.
-     */
-    limit?: number;
   }
 
   /**

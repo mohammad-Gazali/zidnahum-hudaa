@@ -1,13 +1,72 @@
 <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource" matSort>
-        @for (column of columns; track column) {
-            <ng-container [matColumnDef]="column">
-                <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
-                <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
-            </ng-container>
+  <div class="top-section">
+    @if (searchField !== undefined) {
+      <mat-form-field appearance="outline">
+        <mat-label>{{ searchField | translate }}</mat-label>
+        <input matInput (input)="handleChangeSearch($event)" />
+      </mat-form-field>
+    }
+    <div>
+      
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="responsive-container">
+      <table mat-table matSort (matSortChange)="onSortChange($event)" [dataSource]="dataSource">
+        @for (column of displayedColumns; track column) {
+            @if (column === 'check') {
+                <ng-container matColumnDef="check">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox
+                        (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()"
+                        ></mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <mat-checkbox
+                        (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(element) : null"
+                        [checked]="selection.isSelected(element)"
+                        ></mat-checkbox>
+                    </td>
+                </ng-container>
+            } @else {
+                <ng-container [matColumnDef]="column">
+                  <th mat-header-cell mat-sort-header *matHeaderCellDef>{{ column | translate }}</th>
+                  <td mat-cell *matCellDef="let element">
+                    @if (column === 'id') {
+                      <a class="primary" [routerLink]="config.getUrlFunc(element.id)">
+                        {{ element[column] }}
+                      </a>
+                    } @else if (config.columns[column].display === CellDisplay.RELATION) {
+                      {{
+                        extraData[column].map.get(element[column]) ?? '-'
+                      }}
+                    } @else if (config.columns[column].display === CellDisplay.LINK) {
+                        @if (element[column] === null || element[column] === undefined) {
+                          -
+                        } @else {
+                          <a class="primary" [routerLink]="config.columns[column].getUrlFunc!(element[column])">
+                            {{
+                              extraData[column].map.get(element[column])
+                            }}
+                          </a>
+                        }
+                    } @else {
+                      {{
+                        element[column] ?? '-'
+                      }}
+                    }
+                  </td>
+                </ng-container>
+            }
         }
-        <tr mat-header-row *matHeaderRowDef="columns"></tr>
-        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
-    </table>
-    <mat-paginator [pageSize]="20" showFirstLastButtons></mat-paginator>
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns, sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+  </div>
+  <mat-paginator [class.hidden]="config.hasPagination === undefined || config.hasPagination" (page)="onPageChange($event)" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+  </mat-paginator>
 </div>

@@ -1,6 +1,6 @@
 /* tslint:disable */
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { BaseService as __BaseService } from '../base-service';
 import { ApiConfiguration as __Configuration } from '../api-configuration';
 import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-response';
@@ -27,6 +27,13 @@ class AwqafService extends __BaseService {
   static readonly awqafTestNoQReadPath = '/awqaf/test-no-q/{id}/';
   static readonly awqafTestNoQUpdatePath = '/awqaf/test-no-q/{id}/';
   static readonly awqafTestNoQDeletePath = '/awqaf/test-no-q/{id}/';
+
+  constructor(
+    config: __Configuration,
+    http: HttpClient
+  ) {
+    super(config, http);
+  }
 
   /**
    * @param params The `AwqafService.AwqafStudentNoQRelationListParams` containing the following parameters:
@@ -237,21 +244,13 @@ class AwqafService extends __BaseService {
   }
 
   /**
-   * @param params The `AwqafService.AwqafTestNoQListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  awqafTestNoQListResponse(params: AwqafService.AwqafTestNoQListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<AwqafTestNoQList>}>> {
+  awqafTestNoQListResponse(ordering?: string): __Observable<__StrictHttpResponse<Array<AwqafTestNoQList>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
-    if (params.offset != null) __params = __params.set('offset', params.offset.toString());
-    if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (ordering != null) __params = __params.set('ordering', ordering.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/awqaf/test-no-q/`,
@@ -265,22 +264,16 @@ class AwqafService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<AwqafTestNoQList>}>;
+        return _r as __StrictHttpResponse<Array<AwqafTestNoQList>>;
       })
     );
   }
   /**
-   * @param params The `AwqafService.AwqafTestNoQListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  awqafTestNoQList(params: AwqafService.AwqafTestNoQListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<AwqafTestNoQList>}> {
-    return this.awqafTestNoQListResponse(params).pipe(
-      __map(_r => _r.body as {count: number, next?: null | string, previous?: null | string, results: Array<AwqafTestNoQList>})
+  awqafTestNoQList(ordering?: string): __Observable<Array<AwqafTestNoQList>> {
+    return this.awqafTestNoQListResponse(ordering).pipe(
+      __map(_r => _r.body as Array<AwqafTestNoQList>)
     );
   }
 
@@ -474,27 +467,6 @@ module AwqafService {
   export interface AwqafStudentNoQRelationUpdateParams {
     id: string;
     data: AwqafNoQStudentRelationUpdate;
-  }
-
-  /**
-   * Parameters for awqafTestNoQList
-   */
-  export interface AwqafTestNoQListParams {
-
-    /**
-     * Which field to use when ordering the results.
-     */
-    ordering?: string;
-
-    /**
-     * The initial index from which to return the results.
-     */
-    offset?: number;
-
-    /**
-     * Number of results to return per page.
-     */
-    limit?: number;
   }
 
   /**

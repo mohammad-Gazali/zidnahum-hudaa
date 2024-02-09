@@ -1,5 +1,5 @@
 /* tslint:disable */
 export interface PointsAddingCauseUpdate {
-  id?: number;
+  id: number;
   name: string;
 }

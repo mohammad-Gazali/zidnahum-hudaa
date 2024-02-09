@@ -1,5 +1,5 @@
 /* tslint:disable */
 export interface GroupUpdate {
-  id?: number;
+  id: number;
   name: string;
 }

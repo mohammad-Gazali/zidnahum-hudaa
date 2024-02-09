@@ -2,6 +2,6 @@
 export interface AssetFileUpdate {
   category: number;
   file?: string;
-  id?: number;
+  id: number;
   name: string;
 }

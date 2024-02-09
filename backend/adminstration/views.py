@@ -11,10 +11,10 @@ from students.models import StudentCategory, StudentGroup, Student, MemorizeMess
 
 # auth view sets
 AdminUserViewSet = create_model_view_set(get_user_model(), filter_fields=["is_superuser", "is_active"])
-AdminGroupViewSet = create_model_view_set(Group, fields=["permissions"], exclude_fields=True)
+AdminGroupViewSet = create_model_view_set(Group, fields=["permissions"], exclude_fields=True, no_pagination=True)
 
 # awqaf view sets
-AdminAwqafTestNoQViewSet = create_model_view_set(AwqafTestNoQ)
+AdminAwqafTestNoQViewSet = create_model_view_set(AwqafTestNoQ, no_pagination=True)
 AdminAwqafNoQStudentRelationViewSet = create_model_view_set(
     AwqafNoQStudentRelation,
     filter_fields=["test", "is_old"],
@@ -22,7 +22,7 @@ AdminAwqafNoQStudentRelationViewSet = create_model_view_set(
 )
 
 # comings view sets
-AdminComingCategoryViewSet = create_model_view_set(ComingCategory)
+AdminComingCategoryViewSet = create_model_view_set(ComingCategory, no_pagination=True)
 AdminComingViewSet = create_model_view_set(
     Coming, 
     methods=["get", "delete"],
@@ -36,11 +36,11 @@ AdminComingViewSet = create_model_view_set(
 )
 
 # globals view sets
-AdminAssetsCategoryViewSet = create_model_view_set(AssetsCategory)
+AdminAssetsCategoryViewSet = create_model_view_set(AssetsCategory, no_pagination=True)
 AdminAssetFileViewSet = create_model_view_set(AssetFile, filter_fields=["category"])
 
 # money view sets
-AdminMoneyDeletingCauseViewSet = create_model_view_set(MoneyDeletingCause)
+AdminMoneyDeletingCauseViewSet = create_model_view_set(MoneyDeletingCause, no_pagination=True)
 AdminMoneyDeletingViewSet = create_model_view_set(
     MoneyDeleting,
     filter_fields=["cause"],
@@ -48,7 +48,7 @@ AdminMoneyDeletingViewSet = create_model_view_set(
 )
 
 # points view sets
-AdminPointsAddingCauseViewSet = create_model_view_set(PointsAddingCause)
+AdminPointsAddingCauseViewSet = create_model_view_set(PointsAddingCause, no_pagination=True)
 AdminPointsAddingViewSet = create_model_view_set(
     PointsAdding,
     methods=["get", "put", "delete"],
@@ -59,7 +59,7 @@ AdminPointsAddingViewSet = create_model_view_set(
     },
     include_student_name_filter=True,
 )
-AdminPointsDeletingCauseViewSet = create_model_view_set(PointsDeletingCause)
+AdminPointsDeletingCauseViewSet = create_model_view_set(PointsDeletingCause, no_pagination=True)
 AdminPointsDeletingViewSet = create_model_view_set(
     PointsDeleting,
     methods=["get", "put", "delete"],
@@ -72,8 +72,8 @@ AdminPointsDeletingViewSet = create_model_view_set(
 )
 
 # students view sets
-AdminStudentCategoryViewSet = create_model_view_set(StudentCategory)
-AdminStudentGroupViewSet = create_model_view_set(StudentGroup)
+AdminStudentCategoryViewSet = create_model_view_set(StudentCategory, no_pagination=True)
+AdminStudentGroupViewSet = create_model_view_set(StudentGroup, no_pagination=True)
 
 AdminCreateStudentSerializer = create_serializer(Student, serializer_fields=[
         "q_memorizing", "q_test", "q_awqaf_test",

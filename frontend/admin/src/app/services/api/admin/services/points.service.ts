@@ -40,22 +40,21 @@ class PointsService extends __BaseService {
   static readonly pointsDeletingUpdatePath = '/points/deleting/{id}/';
   static readonly pointsDeletingDeletePath = '/points/deleting/{id}/';
 
+  constructor(
+    config: __Configuration,
+    http: HttpClient
+  ) {
+    super(config, http);
+  }
+
   /**
-   * @param params The `PointsService.PointsAddingCauseListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  pointsAddingCauseListResponse(params: PointsService.PointsAddingCauseListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<PointsAddingCauseList>}>> {
+  pointsAddingCauseListResponse(ordering?: string): __Observable<__StrictHttpResponse<Array<PointsAddingCauseList>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
-    if (params.offset != null) __params = __params.set('offset', params.offset.toString());
-    if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (ordering != null) __params = __params.set('ordering', ordering.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/points/adding-cause/`,
@@ -69,22 +68,16 @@ class PointsService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<PointsAddingCauseList>}>;
+        return _r as __StrictHttpResponse<Array<PointsAddingCauseList>>;
       })
     );
   }
   /**
-   * @param params The `PointsService.PointsAddingCauseListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  pointsAddingCauseList(params: PointsService.PointsAddingCauseListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<PointsAddingCauseList>}> {
-    return this.pointsAddingCauseListResponse(params).pipe(
-      __map(_r => _r.body as {count: number, next?: null | string, previous?: null | string, results: Array<PointsAddingCauseList>})
+  pointsAddingCauseList(ordering?: string): __Observable<Array<PointsAddingCauseList>> {
+    return this.pointsAddingCauseListResponse(ordering).pipe(
+      __map(_r => _r.body as Array<PointsAddingCauseList>)
     );
   }
 
@@ -418,21 +411,13 @@ class PointsService extends __BaseService {
   }
 
   /**
-   * @param params The `PointsService.PointsDeletingCauseListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  pointsDeletingCauseListResponse(params: PointsService.PointsDeletingCauseListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<PointsDeletingCauseList>}>> {
+  pointsDeletingCauseListResponse(ordering?: string): __Observable<__StrictHttpResponse<Array<PointsDeletingCauseList>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
-    if (params.offset != null) __params = __params.set('offset', params.offset.toString());
-    if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (ordering != null) __params = __params.set('ordering', ordering.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/points/deleting-cause/`,
@@ -446,22 +431,16 @@ class PointsService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<PointsDeletingCauseList>}>;
+        return _r as __StrictHttpResponse<Array<PointsDeletingCauseList>>;
       })
     );
   }
   /**
-   * @param params The `PointsService.PointsDeletingCauseListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  pointsDeletingCauseList(params: PointsService.PointsDeletingCauseListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<PointsDeletingCauseList>}> {
-    return this.pointsDeletingCauseListResponse(params).pipe(
-      __map(_r => _r.body as {count: number, next?: null | string, previous?: null | string, results: Array<PointsDeletingCauseList>})
+  pointsDeletingCauseList(ordering?: string): __Observable<Array<PointsDeletingCauseList>> {
+    return this.pointsDeletingCauseListResponse(ordering).pipe(
+      __map(_r => _r.body as Array<PointsDeletingCauseList>)
     );
   }
 
@@ -798,27 +777,6 @@ class PointsService extends __BaseService {
 module PointsService {
 
   /**
-   * Parameters for pointsAddingCauseList
-   */
-  export interface PointsAddingCauseListParams {
-
-    /**
-     * Which field to use when ordering the results.
-     */
-    ordering?: string;
-
-    /**
-     * The initial index from which to return the results.
-     */
-    offset?: number;
-
-    /**
-     * Number of results to return per page.
-     */
-    limit?: number;
-  }
-
-  /**
    * Parameters for pointsAddingCauseUpdate
    */
   export interface PointsAddingCauseUpdateParams {
@@ -878,27 +836,6 @@ module PointsService {
   export interface PointsAddingUpdateParams {
     id: string;
     data: PointsAddingUpdate;
-  }
-
-  /**
-   * Parameters for pointsDeletingCauseList
-   */
-  export interface PointsDeletingCauseListParams {
-
-    /**
-     * Which field to use when ordering the results.
-     */
-    ordering?: string;
-
-    /**
-     * The initial index from which to return the results.
-     */
-    offset?: number;
-
-    /**
-     * Number of results to return per page.
-     */
-    limit?: number;
   }
 
   /**

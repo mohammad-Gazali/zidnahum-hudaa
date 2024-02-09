@@ -17,7 +17,7 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 import { AccountsService } from '../../services/api/accounts/accounts.service';
 import { Router, RouterLink } from '@angular/router';
 import { ThemeService } from '../../services/theme.service';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { LoadingService } from '../../services/loading.service';
 
 @Component({
@@ -44,7 +44,7 @@ export class NavbarComponent implements OnDestroy {
 
   @Output() clickMenu = new EventEmitter();
 
-  private subscription: Subscription;
+  private destroyed$ = new Subject<void>();
   public title = computed(() => {
     if (this.isSmall()) {
       return 'Zidnahum Hudaa';
@@ -57,15 +57,16 @@ export class NavbarComponent implements OnDestroy {
   });
 
   constructor() {
-    this.subscription = this.breakpointObserver
+    this.breakpointObserver
       .observe(Breakpoints.XSmall)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe((result) => {
         this.isSmall.set(result.matches);
       });
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.destroyed$.next();
   }
 
   logout() {

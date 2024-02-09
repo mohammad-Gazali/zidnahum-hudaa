@@ -1,6 +1,6 @@
 /* tslint:disable */
 export interface AwqafTestNoQCreate {
-  id?: number;
+  id: number;
   name: string;
   points: number;
 }

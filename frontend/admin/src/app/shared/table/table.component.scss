@@ -1,0 +1,54 @@
+.mat-elevation-z8 {
+    --border-radius: 20px;
+
+    border-radius: var(--border-radius);
+    background-color: var(--mat-table-background-color);
+
+    .top-section {
+        padding: 1rem;
+        padding-bottom: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .responsive-container {
+        max-height: 380px;
+        overflow-y: scroll;
+        
+
+        &::-webkit-scrollbar {
+            appearance: none;
+            width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background-color: var(--mat-table-background-color);
+        }
+    
+        &::-webkit-scrollbar-button {
+            appearance: none;
+            display: none;
+            background-color: var(--mat-table-background-color);
+            
+        }
+    
+        &::-webkit-scrollbar-thumb {
+            background-color: rgb(223, 223, 223);
+            border-radius: 20px;
+        }
+
+        a {
+            font-weight: bold;
+
+            &:hover {
+                text-decoration: underline;
+                text-decoration-thickness: 2px;
+            }
+        }
+    }
+
+    mat-paginator {
+        border-radius: 0px 0px var(--border-radius) var(--border-radius);
+    }
+}
