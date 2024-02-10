@@ -8,8 +8,22 @@
         padding: 1rem;
         padding-bottom: 0;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column;
+
+        .search-and-filters {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+
+            .buttons-container {
+                display: flex;
+                gap: 1rem;
+            }
+        }
+
+        .chips-container {
+            margin-bottom: 1rem;
+        }
     }
 
     .responsive-container {
@@ -50,5 +64,9 @@
 
     mat-paginator {
         border-radius: 0px 0px var(--border-radius) var(--border-radius);
+    }
+
+    .extra-space {
+        height: 1rem;
     }
 }

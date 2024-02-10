@@ -5,6 +5,8 @@ import {
   OnDestroy,
   OnInit,
   ViewChild,
+  inject,
+  signal,
 } from '@angular/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import {
@@ -14,18 +16,28 @@ import {
   PageEvent,
 } from '@angular/material/paginator';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
-import { TableComponentConfig, PaginationSortOptions, GetStringKeys, FieldConfig, CellDisplay, FilterType } from './table.component.config';
+import {
+  TableComponentConfig,
+  PaginationSortOptions,
+  GetStringKeys,
+  FieldConfig,
+} from './table.component.config';
 import { Subject, takeUntil } from 'rxjs';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
-import { TranslatePipe } from '../../pipes/translate.pipe';
 import { TableComponentPaginator } from './table.component.paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
-import { FormsModule } from '@angular/forms';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { TranslatePipe } from '../../pipes/translate.pipe';
+import { LoadingService } from '../../services/loading.service';
+import { DialogData, TableFiltersDialogComponent } from './table-filters-dialog/table-filters-dialog.component';
 
 @Component({
   selector: 'app-table',
@@ -39,8 +51,10 @@ import { FormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatInputModule,
     MatDividerModule,
+    MatChipsModule,
+    MatIconModule,
+    ReactiveFormsModule,
     RouterLink,
-    FormsModule,
     TranslatePipe,
   ],
   providers: [{ provide: MatPaginatorIntl, useClass: TableComponentPaginator }],
@@ -49,63 +63,50 @@ import { FormsModule } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent<T> implements OnInit, OnDestroy {
-  @Input({ required: true }) public config!: TableComponentConfig<T>;
-
+  private fb = inject(FormBuilder);
+  private loading = inject(LoadingService);
+  private dialog = inject(MatDialog)
+  
   public dataSource = new MatTableDataSource<T>([]);
   public selection = new SelectionModel<T>(true, []);
-  public displayedColumns: ('check' | 'id' | GetStringKeys<Omit<T, 'id'>>)[] = [];
+  public displayedColumns: ('check' | 'id' | GetStringKeys<Omit<T, 'id'>>)[] =
+  [];
   public extraData: ExtraData = {};
-  public CellDisplay = CellDisplay;
-  public searchField?: string;
+  public searchForm = this.fb.nonNullable.group({
+    searchValue: '',
+  });  
+  public activeFilters = signal<Filter[]>([]);
   private destroyed$ = new Subject<void>();
   private pageSizeOptions = [20, 40, 100, 200];
+  
+  @Input({ required: true }) public config!: TableComponentConfig<T>;
 
   @ViewChild(MatPaginator, { static: true }) private paginator!: MatPaginator;
   @ViewChild(MatSort, { static: true }) private sort!: MatSort;
 
   ngOnInit(): void {
-    const keys = Object.keys(this.config.columns) as GetStringKeys<Omit<T, 'id'>>[];
+    const keys = Object.keys(this.config.columns) as GetStringKeys<
+      Omit<T, 'id'>
+    >[];
     this.displayedColumns = ['check', 'id', ...keys];
 
-    Object.entries<FieldConfig>(this.config.columns).forEach(([name, config]) => {
-      if (config.display === CellDisplay.RELATION) {
-        config.getFieldValueFunc!().pipe(takeUntil(this.destroyed$)).subscribe(res => {
-          this.extraData[name] = {
-            data: res,
-            map: this.convertDataToMap(res),
-          };
-        });
-      }
-
-      if (config.filterType === FilterType.EXACT || config.filterType === FilterType.EXACT_NULL) {
-        if (this.extraData[name] === undefined) {
-          config.getFieldValueFunc!().pipe(takeUntil(this.destroyed$)).subscribe(res => {
-            this.extraData[name] = {
-              data: res,
-              map: this.convertDataToMap(res),
-            };
-          }); 
+    Object.entries<FieldConfig>(this.config.columns).forEach(
+      ([name, config]) => {
+        if (config.display === 'relation') {
+          config
+            .getFieldValueFunc()
+            .pipe(takeUntil(this.destroyed$))
+            .subscribe((res) => {
+              this.extraData[name] = {
+                data: res,
+                map: this.convertDataToMap(res),
+              };
+            });
         }
       }
+    );
 
-      if (config.isSearchField) {
-        this.searchField = name;
-      }
-    });
-
-    
-
-    this.config.dataFunc({}).pipe(takeUntil(this.destroyed$)).subscribe((data) => {
-      if (data instanceof Array) {
-        this.dataSource.data = data;
-      } else {
-        this.dataSource.data = data.results;
-        this.paginator.pageSize = data.results.length;
-        this.paginator.length = data.count;
-  
-        this.paginator.pageSizeOptions = this.getPageSizeOptions();
-      }
-    });
+    this.fetchData({});
   }
 
   ngOnDestroy(): void {
@@ -113,6 +114,8 @@ export class TableComponent<T> implements OnInit, OnDestroy {
   }
 
   onPageChange(event: PageEvent) {
+    if (!this.config.hasPagination) return;
+
     const options: PaginationSortOptions<T> = {
       limit: event.pageSize,
       offset: event.pageIndex * event.pageSize,
@@ -120,17 +123,20 @@ export class TableComponent<T> implements OnInit, OnDestroy {
 
     const activeField = this.sort.active as GetStringKeys<T>;
 
-    if (this.sort.direction !== "") {
-      options.ordering = this.sort.direction === "asc" ? `${activeField}` : `-${activeField}`;
+    if (this.sort.direction !== '') {
+      options.ordering =
+        this.sort.direction === 'asc' ? `${activeField}` : `-${activeField}`;
     }
 
-    this.config.dataFunc(options).pipe(takeUntil(this.destroyed$)).subscribe((data) => {
-      if (data instanceof Array) {
-        this.dataSource.data = data;
-      } else {
-        this.dataSource.data = data.results;
-      }
-      this.selection = new SelectionModel<T>(true, []);
+    const extraOptions: any = {};
+
+    if (this.config.searchField !== undefined) {
+      extraOptions[this.config.searchField] = this.searchForm.value.searchValue;
+    }
+
+    this.fetchData({
+      ...options,
+      ...extraOptions,
     });
   }
 
@@ -144,40 +150,45 @@ export class TableComponent<T> implements OnInit, OnDestroy {
 
     const activeField = event.active as GetStringKeys<T>;
 
-    if (event.direction !== "") {
-      options.ordering = event.direction === "asc" ? `${activeField}` : `-${activeField}`;
+    if (event.direction !== '') {
+      options.ordering =
+        event.direction === 'asc' ? `${activeField}` : `-${activeField}`;
     }
 
-    this.config.dataFunc(options).pipe(takeUntil(this.destroyed$)).subscribe((data) => {
-      if (data instanceof Array) {
-        this.dataSource.data = data;
-      } else {
-        this.dataSource.data = data.results;
-      }
-      this.selection = new SelectionModel<T>(true, []);
+    const extraOptions: any = {};
+
+    if (this.config.searchField !== undefined) {
+      extraOptions[this.config.searchField] = this.searchForm.value.searchValue;
+    }
+
+    this.fetchData({
+      ...options,
+      ...extraOptions,
     });
   }
 
   private getPageSizeOptions(): number[] {
     // this index indicates the required index for getting the sutiable page
     // size options
-    const targetIndex = this.pageSizeOptions.findIndex((size) => size >= this.paginator.length);
+    const targetIndex = this.pageSizeOptions.findIndex(
+      (size) => size >= this.paginator.length
+    );
 
-    return targetIndex === - 1 ? this.pageSizeOptions : this.pageSizeOptions.slice(0, targetIndex);
+    return targetIndex === -1
+      ? this.pageSizeOptions
+      : this.pageSizeOptions.slice(0, targetIndex);
   }
 
-  private convertDataToMap(data: { id: number; name: string }[]): Map<number, string> {
+  private convertDataToMap(
+    data: { id: number; name: string }[]
+  ): Map<number, string> {
     const result = new Map<number, string>();
-    
-    data.forEach(item => {
+
+    data.forEach((item) => {
       result.set(item.id, item.name);
     });
 
     return result;
-  }
-
-  public handleChangeSearch(event: Event) {
-    
   }
 
   isAllSelected() {
@@ -191,8 +202,138 @@ export class TableComponent<T> implements OnInit, OnDestroy {
       ? this.selection.clear()
       : this.dataSource.data.forEach((row) => this.selection.select(row));
   }
-}
 
+  removeFilter(index: number) {
+    const newFilters = this.activeFilters().filter((_, i) => i !== index);
+    this.activeFilters.set(newFilters);
+
+    this.fetchData({
+      ...newFilters.map(f => ({
+        [f.name]: f.value,
+      }))
+    });
+  }
+
+  searchSubmit() {
+    if (!this.config.searchField || !this.config.hasPagination) return;
+
+    const searchValue = this.searchForm.value.searchValue;
+
+    if (searchValue === undefined || searchValue === '') {
+      this.activeFilters.update((pre) =>
+        pre.filter((f) => f.type !== 'search')
+      );
+
+      // TODO
+      // this.fetchData({
+      //   ...this.activeFilters().map(filter => {
+      //     const result: any = {};
+      //     if (filter.type === 'select') {
+      //       if (filter.value === '-1') {
+      //         result[`${filter.name}__isnull`] = 'True';
+      //       } else {
+      //         result[filter.name] = filter.value;
+      //       }
+      //     } else if (filter.type)
+      //   })
+      // });
+
+      return;
+    }
+
+    this.fetchData(
+      {
+        [this.config.searchField]: this.searchForm.value.searchValue,
+      },
+      {
+        type: 'search',
+        name: this.config.searchField,
+        value: searchValue,
+      }
+    );
+    
+    this.searchForm.reset();
+  }
+
+  getFiltersOptions(): any {
+    const result: any = {};
+
+    this.activeFilters().forEach(filter => {
+      if (filter.type === 'search' || filter.type === 'select' || filter.type === 'date') {
+        result[filter.name] = filter.value;
+      } else if (filter.type === 'select_null') {
+        if (filter.value === '-1') {
+          result[`${filter.name}__isnull`] = 'True';
+        } else {
+          result[filter.name] = filter.value;
+        }
+      } else if (filter.type === 'date_range') {
+        
+      }
+    })
+
+    return result;
+  }
+
+  openFiltersDialog() {
+    const ref = this.dialog.open<TableFiltersDialogComponent, DialogData>(TableFiltersDialogComponent, {
+      width: '350px',
+      data: {
+        filters: Object.entries<FieldConfig>(this.config.columns).filter(([_, config]) => {
+          return config.filterType !== undefined;
+        }).map(([name, config]) => ({
+          name,
+          type: config.filterType!,
+        })),
+        extraData: this.extraData,
+      }
+    });
+
+    const sub = ref.componentInstance.onSubmit.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+
+    })
+
+    ref.afterClosed().pipe(takeUntil(this.destroyed$)).subscribe(() => {
+      sub.unsubscribe();
+    })
+  }
+
+  fetchData(options: any, filterToAdd?: Filter) {
+    this.loading.loading.set(true);
+    if (this.config.hasPagination) {
+      this.config
+        .dataFunc(options)
+        .pipe(takeUntil(this.destroyed$))
+        .subscribe((res) => {
+          this.dataSource.data = res.results;
+
+          this.paginator.pageSize = res.results.length;
+          this.paginator.length = res.count;
+          this.paginator.pageSizeOptions = this.getPageSizeOptions();
+
+          this.selection = new SelectionModel<T>(true, []);
+          this.loading.loading.set(false);
+
+          if (filterToAdd !== undefined) {
+            this.activeFilters.update((pre) => [...pre, filterToAdd]);
+          }
+        });
+    } else {
+      this.config
+        .dataFunc(options)
+        .pipe(takeUntil(this.destroyed$))
+        .subscribe((res) => {
+          this.dataSource.data = res;
+          this.selection = new SelectionModel<T>(true, []);
+          this.loading.loading.set(false);
+
+          if (filterToAdd !== undefined) {
+            this.activeFilters.update((pre) => [...pre, filterToAdd]);
+          }
+        });
+    }
+  }
+}
 
 type ExtraData = {
   [key: string]: {
@@ -203,3 +344,9 @@ type ExtraData = {
     map: Map<number, string>;
   };
 };
+
+interface Filter {
+  type: 'search' | 'select' | 'select_null' | 'date' | 'date_range';
+  name: string;
+  value: string;
+}

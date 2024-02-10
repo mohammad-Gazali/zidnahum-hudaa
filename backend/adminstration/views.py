@@ -30,7 +30,7 @@ AdminComingViewSet = create_model_view_set(
         "master": ["exact"],
         "category": ["exact"],
         "is_doubled": ["exact"],
-        "registered_at": ["gt", "lt"],
+        "registered_at": ["exact", "gt", "lt"],
     },
     include_student_name_filter=True,
 )
@@ -55,7 +55,7 @@ AdminPointsAddingViewSet = create_model_view_set(
     filter_fields={
         "master": ["exact"],
         "cause": ["exact"],
-        "created_at": ["gt", "lt"],
+        "created_at": ["exact", "gt", "lt"],
     },
     include_student_name_filter=True,
 )
@@ -66,7 +66,7 @@ AdminPointsDeletingViewSet = create_model_view_set(
     filter_fields={
         "master": ["exact"],
         "cause": ["exact"],
-        "created_at": ["gt", "lt"],
+        "created_at": ["exact", "gt", "lt"],
     },
     include_student_name_filter=True,
 )
@@ -91,7 +91,7 @@ AdminStudentViewSet = create_model_view_set(
     filter_fields={        
         "category": ["exact", "isnull"],
         "group": ["exact", "isnull"],
-        "registered_at": ["gt", "lt"],
+        "registered_at": ["exact", "gt", "lt"],
     },
     include_student_name_filter=True,
     creating_serializer=AdminCreateStudentSerializer,
@@ -105,7 +105,7 @@ AdminMemorizeMessageViewSet = create_model_view_set(
         "master": ["exact"],
         "message_type": ["exact"],
         "is_doubled": ["exact"],
-        "sended_at": ["gt", "lt"],
+        "sended_at": ["exact", "gt", "lt"],
     },
     include_student_name_filter=True,
 )
@@ -114,7 +114,7 @@ AdminMemorizeNotesViewSet = create_model_view_set(
     methods=["get", "delete"],
     filter_fields={
         "master": ["exact"],
-        "sended_at": ["gt", "lt"],
+        "sended_at": ["exact", "gt", "lt"],
     },
     include_student_name_filter=True
 )

@@ -28,6 +28,18 @@ export class TranslateService {
         this.translateMap.set('page', 'صفحة');
         this.translateMap.set('of', 'من');
 
+        // ====== filters ======
+        this.translateMap.set('filters', 'المحددات');
+        this.translateMap.set('actions', 'الإجراءات');
+        this.translateMap.set('search', 'بحث');
+        this.translateMap.set('empty value', 'قيمة فارغة');
+        this.translateMap.set('cancel', 'تراجع');
+        this.translateMap.set('perform filters', 'إجراء المحددات');
+        this.translateMap.set('specific date', 'تاريخ محدد');
+        this.translateMap.set('date range', 'فترة زمنية');
+        this.translateMap.set('start date', 'تاريخ البداية');
+        this.translateMap.set('end date', 'تاريخ النهاية');
+
         // ====== students group ======
         // student model
         this.translateMap.set('id', 'المعرف');

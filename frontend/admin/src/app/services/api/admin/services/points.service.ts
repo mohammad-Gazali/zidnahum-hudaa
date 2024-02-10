@@ -243,6 +243,8 @@ class PointsService extends __BaseService {
    *
    * - `created_at__gt`: created_at__gt
    *
+   * - `created_at`: created_at
+   *
    * - `cause`: cause
    */
   pointsAddingListResponse(params: PointsService.PointsAddingListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<PointsAddingList>}>> {
@@ -256,6 +258,7 @@ class PointsService extends __BaseService {
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
     if (params.createdAtLt != null) __params = __params.set('created_at__lt', params.createdAtLt.toString());
     if (params.createdAtGt != null) __params = __params.set('created_at__gt', params.createdAtGt.toString());
+    if (params.createdAt != null) __params = __params.set('created_at', params.createdAt.toString());
     if (params.cause != null) __params = __params.set('cause', params.cause.toString());
     let req = new HttpRequest<any>(
       'GET',
@@ -290,6 +293,8 @@ class PointsService extends __BaseService {
    * - `created_at__lt`: created_at__lt
    *
    * - `created_at__gt`: created_at__gt
+   *
+   * - `created_at`: created_at
    *
    * - `cause`: cause
    */
@@ -606,6 +611,8 @@ class PointsService extends __BaseService {
    *
    * - `created_at__gt`: created_at__gt
    *
+   * - `created_at`: created_at
+   *
    * - `cause`: cause
    */
   pointsDeletingListResponse(params: PointsService.PointsDeletingListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<PointsDeletingList>}>> {
@@ -619,6 +626,7 @@ class PointsService extends __BaseService {
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
     if (params.createdAtLt != null) __params = __params.set('created_at__lt', params.createdAtLt.toString());
     if (params.createdAtGt != null) __params = __params.set('created_at__gt', params.createdAtGt.toString());
+    if (params.createdAt != null) __params = __params.set('created_at', params.createdAt.toString());
     if (params.cause != null) __params = __params.set('cause', params.cause.toString());
     let req = new HttpRequest<any>(
       'GET',
@@ -653,6 +661,8 @@ class PointsService extends __BaseService {
    * - `created_at__lt`: created_at__lt
    *
    * - `created_at__gt`: created_at__gt
+   *
+   * - `created_at`: created_at
    *
    * - `cause`: cause
    */
@@ -825,6 +835,11 @@ module PointsService {
     createdAtGt?: string;
 
     /**
+     * created_at
+     */
+    createdAt?: string;
+
+    /**
      * cause
      */
     cause?: string;
@@ -885,6 +900,11 @@ module PointsService {
      * created_at__gt
      */
     createdAtGt?: string;
+
+    /**
+     * created_at
+     */
+    createdAt?: string;
 
     /**
      * cause

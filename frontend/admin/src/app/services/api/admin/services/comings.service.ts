@@ -219,6 +219,8 @@ class ComingsService extends __BaseService {
    *
    * - `registered_at__gt`: registered_at__gt
    *
+   * - `registered_at`: registered_at
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
@@ -238,6 +240,7 @@ class ComingsService extends __BaseService {
     if (params.studentName != null) __params = __params.set('student__name', params.studentName.toString());
     if (params.registeredAtLt != null) __params = __params.set('registered_at__lt', params.registeredAtLt.toString());
     if (params.registeredAtGt != null) __params = __params.set('registered_at__gt', params.registeredAtGt.toString());
+    if (params.registeredAt != null) __params = __params.set('registered_at', params.registeredAt.toString());
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.master != null) __params = __params.set('master', params.master.toString());
@@ -269,6 +272,8 @@ class ComingsService extends __BaseService {
    * - `registered_at__lt`: registered_at__lt
    *
    * - `registered_at__gt`: registered_at__gt
+   *
+   * - `registered_at`: registered_at
    *
    * - `ordering`: Which field to use when ordering the results.
    *
@@ -386,6 +391,11 @@ module ComingsService {
      * registered_at__gt
      */
     registeredAtGt?: string;
+
+    /**
+     * registered_at
+     */
+    registeredAt?: string;
 
     /**
      * Which field to use when ordering the results.

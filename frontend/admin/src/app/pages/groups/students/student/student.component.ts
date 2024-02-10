@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TableComponent } from '../../../../shared/table/table.component';
-import { CellDisplay, TableComponentConfig } from '../../../../shared/table/table.component.config';
+import { TableComponentConfig } from '../../../../shared/table/table.component.config';
 import { Student } from '../../../../services/api/admin/models';
 import { StudentsService } from '../../../../services/api/admin/services';
 
@@ -18,28 +18,35 @@ export class StudentComponent {
   public config: TableComponentConfig<Student> = {
     columns: {
       name: {
-        isSearchField: true,
+        display: 'normal',
       },
-      mother_name: {},
+      mother_name: {
+        display: 'normal',
+      },
       category: {
-        display: CellDisplay.RELATION,
+        display: 'relation',
+        filterType: 'exact_null',
         getFieldValueFunc: () => {
           return this.students.studentsCategoryList();
         },
       },
       group: {
-        display: CellDisplay.RELATION,
+        display: 'relation',
+        filterType: 'exact_null',
         getFieldValueFunc: () => {
           return this.students.studentsGroupList();
-        }
+        },
       },
       registered_at: {
-
+        display: 'normal',
+        filterType: 'date',
       }
     },
+    searchField: 'name',
+    hasPagination: true,
     dataFunc: (params) => this.students.studentsStudentList(params),
     getUrlFunc: (id) => {
       return `/students/student/view/${id}`;
-    }
+    },
   };
 }

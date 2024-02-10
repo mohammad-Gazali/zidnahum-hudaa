@@ -1,13 +1,41 @@
 <div class="mat-elevation-z8">
   <div class="top-section">
-    @if (searchField !== undefined) {
-      <mat-form-field appearance="outline">
-        <mat-label>{{ searchField | translate }}</mat-label>
-        <input matInput (input)="handleChangeSearch($event)" />
-      </mat-form-field>
-    }
-    <div>
-      
+    <div class="search-and-filters">
+      @if (config.searchField !== undefined) {
+        <form [formGroup]="searchForm" (ngSubmit)="searchSubmit()">
+          <mat-form-field appearance="outline">
+            <mat-icon matPrefix>search</mat-icon>
+            <mat-label>{{ config.searchField | translate }}</mat-label>
+            <input type="text" matInput formControlName="searchValue" />
+            <mat-error class="hidden"></mat-error>
+          </mat-form-field>
+        </form>
+      }
+      <div class="buttons-container">
+        <button mat-flat-button color="primary">
+          {{ 'actions' | translate }}
+          <mat-icon>build</mat-icon>
+        </button>
+        <button mat-flat-button color="accent" (click)="openFiltersDialog()">
+          {{ 'filters' | translate }}
+          <mat-icon>filter_alt</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="chips-container">
+      @for (filter of activeFilters(); track filter.name) {
+        <mat-chip-row
+          (removed)="removeFilter($index)"
+        >
+          {{ filter.type | translate }} {{ filter.name | translate }}:
+          @if (filter.type === 'search') {
+            {{ filter.value }}
+          }
+          <button matChipRemove>
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-chip-row>
+      }
     </div>
   </div>
   <mat-divider></mat-divider>
@@ -39,11 +67,11 @@
                       <a class="primary" [routerLink]="config.getUrlFunc(element.id)">
                         {{ element[column] }}
                       </a>
-                    } @else if (config.columns[column].display === CellDisplay.RELATION) {
+                    } @else if (config.columns[column].display === 'relation') {
                       {{
                         extraData[column].map.get(element[column]) ?? '-'
                       }}
-                    } @else if (config.columns[column].display === CellDisplay.LINK) {
+                    } @else if (config.columns[column].display === 'link') {
                         @if (element[column] === null || element[column] === undefined) {
                           -
                         } @else {
@@ -67,6 +95,11 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
   </div>
-  <mat-paginator [class.hidden]="config.hasPagination === undefined || config.hasPagination" (page)="onPageChange($event)" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+  <mat-paginator 
+    [class.hidden]="!config.hasPagination" 
+    (page)="onPageChange($event)" 
+    showFirstLastButtons
+  >
   </mat-paginator>
+  <div [class.hidden]="config.hasPagination" class="extra-space"></div>
 </div>
