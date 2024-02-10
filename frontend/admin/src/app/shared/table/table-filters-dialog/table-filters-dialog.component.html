@@ -15,7 +15,7 @@
                     </mat-select>
                 </mat-form-field>
             } @else {
-                <mat-radio-group [formControlName]="filter.name + '__type'" #dateType="matRadioGroup">
+                <mat-radio-group [formControlName]="filter.name + '_type'" #dateType="matRadioGroup">
                     <mat-radio-button value="single">{{ 'specific date' | translate }}</mat-radio-button>
                     <mat-radio-button value="range">{{ 'date range' | translate }}</mat-radio-button>
                 </mat-radio-group>
@@ -28,8 +28,8 @@
                 <mat-form-field [class.hidden]="dateType.value !== 'range'" appearance="outline">
                     <mat-label>{{ filter.name | translate }}</mat-label>
                     <mat-date-range-input [rangePicker]="rangePicker">
-                        <input [formControlName]="filter.name + '__gt'" matStartDate [placeholder]="'start date' | translate">
-                        <input [formControlName]="filter.name + '__lt'" matEndDate [placeholder]="'end date' | translate">
+                        <input [formControlName]="filter.name + '_gt'" matStartDate [placeholder]="'start date' | translate">
+                        <input [formControlName]="filter.name + '_lt'" matEndDate [placeholder]="'end date' | translate">
                     </mat-date-range-input>
                     <mat-date-range-picker #rangePicker></mat-date-range-picker>
                     <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>

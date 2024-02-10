@@ -27,7 +27,9 @@
         <mat-chip-row
           (removed)="removeFilter($index)"
         >
+          <!-- TODO: handle translate the rest of types -->
           {{ filter.type | translate }} {{ filter.name | translate }}:
+          <!-- TODO: handle the rest of types -->
           @if (filter.type === 'search') {
             {{ filter.value }}
           }
@@ -40,7 +42,7 @@
   </div>
   <mat-divider></mat-divider>
   <div class="responsive-container">
-      <table mat-table matSort (matSortChange)="onSortChange($event)" [dataSource]="dataSource">
+      <table mat-table matSort (matSortChange)="onSortChange()" [dataSource]="dataSource">
         @for (column of displayedColumns; track column) {
             @if (column === 'check') {
                 <ng-container matColumnDef="check">
@@ -93,11 +95,17 @@
     
         <tr mat-header-row *matHeaderRowDef="displayedColumns, sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <!-- TODO: handle empty case -->
+        <!-- <tr mat-row *matNoDataRow>
+          <td mat-cell [attr.colspan]="displayedColumns.length">
+            {{ 'No data matching the filter.' | translate }}
+          </td>
+        </tr> -->
       </table>
   </div>
   <mat-paginator 
     [class.hidden]="!config.hasPagination" 
-    (page)="onPageChange($event)" 
+    (page)="onPageChange()" 
     showFirstLastButtons
   >
   </mat-paginator>

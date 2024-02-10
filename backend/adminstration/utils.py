@@ -19,7 +19,7 @@ class BaseViewSet(ModelViewSet):
     permission_classes set to `[IsAdminUser]`, and applying 
     django filter package filters and ordering filter
     """
-    permission_classes = [IsAdminUser]
+    # permission_classes = [IsAdminUser]
     pagination_class = LimitOffsetPagination
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     ordering_fields = "__all__"

@@ -37,7 +37,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { LoadingService } from '../../services/loading.service';
-import { DialogData, TableFiltersDialogComponent } from './table-filters-dialog/table-filters-dialog.component';
+import {
+  DialogData,
+  TableFiltersDialogComponent,
+} from './table-filters-dialog/table-filters-dialog.component';
 
 @Component({
   selector: 'app-table',
@@ -65,20 +68,20 @@ import { DialogData, TableFiltersDialogComponent } from './table-filters-dialog/
 export class TableComponent<T> implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private loading = inject(LoadingService);
-  private dialog = inject(MatDialog)
-  
+  private dialog = inject(MatDialog);
+
   public dataSource = new MatTableDataSource<T>([]);
   public selection = new SelectionModel<T>(true, []);
   public displayedColumns: ('check' | 'id' | GetStringKeys<Omit<T, 'id'>>)[] =
-  [];
+    [];
   public extraData: ExtraData = {};
   public searchForm = this.fb.nonNullable.group({
     searchValue: '',
-  });  
+  });
   public activeFilters = signal<Filter[]>([]);
   private destroyed$ = new Subject<void>();
   private pageSizeOptions = [20, 40, 100, 200];
-  
+
   @Input({ required: true }) public config!: TableComponentConfig<T>;
 
   @ViewChild(MatPaginator, { static: true }) private paginator!: MatPaginator;
@@ -106,65 +109,24 @@ export class TableComponent<T> implements OnInit, OnDestroy {
       }
     );
 
-    this.fetchData({});
+    this.paginator.pageSize = 20;
+    this.fetchData();
   }
 
   ngOnDestroy(): void {
     this.destroyed$.next();
   }
 
-  onPageChange(event: PageEvent) {
+  onPageChange() {
     if (!this.config.hasPagination) return;
 
-    const options: PaginationSortOptions<T> = {
-      limit: event.pageSize,
-      offset: event.pageIndex * event.pageSize,
-    };
-
-    const activeField = this.sort.active as GetStringKeys<T>;
-
-    if (this.sort.direction !== '') {
-      options.ordering =
-        this.sort.direction === 'asc' ? `${activeField}` : `-${activeField}`;
-    }
-
-    const extraOptions: any = {};
-
-    if (this.config.searchField !== undefined) {
-      extraOptions[this.config.searchField] = this.searchForm.value.searchValue;
-    }
-
-    this.fetchData({
-      ...options,
-      ...extraOptions,
-    });
+    this.fetchData(false, false);
   }
 
-  onSortChange(event: Sort) {
+  onSortChange() {
     this.paginator.pageIndex = 0;
 
-    const options: PaginationSortOptions<T> = {
-      limit: this.paginator.pageSize,
-      offset: 0,
-    };
-
-    const activeField = event.active as GetStringKeys<T>;
-
-    if (event.direction !== '') {
-      options.ordering =
-        event.direction === 'asc' ? `${activeField}` : `-${activeField}`;
-    }
-
-    const extraOptions: any = {};
-
-    if (this.config.searchField !== undefined) {
-      extraOptions[this.config.searchField] = this.searchForm.value.searchValue;
-    }
-
-    this.fetchData({
-      ...options,
-      ...extraOptions,
-    });
+    this.fetchData(true, false);
   }
 
   private getPageSizeOptions(): number[] {
@@ -203,15 +165,25 @@ export class TableComponent<T> implements OnInit, OnDestroy {
       : this.dataSource.data.forEach((row) => this.selection.select(row));
   }
 
+  addFilter(filter: Filter) {
+    const existing = this.activeFilters().find((f) => filter.name === f.name);
+
+    if (existing === undefined) {
+      this.activeFilters.update((pre) => [...pre, filter]);
+    } else {
+      // for replacing the new one with the old
+      this.activeFilters.update(pre => {
+        const afterDelete = pre.filter(f => f !== existing);
+        return [...afterDelete, filter]
+      })
+    }
+  }
+
   removeFilter(index: number) {
     const newFilters = this.activeFilters().filter((_, i) => i !== index);
     this.activeFilters.set(newFilters);
 
-    this.fetchData({
-      ...newFilters.map(f => ({
-        [f.name]: f.value,
-      }))
-    });
+    this.fetchData();
   }
 
   searchSubmit() {
@@ -224,99 +196,94 @@ export class TableComponent<T> implements OnInit, OnDestroy {
         pre.filter((f) => f.type !== 'search')
       );
 
-      // TODO
-      // this.fetchData({
-      //   ...this.activeFilters().map(filter => {
-      //     const result: any = {};
-      //     if (filter.type === 'select') {
-      //       if (filter.value === '-1') {
-      //         result[`${filter.name}__isnull`] = 'True';
-      //       } else {
-      //         result[filter.name] = filter.value;
-      //       }
-      //     } else if (filter.type)
-      //   })
-      // });
+      this.fetchData();
 
       return;
     }
 
-    this.fetchData(
-      {
-        [this.config.searchField]: this.searchForm.value.searchValue,
-      },
-      {
-        type: 'search',
-        name: this.config.searchField,
-        value: searchValue,
-      }
-    );
-    
+    const newFilter: Filter = {
+      type: 'search',
+      name: this.config.searchField,
+      value: searchValue,
+    };
+
+    this.addFilter(newFilter);
+
+    this.fetchData();
+
     this.searchForm.reset();
   }
 
-  getFiltersOptions(): any {
-    const result: any = {};
-
-    this.activeFilters().forEach(filter => {
-      if (filter.type === 'search' || filter.type === 'select' || filter.type === 'date') {
-        result[filter.name] = filter.value;
-      } else if (filter.type === 'select_null') {
-        if (filter.value === '-1') {
-          result[`${filter.name}__isnull`] = 'True';
-        } else {
-          result[filter.name] = filter.value;
-        }
-      } else if (filter.type === 'date_range') {
-        
-      }
-    })
-
-    return result;
-  }
-
   openFiltersDialog() {
-    const ref = this.dialog.open<TableFiltersDialogComponent, DialogData>(TableFiltersDialogComponent, {
-      width: '350px',
-      data: {
-        filters: Object.entries<FieldConfig>(this.config.columns).filter(([_, config]) => {
-          return config.filterType !== undefined;
-        }).map(([name, config]) => ({
-          name,
-          type: config.filterType!,
-        })),
-        extraData: this.extraData,
+    const ref = this.dialog.open<TableFiltersDialogComponent, DialogData>(
+      TableFiltersDialogComponent,
+      {
+        width: '350px',
+        data: {
+          filters: Object.entries<FieldConfig>(this.config.columns)
+            .filter(([_, config]) => {
+              return config.filterType !== undefined;
+            })
+            .map(([name, config]) => ({
+              name,
+              type: config.filterType!,
+            })),
+          extraData: this.extraData,
+        },
       }
-    });
+    );
 
-    const sub = ref.componentInstance.onSubmit.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+    const sub = ref.componentInstance.onSubmit
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((newFilters) => {
+        newFilters.forEach((f) => this.addFilter(f));
+        this.fetchData();
+      });
 
-    })
-
-    ref.afterClosed().pipe(takeUntil(this.destroyed$)).subscribe(() => {
-      sub.unsubscribe();
-    })
+    ref
+      .afterClosed()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(() => {
+        sub.unsubscribe();
+      });
   }
 
-  fetchData(options: any, filterToAdd?: Filter) {
+  fetchData(resetPagination = true, resetSort = true) {
+    const options = this.activeFiltersToOptions();
+
+    if (!resetSort && this.sort.direction !== '') {
+      const activeField = this.sort.active;
+      options.ordering =
+        this.sort.direction === 'asc' ? `${activeField}` : `-${activeField}`;
+    }
+
+    if (resetSort) {
+      this.sort.direction = '';
+    }
+
     this.loading.loading.set(true);
+
     if (this.config.hasPagination) {
+      if (!resetPagination) {
+        options.limit = this.paginator.pageSize;
+        options.offset = this.paginator.pageIndex * this.paginator.pageSize;
+      }
+
       this.config
         .dataFunc(options)
         .pipe(takeUntil(this.destroyed$))
         .subscribe((res) => {
           this.dataSource.data = res.results;
 
-          this.paginator.pageSize = res.results.length;
           this.paginator.length = res.count;
           this.paginator.pageSizeOptions = this.getPageSizeOptions();
 
+          if (resetPagination) {
+            this.paginator.pageIndex = 0;
+          }
+
           this.selection = new SelectionModel<T>(true, []);
           this.loading.loading.set(false);
-
-          if (filterToAdd !== undefined) {
-            this.activeFilters.update((pre) => [...pre, filterToAdd]);
-          }
         });
     } else {
       this.config
@@ -326,12 +293,41 @@ export class TableComponent<T> implements OnInit, OnDestroy {
           this.dataSource.data = res;
           this.selection = new SelectionModel<T>(true, []);
           this.loading.loading.set(false);
-
-          if (filterToAdd !== undefined) {
-            this.activeFilters.update((pre) => [...pre, filterToAdd]);
-          }
         });
     }
+  }
+
+  activeFiltersToOptions() {
+    const result: any = {};
+
+    this.activeFilters().forEach((filter) => {
+      if (
+        filter.type === 'search' ||
+        filter.type === 'date' ||
+        filter.type === 'select'
+      ) {
+        result[this.snakeToCamel(filter.name)] = filter.value;
+      } else if (filter.type === 'select_null') {
+        if (filter.value === '-1') {
+          result[this.snakeToCamel(filter.name + '_isnull')] = 'True';
+        } else {
+          result[this.snakeToCamel(filter.name)] = filter.value;
+        }
+      } else if (filter.type === 'date_range') {
+        const [startDate, endDate] = filter.value.split('=');
+
+        result[this.snakeToCamel(filter.name + '_gt')] = startDate;
+        result[this.snakeToCamel(filter.name + '_lt')] = endDate;
+      }
+    });
+
+    return result;
+  }
+
+  snakeToCamel(str: string): string {
+    return str
+      .toLowerCase()
+      .replace(/([_][a-z])/g, (group) => group.toUpperCase().replace('_', ''));
   }
 }
 
@@ -345,7 +341,7 @@ type ExtraData = {
   };
 };
 
-interface Filter {
+export interface Filter {
   type: 'search' | 'select' | 'select_null' | 'date' | 'date_range';
   name: string;
   value: string;
