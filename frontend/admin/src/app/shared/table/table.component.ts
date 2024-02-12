@@ -13,15 +13,15 @@ import {
   MatPaginator,
   MatPaginatorIntl,
   MatPaginatorModule,
-  PageEvent,
 } from '@angular/material/paginator';
-import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import {
   TableComponentConfig,
-  PaginationSortOptions,
   GetStringKeys,
   FieldConfig,
-} from './table.component.config';
+  Filter,
+  ExtraData,
+} from './table.component.interface';
 import { Subject, takeUntil } from 'rxjs';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -37,10 +37,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { LoadingService } from '../../services/loading.service';
-import {
-  DialogData,
-  TableFiltersDialogComponent,
-} from './table-filters-dialog/table-filters-dialog.component';
+import { TableFiltersDialogComponent } from './table-filters-dialog/table-filters-dialog.component';
+import { DateService } from '../../services/date.service';
+import { HelperService } from '../../services/helper.service';
+import { DialogData } from './table-filters-dialog/table-filters-dialog.component.interface';
 
 @Component({
   selector: 'app-table',
@@ -69,6 +69,8 @@ export class TableComponent<T> implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private loading = inject(LoadingService);
   private dialog = inject(MatDialog);
+  private date = inject(DateService);
+  public helper = inject(HelperService);
 
   public dataSource = new MatTableDataSource<T>([]);
   public selection = new SelectionModel<T>(true, []);
@@ -172,10 +174,10 @@ export class TableComponent<T> implements OnInit, OnDestroy {
       this.activeFilters.update((pre) => [...pre, filter]);
     } else {
       // for replacing the new one with the old
-      this.activeFilters.update(pre => {
-        const afterDelete = pre.filter(f => f !== existing);
-        return [...afterDelete, filter]
-      })
+      this.activeFilters.update((pre) => {
+        const afterDelete = pre.filter((f) => f !== existing);
+        return [...afterDelete, filter];
+      });
     }
   }
 
@@ -220,15 +222,20 @@ export class TableComponent<T> implements OnInit, OnDestroy {
       {
         width: '350px',
         data: {
+          extraData: this.extraData,
           filters: Object.entries<FieldConfig>(this.config.columns)
             .filter(([_, config]) => {
               return config.filterType !== undefined;
             })
-            .map(([name, config]) => ({
-              name,
-              type: config.filterType!,
-            })),
-          extraData: this.extraData,
+            .map(([name, config]) => {
+              const activeFilter = this.activeFilters().find(f => f.name === name);
+
+              return {
+                name,
+                type: config.filterType!,
+                defaultValue: activeFilter?.value,
+              };
+            }),
         },
       }
     );
@@ -306,43 +313,21 @@ export class TableComponent<T> implements OnInit, OnDestroy {
         filter.type === 'date' ||
         filter.type === 'select'
       ) {
-        result[this.snakeToCamel(filter.name)] = filter.value;
+        result[this.helper.snakeToCamel(filter.name)] = filter.value;
       } else if (filter.type === 'select_null') {
         if (filter.value === '-1') {
-          result[this.snakeToCamel(filter.name + '_isnull')] = 'True';
+          result[this.helper.snakeToCamel(filter.name + '_isnull')] = 'True';
         } else {
-          result[this.snakeToCamel(filter.name)] = filter.value;
+          result[this.helper.snakeToCamel(filter.name)] = filter.value;
         }
       } else if (filter.type === 'date_range') {
-        const [startDate, endDate] = filter.value.split('=');
+        const [startDate, endDate] = this.date.extractTwoDates(filter.value);
 
-        result[this.snakeToCamel(filter.name + '_gt')] = startDate;
-        result[this.snakeToCamel(filter.name + '_lt')] = endDate;
+        result[this.helper.snakeToCamel(filter.name + '_gt')] = startDate;
+        result[this.helper.snakeToCamel(filter.name + '_lt')] = endDate;
       }
     });
 
     return result;
   }
-
-  snakeToCamel(str: string): string {
-    return str
-      .toLowerCase()
-      .replace(/([_][a-z])/g, (group) => group.toUpperCase().replace('_', ''));
-  }
-}
-
-type ExtraData = {
-  [key: string]: {
-    data: {
-      id: number;
-      name: string;
-    }[];
-    map: Map<number, string>;
-  };
-};
-
-export interface Filter {
-  type: 'search' | 'select' | 'select_null' | 'date' | 'date_range';
-  name: string;
-  value: string;
 }

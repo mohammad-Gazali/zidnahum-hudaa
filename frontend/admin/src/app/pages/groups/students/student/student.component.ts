@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TableComponent } from '../../../../shared/table/table.component';
-import { TableComponentConfig } from '../../../../shared/table/table.component.config';
+import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
 import { Student } from '../../../../services/api/admin/models';
 import { StudentsService } from '../../../../services/api/admin/services';
 

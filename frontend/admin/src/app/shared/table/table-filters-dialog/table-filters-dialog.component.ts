@@ -13,7 +13,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { DateService } from '../../../services/date.service';
-import { Filter } from '../table.component';
+import { Filter } from '../table.component.interface';
+import { DialogData } from './table-filters-dialog.component.interface';
 
 @Component({
   selector: 'app-table-filters-dialog',
@@ -43,22 +44,33 @@ import { Filter } from '../table.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableFiltersDialogComponent {
-  public ref = inject(MatDialogRef);
-  public data: DialogData = inject(MAT_DIALOG_DATA);
-  public onSubmit = new EventEmitter<Filter[]>();
-  
   private fb = inject(FormBuilder);
   private date = inject(DateService);
+  public data: DialogData = inject(MAT_DIALOG_DATA);
+  public ref = inject(MatDialogRef);
+  
+  public onSubmit = new EventEmitter<Filter[]>();
   public form = this.fb.group({});
 
   constructor () {    
     this.data.filters.forEach(filter => {
       if (filter.type === 'date') {
+        if (filter.defaultValue !== undefined && this.date.containsSeparator(filter.defaultValue)) {
+          const [startDate, endDate] = this.date.extractTwoDates(filter.defaultValue);
+
+          this.form.addControl(filter.name + '_gt', this.fb.nonNullable.control(startDate));
+          this.form.addControl(filter.name + '_lt', this.fb.nonNullable.control(endDate));
+          this.form.addControl(filter.name + '_type', this.fb.nonNullable.control('range'));
+
+          return;
+        }
+
         this.form.addControl(filter.name + '_gt', this.fb.nonNullable.control(''));
         this.form.addControl(filter.name + '_lt', this.fb.nonNullable.control(''));
         this.form.addControl(filter.name + '_type', this.fb.nonNullable.control('single'));
       }
-      this.form.addControl(filter.name, this.fb.nonNullable.control(''));
+      
+      this.form.addControl(filter.name, this.fb.nonNullable.control(filter.defaultValue ?? ''));
     })
   }
 
@@ -87,7 +99,7 @@ export class TableFiltersDialogComponent {
             usedFilters.push({
               name: filter.name,
               type: 'date_range',
-              value: `${startDateValue}=${endDateValue}`,
+              value: this.date.concatTwoDates(startDateValue, endDateValue),
             })
           }
 
@@ -122,23 +134,3 @@ export class TableFiltersDialogComponent {
     this.ref.close();
   }
 }
-
-export interface DialogData {
-  filters: DialogFilter[];
-  extraData: ExtraData;
-}
-
-interface DialogFilter {
-  name: string;
-  type: 'date' | 'exact' | 'exact_null';
-}
-
-type ExtraData = {
-  [key: string]: {
-    data: {
-      id: number;
-      name: string;
-    }[];
-    map: Map<number, string>;
-  };
-};

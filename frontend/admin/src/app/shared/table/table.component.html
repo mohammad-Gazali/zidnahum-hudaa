@@ -7,7 +7,6 @@
             <mat-icon matPrefix>search</mat-icon>
             <mat-label>{{ config.searchField | translate }}</mat-label>
             <input type="text" matInput formControlName="searchValue" />
-            <mat-error class="hidden"></mat-error>
           </mat-form-field>
         </form>
       }
@@ -27,11 +26,23 @@
         <mat-chip-row
           (removed)="removeFilter($index)"
         >
-          <!-- TODO: handle translate the rest of types -->
-          {{ filter.type | translate }} {{ filter.name | translate }}:
-          <!-- TODO: handle the rest of types -->
+          @if (filter.type !== 'date') {
+            {{ filter.type | translate }}
+          } {{ filter.name | translate }}:
           @if (filter.type === 'search') {
             {{ filter.value }}
+          } @else if (filter.type === 'select') {
+            {{ extraData[filter.name].map.get(helper.parseInt(filter.value)) }}
+          } @else if (filter.type === 'select_null') {
+            @if (filter.value === '-1') {
+              {{ 'empty value' | translate }}
+            } @else {
+              {{ extraData[filter.name].map.get(helper.parseInt(filter.value)) }}
+            }
+          } @else if (filter.type === 'date') {
+            <span dir="ltr">{{ filter.value.replaceAll('-', '/') }}</span>
+          } @else if (filter.type === 'date_range') {
+            <span dir="ltr">{{ filter.value.replace('=', ' → ').replaceAll('-', '/') }}</span>
           }
           <button matChipRemove>
             <mat-icon>close</mat-icon>

@@ -29,9 +29,14 @@ export class TranslateService {
         this.translateMap.set('of', 'من');
 
         // ====== filters ======
+        // "search" | "select" | "select_null" | "date" | "date_range"
         this.translateMap.set('filters', 'المحددات');
         this.translateMap.set('actions', 'الإجراءات');
         this.translateMap.set('search', 'بحث');
+        this.translateMap.set('select', 'اختيار');
+        this.translateMap.set('select_null', 'اختيار');
+        this.translateMap.set('date', 'تاريخ');
+        this.translateMap.set('date_range', 'مدة زمنية');
         this.translateMap.set('empty value', 'قيمة فارغة');
         this.translateMap.set('cancel', 'تراجع');
         this.translateMap.set('perform filters', 'إجراء المحددات');
