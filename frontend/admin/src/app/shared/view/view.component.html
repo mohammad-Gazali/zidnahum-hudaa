@@ -1,0 +1,25 @@
+<div class="fields-container">
+    @for (field of fields(); track field.name) {
+        <div class="field-row">
+            <div>
+                <span>
+                    {{ field.name | translate }}
+                </span>
+            </div>
+            @if (field.type !== 'custom' && field.type !== 'date' && field.type !== 'datetime') {
+                <span>
+                    {{ field.value || '-' }}
+                </span>
+            } @else if (field.type === 'date' || field.type === 'datetime') {
+                <span dir="ltr">
+                    {{ field.value?.replaceAll('-', '/') || '-' }}
+                </span>
+            } @else {
+                TODO
+            }
+        </div>
+        @if (!$last) {
+            <mat-divider></mat-divider>
+        }
+    }
+</div>

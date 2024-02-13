@@ -1,3 +1,4 @@
+from django.urls import path
 from rest_framework.routers import DefaultRouter
 from adminstration import views
 
@@ -35,5 +36,6 @@ router.register("students/group", views.AdminStudentGroupViewSet, basename="admi
 router.register("students/student", views.AdminStudentViewSet, basename="admin_student")
 router.register("students/memorize-message", views.AdminMemorizeMessageViewSet, basename="admin_memorize_message")
 router.register("students/memorize-notes", views.AdminMemorizeNotesViewSet, basename="admin_memorize_notes")
+
 
 urlpatterns = router.urls

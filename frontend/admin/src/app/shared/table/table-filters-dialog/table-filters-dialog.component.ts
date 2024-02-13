@@ -1,8 +1,23 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  inject,
+} from '@angular/core';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogActions,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
+} from '@angular/material/dialog';
+import {
+  MatFormFieldModule,
+} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import {
+  MatDatepickerModule
+} from '@angular/material/datepicker';
 import {
   MAT_DATE_LOCALE,
   provideNativeDateAdapter,
@@ -48,37 +63,63 @@ export class TableFiltersDialogComponent {
   private date = inject(DateService);
   public data: DialogData = inject(MAT_DIALOG_DATA);
   public ref = inject(MatDialogRef);
-  
+
   public onSubmit = new EventEmitter<Filter[]>();
   public form = this.fb.group({});
 
-  constructor () {    
-    this.data.filters.forEach(filter => {
+  constructor() {
+    this.data.filters.forEach((filter) => {
       if (filter.type === 'date') {
-        if (filter.defaultValue !== undefined && this.date.containsSeparator(filter.defaultValue)) {
-          const [startDate, endDate] = this.date.extractTwoDates(filter.defaultValue);
+        if (
+          filter.defaultValue !== undefined &&
+          this.date.containsSeparator(filter.defaultValue)
+        ) {
+          const [startDate, endDate] = this.date.extractTwoDates(
+            filter.defaultValue
+          );
 
-          this.form.addControl(filter.name + '_gt', this.fb.nonNullable.control(startDate));
-          this.form.addControl(filter.name + '_lt', this.fb.nonNullable.control(endDate));
-          this.form.addControl(filter.name + '_type', this.fb.nonNullable.control('range'));
+          this.form.addControl(
+            filter.name + '_gt',
+            this.fb.nonNullable.control(startDate)
+          );
+          this.form.addControl(
+            filter.name + '_lt',
+            this.fb.nonNullable.control(endDate)
+          );
+          this.form.addControl(
+            filter.name + '_type',
+            this.fb.nonNullable.control('range')
+          );
 
           return;
         }
 
-        this.form.addControl(filter.name + '_gt', this.fb.nonNullable.control(''));
-        this.form.addControl(filter.name + '_lt', this.fb.nonNullable.control(''));
-        this.form.addControl(filter.name + '_type', this.fb.nonNullable.control('single'));
+        this.form.addControl(
+          filter.name + '_gt',
+          this.fb.nonNullable.control('')
+        );
+        this.form.addControl(
+          filter.name + '_lt',
+          this.fb.nonNullable.control('')
+        );
+        this.form.addControl(
+          filter.name + '_type',
+          this.fb.nonNullable.control('single')
+        );
       }
-      
-      this.form.addControl(filter.name, this.fb.nonNullable.control(filter.defaultValue ?? ''));
-    })
+
+      this.form.addControl(
+        filter.name,
+        this.fb.nonNullable.control(filter.defaultValue ?? '')
+      );
+    });
   }
 
   submitFilters() {
     const usedFilters: Filter[] = [];
     const formValue = this.form.value as any;
 
-    this.data.filters.forEach(filter => {
+    this.data.filters.forEach((filter) => {
       if (filter.type === 'date') {
         if (formValue[filter.name + '_type'] === 'single') {
           if (formValue[filter.name] instanceof Date) {
@@ -90,21 +131,25 @@ export class TableFiltersDialogComponent {
               value: dateValue,
             });
           }
-
         } else {
-          if (formValue[filter.name + '_gt'] instanceof Date && formValue[filter.name + '_lt'] instanceof Date) {
-            const startDateValue = this.date.format(formValue[filter.name + '_gt']);
-            const endDateValue = this.date.format(formValue[filter.name + '_lt']);
+          if (
+            formValue[filter.name + '_gt'] instanceof Date &&
+            formValue[filter.name + '_lt'] instanceof Date
+          ) {
+            const startDateValue = this.date.format(
+              formValue[filter.name + '_gt']
+            );
+            const endDateValue = this.date.format(
+              formValue[filter.name + '_lt']
+            );
 
             usedFilters.push({
               name: filter.name,
               type: 'date_range',
               value: this.date.concatTwoDates(startDateValue, endDateValue),
-            })
+            });
           }
-
         }
-
       } else if (filter.type === 'exact_null') {
         const value = formValue[filter.name];
 
@@ -113,9 +158,8 @@ export class TableFiltersDialogComponent {
             name: filter.name,
             type: 'select_null',
             value,
-          })
+          });
         }
-
       } else if (filter.type === 'exact') {
         const value = formValue[filter.name];
 
@@ -124,10 +168,10 @@ export class TableFiltersDialogComponent {
             name: filter.name,
             type: 'select',
             value,
-          })
+          });
         }
       }
-    })
+    });
 
     this.onSubmit.emit(usedFilters);
 

@@ -85,10 +85,11 @@ AdminCreateStudentSerializer = create_serializer(Student, serializer_fields=[
     exclude_fields=True,
     extra_ref="create"
 )
-AdminListStudentSerializer = create_serializer(Student, serializer_fields=["id", "name", "mother_name", "category", "group", "registered_at"])
+AdminListStudentSerializer = create_serializer(Student, serializer_fields=["id", "name", "mother_name", "masjed", "category", "group", "registered_at"])
 AdminStudentViewSet = create_model_view_set(
     Student,
-    filter_fields={        
+    filter_fields={
+        "masjed": ["exact"],
         "category": ["exact", "isnull"],
         "group": ["exact", "isnull"],
         "registered_at": ["exact", "gt", "lt"],

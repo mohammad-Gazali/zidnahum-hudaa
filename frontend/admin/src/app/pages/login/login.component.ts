@@ -4,7 +4,7 @@ import {
   OnDestroy,
   inject,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -43,7 +43,9 @@ export class LoginComponent implements OnDestroy {
   password = '';
   destroyed$ = new Subject<void>();
 
-  submit() {
+  submit(form: NgForm) {
+    if (form.invalid) return;
+
     this.loading.set(true);
     this.accounts
       .tokenObtainPair({

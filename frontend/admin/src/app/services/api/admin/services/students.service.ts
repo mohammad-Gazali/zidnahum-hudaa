@@ -17,6 +17,7 @@ import { MemorizeMessageList } from '../models/memorize-message-list';
 import { MemorizeNotesList } from '../models/memorize-notes-list';
 import { Student } from '../models/student';
 import { StudentCreate } from '../models/student-create';
+import { StudentDetails } from '../models/student-details';
 import { StudentUpdate } from '../models/student-update';
 @Injectable({
   providedIn: 'root',
@@ -716,6 +717,8 @@ class StudentsService extends __BaseService {
    *
    * - `name`: param for filtering student via his name or his id
    *
+   * - `masjed`: masjed
+   *
    * - `limit`: Number of results to return per page.
    *
    * - `group__isnull`: group__isnull
@@ -736,6 +739,7 @@ class StudentsService extends __BaseService {
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.name != null) __params = __params.set('name', params.name.toString());
+    if (params.masjed != null) __params = __params.set('masjed', params.masjed.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
     if (params.groupIsnull != null) __params = __params.set('group__isnull', params.groupIsnull.toString());
     if (params.group != null) __params = __params.set('group', params.group.toString());
@@ -772,6 +776,8 @@ class StudentsService extends __BaseService {
    * - `offset`: The initial index from which to return the results.
    *
    * - `name`: param for filtering student via his name or his id
+   *
+   * - `masjed`: masjed
    *
    * - `limit`: Number of results to return per page.
    *
@@ -826,7 +832,7 @@ class StudentsService extends __BaseService {
   /**
    * @param id undefined
    */
-  studentsStudentReadResponse(id: string): __Observable<__StrictHttpResponse<Student>> {
+  studentsStudentReadResponse(id: string): __Observable<__StrictHttpResponse<StudentDetails>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -844,16 +850,16 @@ class StudentsService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Student>;
+        return _r as __StrictHttpResponse<StudentDetails>;
       })
     );
   }
   /**
    * @param id undefined
    */
-  studentsStudentRead(id: string): __Observable<Student> {
+  studentsStudentRead(id: string): __Observable<StudentDetails> {
     return this.studentsStudentReadResponse(id).pipe(
-      __map(_r => _r.body as Student)
+      __map(_r => _r.body as StudentDetails)
     );
   }
 
@@ -1089,6 +1095,11 @@ module StudentsService {
      * param for filtering student via his name or his id
      */
     name?: string;
+
+    /**
+     * masjed
+     */
+    masjed?: '1' | '2' | '3';
 
     /**
      * Number of results to return per page.

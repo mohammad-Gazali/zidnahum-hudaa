@@ -3,6 +3,7 @@ import { TableComponent } from '../../../../shared/table/table.component';
 import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
 import { Student } from '../../../../services/api/admin/models';
 import { StudentsService } from '../../../../services/api/admin/services';
+import { MasjedService } from '../../../../services/masjed.service';
 
 @Component({
   selector: 'app-student',
@@ -14,6 +15,7 @@ import { StudentsService } from '../../../../services/api/admin/services';
 })
 export class StudentComponent {
   private students = inject(StudentsService);
+  private masjed = inject(MasjedService);
 
   public config: TableComponentConfig<Student> = {
     columns: {
@@ -22,6 +24,13 @@ export class StudentComponent {
       },
       mother_name: {
         display: 'normal',
+      },
+      masjed: {
+        display: 'relation',
+        filterType: 'exact',
+        getFieldValueFunc: () => {
+          return this.masjed.getMasjeds();
+        }
       },
       category: {
         display: 'relation',

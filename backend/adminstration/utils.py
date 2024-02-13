@@ -7,6 +7,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.status import HTTP_200_OK
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg.openapi import Parameter, IN_QUERY, TYPE_STRING
 from students.models import Student
@@ -19,7 +20,7 @@ class BaseViewSet(ModelViewSet):
     permission_classes set to `[IsAdminUser]`, and applying 
     django filter package filters and ordering filter
     """
-    # permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser]
     pagination_class = LimitOffsetPagination
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     ordering_fields = "__all__"
@@ -130,9 +131,16 @@ def create_model_view_set(
             def list(self, request, *args, **kwargs):
                 return super().list(request, *args, **kwargs)
 
+        if listing_serializer is not None:
+            @swagger_auto_schema(responses={
+                HTTP_200_OK: details_serializer or create_serializer(model, fields, exclude_fields, "details")
+            })
+            def retrieve(self, request, *args, **kwargs):
+                return super().retrieve(request, *args, **kwargs)
+
         def get_serializer_class(self):
             if self.request.method == "GET":
-                if self.kwargs.get("id") is not None:
+                if self.kwargs.get("pk") is not None:
                     return details_serializer or create_serializer(model, fields, exclude_fields, "details")
                 else:
                     return listing_serializer or create_serializer(model, fields, exclude_fields, "list")

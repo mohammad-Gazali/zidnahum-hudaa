@@ -28,8 +28,8 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { TableComponentPaginator } from './table.component.paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
@@ -41,6 +41,8 @@ import { TableFiltersDialogComponent } from './table-filters-dialog/table-filter
 import { DateService } from '../../services/date.service';
 import { HelperService } from '../../services/helper.service';
 import { DialogData } from './table-filters-dialog/table-filters-dialog.component.interface';
+
+// TODO: add actions to table
 
 @Component({
   selector: 'app-table',

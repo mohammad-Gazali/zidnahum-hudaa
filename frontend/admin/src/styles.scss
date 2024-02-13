@@ -79,3 +79,7 @@ a {
 .primary {
   color: mat.get-color-from-palette($admin-primary);
 }
+
+.mdc-button__label {
+  letter-spacing: normal;
+}

@@ -50,9 +50,31 @@ export class TranslateService {
         this.translateMap.set('id', 'المعرف');
         this.translateMap.set('name', 'الاسم');
         this.translateMap.set('mother_name', 'اسم الأم');
+        this.translateMap.set('birthdate', 'تاريخ الميلاد');
         this.translateMap.set('category', 'الفئة');
         this.translateMap.set('group', 'المجموعة');
+        this.translateMap.set('masjed', 'المسجد');
+        this.translateMap.set('address', 'العنوان تفصيلاً');
+        this.translateMap.set('static_phone', 'الهاتف الأرضي');
+        this.translateMap.set('cell_phone', 'الجوال');
+        this.translateMap.set('father_phone', 'جوال الأب');
+        this.translateMap.set('mother_phone', 'جوال الأم');
         this.translateMap.set('registered_at', 'تاريخ التسجيل');
+        this.translateMap.set('father_work', 'عمل الأب');
+        this.translateMap.set('notes', 'ملاحظات');
+        this.translateMap.set('bring_him', 'أحضره');
+        this.translateMap.set('parts_received', 'الأجزاء المستلمة');
+        this.translateMap.set('q_memorizing', 'حفظ القرآن');
+        this.translateMap.set('q_test', 'السبر في المسجد');
+        this.translateMap.set('q_awqaf_test', 'سبر القرآن في الأوقاف غيباً');
+        this.translateMap.set('q_awqaf_test_looking', 'سبر القرآن في الأوقاف نظراً');
+        this.translateMap.set('q_awqaf_test_explaining', 'سبر القرآن في الأوقاف تفسيراً');
+        this.translateMap.set('alarbaein_alnawawia_old', 'الأربعين النووية قديم');
+        this.translateMap.set('alarbaein_alnawawia_new', 'الأربعين النووية جديد');
+        this.translateMap.set('riad_alsaalihin_old', 'رياض الصالحين قديم');
+        this.translateMap.set('riad_alsaalihin_new', 'رياض الصالحين جديد');
+        this.translateMap.set('allah_names_old', 'أسماء الله الحسنى قديم');
+        this.translateMap.set('allah_names_new', 'أسماء الله الحسنى جديد');
     }
 
     translate(value: string): string {
