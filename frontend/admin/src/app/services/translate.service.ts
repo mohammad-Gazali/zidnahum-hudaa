@@ -17,7 +17,10 @@ export class TranslateService {
         this.translateMap.set('logout', 'تسجيل خروج');
         this.translateMap.set('no active account found with the given credentials', 'لا يوجد حساب بهذه التفاصيل');
 
+        // ====== form errors ======
         this.translateMap.set('this field is required', 'هذا الحقل مطلوب');
+        this.translateMap.set('the maximum value is', 'القيمة العظمى هي');
+        this.translateMap.set('the minimum value is', 'القيمة الصغرى هي');
 
         // ====== paginator ======
         this.translateMap.set('next page', 'الصفحة التالية');

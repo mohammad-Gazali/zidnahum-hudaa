@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   OnDestroy,
@@ -33,7 +32,6 @@ import { LoadingService } from '../../services/loading.service';
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavbarComponent implements OnDestroy {
   private accounts = inject(AccountsService);

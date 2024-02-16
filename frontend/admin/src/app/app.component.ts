@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LayoutComponent } from './layout/layout.component';
@@ -11,7 +11,6 @@ import { SnackbarService } from './services/snackbar.service';
   imports: [RouterOutlet, LayoutComponent, MatProgressSpinnerModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
   private accounts = inject(AccountsService);

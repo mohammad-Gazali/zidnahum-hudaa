@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   Input,
   OnDestroy,
@@ -65,11 +64,11 @@ import { DialogData } from './table-filters-dialog/table-filters-dialog.componen
   providers: [{ provide: MatPaginatorIntl, useClass: TableComponentPaginator }],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  
 })
 export class TableComponent<T> implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
-  private loading = inject(LoadingService);
+  private loading = inject(LoadingService).loading;
   private dialog = inject(MatDialog);
   private date = inject(DateService);
   public helper = inject(HelperService);
@@ -270,7 +269,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
       this.sort.direction = '';
     }
 
-    this.loading.loading.set(true);
+    this.loading.set(true);
 
     if (this.config.hasPagination) {
       if (!resetPagination) {
@@ -292,7 +291,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
           }
 
           this.selection = new SelectionModel<T>(true, []);
-          this.loading.loading.set(false);
+          this.loading.set(false);
         });
     } else {
       this.config
@@ -301,7 +300,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
         .subscribe((res) => {
           this.dataSource.data = res;
           this.selection = new SelectionModel<T>(true, []);
-          this.loading.loading.set(false);
+          this.loading.set(false);
         });
     }
   }

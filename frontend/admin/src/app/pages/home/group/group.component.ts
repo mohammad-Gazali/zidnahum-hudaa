@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,7 +11,6 @@ import { Group } from '../../../services/groups.service';
   imports: [MatCardModule, MatIconModule, MatDividerModule, RouterLink],
   templateUrl: './group.component.html',
   styleUrl: './group.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeGroupComponent {
   @Input({ required: true }) group!: Group;

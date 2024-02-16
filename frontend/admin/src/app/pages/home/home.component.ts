@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { HomeGroupComponent } from './group/group.component';
 import { GroupsService } from '../../services/groups.service';
 
@@ -8,8 +8,7 @@ import { GroupsService } from '../../services/groups.service';
   standalone: true,
   imports: [HomeGroupComponent],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './home.component.scss'
 })
 export class HomeComponent {
   public groupsService = inject(GroupsService);

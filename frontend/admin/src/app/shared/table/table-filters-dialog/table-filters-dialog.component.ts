@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   inject,
@@ -56,7 +55,6 @@ import { DialogData } from './table-filters-dialog.component.interface';
   ],
   templateUrl: './table-filters-dialog.component.html',
   styleUrl: './table-filters-dialog.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableFiltersDialogComponent {
   private fb = inject(FormBuilder);

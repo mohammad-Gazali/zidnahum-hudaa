@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TableComponent } from '../../../../shared/table/table.component';
 import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
 import { Student } from '../../../../services/api/admin/models';
@@ -11,7 +11,6 @@ import { MasjedService } from '../../../../services/masjed.service';
   imports: [TableComponent],
   templateUrl: './student.component.html',
   styleUrl: './student.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StudentComponent {
   private students = inject(StudentsService);

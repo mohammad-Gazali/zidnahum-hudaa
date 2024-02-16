@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   MatListItemIcon,
   MatListModule,
@@ -19,7 +19,6 @@ import { ThemeService } from '../../services/theme.service';
   ],
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidenavComponent {
   public groupsService = inject(GroupsService);

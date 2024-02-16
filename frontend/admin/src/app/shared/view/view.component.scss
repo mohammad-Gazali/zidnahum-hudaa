@@ -1,3 +1,10 @@
+.mode-action-button {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    z-index: 10;
+}
+
 .fields-container {
     display: flex;
     flex-direction: column;
@@ -6,16 +13,45 @@
     .field-row {
         font-size: 14px;
 
-        & :first-child {
+        .row-title {
             width: 200px;
             margin-left: 10px;
             display: inline-block;
             font-weight: bold;
             font-size: 12px;
         }
+
+        mat-form-field {
+            font-size: 12px !important;
+        }
     }
 
     mat-divider {
         max-width: 80vw;
+    }
+
+    a {
+        font-weight: bold;
+
+        &:hover {
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+        }
+    }
+
+    @media (max-width: 500px) {
+        mat-divider {
+            max-width: 100%;
+        }
+
+        .field-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+
+            & :nth-child(2) {
+                width: fit-content;
+            }
+        }
     }
 }
