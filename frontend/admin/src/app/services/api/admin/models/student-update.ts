@@ -12,7 +12,6 @@ export interface StudentUpdate {
   father_phone?: null | string;
   father_work?: null | string;
   group?: null | number;
-  id: number;
   masjed?: 1 | 2 | 3;
   mother_name?: null | string;
   mother_phone?: null | string;
@@ -24,7 +23,6 @@ export interface StudentUpdate {
   q_awqaf_test_looking?: {};
   q_memorizing?: {};
   q_test?: {};
-  registered_at?: string;
   riad_alsaalihin_new?: number;
   riad_alsaalihin_old?: number;
   static_phone?: null | string;

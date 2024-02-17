@@ -1,3 +1,26 @@
+::ng-deep .mat-drawer-inner-container {
+    &::-webkit-scrollbar {
+        appearance: none;
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: var(--mat-sidenav-container-background-color);
+    }
+
+    &::-webkit-scrollbar-button {
+        appearance: none;
+        display: none;
+        background-color: var(--mat-sidenav-container-background-color);
+        
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: rgb(223, 223, 223);
+        border-radius: 20px;
+    }
+}
+
 .logo {
     width: 70px;
     margin-top: 1rem;

@@ -9,8 +9,17 @@ export class TranslateService {
     constructor () {
         this.translateMap.set('zidnahum hudaa dashboard', 'لوحة تحكم وزدناهم هدى');
         this.translateMap.set('zidnahum hudaa', 'وزدناهم هدى');
-        this.translateMap.set('all rights reserved &copy; zidnhaum hudaa 2023 - 2024', 'جميع الحقوق محفوظة &copy; وزدناهم هدى 2023 - 2024');
+        this.translateMap.set('warning', 'تحذير');
+        this.translateMap.set('are you sure you want to delete this', 'هل أنت متأكد من حذف هذا');
+        this.translateMap.set('?', '؟');
+        this.translateMap.set('yes', 'نعم');
+        this.translateMap.set('total count', 'العدد الكلي');
 
+        // ====== global forms ======
+        this.translateMap.set('update', 'تعديل');
+        this.translateMap.set('delete', 'حذف');
+
+        // ====== login form ======
         this.translateMap.set('username', 'اسم المستخدم');
         this.translateMap.set('password', 'كلمة المرور');
         this.translateMap.set('login', 'تسجيل دخول');
@@ -50,6 +59,8 @@ export class TranslateService {
 
         // ====== students group ======
         // student model
+        this.translateMap.set('students', 'الطلاب');
+        this.translateMap.set('student', 'الطالب');
         this.translateMap.set('id', 'المعرف');
         this.translateMap.set('name', 'الاسم');
         this.translateMap.set('mother_name', 'اسم الأم');

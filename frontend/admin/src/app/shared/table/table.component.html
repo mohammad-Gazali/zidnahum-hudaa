@@ -114,11 +114,16 @@
         </tr> -->
       </table>
   </div>
-  <mat-paginator 
-    [class.hidden]="!config.hasPagination" 
-    (page)="onPageChange()" 
-    showFirstLastButtons
-  >
-  </mat-paginator>
+  <div class="bottom-row">
+    @if (totalCount !== 0) {
+      <span class="total-count">{{ 'Total count' | translate }}: {{ totalCount }}</span>
+    }
+    <mat-paginator 
+      [class.hidden]="!config.hasPagination" 
+      (page)="onPageChange()" 
+      showFirstLastButtons
+    >
+    </mat-paginator>
+  </div>
   <div [class.hidden]="config.hasPagination" class="extra-space"></div>
 </div>

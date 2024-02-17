@@ -44,7 +44,7 @@ export { StudentGroupCreate } from './models/student-group-create';
 export { StudentGroupUpdate } from './models/student-group-update';
 export { MemorizeMessageList } from './models/memorize-message-list';
 export { MemorizeNotesList } from './models/memorize-notes-list';
-export { Student } from './models/student';
+export { StudentList } from './models/student-list';
 export { StudentCreate } from './models/student-create';
 export { StudentDetails } from './models/student-details';
 export { StudentUpdate } from './models/student-update';

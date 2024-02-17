@@ -82,6 +82,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
     searchValue: '',
   });
   public activeFilters = signal<Filter[]>([]);
+  public totalCount = 0;
   private destroyed$ = new Subject<void>();
   private pageSizeOptions = [20, 40, 100, 200];
 
@@ -283,6 +284,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
         .subscribe((res) => {
           this.dataSource.data = res.results;
 
+          this.totalCount = res.count;
           this.paginator.length = res.count;
           this.paginator.pageSizeOptions = this.getPageSizeOptions();
 

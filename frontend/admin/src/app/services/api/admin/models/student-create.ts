@@ -8,13 +8,11 @@ export interface StudentCreate {
   father_phone?: null | string;
   father_work?: null | string;
   group?: null | number;
-  id: number;
   masjed?: 1 | 2 | 3;
   mother_name?: null | string;
   mother_phone?: null | string;
   name: string;
   notes?: null | string;
   parts_received?: string;
-  registered_at?: string;
   static_phone?: null | string;
 }

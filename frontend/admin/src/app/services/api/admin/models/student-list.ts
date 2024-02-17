@@ -1,5 +1,5 @@
 /* tslint:disable */
-export interface Student {
+export interface StudentList {
   category?: null | number;
   group?: null | number;
   id: number;

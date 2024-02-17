@@ -15,7 +15,7 @@ import { StudentGroupCreate } from '../models/student-group-create';
 import { StudentGroupUpdate } from '../models/student-group-update';
 import { MemorizeMessageList } from '../models/memorize-message-list';
 import { MemorizeNotesList } from '../models/memorize-notes-list';
-import { Student } from '../models/student';
+import { StudentList } from '../models/student-list';
 import { StudentCreate } from '../models/student-create';
 import { StudentDetails } from '../models/student-details';
 import { StudentUpdate } from '../models/student-update';
@@ -729,7 +729,7 @@ class StudentsService extends __BaseService {
    *
    * - `category`: category
    */
-  studentsStudentListResponse(params: StudentsService.StudentsStudentListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<Student>}>> {
+  studentsStudentListResponse(params: StudentsService.StudentsStudentListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<StudentList>}>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -758,7 +758,7 @@ class StudentsService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<Student>}>;
+        return _r as __StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<StudentList>}>;
       })
     );
   }
@@ -789,9 +789,9 @@ class StudentsService extends __BaseService {
    *
    * - `category`: category
    */
-  studentsStudentList(params: StudentsService.StudentsStudentListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<Student>}> {
+  studentsStudentList(params: StudentsService.StudentsStudentListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<StudentList>}> {
     return this.studentsStudentListResponse(params).pipe(
-      __map(_r => _r.body as {count: number, next?: null | string, previous?: null | string, results: Array<Student>})
+      __map(_r => _r.body as {count: number, next?: null | string, previous?: null | string, results: Array<StudentList>})
     );
   }
 

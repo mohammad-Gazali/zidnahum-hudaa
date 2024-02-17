@@ -5,6 +5,8 @@ import { LayoutComponent } from './layout/layout.component';
 import { AccountsService } from './services/api/accounts/accounts.service';
 import { SnackbarService } from './services/snackbar.service';
 
+// TODO: add error handler
+
 @Component({
   selector: 'app-root',
   standalone: true,

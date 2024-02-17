@@ -64,9 +64,20 @@
         }
     }
 
-    mat-paginator {
-        border-radius: 0px 0px var(--border-radius) var(--border-radius);
+    .bottom-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .total-count {
+            padding-right: 1.5rem;
+        }
+
+        mat-paginator {
+            border-radius: 0px 0px var(--border-radius) var(--border-radius);
+        }
     }
+
 
     .extra-space {
         height: 1rem;

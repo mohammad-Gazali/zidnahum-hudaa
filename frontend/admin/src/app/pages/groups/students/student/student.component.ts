@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { TableComponent } from '../../../../shared/table/table.component';
 import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
-import { Student } from '../../../../services/api/admin/models';
+import { StudentList } from '../../../../services/api/admin/models';
 import { StudentsService } from '../../../../services/api/admin/services';
 import { MasjedService } from '../../../../services/masjed.service';
 
@@ -16,7 +16,7 @@ export class StudentComponent {
   private students = inject(StudentsService);
   private masjed = inject(MasjedService);
 
-  public config: TableComponentConfig<Student> = {
+  public config: TableComponentConfig<StudentList> = {
     columns: {
       name: {
         display: 'normal',

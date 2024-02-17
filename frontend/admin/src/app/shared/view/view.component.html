@@ -1,10 +1,10 @@
-@if (config.editable) {
+@if (config.updateFunc !== undefined) {
     <button [color]="editMode() ? 'primary' : 'accent'" class="mode-action-button" mat-fab (click)="toggleMode()">
         <mat-icon [class.hidden]="editMode()">edit</mat-icon>
         <mat-icon [class.hidden]="!editMode()">info</mat-icon>
     </button>
 }
-<form [formGroup]="form" class="fields-container">    
+<form [formGroup]="form" (ngSubmit)="submitUpdate()" class="fields-container">
     @for (field of fields(); track field.name) {
         <div class="field-row">
             <div class="row-title">
@@ -12,18 +12,46 @@
                     {{ field.name | translate }}
                 </span>
             </div>
-            @if (field.type === 'string' || field.type === 'number' || field.type === 'boolean') {
-                <span [class.hidden]="editMode() && field.name !== 'id'">
+            @if (field.nonEditable) {
+                @if (field.type === 'string' || field.type === 'number') {
+                    <span>
+                        {{ field.value ?? '-' }}
+                    </span>
+                } @else if (field.type === 'boolean') {
+                    @if (field.value) {
+                        <mat-icon>check_circle_outline</mat-icon>
+                    } @else {
+                        <mat-icon>not_interested</mat-icon>
+                    }
+                } @else if (field.type === 'date' || field.type === 'datetime') {
+                    <span dir="ltr">
+                        {{ field.value?.replaceAll('-', '/') || '-' }}
+                    </span>
+                } @else if (field.type === 'relation') {
+                    @if (extraData[field.name].getUrlFunc !== undefined && field.value !== null) {
+                        <a class="primary" routerLink="{{ extraData[field.name].getUrlFunc!(field.value) }}">
+                            {{ extraData[field.name].map.get(field.value) ?? '-' }}
+                        </a>
+                    } @else {
+                        <span>
+                            {{ extraData[field.name].map.get(field.value) ?? '-' }}
+                        </span>
+                    }
+                } @else {
+                    INVALID
+                }
+            } @else if (field.type === 'string' || field.type === 'number') {
+                <span [class.hidden]="editMode()">
                     {{ field.value ?? '-' }}
                 </span>
-                <mat-form-field [class.hidden]="!editMode() || field.name === 'id' || field.type !== 'string'" appearance="outline">
+                <mat-form-field [class.hidden]="!editMode() || field.type !== 'string'" appearance="outline">
                     <mat-label>{{ field.name | translate }}</mat-label>
                     <input matInput [formControlName]="field.name" />
                     @if (form.getError('required', field.name)) {
                         <mat-error>{{ 'this field is required' | translate }}</mat-error>
                     }
                 </mat-form-field>
-                <mat-form-field [class.hidden]="!editMode() || field.name === 'id' || field.type !== 'number'" appearance="outline">
+                <mat-form-field [class.hidden]="!editMode() || field.type !== 'number'" appearance="outline">
                     <mat-label>{{ field.name | translate }}</mat-label>
                     <input matInput type="number" [formControlName]="field.name" />
                     @if (form.getError('min', field.name)) {
@@ -33,7 +61,17 @@
                         <mat-error>{{ 'the maximum value is' | translate }} {{ $any(form.get(field.name)?.errors).max.max }}</mat-error>
                     }
                 </mat-form-field>
-                <mat-checkbox [class.hidden]="!editMode() || field.type !== 'boolean'" [formControlName]="field.name"></mat-checkbox>
+            } @else if (field.type === 'boolean') {
+                @if (field.value) {
+                    <span [class.hidden]="editMode()">
+                        <mat-icon color="primary">check_circle_outline</mat-icon>
+                    </span>
+                } @else {
+                    <span [class.hidden]="editMode()">
+                        <mat-icon color="warn">not_interested</mat-icon>
+                    </span>
+                }
+                <mat-checkbox [class.hidden]="!editMode()" [formControlName]="field.name"></mat-checkbox>
             } @else if (field.type === 'date' || field.type === 'datetime') {
                 <span [class.hidden]="editMode()" dir="ltr">
                     {{ field.value?.replaceAll('-', '/') || '-' }}
@@ -72,8 +110,20 @@
                 TODO
             }
         </div>
-        @if (!$last) {
-            <mat-divider></mat-divider>
-        }
+        <mat-divider></mat-divider>
     }
+    <div class="buttons-container">
+        @if (config.deleteFunc !== undefined) {
+            <button (click)="deleteFunction()" mat-flat-button color="warn" type="button">
+                <mat-icon>delete</mat-icon>
+                {{ 'Delete' | translate }}
+            </button>
+        }
+        @if (editMode()) {
+            <button mat-flat-button color="primary" type="submit">
+                <mat-icon>edit</mat-icon>
+                {{ 'Update' | translate }}
+            </button>
+        }
+    </div>
 </form>

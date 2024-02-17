@@ -24,12 +24,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { JsonPipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialog } from '@angular/material/dialog';
+import { ViewDeleteDialogComponent } from './view-delete-dialog/view-delete-dialog.component';
+import { DialogData } from './view-delete-dialog/view-delete-dialog.interface';
 
-// TODO: handle nonEditable attribute
 
 @Component({
   selector: 'app-view',
@@ -46,8 +47,6 @@ import { MatSelectModule } from '@angular/material/select';
     ReactiveFormsModule,
     RouterLink,
     TranslatePipe,
-    // TODO: remove
-    JsonPipe,
   ],
   providers: [
     {
@@ -59,11 +58,12 @@ import { MatSelectModule } from '@angular/material/select';
   templateUrl: './view.component.html',
   styleUrl: './view.component.scss',
 })
-export class ViewComponent<T> implements OnInit, OnDestroy {
+export class ViewComponent<T, U> implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private snackbar = inject(SnackbarService);
   private fb = inject(FormBuilder);
+  private dialog = inject(MatDialog);
   public loading = inject(LoadingService).loading;
 
   private destroyed$ = new Subject<void>();
@@ -73,7 +73,7 @@ export class ViewComponent<T> implements OnInit, OnDestroy {
   public editMode = signal(false);
   public form = this.fb.nonNullable.group({});
 
-  @Input({ required: true }) public config!: ViewComponentConfig<T>;
+  @Input({ required: true }) public config!: ViewComponentConfig<T, U>;
 
   ngOnInit(): void {
     this.loading.set(true);
@@ -95,13 +95,15 @@ export class ViewComponent<T> implements OnInit, OnDestroy {
       .subscribe((res) => {
         this.loading.set(false);
         this.fields.set(
-          Object.entries<any>(res as { [key: string]: any }).map(
+          Object.entries<any>(res as { [key: string]: any }).filter(([name]) => name !== 'id').map(
             ([name, value]) => {
               const fieldsInfo = (this.config.fieldsInfo as any)[name] as
                 | FieldConfig
                 | undefined;
 
-              this.form.addControl(name, this.fb.control(value, [...(fieldsInfo?.validators ?? [])]));
+              if (!fieldsInfo?.nonEditable) {
+                this.form.addControl(name, this.fb.control(value, [...(fieldsInfo?.validators ?? [])]));
+              }
 
               if (fieldsInfo?.type === 'relation') {
                 const map = new Map<number, string>();
@@ -131,6 +133,7 @@ export class ViewComponent<T> implements OnInit, OnDestroy {
                 value,
                 type: fieldsInfo?.type ?? 'string',
                 nullable: fieldsInfo?.type === 'relation' && fieldsInfo.nullable,
+                nonEditable: fieldsInfo?.nonEditable,
               };
             }
           )
@@ -143,8 +146,38 @@ export class ViewComponent<T> implements OnInit, OnDestroy {
   }
 
   toggleMode() {
-    if (this.config.editable) {
+    if (this.config.updateFunc !== undefined) {
       this.editMode.update(pre => !pre);
+    }
+  }
+
+  submitUpdate() {
+    const currentUpdateFunc = this.config.updateFunc;
+    if (this.form.valid && currentUpdateFunc !== undefined) {
+      this.loading.set(true);
+      currentUpdateFunc(this.viewId, this.form.value as U).subscribe(() => {
+        this.snackbar.open('تم التعديل بنجاح');
+        this.loading.set(false);
+        this.router.navigateByUrl(`/${this.config.groupName}/${this.config.itemNameAndRouteName}`);
+      });
+    }
+  }
+
+  deleteFunction() {
+    const currentDeleteFunc = this.config.deleteFunc;
+
+    if (currentDeleteFunc !== undefined) {
+      this.dialog.open<ViewDeleteDialogComponent, DialogData>(ViewDeleteDialogComponent, {
+        autoFocus: false,
+        width: '400px',
+        data: {
+          deleteFunc: () => {
+            return currentDeleteFunc(this.viewId);
+          },
+          groupName: this.config.groupName,
+          itemNameAndRouteName: this.config.itemNameAndRouteName,
+        }
+      })
     }
   }
 }

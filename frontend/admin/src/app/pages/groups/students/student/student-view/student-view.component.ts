@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ViewComponent } from '../../../../../shared/view/view.component';
 import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
 import { StudentsService } from '../../../../../services/api/admin/services';
-import { StudentDetails } from '../../../../../services/api/admin/models';
+import { StudentDetails, StudentUpdate } from '../../../../../services/api/admin/models';
 import { MasjedService } from '../../../../../services/masjed.service';
 import { Validators } from '@angular/forms';
 
@@ -17,7 +17,7 @@ export class StudentViewComponent {
   private students = inject(StudentsService);
   private masjed = inject(MasjedService);
 
-  public config: ViewComponentConfig<StudentDetails> = {
+  public config: ViewComponentConfig<StudentDetails, StudentUpdate> = {
     fieldsInfo: {
       name: {
         type: 'string',
@@ -93,9 +93,19 @@ export class StudentViewComponent {
         type: 'number',
       },
     },
-    editable: true,
-    viewFunc: (id) => {
+    groupName: 'students',
+    itemNameAndRouteName: 'student',
+    viewFunc: (id) => {      
       return this.students.studentsStudentRead(id);
     },
+    deleteFunc: (id) => {
+      return this.students.studentsStudentDelete(id)
+    },
+    updateFunc: (id, data) => {
+      return this.students.studentsStudentUpdate({
+        id,
+        data,
+      })
+    }
   };
 }

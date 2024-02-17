@@ -3,7 +3,7 @@
     @for (group of groupsService.groups; track group.name) {
         <span mat-subheader>{{ group.name }}</span>
         @for (item of group.items; track item.name) {
-            <mat-list-item>
+            <mat-list-item [routerLink]="item.link">
                 <a matListItemTitle [routerLink]="item.link">{{ item.name }}</a>
                 <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
             </mat-list-item>

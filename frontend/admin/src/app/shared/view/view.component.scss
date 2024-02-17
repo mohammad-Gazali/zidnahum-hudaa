@@ -39,6 +39,15 @@
         }
     }
 
+    .buttons-container {
+        display: flex;
+        gap: 1rem;
+        margin: 1.5rem 0;
+        button {
+            width: fit-content;
+        }
+    }
+
     @media (max-width: 500px) {
         mat-divider {
             max-width: 100%;

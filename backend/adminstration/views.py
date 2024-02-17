@@ -76,7 +76,7 @@ AdminStudentCategoryViewSet = create_model_view_set(StudentCategory, no_paginati
 AdminStudentGroupViewSet = create_model_view_set(StudentGroup, no_pagination=True)
 
 AdminCreateStudentSerializer = create_serializer(Student, serializer_fields=[
-        "q_memorizing", "q_test", "q_awqaf_test",
+        "id", "registered_at", "q_memorizing", "q_test", "q_awqaf_test",
         "q_awqaf_test_looking", "q_awqaf_test_explaining",
         "alarbaein_alnawawia_new", "alarbaein_alnawawia_old",
         "riad_alsaalihin_new", "riad_alsaalihin_old",
@@ -85,7 +85,8 @@ AdminCreateStudentSerializer = create_serializer(Student, serializer_fields=[
     exclude_fields=True,
     extra_ref="create"
 )
-AdminListStudentSerializer = create_serializer(Student, serializer_fields=["id", "name", "mother_name", "masjed", "category", "group", "registered_at"])
+AdminListStudentSerializer = create_serializer(Student, serializer_fields=["id", "name", "mother_name", "masjed", "category", "group", "registered_at"], extra_ref="list")
+AdminUpdateStudentSerializer = create_serializer(Student, serializer_fields=["id", "registered_at"], exclude_fields=True, extra_ref="update")
 AdminStudentViewSet = create_model_view_set(
     Student,
     filter_fields={
@@ -95,6 +96,7 @@ AdminStudentViewSet = create_model_view_set(
         "registered_at": ["exact", "gt", "lt"],
     },
     include_student_name_filter=True,
+    updating_serializer=AdminUpdateStudentSerializer,
     creating_serializer=AdminCreateStudentSerializer,
     listing_serializer=AdminListStudentSerializer,
 )

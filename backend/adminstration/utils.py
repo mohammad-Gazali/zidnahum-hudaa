@@ -58,7 +58,8 @@ def create_serializer(
 
     if exclude_fields:
         class Result(ModelSerializer):
-            id = IntegerField()
+            if (serializer_fields == "__all__") or ("id" in serializer_fields and not exclude_fields) or ("id" not in serializer_fields and exclude_fields):
+                id = IntegerField()
 
             class Meta:
                 ref_name = f"{model_class.__name__}-{extra_ref}" if extra_ref is not None else model_class.__name__
@@ -66,7 +67,8 @@ def create_serializer(
                 exclude = serializer_fields
     else:
         class Result(ModelSerializer):
-            id = IntegerField()
+            if (serializer_fields == "__all__") or ("id" in serializer_fields and not exclude_fields) or ("id" not in serializer_fields and exclude_fields):
+                id = IntegerField()
             
             class Meta:
                 ref_name = f"{model_class.__name__}-{extra_ref}" if extra_ref is not None else model_class.__name__
@@ -145,9 +147,31 @@ def create_model_view_set(
                 else:
                     return listing_serializer or create_serializer(model, fields, exclude_fields, "list")
             elif self.request.method == "POST":
-                return creating_serializer or create_serializer(model, fields, exclude_fields, "create")
+                create_fields = fields.copy() if type(fields) != str else fields
+                create_exclude = exclude_fields
+
+                if fields == "__all__":
+                    create_exclude = True
+                    create_fields = ["id"]
+                elif exclude_fields and ("id" not in fields):
+                    create_fields.append("id")
+                elif not exclude_fields and ("id" in fields):
+                    create_fields.remove("id")
+
+                return creating_serializer or create_serializer(model, create_fields, create_exclude, "create")
             else:
-                return updating_serializer or create_serializer(model, fields, exclude_fields, "update")
+                update_fields = fields.copy() if type(fields) != str else fields
+                update_exclude = exclude_fields
+
+                if fields == "__all__":
+                    update_exclude = True
+                    update_fields = ["id"]
+                elif exclude_fields and ("id" not in fields):
+                    update_fields.append("id")
+                elif not exclude_fields and ("id" in fields):
+                    update_fields.remove("id")
+
+                return updating_serializer or create_serializer(model, update_fields, update_exclude, "update")
 
         def get_queryset(self):
             query_set = model.objects.all()

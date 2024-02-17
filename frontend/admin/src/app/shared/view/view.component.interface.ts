@@ -2,12 +2,15 @@ import { Observable } from "rxjs";
 import { ValidatorFn } from "@angular/forms";
 import { Signal } from "@angular/core";
 
-export interface ViewComponentConfig<T> {
-    editable: boolean;
+export interface ViewComponentConfig<T, U = null> {
     fieldsInfo: {
         [K in keyof Omit<Partial<T>, 'id'>]: FieldConfig;
     };
+    groupName: string;
+    itemNameAndRouteName: string;
     viewFunc: (id: string) => Observable<T>;
+    deleteFunc?: (id: string) => Observable<null>;
+    updateFunc?: (id: string, data: U) => Observable<any>;
 }
 
 export type FieldConfig = ({
