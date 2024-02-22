@@ -10,7 +10,7 @@ export class TranslateService {
         this.translateMap.set('zidnahum hudaa dashboard', 'لوحة تحكم وزدناهم هدى');
         this.translateMap.set('zidnahum hudaa', 'وزدناهم هدى');
         this.translateMap.set('warning', 'تحذير');
-        this.translateMap.set('are you sure you want to delete this', 'هل أنت متأكد من حذف هذا');
+        this.translateMap.set('are you sure you want to delete this', 'هل أنت متأكد من حذف');
         this.translateMap.set('?', '؟');
         this.translateMap.set('yes', 'نعم');
         this.translateMap.set('total count', 'العدد الكلي');
@@ -90,6 +90,12 @@ export class TranslateService {
         this.translateMap.set('riad_alsaalihin_new', 'رياض الصالحين جديد');
         this.translateMap.set('allah_names_old', 'أسماء الله الحسنى قديم');
         this.translateMap.set('allah_names_new', 'أسماء الله الحسنى جديد');
+
+        // category model
+        this.translateMap.set('student-category', 'فئة الطالب');
+
+        // group model
+        this.translateMap.set('student-group', 'مجموعة الطالب');
     }
 
     translate(value: string): string {

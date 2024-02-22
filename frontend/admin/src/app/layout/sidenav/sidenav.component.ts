@@ -4,7 +4,7 @@ import {
   MatListModule,
 } from '@angular/material/list';
 import { GroupsService } from '../../services/groups.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { ThemeService } from '../../services/theme.service';
 
@@ -23,4 +23,5 @@ import { ThemeService } from '../../services/theme.service';
 export class SidenavComponent {
   public groupsService = inject(GroupsService);
   public theme = inject(ThemeService);
+  public router = inject(Router);
 }

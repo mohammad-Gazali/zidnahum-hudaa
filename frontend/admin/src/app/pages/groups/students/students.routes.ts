@@ -1,19 +1,24 @@
-import { Routes } from "@angular/router";
-import { StudentComponent } from "./student/student.component";
-import { StudentViewComponent } from "./student/student-view/student-view.component";
-import { StudentCreateComponent } from "./student/student-create/student-create.component";
+import { Routes } from '@angular/router';
+import { routes as studentsRoutes } from './student/student.routes';
+import { routes as categoriesRoutes } from './category/category.routes';
+import { routes as groupsRoutes } from './group/group.routes';
 
 export const routes: Routes = [
-    {
-        path: 'student',
-        component: StudentComponent,
-    },
-    {
-        path: 'student/view/:id',
-        component: StudentViewComponent,
-    },
-    {
-        path: 'student/create',
-        component: StudentCreateComponent,
-    }
+  // students routes
+  {
+    path: 'student',
+    children: studentsRoutes,
+  },
+
+  // student categories routes
+  {
+    path: 'student-category',
+    children: categoriesRoutes,
+  },
+
+  // student groups routes
+  {
+    path: 'student-group',
+    children: groupsRoutes,
+  },
 ];

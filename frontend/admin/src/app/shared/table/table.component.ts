@@ -83,6 +83,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
   });
   public activeFilters = signal<Filter[]>([]);
   public totalCount = 0;
+  public isFileters = signal(false);
   private destroyed$ = new Subject<void>();
   private pageSizeOptions = [20, 40, 100, 200];
 
@@ -123,6 +124,10 @@ export class TableComponent<T> implements OnInit, OnDestroy {
                 map: this.convertDataToMap(res),
               };
             });
+        }
+
+        if (config.filterType !== undefined) {
+          this.isFileters.set(true);
         }
       }
     );

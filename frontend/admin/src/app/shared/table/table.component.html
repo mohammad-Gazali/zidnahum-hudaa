@@ -11,6 +11,7 @@
         </form>
       }
       <div class="buttons-container">
+        <!-- TODO -->
         <!-- <button mat-flat-button color="primary">
           {{ 'actions' | translate }}
           <mat-icon>build</mat-icon>
@@ -21,10 +22,12 @@
             <mat-icon>add</mat-icon>
           </button>
         }
-        <button mat-flat-button color="accent" (click)="openFiltersDialog()">
-          {{ 'filters' | translate }}
-          <mat-icon>filter_alt</mat-icon>
-        </button>
+        @if (isFileters()) {
+          <button mat-flat-button color="accent" (click)="openFiltersDialog()">
+            {{ 'filters' | translate }}
+            <mat-icon>filter_alt</mat-icon>
+          </button>
+        }
       </div>
     </div>
     <div class="chips-container">
@@ -112,12 +115,6 @@
     
         <tr mat-header-row *matHeaderRowDef="displayedColumns, sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        <!-- TODO: handle empty case -->
-        <!-- <tr mat-row *matNoDataRow>
-          <td mat-cell [attr.colspan]="displayedColumns.length">
-            {{ 'No data matching the filter.' | translate }}
-          </td>
-        </tr> -->
       </table>
   </div>
   <div class="bottom-row">

@@ -1,4 +1,3 @@
-import { ValidatorFn } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 export interface CreateComponentConfig<T> {
