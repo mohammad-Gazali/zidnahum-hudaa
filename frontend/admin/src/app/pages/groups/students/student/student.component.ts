@@ -17,6 +17,13 @@ export class StudentComponent {
   private masjed = inject(MasjedService);
 
   public config: TableComponentConfig<StudentList> = {
+    searchField: 'name',
+    hasPagination: true,
+    dataFunc: (params) => this.students.studentsStudentList(params),
+    getUrlFunc: (id) => {
+      return `/students/student/view/${id}`;
+    },
+    createUrl: '/students/student/create',
     columns: {
       name: {
         display: 'normal',
@@ -49,12 +56,6 @@ export class StudentComponent {
         display: 'normal',
         filterType: 'date',
       }
-    },
-    searchField: 'name',
-    hasPagination: true,
-    dataFunc: (params) => this.students.studentsStudentList(params),
-    getUrlFunc: (id) => {
-      return `/students/student/view/${id}`;
     },
   };
 }

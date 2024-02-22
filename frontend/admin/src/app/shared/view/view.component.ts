@@ -30,6 +30,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewDeleteDialogComponent } from './view-delete-dialog/view-delete-dialog.component';
 import { DialogData } from './view-delete-dialog/view-delete-dialog.interface';
+import { DateService } from '../../services/date.service';
 
 
 @Component({
@@ -64,6 +65,7 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
   private snackbar = inject(SnackbarService);
   private fb = inject(FormBuilder);
   private dialog = inject(MatDialog);
+  private date = inject(DateService);
   public loading = inject(LoadingService).loading;
 
   private destroyed$ = new Subject<void>();
@@ -108,7 +110,12 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
                 | undefined;
 
               if (!fieldsInfo?.nonEditable) {
-                this.form.addControl(name, this.fb.control(value, [...(fieldsInfo?.validators ?? [])]));
+                if (fieldsInfo?.type === 'relation') {
+                  // here we convert the null value to -1 to display its label in the select input
+                  this.form.addControl(name, this.fb.control(value ?? -1, [...(fieldsInfo?.validators ?? [])]));
+                } else {
+                  this.form.addControl(name, this.fb.control(value, [...(fieldsInfo?.validators ?? [])]));
+                }
               }
 
               if (fieldsInfo?.type === 'relation') {
@@ -158,9 +165,22 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
   }
 
   submitUpdate() {
+    const value: any = this.form.value;
+
+    // here we returning the -1 values in the relation field type to null
+    // before sending it to the server
+    this.fields().forEach(field => {
+      if (field.type === 'relation') {
+        value[field.name] = value[field.name] === -1 ? null : value[field.name]
+      } else if (value[field.name] instanceof Date && (field.type === 'date' || field.type === 'datetime')) {
+        value[field.name] = this.date.format(value[field.name])
+      }
+    });
+
     const currentUpdateFunc = this.config.updateFunc;
     if (this.form.valid && currentUpdateFunc !== undefined) {
       this.loading.set(true);
+
       currentUpdateFunc(this.viewId, this.form.value as U).subscribe(() => {
         this.snackbar.open('تم التعديل بنجاح');
         this.loading.set(false);

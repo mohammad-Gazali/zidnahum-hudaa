@@ -1,1 +1,63 @@
-<p>create works!</p>
+<form [formGroup]="form" class="fields-container" (ngSubmit)="submit()">
+    @for (field of fields(); track field.name) {
+        <div class="field-row">
+            <div class="row-title">
+                <span>
+                    {{ field.name | translate }}
+                </span>
+            </div>
+            @if (field.config.type !== "date") {
+                <mat-form-field appearance="outline">
+                    <mat-label>{{ field.name | translate }}</mat-label>
+                    
+                    @switch(field.config.type) {
+                        @case ("string") {
+                            <input matInput [formControlName]="field.name" />
+                        } @case ("number") {
+                            <input matInput [formControlName]="field.name" type="number" />
+                        } @case ("boolean") {
+                            <mat-checkbox [formControlName]="field.name"></mat-checkbox>
+                        } @case ("relation") {
+                            <mat-select [formControlName]="field.name">
+                                @if (field.config.nullable) {
+                                    <mat-option [value]="-1">
+                                        ({{ 'empty value' | translate }})
+                                    </mat-option>
+                                }                            
+                                @for (option of field.options; track option.id) {
+                                    <mat-option [value]="option.id">
+                                        {{ option.name }}
+                                    </mat-option>
+                                }
+                            </mat-select>
+                        } @default {
+                            ERROR
+                        }
+                    }
+    
+                    @if (form.getError('required', field.name)) {
+                        <mat-error>{{ 'this field is required' | translate }}</mat-error>
+                    }
+                </mat-form-field>
+            } @else {
+                <mat-form-field appearance="outline">
+                    <mat-label>{{ field.name | translate }}</mat-label>
+                    <input matInput [matDatepicker]="picker" [formControlName]="field.name">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            }
+        </div>
+        <mat-divider></mat-divider>
+    }
+    <div class="buttons-container">
+        <button (click)="goToTable()" mat-flat-button type="button">
+            <mat-icon style="transform: scaleX(-1);">reply</mat-icon>
+            {{ 'Cancel' | translate }}
+        </button>
+        <button mat-flat-button color="primary" type="submit">
+            <mat-icon>add</mat-icon>
+            {{ 'Create' | translate }}
+        </button>
+    </div>
+</form>

@@ -18,6 +18,7 @@ export class TranslateService {
         // ====== global forms ======
         this.translateMap.set('update', 'تعديل');
         this.translateMap.set('delete', 'حذف');
+        this.translateMap.set('create', 'إضافة');
 
         // ====== login form ======
         this.translateMap.set('username', 'اسم المستخدم');

@@ -95,7 +95,7 @@
                 <mat-form-field [class.hidden]="!editMode()" appearance="outline">
                     <mat-select [formControlName]="field.name">
                         @if (field.nullable) {
-                            <mat-option [value]="null">
+                            <mat-option [value]="-1">
                                 ({{ 'empty value' | translate }})
                             </mat-option>
                         }

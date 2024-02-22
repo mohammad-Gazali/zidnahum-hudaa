@@ -11,10 +11,16 @@
         </form>
       }
       <div class="buttons-container">
-        <button mat-flat-button color="primary">
+        <!-- <button mat-flat-button color="primary">
           {{ 'actions' | translate }}
           <mat-icon>build</mat-icon>
-        </button>
+        </button> -->
+        @if (config.createUrl !== undefined) {
+          <button mat-flat-button color="primary" [routerLink]="config.createUrl">
+            {{ 'create' | translate }}
+            <mat-icon>add</mat-icon>
+          </button>
+        }
         <button mat-flat-button color="accent" (click)="openFiltersDialog()">
           {{ 'filters' | translate }}
           <mat-icon>filter_alt</mat-icon>

@@ -33,6 +33,7 @@ export type TableComponentConfig<T> = {
   };
   searchField?: string;
   getUrlFunc: (id: string) => string;
+  createUrl?: string;
 } & (
   | {
       hasPagination: true;

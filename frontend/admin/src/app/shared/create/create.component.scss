@@ -1,0 +1,59 @@
+.fields-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .field-row {
+        font-size: 14px;
+
+        .row-title {
+            width: 200px;
+            margin-left: 10px;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        mat-form-field {
+            font-size: 12px !important;
+        }
+    }
+
+    mat-divider {
+        max-width: 80vw;
+    }
+
+    a {
+        font-weight: bold;
+
+        &:hover {
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+        }
+    }
+
+    .buttons-container {
+        display: flex;
+        gap: 1rem;
+        margin: 1.5rem 0;
+        button {
+            width: fit-content;
+        }
+    }
+
+    @media (max-width: 500px) {
+        mat-divider {
+            max-width: 100%;
+        }
+
+        .field-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+
+            & :nth-child(2) {
+                width: fit-content;
+            }
+        }
+    }
+}
