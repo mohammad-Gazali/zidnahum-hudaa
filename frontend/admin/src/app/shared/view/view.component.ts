@@ -1,9 +1,9 @@
 import {
   Component,
-  Input,
   OnDestroy,
   OnInit,
   inject,
+  input,
   signal,
 } from '@angular/core';
 import {
@@ -73,7 +73,13 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
   public editMode = signal(false);
   public form = this.fb.nonNullable.group({});
 
-  @Input({ required: true }) public config!: ViewComponentConfig<T, U>;
+  public _config = input.required<ViewComponentConfig<T, U>>({
+    alias: 'config',
+  });
+
+  get config() {
+    return this._config();
+  }
 
   ngOnInit(): void {
     this.loading.set(true);

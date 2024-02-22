@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,5 +13,5 @@ import { Group } from '../../../services/groups.service';
   styleUrl: './group.component.scss',
 })
 export class HomeGroupComponent {
-  @Input({ required: true }) group!: Group;
+  public group = input.required<Group>();
 }

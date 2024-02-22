@@ -1,14 +1,14 @@
 <mat-card>
     <mat-card-header>
         <mat-card-title>
-            <mat-icon>{{ group.icon }}</mat-icon>
-            {{ group.name }}
+            <mat-icon>{{ group().icon }}</mat-icon>
+            {{ group().name }}
         </mat-card-title>
     </mat-card-header>
     <mat-card-content>
         <mat-divider></mat-divider>
         <ul>
-            @for (item of group.items; track item.name) {
+            @for (item of group().items; track item.name) {
                 <li>
                     <a [routerLink]="item.link">{{ item.name }}</a>
                 </li>

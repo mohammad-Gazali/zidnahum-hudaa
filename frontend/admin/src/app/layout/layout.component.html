@@ -3,7 +3,7 @@
         <app-sidenav></app-sidenav>
     </mat-sidenav>
     <mat-sidenav-content>
-        <app-navbar (clickMenu)="sidenav.toggle()"></app-navbar>
+        <app-navbar (clickMenu)="sidenav()?.toggle()"></app-navbar>
         <main>
             <ng-content></ng-content>
         </main>

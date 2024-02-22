@@ -3,9 +3,9 @@ import {
   ChangeDetectorRef,
   Component,
   OnDestroy,
-  ViewChild,
   inject,
   signal,
+  viewChild,
 } from '@angular/core';
 import { NavbarComponent } from './navbar/navbar.component';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
@@ -32,7 +32,7 @@ export class LayoutComponent implements OnDestroy, AfterViewInit {
   public mode = signal<"over" | "side">("side");
   private destroyed$ = new Subject<void>();
 
-  @ViewChild(MatSidenav) sidenav!: MatSidenav;
+  public sidenav = viewChild(MatSidenav);
 
   constructor() {
     this.breakpointObserver
@@ -56,11 +56,14 @@ export class LayoutComponent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    const sidenav = this.sidenav();
     const sidenavState = localStorage.getItem('sidenav') ?? 'close';
 
-    this.sidenav.opened = sidenavState === 'open';
-
-    this.cdr.detectChanges();
+    if (sidenav) {
+      sidenav.opened = sidenavState === 'open';
+  
+      this.cdr.detectChanges();
+    }
   }
 
   hanldeSidenavChange(opened: boolean) {

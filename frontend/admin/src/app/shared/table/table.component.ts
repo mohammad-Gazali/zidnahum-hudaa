@@ -1,11 +1,11 @@
 import {
   Component,
-  Input,
   OnDestroy,
   OnInit,
-  ViewChild,
   inject,
+  input,
   signal,
+  viewChild,
 } from '@angular/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import {
@@ -86,10 +86,24 @@ export class TableComponent<T> implements OnInit, OnDestroy {
   private destroyed$ = new Subject<void>();
   private pageSizeOptions = [20, 40, 100, 200];
 
-  @Input({ required: true }) public config!: TableComponentConfig<T>;
+  public _config = input.required<TableComponentConfig<T>>({
+    alias: 'config'
+  });
 
-  @ViewChild(MatPaginator, { static: true }) private paginator!: MatPaginator;
-  @ViewChild(MatSort, { static: true }) private sort!: MatSort;
+  get config() {
+    return this._config();
+  }
+
+  private _paginator = viewChild(MatPaginator);
+  private _sort = viewChild(MatSort);
+
+  get paginator() {
+    return this._paginator()!;
+  }
+
+  get sort() {
+    return this._sort()!;
+  }
 
   ngOnInit(): void {
     const keys = Object.keys(this.config.columns) as GetStringKeys<
@@ -112,8 +126,8 @@ export class TableComponent<T> implements OnInit, OnDestroy {
         }
       }
     );
-
-    this.paginator.pageSize = 20;
+  
+    this.paginator.pageSize = 20;  
     this.fetchData();
   }
 
