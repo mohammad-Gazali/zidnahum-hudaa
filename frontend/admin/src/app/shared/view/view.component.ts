@@ -141,11 +141,20 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
                 };
               }
 
+              if (fieldsInfo?.type === 'relation') {
+                return {
+                  name,
+                  value,
+                  type: 'relation',
+                  relationType: fieldsInfo.relationType,
+                  nonEditable: fieldsInfo?.nonEditable,
+                }
+              }
+
               return {
                 name,
                 value,
                 type: fieldsInfo?.type ?? 'string',
-                nullable: fieldsInfo?.type === 'relation' && fieldsInfo.nullable,
                 nonEditable: fieldsInfo?.nonEditable,
               };
             }

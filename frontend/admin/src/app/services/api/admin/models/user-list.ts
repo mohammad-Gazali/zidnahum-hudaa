@@ -1,13 +1,6 @@
 /* tslint:disable */
 export interface UserList {
-  date_joined?: string;
-  email?: string;
   first_name?: string;
-
-  /**
-   * المجموعات التي ينتمي إليها هذا المستخدم. يحصل المستخدم على كافة الصلاحيات الممنوحة لكل مجموعة ينتمي إليها.
-   */
-  groups?: Array<number>;
   id: number;
 
   /**
@@ -24,14 +17,7 @@ export interface UserList {
    * يقضي بأن هذا المستخدم يمتلك كافة الصلاحيات دون الحاجة لمنحها له تصريحاً.
    */
   is_superuser?: boolean;
-  last_login?: null | string;
   last_name?: string;
-  password: string;
-
-  /**
-   * صلاحيات خاصة بهذا المستخدم.
-   */
-  user_permissions?: Array<number>;
 
   /**
    * مطلوب. 150 رمزاً أو أقل، مكونة من حروف وأرقام و @/./+/-/_ فقط

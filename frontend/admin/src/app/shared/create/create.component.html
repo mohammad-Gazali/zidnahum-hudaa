@@ -6,20 +6,20 @@
                     {{ field.name | translate }}
                 </span>
             </div>
-            @if (field.config.type !== "date") {
+            @if (field.config.type !== "date" && field.config.type !== 'boolean') {
                 <mat-form-field appearance="outline">
                     <mat-label>{{ field.name | translate }}</mat-label>
                     
                     @switch(field.config.type) {
                         @case ("string") {
                             <input matInput [formControlName]="field.name" />
+                        } @case ("password") {
+                            <input matInput [formControlName]="field.name" type="password" />
                         } @case ("number") {
                             <input matInput [formControlName]="field.name" type="number" />
-                        } @case ("boolean") {
-                            <mat-checkbox [formControlName]="field.name"></mat-checkbox>
                         } @case ("relation") {
-                            <mat-select [formControlName]="field.name">
-                                @if (field.config.nullable) {
+                            <mat-select [formControlName]="field.name" [multiple]="field.config.relationType === 'multiple'">
+                                @if (field.config.relationType === 'nullable') {
                                     <mat-option [value]="-1">
                                         ({{ 'empty value' | translate }})
                                     </mat-option>
@@ -39,13 +39,15 @@
                         <mat-error>{{ 'this field is required' | translate }}</mat-error>
                     }
                 </mat-form-field>
-            } @else {
+            } @else if (field.config.type === 'date') {
                 <mat-form-field appearance="outline">
                     <mat-label>{{ field.name | translate }}</mat-label>
                     <input matInput [matDatepicker]="picker" [formControlName]="field.name">
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
+            } @else if (field.config.type === 'boolean') {
+                <mat-checkbox [formControlName]="field.name"></mat-checkbox>
             }
         </div>
         <mat-divider></mat-divider>

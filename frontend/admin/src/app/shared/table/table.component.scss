@@ -30,9 +30,10 @@
 
     .responsive-container {
         max-height: 380px;
+        max-width: calc(100vw - 32px);
+        width: 100%;
         overflow-y: scroll;
         
-
         &::-webkit-scrollbar {
             appearance: none;
             width: 6px;
@@ -45,8 +46,6 @@
         &::-webkit-scrollbar-button {
             appearance: none;
             display: none;
-            background-color: var(--mat-table-background-color);
-            
         }
     
         &::-webkit-scrollbar-thumb {
@@ -68,6 +67,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
 
         .total-count {
             padding-right: 1.5rem;

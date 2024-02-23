@@ -84,17 +84,39 @@
                 </mat-form-field>
             } @else if (field.type === 'relation') {
                 @if (extraData[field.name].getUrlFunc !== undefined && field.value !== null) {
-                    <a class="primary" [class.hidden]="editMode()" routerLink="{{ extraData[field.name].getUrlFunc!(field.value) }}">
-                        {{ extraData[field.name].map.get(field.value) ?? '-' }}
-                    </a>
+                    @if (field.relationType === 'multiple') {
+                        @for (item of field.value; track item) {
+                            <a class="primary" [class.hidden]="editMode()" routerLink="{{ extraData[field.name].getUrlFunc!(item) }}">
+                                {{ extraData[field.name].map.get(item) ?? '-' }}
+                            </a>
+                            <span [class.hidden]="editMode()">@if (!$last) {&nbsp;,&nbsp;}</span>
+                        } @empty { 
+                            <span [class.hidden]="editMode()">-</span>
+                        }
+                    } @else {
+                        <a class="primary" [class.hidden]="editMode()" routerLink="{{ extraData[field.name].getUrlFunc!(field.value) }}">
+                            {{ extraData[field.name].map.get(field.value) ?? '-' }}
+                        </a>
+                    }
                 } @else {
-                    <span [class.hidden]="editMode()">
-                        {{ extraData[field.name].map.get(field.value) ?? '-' }}
-                    </span>
+                    @if (field.relationType === 'multiple') {
+                        <span [class.hidden]="editMode()">
+                            @for (item of field.value; track item) {
+                                {{ extraData[field.name].map.get(item) ?? '-' }}
+                                <span [class.hidden]="editMode()">@if (!$last) {&nbsp;,&nbsp;}</span>
+                            } @empty { 
+                                <span [class.hidden]="editMode()">-</span>
+                            }
+                        </span>
+                    } @else {
+                        <span [class.hidden]="editMode()">
+                            {{ extraData[field.name].map.get(field.value) ?? '-' }}
+                        </span>
+                    }
                 }
                 <mat-form-field [class.hidden]="!editMode()" appearance="outline">
-                    <mat-select [formControlName]="field.name">
-                        @if (field.nullable) {
+                    <mat-select [formControlName]="field.name" [multiple]="field.relationType === 'multiple'">
+                        @if (field.relationType === 'nullable') {
                             <mat-option [value]="-1">
                                 ({{ 'empty value' | translate }})
                             </mat-option>
@@ -106,7 +128,7 @@
                         }
                     </mat-select>
                 </mat-form-field>
-            } @else if (field.type === 'custom') {
+            } @else if (true) {
                 TODO
             }
         </div>

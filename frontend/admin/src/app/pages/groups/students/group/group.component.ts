@@ -5,13 +5,13 @@ import { StudentsService } from '../../../../services/api/admin/services';
 import { StudentGroupList } from '../../../../services/api/admin/models';
 
 @Component({
-  selector: 'app-group',
+  selector: 'app-student-group',
   standalone: true,
   imports: [TableComponent],
   templateUrl: './group.component.html',
   styleUrl: './group.component.scss'
 })
-export class GroupComponent {
+export class StudentGroupComponent {
   private students = inject(StudentsService);
 
   public config: TableComponentConfig<StudentGroupList> = {

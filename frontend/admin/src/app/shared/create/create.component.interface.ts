@@ -10,12 +10,12 @@ export interface CreateComponentConfig<T> {
 
 export type FieldConfig =
   | {
-      type: 'string' | 'number' | 'boolean' | 'date';
+      type: 'string' | 'password' | 'number' | 'boolean' | 'date';
       required?: boolean;
     }
   | {
       type: 'relation';
-      nullable: boolean;
+      relationType: 'nullable' | 'multiple' | 'normal';
       required?: boolean;
       getFieldValueFunc: () => Observable<{ id: number; name: string }[]>;
     };

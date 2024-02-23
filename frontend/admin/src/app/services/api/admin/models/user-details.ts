@@ -1,11 +1,12 @@
 /* tslint:disable */
-export interface UserUpdate {
+export interface UserDetails {
   first_name?: string;
 
   /**
    * المجموعات التي ينتمي إليها هذا المستخدم. يحصل المستخدم على كافة الصلاحيات الممنوحة لكل مجموعة ينتمي إليها.
    */
   groups?: Array<number>;
+  id: number;
 
   /**
    * يحدد ما إذا كان المستخدم سيُعامل على أنّه نشط. أزل تحديد هذا الحقل بدلاً من حذف الحسابات.

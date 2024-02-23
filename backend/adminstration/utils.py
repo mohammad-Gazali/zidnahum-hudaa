@@ -191,14 +191,15 @@ def create_model_view_set(
             # here we overrided the normal way of creating model instances
             # because User model don't set the hashed password by default
             if model == get_user_model():
-                password = serializer.validated_data["password"]
-                del serializer.validated_data["password"]
+                groups = serializer.validated_data["groups"]
+
+                del serializer.validated_data["groups"]
                 
-                model.objects.create(
+                user = model.objects.create_user(
                     **serializer.validated_data,
                 )
 
-                model.set_password(password)
+                user.groups.set(groups)
 
                 return
 

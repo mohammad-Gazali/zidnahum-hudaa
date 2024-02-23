@@ -42,7 +42,7 @@ export class StudentViewComponent {
       },
       category: {
         type: 'relation',
-        nullable: true,
+        relationType: 'nullable',
         getFieldValueFunc: () => {
           return this.students.studentsCategoryList();
         },
@@ -52,7 +52,7 @@ export class StudentViewComponent {
       },
       group: {
         type: 'relation',
-        nullable: true,
+        relationType: 'nullable',
         getFieldValueFunc: () => {
           return this.students.studentsGroupList();
         },
@@ -62,25 +62,25 @@ export class StudentViewComponent {
       },
       masjed: {
         type: 'relation',
-        nullable: false,
+        relationType: 'normal',
         getFieldValueFunc: () => {
           return this.masjed.getMasjeds();
         },
       },
-      q_awqaf_test: {
-        type: 'custom',
-      },
-      q_awqaf_test_explaining: {
-        type: 'custom',
-      },
-      q_awqaf_test_looking: {
-        type: 'custom',
-      },
       q_memorizing: {
-        type: 'custom',
+        type: 'q_memorize',
       },
       q_test: {
-        type: 'custom',
+        type: 'q_test',
+      },
+      q_awqaf_test: {
+        type: 'q_test_awqaf',
+      },
+      q_awqaf_test_explaining: {
+        type: 'q_test_awqaf',
+      },
+      q_awqaf_test_looking: {
+        type: 'q_test_awqaf',
       },
       registered_at: {
         type: 'date',

@@ -5,13 +5,13 @@ import { StudentGroupList, StudentGroupUpdate } from '../../../../../services/ap
 import { StudentsService } from '../../../../../services/api/admin/services';
 
 @Component({
-  selector: 'app-group-view',
+  selector: 'app-student-group-view',
   standalone: true,
   imports: [ViewComponent],
   templateUrl: './group-view.component.html',
   styleUrl: './group-view.component.scss'
 })
-export class GroupViewComponent {
+export class StudentGroupViewComponent {
   private students = inject(StudentsService);
 
   public config: ViewComponentConfig<StudentGroupList, StudentGroupUpdate> = {

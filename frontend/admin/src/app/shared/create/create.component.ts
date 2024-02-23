@@ -80,7 +80,13 @@ export class CreateComponent<T> implements OnInit, OnDestroy {
       ([name, config]) => {
         const validators = config.required ? [Validators.required] : [];
 
-        this.form.addControl(name, this.fb.control(undefined, validators));
+        if (config.type === 'boolean') {
+          this.form.addControl(name, this.fb.control(false, validators));
+        } else if (config.type === 'relation' && config.relationType === 'multiple') {
+          this.form.addControl(name, this.fb.control([], validators));
+        } else {
+          this.form.addControl(name, this.fb.control(undefined, validators));
+        }
 
         this.fields.update((pre) => [
           ...pre,
@@ -122,7 +128,7 @@ export class CreateComponent<T> implements OnInit, OnDestroy {
     const value: any = this.form.value;
 
     this.fields().forEach(f => {
-      if (f.config.type === 'relation' && f.config.nullable && value[f.name] === -1) {
+      if (f.config.type === 'relation' && f.config.relationType === 'nullable' && value[f.name] === -1) {
         value[f.name] = null;
       } else if (f.config.type === 'date' && value[f.name] instanceof Date) {
         value[f.name] = this.date.format(value[f.name]);

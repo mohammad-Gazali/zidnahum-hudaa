@@ -6,24 +6,22 @@ export type GetStringKeys<T> = Extract<keyof T, string>;
 // Interface for field configuration
 export type FieldConfig =
   | {
+      display: 'normal';
+      filterType?: 'date';
+    }
+  | {
+      display: 'boolean';
+      filterType?: undefined;
+    }
+  | {
       display: 'relation';
       filterType: 'exact' | 'exact_null';
       getFieldValueFunc: () => Observable<{ id: number; name: string }[]>;
-      // I added this because of error appear in the html template with angular language server
-      // the expected behavior that when the display is "link" the getUrlFunc will exist
-      // but this is not the case here and I don't know why.
-      getUrlFunc?: null;
     }
   | {
       display: 'link';
       filterType: undefined;
       getUrlFunc: (id: number) => string;
-    }
-  | {
-      display: 'normal';
-      filterType?: 'date';
-      // ... the same reason in the top ...
-      getUrlFunc?: null;
     };
 
 // Interface for configuration of table component

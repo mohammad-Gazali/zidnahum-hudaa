@@ -1,7 +1,5 @@
 /* tslint:disable */
 export interface UserCreate {
-  date_joined?: string;
-  email?: string;
   first_name?: string;
 
   /**
@@ -23,14 +21,8 @@ export interface UserCreate {
    * يقضي بأن هذا المستخدم يمتلك كافة الصلاحيات دون الحاجة لمنحها له تصريحاً.
    */
   is_superuser?: boolean;
-  last_login?: null | string;
   last_name?: string;
   password: string;
-
-  /**
-   * صلاحيات خاصة بهذا المستخدم.
-   */
-  user_permissions?: Array<number>;
 
   /**
    * مطلوب. 150 رمزاً أو أقل، مكونة من حروف وأرقام و @/./+/-/_ فقط

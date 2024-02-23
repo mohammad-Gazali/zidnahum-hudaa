@@ -89,6 +89,12 @@
                       <a class="primary" [routerLink]="config.getUrlFunc(element.id)">
                         {{ element[column] }}
                       </a>
+                    } @else if (config.columns[column].display === 'boolean') {
+                      @if (element[column]) {
+                        <mat-icon color="primary">check_circle_outline</mat-icon>
+                      } @else {
+                        <mat-icon color="warn">not_interested</mat-icon>
+                      }
                     } @else if (config.columns[column].display === 'relation') {
                       {{
                         extraData[column].map.get(element[column]) ?? '-'
@@ -97,7 +103,7 @@
                         @if (element[column] === null || element[column] === undefined) {
                           -
                         } @else {
-                          <a class="primary" [routerLink]="config.columns[column].getUrlFunc!(element[column])">
+                          <a class="primary" [routerLink]="$any(config.columns[column]).getUrlFunc(element[column])">
                             {{
                               extraData[column].map.get(element[column])
                             }}

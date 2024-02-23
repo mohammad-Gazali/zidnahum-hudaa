@@ -288,7 +288,6 @@ export class TableComponent<T> implements OnInit, OnDestroy {
     if (resetSort) {
       this.sort.direction = '';
     }
-
     this.loading.set(true);
 
     if (this.config.hasPagination) {
@@ -316,7 +315,12 @@ export class TableComponent<T> implements OnInit, OnDestroy {
         });
     } else {
       this.config
-        .dataFunc(options)
+        // here we passed directly ordering because when the there is one query
+        // param the function accept it directly without being wrapped in object
+        //! === Warning ===
+        //! SO be careful if there if any new query param added to non-pagination
+        //! tables
+        .dataFunc(options?.ordering)
         .pipe(takeUntil(this.destroyed$))
         .subscribe((res) => {
           this.dataSource.data = res;

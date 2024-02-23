@@ -1,19 +1,19 @@
 import { Routes } from "@angular/router";
-import { GroupComponent } from "./group.component";
-import { GroupViewComponent } from "./group-view/group-view.component";
-import { GroupCreateComponent } from "./group-create/group-create.component";
+import { StudentGroupComponent } from "./group.component";
+import { StudentGroupViewComponent } from "./group-view/group-view.component";
+import { StudentGroupCreateComponent } from "./group-create/group-create.component";
 
 export const routes: Routes = [
     {
         path: '',
-        component: GroupComponent,
+        component: StudentGroupComponent,
     },
     {
         path: 'view/:id',
-        component: GroupViewComponent,
+        component: StudentGroupViewComponent,
     },
     {
         path: 'create',
-        component: GroupCreateComponent,
+        component: StudentGroupCreateComponent,
     }
 ];

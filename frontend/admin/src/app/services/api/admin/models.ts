@@ -3,6 +3,7 @@ export { GroupCreate } from './models/group-create';
 export { GroupUpdate } from './models/group-update';
 export { UserList } from './models/user-list';
 export { UserCreate } from './models/user-create';
+export { UserDetails } from './models/user-details';
 export { UserUpdate } from './models/user-update';
 export { AwqafNoQStudentRelationList } from './models/awqaf-no-qstudent-relation-list';
 export { AwqafNoQStudentRelationCreate } from './models/awqaf-no-qstudent-relation-create';

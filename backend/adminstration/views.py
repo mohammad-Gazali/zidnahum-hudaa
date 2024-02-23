@@ -10,7 +10,14 @@ from students.models import StudentCategory, StudentGroup, Student, MemorizeMess
 
 
 # auth view sets
-AdminUserViewSet = create_model_view_set(get_user_model(), filter_fields=["is_superuser", "is_active"])
+AdminListUserSerializer = create_serializer(get_user_model(), ["id", "username", "first_name", "last_name", "is_active", "is_staff", "is_superuser"], extra_ref="list")
+AdminCreateUserSerializer = create_serializer(get_user_model(), ["username", "password", "first_name", "last_name", "is_active", "is_staff", "is_superuser", "groups"], extra_ref="create")
+AdminUserViewSet = create_model_view_set(
+    get_user_model(),
+    fields=["id", "username", "first_name", "last_name", "is_active", "is_staff", "is_superuser", "groups"],
+    listing_serializer=AdminListUserSerializer,
+    creating_serializer=AdminCreateUserSerializer,
+)
 AdminGroupViewSet = create_model_view_set(Group, fields=["permissions"], exclude_fields=True, no_pagination=True)
 
 # awqaf view sets

@@ -12,6 +12,7 @@ import { GroupCreate } from '../models/group-create';
 import { GroupUpdate } from '../models/group-update';
 import { UserList } from '../models/user-list';
 import { UserCreate } from '../models/user-create';
+import { UserDetails } from '../models/user-details';
 import { UserUpdate } from '../models/user-update';
 @Injectable({
   providedIn: 'root',
@@ -222,10 +223,6 @@ class AuthService extends __BaseService {
    * - `offset`: The initial index from which to return the results.
    *
    * - `limit`: Number of results to return per page.
-   *
-   * - `is_superuser`: is_superuser
-   *
-   * - `is_active`: is_active
    */
   authUserListResponse(params: AuthService.AuthUserListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<UserList>}>> {
     let __params = this.newParams();
@@ -234,8 +231,6 @@ class AuthService extends __BaseService {
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
-    if (params.isSuperuser != null) __params = __params.set('is_superuser', params.isSuperuser.toString());
-    if (params.isActive != null) __params = __params.set('is_active', params.isActive.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/auth/user/`,
@@ -261,10 +256,6 @@ class AuthService extends __BaseService {
    * - `offset`: The initial index from which to return the results.
    *
    * - `limit`: Number of results to return per page.
-   *
-   * - `is_superuser`: is_superuser
-   *
-   * - `is_active`: is_active
    */
   authUserList(params: AuthService.AuthUserListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<UserList>}> {
     return this.authUserListResponse(params).pipe(
@@ -309,7 +300,7 @@ class AuthService extends __BaseService {
   /**
    * @param id undefined
    */
-  authUserReadResponse(id: string): __Observable<__StrictHttpResponse<UserList>> {
+  authUserReadResponse(id: string): __Observable<__StrictHttpResponse<UserDetails>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -327,16 +318,16 @@ class AuthService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<UserList>;
+        return _r as __StrictHttpResponse<UserDetails>;
       })
     );
   }
   /**
    * @param id undefined
    */
-  authUserRead(id: string): __Observable<UserList> {
+  authUserRead(id: string): __Observable<UserDetails> {
     return this.authUserReadResponse(id).pipe(
-      __map(_r => _r.body as UserList)
+      __map(_r => _r.body as UserDetails)
     );
   }
 
@@ -447,16 +438,6 @@ module AuthService {
      * Number of results to return per page.
      */
     limit?: number;
-
-    /**
-     * is_superuser
-     */
-    isSuperuser?: string;
-
-    /**
-     * is_active
-     */
-    isActive?: string;
   }
 
   /**

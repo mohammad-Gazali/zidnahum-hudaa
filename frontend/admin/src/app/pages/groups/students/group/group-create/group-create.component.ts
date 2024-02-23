@@ -5,13 +5,13 @@ import { CreateComponentConfig } from '../../../../../shared/create/create.compo
 import { StudentGroupCreate } from '../../../../../services/api/admin/models';
 
 @Component({
-  selector: 'app-group-create',
+  selector: 'app-student-group-create',
   standalone: true,
   imports: [CreateComponent],
   templateUrl: './group-create.component.html',
   styleUrl: './group-create.component.scss'
 })
-export class GroupCreateComponent {
+export class StudentGroupCreateComponent {
   private students = inject(StudentsService);
 
   public config: CreateComponentConfig<StudentGroupCreate> = {

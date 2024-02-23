@@ -34,7 +34,7 @@ export class StudentCreateComponent {
       },
       masjed: {
         type: 'relation',
-        nullable: false,
+        relationType: 'normal',
         required: true,
         getFieldValueFunc: () => {
           return this.masjed.getMasjeds();
@@ -57,7 +57,7 @@ export class StudentCreateComponent {
       },
       category: {
         type: 'relation',
-        nullable: true,
+        relationType: 'nullable',
         getFieldValueFunc: () => {
           return this.students.studentsCategoryList();
         },
@@ -73,7 +73,7 @@ export class StudentCreateComponent {
       },
       group: {
         type: 'relation',
-        nullable: true,
+        relationType: 'nullable',
         getFieldValueFunc: () => {
           return this.students.studentsGroupList();
         },

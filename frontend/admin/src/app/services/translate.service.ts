@@ -91,11 +91,20 @@ export class TranslateService {
         this.translateMap.set('allah_names_old', 'أسماء الله الحسنى قديم');
         this.translateMap.set('allah_names_new', 'أسماء الله الحسنى جديد');
 
-        // category model
+        // student category model
         this.translateMap.set('student-category', 'فئة الطالب');
 
-        // group model
+        // student group model
         this.translateMap.set('student-group', 'مجموعة الطالب');
+
+        // user model
+        this.translateMap.set('user', 'مستخدم');
+        this.translateMap.set('first_name', 'الاسم');
+        this.translateMap.set('last_name', 'الكنية');
+        this.translateMap.set('is_active', 'فعال');
+        this.translateMap.set('is_staff', 'طاقم');
+        this.translateMap.set('is_superuser', 'مستخدم فائق');
+        this.translateMap.set('groups', 'المجموعات');
     }
 
     translate(value: string): string {

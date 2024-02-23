@@ -14,12 +14,12 @@ export interface ViewComponentConfig<T, U = null> {
 }
 
 export type FieldConfig = ({
-    type: 'boolean' | 'number' | 'date' | 'datetime' | 'string' | 'custom';
+    type: 'boolean' | 'number' | 'date' | 'datetime' | 'string' | 'q_memorize' | 'q_test' | 'q_test_awqaf';
     validators?: ValidatorFn[];
     nonEditable?: boolean;
 } | {
     type: 'relation';
-    nullable: boolean;
+    relationType: 'nullable' | 'multiple' | 'normal';
     nonEditable?: boolean;
     validators?: ValidatorFn[];
     getFieldValueFunc: () => Observable<{ id: number; name: string; }[]>;
@@ -29,9 +29,14 @@ export type FieldConfig = ({
 export type Field = {
     name: string;
     value: any;
-    type: 'string' | 'boolean' | 'number' | 'date' | 'datetime' | 'custom' | 'relation';
+    type: 'string' | 'boolean' | 'number' | 'date' | 'datetime' | 'q_memorize' | 'q_test' | 'q_test_awqaf';
     nonEditable?: boolean;
-    nullable: boolean;
+} | {
+    name: string;
+    value: any;
+    type: 'relation';
+    nonEditable?: boolean;
+    relationType: 'nullable' | 'multiple' | 'normal';
 }
 
 export type ExtraData = {
