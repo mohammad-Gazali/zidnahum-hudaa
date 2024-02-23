@@ -190,6 +190,9 @@ def create_model_view_set(
         def perform_create(self, serializer):
             # here we overrided the normal way of creating model instances
             # because User model don't set the hashed password by default
+            # so we used the `create_user` method
+            # also we can't assign groups directly so we set them the way
+            # we do with many-to-many relations
             if model == get_user_model():
                 groups = serializer.validated_data["groups"]
 
