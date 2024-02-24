@@ -3,6 +3,7 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationInterface } from './api-configuration';
 
+import { ActionsService } from './services/actions.service';
 import { AuthService } from './services/auth.service';
 import { AwqafService } from './services/awqaf.service';
 import { ComingsService } from './services/comings.service';
@@ -24,6 +25,7 @@ import { StudentsService } from './services/students.service';
   declarations: [],
   providers: [
     ApiConfiguration,
+    ActionsService,
     AuthService,
     AwqafService,
     ComingsService,

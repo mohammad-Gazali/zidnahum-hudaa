@@ -4,8 +4,6 @@ import { TableComponentConfig } from '../../../../shared/table/table.component.i
 import { UserList } from '../../../../services/api/admin/models';
 import { AuthService } from '../../../../services/api/admin/services';
 
-// TODO: add reset password action
-
 @Component({
   selector: 'app-user',
   standalone: true,

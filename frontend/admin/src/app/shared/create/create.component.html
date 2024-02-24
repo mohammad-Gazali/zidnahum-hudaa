@@ -53,11 +53,11 @@
         <mat-divider></mat-divider>
     }
     <div class="buttons-container">
-        <button (click)="goToTable()" mat-flat-button type="button">
+        <button [disabled]="loading()" (click)="goToTable()" mat-flat-button type="button">
             <mat-icon style="transform: scaleX(-1);">reply</mat-icon>
             {{ 'Cancel' | translate }}
         </button>
-        <button mat-flat-button color="primary" type="submit">
+        <button [disabled]="loading()" mat-flat-button color="primary" type="submit">
             <mat-icon>add</mat-icon>
             {{ 'Create' | translate }}
         </button>

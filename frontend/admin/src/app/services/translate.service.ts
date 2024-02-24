@@ -105,6 +105,8 @@ export class TranslateService {
         this.translateMap.set('is_staff', 'طاقم');
         this.translateMap.set('is_superuser', 'مستخدم فائق');
         this.translateMap.set('groups', 'المجموعات');
+        this.translateMap.set('new password', 'كلمة المرور الجديدة');
+        this.translateMap.set('reset password', 'تغيير كلمة المرور');
     }
 
     translate(value: string): string {

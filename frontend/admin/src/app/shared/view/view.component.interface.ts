@@ -11,6 +11,11 @@ export interface ViewComponentConfig<T, U = null> {
     viewFunc: (id: string) => Observable<T>;
     deleteFunc?: (id: string) => Observable<null>;
     updateFunc?: (id: string, data: U) => Observable<any>;
+    extraAction?: {
+        name: string;
+        icon: string;
+        link: (id: string) => string;
+    },
 }
 
 export type FieldConfig = ({

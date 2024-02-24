@@ -50,5 +50,10 @@ export class UserViewComponent {
     viewFunc: (id) => this.auth.authUserRead(id),
     deleteFunc: (id) => this.auth.authUserDelete(id),
     updateFunc: (id, data) => this.auth.authUserUpdate({ id, data }),
+    extraAction: {
+      name: 'Reset Password',
+      icon: 'lock',
+      link: (id) => `/auth/user/update-password/${id}`,
+    }
   };
 }

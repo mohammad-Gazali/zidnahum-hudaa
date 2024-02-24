@@ -42,7 +42,7 @@ export class LoginComponent implements OnDestroy {
   destroyed$ = new Subject<void>();
 
   submit(form: NgForm) {
-    if (form.invalid) return;
+    if (form.invalid || this.loading()) return;
 
     this.loading.set(true);
     this.accounts

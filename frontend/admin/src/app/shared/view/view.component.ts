@@ -187,7 +187,7 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
     });
 
     const currentUpdateFunc = this.config.updateFunc;
-    if (this.form.valid && currentUpdateFunc !== undefined) {
+    if (this.form.valid && currentUpdateFunc !== undefined && !this.loading()) {
       this.loading.set(true);
 
       currentUpdateFunc(this.viewId, this.form.value as U).subscribe(() => {

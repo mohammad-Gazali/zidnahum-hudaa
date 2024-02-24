@@ -1,3 +1,4 @@
+export { UserUpdatePassword } from './models/user-update-password';
 export { GroupList } from './models/group-list';
 export { GroupCreate } from './models/group-create';
 export { GroupUpdate } from './models/group-update';

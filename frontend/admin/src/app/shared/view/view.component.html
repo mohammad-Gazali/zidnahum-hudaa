@@ -136,13 +136,19 @@
     }
     <div class="buttons-container">
         @if (config.deleteFunc !== undefined) {
-            <button (click)="deleteFunction()" mat-flat-button color="warn" type="button">
+            <button [disabled]="loading()" (click)="deleteFunction()" mat-flat-button color="warn" type="button">
                 <mat-icon>delete</mat-icon>
                 {{ 'Delete' | translate }}
             </button>
         }
+        @if (config.extraAction) {
+            <button [disabled]="loading()" mat-flat-button color="accent" type="button" [routerLink]="config.extraAction.link(viewId)">
+                <mat-icon>{{ config.extraAction.icon }}</mat-icon>
+                {{ config.extraAction.name | translate }}
+            </button>
+        }
         @if (editMode()) {
-            <button mat-flat-button color="primary" type="submit">
+            <button [disabled]="loading()" mat-flat-button color="primary" type="submit">
                 <mat-icon>edit</mat-icon>
                 {{ 'Update' | translate }}
             </button>

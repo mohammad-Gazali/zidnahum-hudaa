@@ -37,6 +37,7 @@
         &::-webkit-scrollbar {
             appearance: none;
             width: 6px;
+            height: 6px;
         }
 
         &::-webkit-scrollbar-track {
@@ -51,6 +52,10 @@
         &::-webkit-scrollbar-thumb {
             background-color: rgb(223, 223, 223);
             border-radius: 20px;
+        }
+
+        &::-webkit-scrollbar-corner {
+            display: none;
         }
 
         a {
