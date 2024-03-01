@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { CreateComponent } from '../../../../../shared/create/create.component';
 import { CreateComponentConfig } from '../../../../../shared/create/create.component.interface';
-import { StudentsService } from '../../../../../services/api/admin/services';
 import { MasjedService } from '../../../../../services/masjed.service';
 import { StudentCreate } from '../../../../../services/api/admin/models';
+import { StudentsBase } from '../../students.base';
 
 @Component({
   selector: 'app-student-create',
@@ -12,8 +12,7 @@ import { StudentCreate } from '../../../../../services/api/admin/models';
   templateUrl: './student-create.component.html',
   styleUrl: './student-create.component.scss'
 })
-export class StudentCreateComponent {
-  private students = inject(StudentsService);
+export class StudentCreateComponent extends StudentsBase {
   private masjed = inject(MasjedService);
 
   public config: CreateComponentConfig<StudentCreate> = {

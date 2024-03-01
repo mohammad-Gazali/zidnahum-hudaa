@@ -2,8 +2,8 @@ import { Component, inject } from '@angular/core';
 import { TableComponent } from '../../../../shared/table/table.component';
 import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
 import { StudentList } from '../../../../services/api/admin/models';
-import { StudentsService } from '../../../../services/api/admin/services';
 import { MasjedService } from '../../../../services/masjed.service';
+import { StudentsBase } from '../students.base';
 
 @Component({
   selector: 'app-student',
@@ -12,8 +12,7 @@ import { MasjedService } from '../../../../services/masjed.service';
   templateUrl: './student.component.html',
   styleUrl: './student.component.scss',
 })
-export class StudentComponent {
-  private students = inject(StudentsService);
+export class StudentComponent extends StudentsBase {
   private masjed = inject(MasjedService);
 
   public config: TableComponentConfig<StudentList> = {

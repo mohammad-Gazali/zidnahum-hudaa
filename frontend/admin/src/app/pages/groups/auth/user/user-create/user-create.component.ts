@@ -1,8 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CreateComponent } from '../../../../../shared/create/create.component';
 import { CreateComponentConfig } from '../../../../../shared/create/create.component.interface';
 import { UserCreate } from '../../../../../services/api/admin/models';
-import { AuthService } from '../../../../../services/api/admin/services';
+import { AuthBase } from '../../auth.base';
 
 @Component({
   selector: 'app-user-create',
@@ -11,9 +11,7 @@ import { AuthService } from '../../../../../services/api/admin/services';
   templateUrl: './user-create.component.html',
   styleUrl: './user-create.component.scss'
 })
-export class UserCreateComponent {
-  private auth = inject(AuthService);
-
+export class UserCreateComponent extends AuthBase {
   public config: CreateComponentConfig<UserCreate> = {
     tableRoute: '/auth/user',
     createFunc: (body) => this.auth.authUserCreate(body),

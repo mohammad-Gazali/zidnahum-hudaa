@@ -1,9 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { TableComponent } from '../../../../shared/table/table.component';
 import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
-import { StudentsService } from '../../../../services/api/admin/services';
 import { StudentCategoryList } from '../../../../services/api/admin/models';
-import { Observable } from 'rxjs';
+import { StudentsBase } from '../students.base';
 
 @Component({
   selector: 'app-category',
@@ -12,9 +11,7 @@ import { Observable } from 'rxjs';
   templateUrl: './category.component.html',
   styleUrl: './category.component.scss'
 })
-export class CategoryComponent {
-  private students = inject(StudentsService);
-
+export class CategoryComponent extends StudentsBase {
   public config: TableComponentConfig<StudentCategoryList> = {
     createUrl: '/students/student-category/create',
     hasPagination: false,
@@ -28,8 +25,4 @@ export class CategoryComponent {
       },
     },
   };
-
-  constructor () {
-    this.students.studentsCategoryList
-  }
 }

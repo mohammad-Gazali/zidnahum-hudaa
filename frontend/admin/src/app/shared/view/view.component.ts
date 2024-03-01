@@ -31,6 +31,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ViewDeleteDialogComponent } from './view-delete-dialog/view-delete-dialog.component';
 import { DialogData } from './view-delete-dialog/view-delete-dialog.interface';
 import { DateService } from '../../services/date.service';
+import { QuranMemorizeComponent } from './quran-memorize/quran-memorize.component';
+import { QuranTestComponent } from './quran-test/quran-test.component';
+import { QuranAwqafTestComponent } from './quran-awqaf-test/quran-awqaf-test.component';
 
 
 @Component({
@@ -46,6 +49,9 @@ import { DateService } from '../../services/date.service';
     MatDatepickerModule,
     MatSelectModule,
     ReactiveFormsModule,
+    QuranMemorizeComponent,
+    QuranTestComponent,
+    QuranAwqafTestComponent,
     RouterLink,
     TranslatePipe,
   ],

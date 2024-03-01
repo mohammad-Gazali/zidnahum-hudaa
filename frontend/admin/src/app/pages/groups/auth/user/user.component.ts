@@ -1,8 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { TableComponent } from '../../../../shared/table/table.component';
 import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
 import { UserList } from '../../../../services/api/admin/models';
-import { AuthService } from '../../../../services/api/admin/services';
+import { AuthBase } from '../auth.base';
 
 @Component({
   selector: 'app-user',
@@ -11,9 +11,7 @@ import { AuthService } from '../../../../services/api/admin/services';
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
 })
-export class UserComponent {
-  private auth = inject(AuthService);
-
+export class UserComponent extends AuthBase {
   public config: TableComponentConfig<UserList> = {
     createUrl: '/auth/user/create',
     hasPagination: true,

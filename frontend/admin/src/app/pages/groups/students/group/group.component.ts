@@ -1,8 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { TableComponent } from '../../../../shared/table/table.component';
 import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
-import { StudentsService } from '../../../../services/api/admin/services';
 import { StudentGroupList } from '../../../../services/api/admin/models';
+import { StudentsBase } from '../students.base';
 
 @Component({
   selector: 'app-student-group',
@@ -11,9 +11,7 @@ import { StudentGroupList } from '../../../../services/api/admin/models';
   templateUrl: './group.component.html',
   styleUrl: './group.component.scss'
 })
-export class StudentGroupComponent {
-  private students = inject(StudentsService);
-
+export class StudentGroupComponent extends StudentsBase {
   public config: TableComponentConfig<StudentGroupList> = {
     createUrl: '/students/student-group/create',
     getUrlFunc: (id) => `/students/student-group/view/${id}`,

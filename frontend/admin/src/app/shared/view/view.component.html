@@ -128,8 +128,14 @@
                         }
                     </mat-select>
                 </mat-form-field>
-            } @else if (true) {
-                TODO
+            } @else if (field.type === 'q_memorize') {
+                <app-quran-memorize [content]="field.value || []" [editMode]="editMode()"></app-quran-memorize>
+            } @else if (field.type === 'q_test') {
+                <app-quran-test [content]="field.value || []" [editMode]="editMode()"></app-quran-test>
+            } @else if (field.type === 'q_test_awqaf') {
+                <app-quran-awqaf-test [content]="field.value || []" [editMode]="editMode()"></app-quran-awqaf-test>
+            } @else {
+                INVALID
             }
         </div>
         <mat-divider></mat-divider>

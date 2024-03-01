@@ -1,8 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { TableComponent } from '../../../../shared/table/table.component';
 import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
 import { GroupList } from '../../../../services/api/admin/models';
-import { AuthService } from '../../../../services/api/admin/services';
+import { AuthBase } from '../auth.base';
 
 @Component({
   selector: 'app-group',
@@ -11,9 +11,7 @@ import { AuthService } from '../../../../services/api/admin/services';
   templateUrl: './group.component.html',
   styleUrl: './group.component.scss'
 })
-export class GroupComponent {
-  private auth = inject(AuthService);
-
+export class GroupComponent extends AuthBase {
   public config: TableComponentConfig<GroupList> = {
     dataFunc: (options) => this.auth.authGroupList(options),
     getUrlFunc: (id) => `/auth/group/view/${id}`,

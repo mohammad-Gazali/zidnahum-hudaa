@@ -1,8 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { ViewComponent } from '../../../../../shared/view/view.component';
 import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
-import { StudentsService } from '../../../../../services/api/admin/services';
 import { StudentCategoryList, StudentUpdate } from '../../../../../services/api/admin/models';
+import { StudentsBase } from '../../students.base';
 
 @Component({
   selector: 'app-category-view',
@@ -11,9 +11,7 @@ import { StudentCategoryList, StudentUpdate } from '../../../../../services/api/
   templateUrl: './category-view.component.html',
   styleUrl: './category-view.component.scss'
 })
-export class CategoryViewComponent {
-  private students = inject(StudentsService);
-
+export class CategoryViewComponent extends StudentsBase {
   public config: ViewComponentConfig<StudentCategoryList, StudentUpdate> = {
     fieldsInfo: {},
     groupName: 'students',

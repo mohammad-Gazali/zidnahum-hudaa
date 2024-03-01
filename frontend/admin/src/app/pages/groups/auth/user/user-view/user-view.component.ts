@@ -1,9 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { ViewComponent } from '../../../../../shared/view/view.component';
 import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
-import { AuthService } from '../../../../../services/api/admin/services';
 import { UserUpdate, UserDetails } from '../../../../../services/api/admin/models';
 import { Validators } from '@angular/forms';
+import { AuthBase } from '../../auth.base';
 
 @Component({
   selector: 'app-user-view',
@@ -12,9 +12,7 @@ import { Validators } from '@angular/forms';
   templateUrl: './user-view.component.html',
   styleUrl: './user-view.component.scss'
 })
-export class UserViewComponent {
-  private auth = inject(AuthService);
-
+export class UserViewComponent extends AuthBase {
   public config: ViewComponentConfig<UserDetails, UserUpdate> = {
     fieldsInfo: {
       username: {

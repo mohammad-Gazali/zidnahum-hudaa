@@ -1,8 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CreateComponent } from '../../../../../shared/create/create.component';
 import { CreateComponentConfig } from '../../../../../shared/create/create.component.interface';
 import { GroupCreate } from '../../../../../services/api/admin/models';
-import { AuthService } from '../../../../../services/api/admin/services';
+import { AuthBase } from '../../auth.base';
 
 @Component({
   selector: 'app-group-create',
@@ -11,9 +11,7 @@ import { AuthService } from '../../../../../services/api/admin/services';
   templateUrl: './group-create.component.html',
   styleUrl: './group-create.component.scss'
 })
-export class GroupCreateComponent {
-  private auth = inject(AuthService);
-
+export class GroupCreateComponent extends AuthBase {
   public config: CreateComponentConfig<GroupCreate> = {
     tableRoute: '/auth/group',
     createFunc: (body) => this.auth.authGroupCreate(body),

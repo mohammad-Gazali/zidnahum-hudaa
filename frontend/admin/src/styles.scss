@@ -48,6 +48,7 @@ $admin-dark-theme: mat.define-dark-theme((
 @include mat.all-component-themes($admin-theme);
 
 .dark {
+  color-scheme: dark;
   @include mat.all-component-colors($admin-dark-theme);
 }
 
@@ -77,7 +78,21 @@ a {
 }
 
 .primary {
-  color: mat.get-color-from-palette($admin-primary);
+  color: mat.get-color-from-palette($admin-primary) !important;
+}
+
+.bg-primary {
+  background-color: mat.get-color-from-palette($admin-primary) !important;
+  color: white !important;
+}
+
+.accent {
+  color: mat.get-color-from-palette($admin-accent) !important;
+}
+
+.bg-accent {
+  background-color: mat.get-color-from-palette($admin-accent) !important;
+  color: black !important;
 }
 
 .mdc-button__label {

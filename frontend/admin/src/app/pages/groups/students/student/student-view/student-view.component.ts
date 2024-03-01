@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { ViewComponent } from '../../../../../shared/view/view.component';
 import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
-import { StudentsService } from '../../../../../services/api/admin/services';
 import { StudentDetails, StudentUpdate } from '../../../../../services/api/admin/models';
 import { MasjedService } from '../../../../../services/masjed.service';
 import { Validators } from '@angular/forms';
+import { StudentsBase } from '../../students.base';
 
 @Component({
   selector: 'app-student-view',
@@ -13,8 +13,7 @@ import { Validators } from '@angular/forms';
   templateUrl: './student-view.component.html',
   styleUrl: './student-view.component.scss',
 })
-export class StudentViewComponent {
-  private students = inject(StudentsService);
+export class StudentViewComponent extends StudentsBase {
   private masjed = inject(MasjedService);
 
   public config: ViewComponentConfig<StudentDetails, StudentUpdate> = {

@@ -1,9 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { ViewComponent } from '../../../../../shared/view/view.component';
 import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
 import { GroupList, GroupUpdate } from '../../../../../services/api/admin/models';
 import { Validators } from '@angular/forms';
-import { AuthService } from '../../../../../services/api/admin/services';
+import { AuthBase } from '../../auth.base';
 
 @Component({
   selector: 'app-group-view',
@@ -12,9 +12,7 @@ import { AuthService } from '../../../../../services/api/admin/services';
   templateUrl: './group-view.component.html',
   styleUrl: './group-view.component.scss'
 })
-export class GroupViewComponent {
-  private auth = inject(AuthService);
-
+export class GroupViewComponent extends AuthBase {
   public config: ViewComponentConfig<GroupList, GroupUpdate> = {
     groupName: 'auth',
     itemNameAndRouteName: 'group',

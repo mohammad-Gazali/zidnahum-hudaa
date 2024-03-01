@@ -1,8 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { ViewComponent } from '../../../../../shared/view/view.component';
 import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
 import { StudentGroupList, StudentGroupUpdate } from '../../../../../services/api/admin/models';
-import { StudentsService } from '../../../../../services/api/admin/services';
+import { StudentsBase } from '../../students.base';
 
 @Component({
   selector: 'app-student-group-view',
@@ -11,9 +11,7 @@ import { StudentsService } from '../../../../../services/api/admin/services';
   templateUrl: './group-view.component.html',
   styleUrl: './group-view.component.scss'
 })
-export class StudentGroupViewComponent {
-  private students = inject(StudentsService);
-
+export class StudentGroupViewComponent extends StudentsBase {
   public config: ViewComponentConfig<StudentGroupList, StudentGroupUpdate> = {
     fieldsInfo: {},
     groupName: 'students',
