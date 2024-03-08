@@ -47,7 +47,7 @@ class Student(models.Model):
     father_work = models.CharField(max_length=80, null=True, blank=True, verbose_name="عمل الأب")
     notes = models.CharField(max_length=60, null=True, blank=True, verbose_name="ملاحظات")
     bring_him = models.CharField(max_length=80, verbose_name="أحضره", null=True, blank=True)
-    parts_received = models.CharField(max_length=50, default="", verbose_name="الأجزاء المستلمة", blank=True)
+    parts_received = models.CharField(max_length=50, verbose_name="الأجزاء المستلمة", null=True, blank=True)
     
     q_memorizing = models.JSONField(default=json_default_value_618, verbose_name="حفظ القرآن")
     q_test = models.JSONField(default=json_default_value_240, verbose_name="السبر في المسجد")

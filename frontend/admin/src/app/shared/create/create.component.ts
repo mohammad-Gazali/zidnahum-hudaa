@@ -138,7 +138,7 @@ export class CreateComponent<T> implements OnInit, OnDestroy {
     if (this.form.valid && !this.loading()) {
       this.loading.set(true);
       this.config.createFunc(value).pipe(takeUntil(this.destroyed$)).subscribe(() => {
-        this.snackbar.open('تمت الإضافة بنجاح');
+        this.snackbar.success('تمت الإضافة بنجاح');
         this.loading.set(false);
         this.goToTable();
       });

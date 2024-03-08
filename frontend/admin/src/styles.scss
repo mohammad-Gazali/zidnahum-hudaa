@@ -1,7 +1,6 @@
-
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -20,27 +19,31 @@ $admin-warn: mat.define-palette(mat.$red-palette);
 
 // font family
 $admin-typography-config: mat.define-typography-config(
-  $font-family: 'Noto Kufi Arabic',
+  $font-family: "Noto Kufi Arabic",
 );
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$admin-theme: mat.define-light-theme((
-  color: (
-    primary: $admin-primary,
-    accent: $admin-accent,
-    warn: $admin-warn,
-  ),
-  typography: $admin-typography-config,
-));
-
-$admin-dark-theme: mat.define-dark-theme((
-  color: (
-    primary: $admin-primary,
-    accent: $admin-accent,
-    warn: $admin-warn,
+$admin-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $admin-primary,
+      accent: $admin-accent,
+      warn: $admin-warn,
+    ),
+    typography: $admin-typography-config,
   )
-));
+);
+
+$admin-dark-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $admin-primary,
+      accent: $admin-accent,
+      warn: $admin-warn,
+    ),
+  )
+);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -58,8 +61,8 @@ $admin-dark-theme: mat.define-dark-theme((
   box-sizing: border-box;
 }
 
-body { 
-  font-family: 'Noto Kufi Arabic', "Helvetica Neue", sans-serif;
+body {
+  font-family: "Noto Kufi Arabic", "Helvetica Neue", sans-serif;
   background-color: var(--mat-app-background-color);
   color: var(--mat-app-text-color);
 }
@@ -97,4 +100,32 @@ a {
 
 .mdc-button__label {
   letter-spacing: normal;
+}
+
+:root {
+  --ttwr-success-color: #2e7d32;
+  --ttwr-error-color: #d32f2f;
+
+  --ttwr-success-text-color: #fff;
+  --ttwr-error-text-color: #fff;
+
+  .dark {
+    --ttwr-success-color: #66bb6a;
+    --ttwr-error-color: #f44336;
+
+    --ttwr-success-text-color: #000000de;
+    --ttwr-error-text-color: #fff;
+  }
+}
+
+.snackbar-success {
+  --mdc-snackbar-container-color: var(--ttwr-success-color);
+  --mdc-snackbar-supporting-text-color: var(--ttwr-success-text-color);
+  --mat-snack-bar-button-color: var(--ttwr-success-text-color);
+}
+
+.snackbar-error {
+  --mdc-snackbar-container-color: var(--ttwr-error-color);
+  --mdc-snackbar-supporting-text-color: var(--ttwr-error-text-color);
+  --mat-snack-bar-button-color: var(--ttwr-error-text-color);
 }

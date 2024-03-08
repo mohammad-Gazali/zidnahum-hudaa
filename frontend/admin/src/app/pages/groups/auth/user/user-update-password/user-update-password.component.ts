@@ -38,7 +38,7 @@ export class UserUpdatePasswordComponent implements OnDestroy {
     }).pipe(takeUntil(this.destroyed$)).subscribe(() => {
       this.loading.set(false);
       this.router.navigateByUrl('/auth/user');
-      this.snackbar.open('تم التعديل بنجاح');
+      this.snackbar.success('تم التعديل بنجاح');
     })
   }
 

@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
           })
 
         } else {
-          this.snackbar.open(detail);
+          this.snackbar.error(detail);
         }
       },
     })

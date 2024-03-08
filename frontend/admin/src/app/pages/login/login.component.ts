@@ -63,7 +63,7 @@ export class LoginComponent implements OnDestroy {
               next: (res) => {
                 this.accounts.details.set(res);
 
-                this.snackbar.open('تم تسجيل الدخول بنجاح');
+                this.snackbar.success('تم تسجيل الدخول بنجاح');
 
                 this.router.navigateByUrl('/');
 
@@ -81,14 +81,14 @@ export class LoginComponent implements OnDestroy {
                     this.router.navigateByUrl('login');
                   }
                 } else {
-                  this.snackbar.open(this.translateService.translate(detail));
+                  this.snackbar.error(this.translateService.translate(detail));
                 }
                 this.loading.set(false);
               },
             });
         },
         error: ({ error: { detail } }) => {
-          this.snackbar.open(this.translateService.translate(detail));
+          this.snackbar.error(this.translateService.translate(detail));
           this.loading.set(false);
         },
       });

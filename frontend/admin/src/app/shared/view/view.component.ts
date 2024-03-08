@@ -96,7 +96,7 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
     const routeId = this.route.snapshot.paramMap.get('id');
 
     if (routeId === null) {
-      this.snackbar.open('يجب تواجد المعرف في الرابط');
+      this.snackbar.error('يجب تواجد المعرف في الرابط');
       this.router.navigateByUrl('/');
 
       this.loading.set(false);
@@ -202,7 +202,7 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
       this.loading.set(true);
 
       currentUpdateFunc(this.viewId, this.form.value as U).subscribe(() => {
-        this.snackbar.open('تم التعديل بنجاح');
+        this.snackbar.success('تم التعديل بنجاح');
         this.loading.set(false);
         this.router.navigateByUrl(`/${this.config.groupName}/${this.config.itemNameAndRouteName}`);
       });

@@ -33,7 +33,7 @@ export class ViewDeleteDialogComponent implements OnDestroy {
 
       // something went wrong here so I made the arabic
       // language dicetly
-      this.snackbar.open('تم الحذف بنجاح');
+      this.snackbar.success('تم الحذف بنجاح');
     })
   }
 
