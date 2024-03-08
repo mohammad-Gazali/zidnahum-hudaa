@@ -7,7 +7,9 @@
 <form [formGroup]="form" (ngSubmit)="submitUpdate()" class="fields-container">
     @for (field of fields(); track field.name) {
         <div class="field-row">
-            <div class="row-title">
+            <div 
+            class="row-title"
+            [class.hidden]="field.type === 'q_memorize' || field.type === 'q_test' || field.type === 'q_test_awqaf'">
                 <span>
                     {{ field.name | translate }}
                 </span>
@@ -129,11 +131,20 @@
                     </mat-select>
                 </mat-form-field>
             } @else if (field.type === 'q_memorize') {
-                <app-quran-memorize [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="editMode()"></app-quran-memorize>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>{{ field.name | translate }}</mat-expansion-panel-header>
+                    <app-quran-memorize [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="editMode()"></app-quran-memorize>
+                </mat-expansion-panel>
             } @else if (field.type === 'q_test') {
-                <app-quran-test [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="editMode()"></app-quran-test>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>{{ field.name | translate }}</mat-expansion-panel-header>
+                    <app-quran-test [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="editMode()"></app-quran-test>
+                </mat-expansion-panel>
             } @else if (field.type === 'q_test_awqaf') {
-                <app-quran-awqaf-test [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="editMode()"></app-quran-awqaf-test>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>{{ field.name | translate }}</mat-expansion-panel-header>
+                    <app-quran-awqaf-test [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="editMode()"></app-quran-awqaf-test>
+                </mat-expansion-panel>
             } @else {
                 INVALID
             }

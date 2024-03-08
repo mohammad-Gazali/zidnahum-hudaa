@@ -28,6 +28,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialog } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { ViewDeleteDialogComponent } from './view-delete-dialog/view-delete-dialog.component';
 import { DialogData } from './view-delete-dialog/view-delete-dialog.interface';
 import { DateService } from '../../services/date.service';
@@ -49,6 +50,7 @@ import { MemoItemType } from '../../services/quran/quran.constatns';
     MatCheckboxModule,
     MatDatepickerModule,
     MatSelectModule,
+    MatExpansionModule,
     ReactiveFormsModule,
     QuranMemorizeComponent,
     QuranTestComponent,
