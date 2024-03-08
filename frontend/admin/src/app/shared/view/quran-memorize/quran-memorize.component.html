@@ -1,23 +1,27 @@
-<div class="memo-container">
-    @for (item of content(); track $index) {
+<div [formArrayName]="name()" class="memo-container">
+    @for (control of array().controls; track $index) {
         @if (581 <= $index && $index <= 617) {
             <mat-card
             matRipple
             [matRippleDisabled]="!editMode()"
-            [class.bg-primary]="item === MemoItemType.NEW"
-            [class.bg-accent]="item === MemoItemType.OLD"
+            [class.bg-primary]="control.value === MemoItemType.NEW"
+            [class.bg-accent]="control.value === MemoItemType.OLD"
             [class.edit-mode]="editMode()"
+            (click)="changeValue(control)"
             class="flex-card">
+                <input type="hidden" [formControl]="control">
                 {{ transform($index) }}
             </mat-card>
         } @else {
             <mat-card
             matRipple
             [matRippleDisabled]="!editMode()"
-            [class.bg-primary]="item === MemoItemType.NEW"
-            [class.bg-accent]="item === MemoItemType.OLD"
-            [class.edit-mode]="editMode()">
-            {{ transform($index) }}
+            [class.bg-primary]="control.value === MemoItemType.NEW"
+            [class.bg-accent]="control.value === MemoItemType.OLD"
+            [class.edit-mode]="editMode()"
+            (click)="changeValue(control)">
+                <input type="hidden" [formControl]="control">
+                {{ transform($index) }}
             </mat-card>
         }
     }

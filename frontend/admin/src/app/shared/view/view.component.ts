@@ -34,6 +34,7 @@ import { DateService } from '../../services/date.service';
 import { QuranMemorizeComponent } from './quran-memorize/quran-memorize.component';
 import { QuranTestComponent } from './quran-test/quran-test.component';
 import { QuranAwqafTestComponent } from './quran-awqaf-test/quran-awqaf-test.component';
+import { MemoItemType } from '../../services/quran/quran.constatns';
 
 
 @Component({
@@ -119,6 +120,10 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
                 if (fieldsInfo?.type === 'relation') {
                   // here we convert the null value to -1 to display its label in the select input
                   this.form.addControl(name, this.fb.control(value ?? -1, [...(fieldsInfo?.validators ?? [])]));
+                } else if (fieldsInfo?.type === 'q_memorize' || fieldsInfo?.type === 'q_test' || fieldsInfo?.type === 'q_test_awqaf') {
+                  this.form.addControl(name, this.fb.array(
+                    (value as MemoItemType[]).map(item => this.fb.nonNullable.control(item)),
+                  ));
                 } else {
                   this.form.addControl(name, this.fb.control(value, [...(fieldsInfo?.validators ?? [])]));
                 }
