@@ -17,7 +17,7 @@ import {
   imports: [ReactiveFormsModule, MatCardModule, MatRippleModule],
   templateUrl: './quran-memorize.component.html',
   styleUrl: './quran-memorize.component.scss',
-  viewProviders:[{ provide: ControlContainer, useExisting: FormGroupDirective}]
+  viewProviders:[{ provide: ControlContainer, useExisting: FormGroupDirective }]
 })
 export class QuranMemorizeComponent {
   public transform = inject(QuranMemorzieService).transform;

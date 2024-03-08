@@ -5,6 +5,6 @@ import { Injectable } from "@angular/core";
 })
 export class QuranTestService {
     public transform(index: number) {
-        
+        return `الجزء ${index + 1}`
     }
 }

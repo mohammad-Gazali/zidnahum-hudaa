@@ -1,1 +1,15 @@
-<p>quran-awqaf-test works!</p>
+<div [formArrayName]="name()" class="awqaf-test-container">
+    @for (control of array().controls; track $index) {
+        <mat-card
+        matRipple
+        [matRippleDisabled]="!editMode()"
+        [class.bg-primary]="control.value === MemoItemType.NEW"
+        [class.bg-accent]="control.value === MemoItemType.OLD"
+        [class.edit-mode]="editMode()"
+        (click)="changeValue(control)"
+        class="flex-card">
+            <input type="hidden" [formControl]="control">
+            {{ transform($index) }}
+        </mat-card>
+    }
+</div>
