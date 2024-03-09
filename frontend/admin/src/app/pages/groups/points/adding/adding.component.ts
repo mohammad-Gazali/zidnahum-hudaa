@@ -29,7 +29,8 @@ export class AddingComponent extends PointsBase {
       },
       created_at: {
         display: 'normal',
-        filterType: 'date',
+        filterType: 'datetime_date',
+        dateFormat: 'yyyy/MM/dd hh:mm a'
       },
       master: {
         display: 'relation',

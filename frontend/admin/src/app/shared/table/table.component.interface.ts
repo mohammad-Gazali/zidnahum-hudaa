@@ -8,7 +8,7 @@ export type FieldConfig =
   | {
       display: 'normal';
       dateFormat?: string;
-      filterType?: 'date';
+      filterType?: 'date' | 'datetime_date';
     }
   | {
       display: 'boolean';

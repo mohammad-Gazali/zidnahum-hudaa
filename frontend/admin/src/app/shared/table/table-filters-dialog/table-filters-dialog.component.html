@@ -2,7 +2,7 @@
 <mat-dialog-content>
     <form [formGroup]="form" class="filters-container">
         @for (filter of data.filters; track filter.name) {
-            @if (filter.type !== 'date') {
+            @if (filter.type !== 'date' && filter.type !== 'datetime_date') {
                 <mat-form-field appearance="outline">
                     <mat-label>{{ filter.name | translate }}</mat-label>
                     <mat-select [formControlName]="filter.name">

@@ -67,7 +67,7 @@ export class TableFiltersDialogComponent {
 
   constructor() {
     this.data.filters.forEach((filter) => {
-      if (filter.type === 'date') {
+      if (filter.type === 'date' || filter.type === 'datetime_date') {
         if (
           filter.defaultValue !== undefined &&
           this.date.containsSeparator(filter.defaultValue)
@@ -80,13 +80,20 @@ export class TableFiltersDialogComponent {
             filter.name + '_gt',
             this.fb.nonNullable.control(startDate)
           );
+          
           this.form.addControl(
             filter.name + '_lt',
             this.fb.nonNullable.control(endDate)
           );
+          
           this.form.addControl(
             filter.name + '_type',
             this.fb.nonNullable.control('range')
+          );
+
+          this.form.addControl(
+            filter.name,
+            this.fb.nonNullable.control('')
           );
 
           return;
@@ -104,6 +111,7 @@ export class TableFiltersDialogComponent {
           filter.name + '_type',
           this.fb.nonNullable.control('single')
         );
+
       }
 
       this.form.addControl(
@@ -118,10 +126,10 @@ export class TableFiltersDialogComponent {
     const formValue = this.form.value as any;
 
     this.data.filters.forEach((filter) => {
-      if (filter.type === 'date') {
+      if (filter.type === 'date' || filter.type === 'datetime_date') {
         if (formValue[filter.name + '_type'] === 'single') {
           if (formValue[filter.name] instanceof Date) {
-            const dateValue = this.date.format(formValue[filter.name]);
+            const dateValue = this.date.format(formValue[filter.name], 'yyyy-MM-dd');
 
             usedFilters.push({
               name: filter.name,
@@ -135,10 +143,12 @@ export class TableFiltersDialogComponent {
             formValue[filter.name + '_lt'] instanceof Date
           ) {
             const startDateValue = this.date.format(
-              formValue[filter.name + '_gt']
+              formValue[filter.name + '_gt'],
+              'yyyy-MM-dd',
             );
             const endDateValue = this.date.format(
-              formValue[filter.name + '_lt']
+              formValue[filter.name + '_lt'],
+              'yyyy-MM-dd'
             );
 
             usedFilters.push({

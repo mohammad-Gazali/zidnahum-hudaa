@@ -231,6 +231,8 @@ class PointsService extends __BaseService {
    *
    * - `offset`: The initial index from which to return the results.
    *
+   * - `master__isnull`: master__isnull
+   *
    * - `master`: master
    *
    * - `limit`: Number of results to return per page.
@@ -239,7 +241,7 @@ class PointsService extends __BaseService {
    *
    * - `created_at__gt`: created_at__gt
    *
-   * - `created_at`: created_at
+   * - `created_at__date`: created_at__date
    *
    * - `cause`: cause
    */
@@ -250,11 +252,12 @@ class PointsService extends __BaseService {
     if (params.studentName != null) __params = __params.set('student__name', params.studentName.toString());
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
+    if (params.masterIsnull != null) __params = __params.set('master__isnull', params.masterIsnull.toString());
     if (params.master != null) __params = __params.set('master', params.master.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
     if (params.createdAtLt != null) __params = __params.set('created_at__lt', params.createdAtLt.toString());
     if (params.createdAtGt != null) __params = __params.set('created_at__gt', params.createdAtGt.toString());
-    if (params.createdAt != null) __params = __params.set('created_at', params.createdAt.toString());
+    if (params.createdAtDate != null) __params = __params.set('created_at__date', params.createdAtDate.toString());
     if (params.cause != null) __params = __params.set('cause', params.cause.toString());
     let req = new HttpRequest<any>(
       'GET',
@@ -282,6 +285,8 @@ class PointsService extends __BaseService {
    *
    * - `offset`: The initial index from which to return the results.
    *
+   * - `master__isnull`: master__isnull
+   *
    * - `master`: master
    *
    * - `limit`: Number of results to return per page.
@@ -290,7 +295,7 @@ class PointsService extends __BaseService {
    *
    * - `created_at__gt`: created_at__gt
    *
-   * - `created_at`: created_at
+   * - `created_at__date`: created_at__date
    *
    * - `cause`: cause
    */
@@ -556,6 +561,8 @@ class PointsService extends __BaseService {
    *
    * - `offset`: The initial index from which to return the results.
    *
+   * - `master__isnull`: master__isnull
+   *
    * - `master`: master
    *
    * - `limit`: Number of results to return per page.
@@ -564,7 +571,7 @@ class PointsService extends __BaseService {
    *
    * - `created_at__gt`: created_at__gt
    *
-   * - `created_at`: created_at
+   * - `created_at__date`: created_at__date
    *
    * - `cause`: cause
    */
@@ -575,11 +582,12 @@ class PointsService extends __BaseService {
     if (params.studentName != null) __params = __params.set('student__name', params.studentName.toString());
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
+    if (params.masterIsnull != null) __params = __params.set('master__isnull', params.masterIsnull.toString());
     if (params.master != null) __params = __params.set('master', params.master.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
     if (params.createdAtLt != null) __params = __params.set('created_at__lt', params.createdAtLt.toString());
     if (params.createdAtGt != null) __params = __params.set('created_at__gt', params.createdAtGt.toString());
-    if (params.createdAt != null) __params = __params.set('created_at', params.createdAt.toString());
+    if (params.createdAtDate != null) __params = __params.set('created_at__date', params.createdAtDate.toString());
     if (params.cause != null) __params = __params.set('cause', params.cause.toString());
     let req = new HttpRequest<any>(
       'GET',
@@ -607,6 +615,8 @@ class PointsService extends __BaseService {
    *
    * - `offset`: The initial index from which to return the results.
    *
+   * - `master__isnull`: master__isnull
+   *
    * - `master`: master
    *
    * - `limit`: Number of results to return per page.
@@ -615,7 +625,7 @@ class PointsService extends __BaseService {
    *
    * - `created_at__gt`: created_at__gt
    *
-   * - `created_at`: created_at
+   * - `created_at__date`: created_at__date
    *
    * - `cause`: cause
    */
@@ -725,6 +735,11 @@ module PointsService {
     offset?: number;
 
     /**
+     * master__isnull
+     */
+    masterIsnull?: string;
+
+    /**
      * master
      */
     master?: string;
@@ -745,9 +760,9 @@ module PointsService {
     createdAtGt?: string;
 
     /**
-     * created_at
+     * created_at__date
      */
-    createdAt?: string;
+    createdAtDate?: string;
 
     /**
      * cause
@@ -784,6 +799,11 @@ module PointsService {
     offset?: number;
 
     /**
+     * master__isnull
+     */
+    masterIsnull?: string;
+
+    /**
      * master
      */
     master?: string;
@@ -804,9 +824,9 @@ module PointsService {
     createdAtGt?: string;
 
     /**
-     * created_at
+     * created_at__date
      */
-    createdAt?: string;
+    createdAtDate?: string;
 
     /**
      * cause

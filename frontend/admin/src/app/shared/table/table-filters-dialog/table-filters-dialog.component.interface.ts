@@ -1,5 +1,3 @@
-import { Filter } from "../table.component.interface";
-
 export interface DialogData {
   filters: DialogFilter[];
   extraData: ExtraData;
@@ -7,7 +5,7 @@ export interface DialogData {
 
 interface DialogFilter {
   name: string;
-  type: 'date' | 'exact' | 'exact_null';
+  type: 'date' | 'datetime_date' | 'exact' | 'exact_null';
   defaultValue?: string;
 }
 

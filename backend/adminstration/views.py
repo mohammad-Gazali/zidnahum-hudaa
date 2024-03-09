@@ -62,9 +62,9 @@ AdminPointsAddingViewSet = create_model_view_set(
     methods=["get", "delete"],
     fields=["id", "student", "student_name", "master", "created_at", "cause", "value"],
     filter_fields={
-        "master": ["exact"],
+        "master": ["exact", "isnull"],
         "cause": ["exact"],
-        "created_at": ["exact", "gt", "lt"],
+        "created_at": ["date", "gt", "lt"],
     },
     include_student_name_filter=True,
 )
@@ -74,9 +74,9 @@ AdminPointsDeletingViewSet = create_model_view_set(
     methods=["get", "delete"],
     fields=["id", "student", "student_name", "master", "created_at", "cause", "value"],
     filter_fields={
-        "master": ["exact"],
+        "master": ["exact", "isnull"],
         "cause": ["exact"],
-        "created_at": ["exact", "gt", "lt"],
+        "created_at": ["date", "gt", "lt"],
     },
     include_student_name_filter=True,
 )

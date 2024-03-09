@@ -74,7 +74,7 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
   private snackbar = inject(SnackbarService);
   private fb = inject(FormBuilder);
   private dialog = inject(MatDialog);
-  private date = inject(DateService);
+  public date = inject(DateService);
   public loading = inject(LoadingService).loading;
 
   private destroyed$ = new Subject<void>();
@@ -205,7 +205,7 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
       if (field.type === 'relation') {
         value[field.name] = value[field.name] === -1 ? null : value[field.name]
       } else if (value[field.name] instanceof Date && (field.type === 'date' || field.type === 'datetime')) {
-        value[field.name] = this.date.format(value[field.name])
+        value[field.name] = this.date.format(value[field.name], 'yyyy-MM-dd')
       }
     });
 

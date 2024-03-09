@@ -131,7 +131,7 @@ export class CreateComponent<T> implements OnInit, OnDestroy {
       if (f.config.type === 'relation' && f.config.relationType === 'nullable' && value[f.name] === -1) {
         value[f.name] = null;
       } else if (f.config.type === 'date' && value[f.name] instanceof Date) {
-        value[f.name] = this.date.format(value[f.name]);
+        value[f.name] = this.date.format(value[f.name], 'yyyy-MM-dd');
       }
     })
 

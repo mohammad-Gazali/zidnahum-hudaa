@@ -28,7 +28,7 @@
                         }
                     } @else if (field.type === 'date' || field.type === 'datetime') {
                         <span dir="ltr">
-                            {{ field.value?.replaceAll('-', '/') || '-' }}
+                            {{ date.format(field.value, 'yyyy/MM/dd hh:mm a') || '-' }}
                         </span>
                     } @else if (field.type === 'relation') {
                         @if (extraData[field.name].getUrlFunc !== undefined && field.value !== null) {
@@ -81,7 +81,7 @@
                     <mat-checkbox [class.hidden]="!editMode()" [formControlName]="field.name"></mat-checkbox>
                 } @else if (field.type === 'date' || field.type === 'datetime') {
                     <span [class.hidden]="editMode()" dir="ltr">
-                        {{ field.value?.replaceAll('-', '/') || '-' }}
+                        {{ date.format(field.value, 'yyyy/MM/dd hh:mm a') || '-' }}
                     </span>
                     <mat-form-field [class.hidden]="!editMode()" appearance="outline">
                         <mat-label>{{ field.name | translate }}</mat-label>

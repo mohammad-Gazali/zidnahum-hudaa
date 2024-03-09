@@ -117,6 +117,8 @@
                             </a>
                           }
                         }
+                    } @else if ($any(config.columns[column]).dateFormat !== undefined) {
+                      {{ date.format(element[column], $any(config.columns[column]).dateFormat) }}
                     } @else {
                       {{
                         element[column] ?? '-'

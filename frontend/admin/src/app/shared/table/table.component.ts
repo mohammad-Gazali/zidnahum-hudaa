@@ -70,7 +70,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private loading = inject(LoadingService).loading;
   private dialog = inject(MatDialog);
-  private date = inject(DateService);
+  public date = inject(DateService);
   public helper = inject(HelperService);
 
   public dataSource = new MatTableDataSource<T>([]);
@@ -340,10 +340,15 @@ export class TableComponent<T> implements OnInit, OnDestroy {
     this.activeFilters().forEach((filter) => {
       if (
         filter.type === 'search' ||
-        filter.type === 'date' ||
         filter.type === 'select'
       ) {
         result[this.helper.snakeToCamel(filter.name)] = filter.value;
+      } else if (filter.type === 'date') {
+        if (this.config.columns[filter.name as keyof Omit<T, "id">].filterType === 'datetime_date') {
+          result[this.helper.snakeToCamel(filter.name + '_date')] = filter.value;
+        } else {
+          result[this.helper.snakeToCamel(filter.name)] = filter.value;
+        }
       } else if (filter.type === 'select_null') {
         if (filter.value === '-1') {
           result[this.helper.snakeToCamel(filter.name + '_isnull')] = 'True';

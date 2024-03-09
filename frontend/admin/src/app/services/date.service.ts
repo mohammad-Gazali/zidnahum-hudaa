@@ -5,8 +5,8 @@ import { Injectable } from "@angular/core";
     providedIn: 'root',
 })
 export class DateService {
-    format(date: Date): string {
-        return formatDate(date, 'yyyy-MM-dd', 'en-US');
+    format(date: Date | string, formatString: string): string {
+        return formatDate(date, formatString, 'en-US')
     }
 
     concatTwoDates(startDate: string, endDate: string) {
