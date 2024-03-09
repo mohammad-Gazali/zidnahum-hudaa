@@ -29,6 +29,16 @@ export type FieldConfig = ({
     validators?: ValidatorFn[];
     getFieldValueFunc: () => Observable<{ id: number; name: string; }[]>;
     getUrlFunc?: (id: number | null) => string;
+} | {
+    type: 'link';
+    stringField: string;
+    nonEditable?: boolean;
+    validators?: ValidatorFn[];
+    getUrlFunc: (id: number) => string;
+} | {
+    type: 'ignore';
+    validators?: ValidatorFn[];
+    nonEditable?: boolean;
 });
 
 export type Field = {
@@ -42,6 +52,17 @@ export type Field = {
     type: 'relation';
     nonEditable?: boolean;
     relationType: 'nullable' | 'multiple' | 'normal';
+} | {
+    name: string;
+    stringFieldValue: string;
+    url: string;
+    nonEditable?: boolean;
+    type: 'link';
+} | {
+    name: string;
+    type: 'ignore';
+    value: any;
+    nonEditable?: boolean;
 }
 
 export type ExtraData = {

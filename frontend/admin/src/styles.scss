@@ -55,6 +55,22 @@ $admin-dark-theme: mat.define-dark-theme(
   @include mat.all-component-colors($admin-dark-theme);
 }
 
+:root {
+  --ttwr-success-color: #2e7d32;
+  --ttwr-error-color: #d32f2f;
+
+  --ttwr-success-text-color: #fff;
+  --ttwr-error-text-color: #fff;
+}
+
+.dark {
+  --ttwr-success-color: #66bb6a;
+  --ttwr-error-color: #f44336;
+
+  --ttwr-success-text-color: #000000de;
+  --ttwr-error-text-color: #fff;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -100,22 +116,6 @@ a {
 
 .mdc-button__label {
   letter-spacing: normal;
-}
-
-:root {
-  --ttwr-success-color: #2e7d32;
-  --ttwr-error-color: #d32f2f;
-
-  --ttwr-success-text-color: #fff;
-  --ttwr-error-text-color: #fff;
-
-  .dark {
-    --ttwr-success-color: #66bb6a;
-    --ttwr-error-color: #f44336;
-
-    --ttwr-success-text-color: #000000de;
-    --ttwr-error-text-color: #fff;
-  }
 }
 
 .snackbar-success {

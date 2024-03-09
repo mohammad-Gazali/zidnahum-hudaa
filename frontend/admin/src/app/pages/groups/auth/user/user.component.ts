@@ -14,7 +14,7 @@ import { AuthBase } from '../auth.base';
 export class UserComponent extends AuthBase {
   public config: TableComponentConfig<UserList> = {
     createUrl: '/auth/user/create',
-    hasPagination: true,
+    hasPagination: false,
     getUrlFunc: (id) => `/auth/user/view/${id}`,
     dataFunc: (options) => this.auth.authUserList(options),
     columns: {

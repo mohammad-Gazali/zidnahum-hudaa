@@ -2,7 +2,7 @@ from django.db.models import Model
 from django.http import QueryDict
 from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.serializers import ModelSerializer, IntegerField
+from rest_framework.serializers import ModelSerializer, IntegerField, CharField
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser
 from rest_framework.filters import OrderingFilter
@@ -69,7 +69,10 @@ def create_serializer(
         class Result(ModelSerializer):
             if (serializer_fields == "__all__") or ("id" in serializer_fields and not exclude_fields) or ("id" not in serializer_fields and exclude_fields):
                 id = IntegerField()
-            
+
+            if "student_name" in serializer_fields:
+                student_name = CharField(source="student.name")
+
             class Meta:
                 ref_name = f"{model_class.__name__}-{extra_ref}" if extra_ref is not None else model_class.__name__
                 model = model_class

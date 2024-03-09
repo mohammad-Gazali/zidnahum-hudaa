@@ -17,7 +17,7 @@ export interface StudentUpdate {
   mother_phone?: null | string;
   name: string;
   notes?: null | string;
-  parts_received?: string;
+  parts_received?: null | string;
   q_awqaf_test?: {};
   q_awqaf_test_explaining?: {};
   q_awqaf_test_looking?: {};

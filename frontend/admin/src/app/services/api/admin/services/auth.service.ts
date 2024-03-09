@@ -216,21 +216,13 @@ class AuthService extends __BaseService {
   }
 
   /**
-   * @param params The `AuthService.AuthUserListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  authUserListResponse(params: AuthService.AuthUserListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<UserList>}>> {
+  authUserListResponse(ordering?: string): __Observable<__StrictHttpResponse<Array<UserList>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
-    if (params.offset != null) __params = __params.set('offset', params.offset.toString());
-    if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (ordering != null) __params = __params.set('ordering', ordering.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/auth/user/`,
@@ -244,22 +236,16 @@ class AuthService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<UserList>}>;
+        return _r as __StrictHttpResponse<Array<UserList>>;
       })
     );
   }
   /**
-   * @param params The `AuthService.AuthUserListParams` containing the following parameters:
-   *
-   * - `ordering`: Which field to use when ordering the results.
-   *
-   * - `offset`: The initial index from which to return the results.
-   *
-   * - `limit`: Number of results to return per page.
+   * @param ordering Which field to use when ordering the results.
    */
-  authUserList(params: AuthService.AuthUserListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<UserList>}> {
-    return this.authUserListResponse(params).pipe(
-      __map(_r => _r.body as {count: number, next?: null | string, previous?: null | string, results: Array<UserList>})
+  authUserList(ordering?: string): __Observable<Array<UserList>> {
+    return this.authUserListResponse(ordering).pipe(
+      __map(_r => _r.body as Array<UserList>)
     );
   }
 
@@ -417,27 +403,6 @@ module AuthService {
   export interface AuthGroupUpdateParams {
     id: string;
     data: GroupUpdate;
-  }
-
-  /**
-   * Parameters for authUserList
-   */
-  export interface AuthUserListParams {
-
-    /**
-     * Which field to use when ordering the results.
-     */
-    ordering?: string;
-
-    /**
-     * The initial index from which to return the results.
-     */
-    offset?: number;
-
-    /**
-     * Number of results to return per page.
-     */
-    limit?: number;
   }
 
   /**

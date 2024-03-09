@@ -6,150 +6,160 @@
 }
 <form [formGroup]="form" (ngSubmit)="submitUpdate()" class="fields-container">
     @for (field of fields(); track field.name) {
-        <div class="field-row">
-            <div 
-            class="row-title"
-            [class.hidden]="field.type === 'q_memorize' || field.type === 'q_test' || field.type === 'q_test_awqaf'">
-                <span>
-                    {{ field.name | translate }}
-                </span>
-            </div>
-            @if (field.nonEditable) {
-                @if (field.type === 'string' || field.type === 'number') {
+        @if (field.type !== 'ignore') {
+            <div class="field-row">
+                <div 
+                class="row-title"
+                [class.hidden]="field.type === 'q_memorize' || field.type === 'q_test' || field.type === 'q_test_awqaf'">
                     <span>
+                        {{ field.name | translate }}
+                    </span>
+                </div>
+                @if (field.nonEditable) {
+                    @if (field.type === 'string' || field.type === 'number') {
+                        <span>
+                            {{ field.value ?? '-' }}
+                        </span>
+                    } @else if (field.type === 'boolean') {
+                        @if (field.value) {
+                            <mat-icon>check_circle_outline</mat-icon>
+                        } @else {
+                            <mat-icon>not_interested</mat-icon>
+                        }
+                    } @else if (field.type === 'date' || field.type === 'datetime') {
+                        <span dir="ltr">
+                            {{ field.value?.replaceAll('-', '/') || '-' }}
+                        </span>
+                    } @else if (field.type === 'relation') {
+                        @if (extraData[field.name].getUrlFunc !== undefined && field.value !== null) {
+                            <a class="primary" routerLink="{{ extraData[field.name].getUrlFunc!(field.value) }}">
+                                {{ extraData[field.name].map.get(field.value) ?? '-' }}
+                            </a>
+                        } @else {
+                            <span>
+                                {{ extraData[field.name].map.get(field.value) ?? '-' }}
+                            </span>
+                        }
+                    } @else if (field.type === 'link') {
+                        <a class="primary" [routerLink]="field.url">
+                            {{ field.stringFieldValue }}
+                        </a>
+                    } @else {
+                        INVALID
+                    }
+                } @else if (field.type === 'string' || field.type === 'number') {
+                    <span [class.hidden]="editMode()">
                         {{ field.value ?? '-' }}
                     </span>
+                    <mat-form-field [class.hidden]="!editMode() || field.type !== 'string'" appearance="outline">
+                        <mat-label>{{ field.name | translate }}</mat-label>
+                        <input matInput [formControlName]="field.name" />
+                        @if (form.getError('required', field.name)) {
+                            <mat-error>{{ 'this field is required' | translate }}</mat-error>
+                        }
+                    </mat-form-field>
+                    <mat-form-field [class.hidden]="!editMode() || field.type !== 'number'" appearance="outline">
+                        <mat-label>{{ field.name | translate }}</mat-label>
+                        <input matInput type="number" [formControlName]="field.name" />
+                        @if (form.getError('min', field.name)) {
+                            <mat-error>{{ 'the minimum value is' | translate }} {{ $any(form.get(field.name)?.errors).min.min }}</mat-error>
+                        }
+                        @if (form.getError('max', field.name)) {
+                            <mat-error>{{ 'the maximum value is' | translate }} {{ $any(form.get(field.name)?.errors).max.max }}</mat-error>
+                        }
+                    </mat-form-field>
                 } @else if (field.type === 'boolean') {
                     @if (field.value) {
-                        <mat-icon>check_circle_outline</mat-icon>
+                        <span [class.hidden]="editMode()">
+                            <mat-icon color="primary">check_circle_outline</mat-icon>
+                        </span>
                     } @else {
-                        <mat-icon>not_interested</mat-icon>
-                    }
-                } @else if (field.type === 'date' || field.type === 'datetime') {
-                    <span dir="ltr">
-                        {{ field.value?.replaceAll('-', '/') || '-' }}
-                    </span>
-                } @else if (field.type === 'relation') {
-                    @if (extraData[field.name].getUrlFunc !== undefined && field.value !== null) {
-                        <a class="primary" routerLink="{{ extraData[field.name].getUrlFunc!(field.value) }}">
-                            {{ extraData[field.name].map.get(field.value) ?? '-' }}
-                        </a>
-                    } @else {
-                        <span>
-                            {{ extraData[field.name].map.get(field.value) ?? '-' }}
+                        <span [class.hidden]="editMode()">
+                            <mat-icon color="warn">not_interested</mat-icon>
                         </span>
                     }
-                } @else {
-                    INVALID
-                }
-            } @else if (field.type === 'string' || field.type === 'number') {
-                <span [class.hidden]="editMode()">
-                    {{ field.value ?? '-' }}
-                </span>
-                <mat-form-field [class.hidden]="!editMode() || field.type !== 'string'" appearance="outline">
-                    <mat-label>{{ field.name | translate }}</mat-label>
-                    <input matInput [formControlName]="field.name" />
-                    @if (form.getError('required', field.name)) {
-                        <mat-error>{{ 'this field is required' | translate }}</mat-error>
-                    }
-                </mat-form-field>
-                <mat-form-field [class.hidden]="!editMode() || field.type !== 'number'" appearance="outline">
-                    <mat-label>{{ field.name | translate }}</mat-label>
-                    <input matInput type="number" [formControlName]="field.name" />
-                    @if (form.getError('min', field.name)) {
-                        <mat-error>{{ 'the minimum value is' | translate }} {{ $any(form.get(field.name)?.errors).min.min }}</mat-error>
-                    }
-                    @if (form.getError('max', field.name)) {
-                        <mat-error>{{ 'the maximum value is' | translate }} {{ $any(form.get(field.name)?.errors).max.max }}</mat-error>
-                    }
-                </mat-form-field>
-            } @else if (field.type === 'boolean') {
-                @if (field.value) {
-                    <span [class.hidden]="editMode()">
-                        <mat-icon color="primary">check_circle_outline</mat-icon>
+                    <mat-checkbox [class.hidden]="!editMode()" [formControlName]="field.name"></mat-checkbox>
+                } @else if (field.type === 'date' || field.type === 'datetime') {
+                    <span [class.hidden]="editMode()" dir="ltr">
+                        {{ field.value?.replaceAll('-', '/') || '-' }}
                     </span>
-                } @else {
-                    <span [class.hidden]="editMode()">
-                        <mat-icon color="warn">not_interested</mat-icon>
-                    </span>
-                }
-                <mat-checkbox [class.hidden]="!editMode()" [formControlName]="field.name"></mat-checkbox>
-            } @else if (field.type === 'date' || field.type === 'datetime') {
-                <span [class.hidden]="editMode()" dir="ltr">
-                    {{ field.value?.replaceAll('-', '/') || '-' }}
-                </span>
-                <mat-form-field [class.hidden]="!editMode()" appearance="outline">
-                    <mat-label>{{ field.name | translate }}</mat-label>
-                    <input matInput [matDatepicker]="picker" [formControlName]="field.name">
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-            } @else if (field.type === 'relation') {
-                @if (extraData[field.name].getUrlFunc !== undefined && field.value !== null) {
-                    @if (field.relationType === 'multiple') {
-                        @for (item of field.value; track item) {
-                            <a class="primary" [class.hidden]="editMode()" routerLink="{{ extraData[field.name].getUrlFunc!(item) }}">
-                                {{ extraData[field.name].map.get(item) ?? '-' }}
-                            </a>
-                            <span [class.hidden]="editMode()">@if (!$last) {&nbsp;,&nbsp;}</span>
-                        } @empty { 
-                            <span [class.hidden]="editMode()">-</span>
-                        }
-                    } @else {
-                        <a class="primary" [class.hidden]="editMode()" routerLink="{{ extraData[field.name].getUrlFunc!(field.value) }}">
-                            {{ extraData[field.name].map.get(field.value) ?? '-' }}
-                        </a>
-                    }
-                } @else {
-                    @if (field.relationType === 'multiple') {
-                        <span [class.hidden]="editMode()">
+                    <mat-form-field [class.hidden]="!editMode()" appearance="outline">
+                        <mat-label>{{ field.name | translate }}</mat-label>
+                        <input matInput [matDatepicker]="picker" [formControlName]="field.name">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                } @else if (field.type === 'relation') {
+                    @if (extraData[field.name].getUrlFunc !== undefined && field.value !== null) {
+                        @if (field.relationType === 'multiple') {
                             @for (item of field.value; track item) {
-                                {{ extraData[field.name].map.get(item) ?? '-' }}
+                                <a class="primary" [class.hidden]="editMode()" routerLink="{{ extraData[field.name].getUrlFunc!(item) }}">
+                                    {{ extraData[field.name].map.get(item) ?? '-' }}
+                                </a>
                                 <span [class.hidden]="editMode()">@if (!$last) {&nbsp;,&nbsp;}</span>
                             } @empty { 
                                 <span [class.hidden]="editMode()">-</span>
                             }
-                        </span>
+                        } @else {
+                            <a class="primary" [class.hidden]="editMode()" routerLink="{{ extraData[field.name].getUrlFunc!(field.value) }}">
+                                {{ extraData[field.name].map.get(field.value) ?? '-' }}
+                            </a>
+                        }
                     } @else {
-                        <span [class.hidden]="editMode()">
-                            {{ extraData[field.name].map.get(field.value) ?? '-' }}
-                        </span>
+                        @if (field.relationType === 'multiple') {
+                            <span [class.hidden]="editMode()">
+                                @for (item of field.value; track item) {
+                                    {{ extraData[field.name].map.get(item) ?? '-' }}
+                                    <span [class.hidden]="editMode()">@if (!$last) {&nbsp;,&nbsp;}</span>
+                                } @empty { 
+                                    <span [class.hidden]="editMode()">-</span>
+                                }
+                            </span>
+                        } @else {
+                            <span [class.hidden]="editMode()">
+                                {{ extraData[field.name].map.get(field.value) ?? '-' }}
+                            </span>
+                        }
                     }
+                    <mat-form-field [class.hidden]="!editMode()" appearance="outline">
+                        <mat-select [formControlName]="field.name" [multiple]="field.relationType === 'multiple'">
+                            @if (field.relationType === 'nullable') {
+                                <mat-option [value]="-1">
+                                    ({{ 'empty value' | translate }})
+                                </mat-option>
+                            }
+                            @for (item of extraData[field.name].data(); track item.id) {
+                                <mat-option [value]="item.id">
+                                    {{ item.name }}
+                                </mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                } @else if (field.type === 'q_memorize') {
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>{{ field.name | translate }}</mat-expansion-panel-header>
+                        <app-quran-memorize [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="editMode()"></app-quran-memorize>
+                    </mat-expansion-panel>
+                } @else if (field.type === 'q_test') {
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>{{ field.name | translate }}</mat-expansion-panel-header>
+                        <app-quran-test [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="editMode()"></app-quran-test>
+                    </mat-expansion-panel>
+                } @else if (field.type === 'q_test_awqaf') {
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>{{ field.name | translate }}</mat-expansion-panel-header>
+                        <app-quran-awqaf-test [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="editMode()"></app-quran-awqaf-test>
+                    </mat-expansion-panel>
+                } @else if (field.type === 'link') {
+                    <a class="primary" [routerLink]="field.url">
+                        {{ field.stringFieldValue }}
+                    </a>
+                } @else {
+                    INVALID
                 }
-                <mat-form-field [class.hidden]="!editMode()" appearance="outline">
-                    <mat-select [formControlName]="field.name" [multiple]="field.relationType === 'multiple'">
-                        @if (field.relationType === 'nullable') {
-                            <mat-option [value]="-1">
-                                ({{ 'empty value' | translate }})
-                            </mat-option>
-                        }
-                        @for (item of extraData[field.name].data(); track item.id) {
-                            <mat-option [value]="item.id">
-                                {{ item.name }}
-                            </mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>
-            } @else if (field.type === 'q_memorize') {
-                <mat-expansion-panel>
-                    <mat-expansion-panel-header>{{ field.name | translate }}</mat-expansion-panel-header>
-                    <app-quran-memorize [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="editMode()"></app-quran-memorize>
-                </mat-expansion-panel>
-            } @else if (field.type === 'q_test') {
-                <mat-expansion-panel>
-                    <mat-expansion-panel-header>{{ field.name | translate }}</mat-expansion-panel-header>
-                    <app-quran-test [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="editMode()"></app-quran-test>
-                </mat-expansion-panel>
-            } @else if (field.type === 'q_test_awqaf') {
-                <mat-expansion-panel>
-                    <mat-expansion-panel-header>{{ field.name | translate }}</mat-expansion-panel-header>
-                    <app-quran-awqaf-test [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="editMode()"></app-quran-awqaf-test>
-                </mat-expansion-panel>
-            } @else {
-                INVALID
-            }
-        </div>
-        <mat-divider></mat-divider>
+            </div>
+            <mat-divider></mat-divider>
+        }
     }
     <div class="buttons-container">
         @if (config.deleteFunc !== undefined) {

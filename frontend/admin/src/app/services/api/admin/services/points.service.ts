@@ -11,12 +11,10 @@ import { PointsAddingCauseList } from '../models/points-adding-cause-list';
 import { PointsAddingCauseCreate } from '../models/points-adding-cause-create';
 import { PointsAddingCauseUpdate } from '../models/points-adding-cause-update';
 import { PointsAddingList } from '../models/points-adding-list';
-import { PointsAddingUpdate } from '../models/points-adding-update';
 import { PointsDeletingCauseList } from '../models/points-deleting-cause-list';
 import { PointsDeletingCauseCreate } from '../models/points-deleting-cause-create';
 import { PointsDeletingCauseUpdate } from '../models/points-deleting-cause-update';
 import { PointsDeletingList } from '../models/points-deleting-list';
-import { PointsDeletingUpdate } from '../models/points-deleting-update';
 @Injectable({
   providedIn: 'root',
 })
@@ -28,7 +26,6 @@ class PointsService extends __BaseService {
   static readonly pointsAddingCauseDeletePath = '/points/adding-cause/{id}/';
   static readonly pointsAddingListPath = '/points/adding/';
   static readonly pointsAddingReadPath = '/points/adding/{id}/';
-  static readonly pointsAddingUpdatePath = '/points/adding/{id}/';
   static readonly pointsAddingDeletePath = '/points/adding/{id}/';
   static readonly pointsDeletingCauseListPath = '/points/deleting-cause/';
   static readonly pointsDeletingCauseCreatePath = '/points/deleting-cause/';
@@ -37,7 +34,6 @@ class PointsService extends __BaseService {
   static readonly pointsDeletingCauseDeletePath = '/points/deleting-cause/{id}/';
   static readonly pointsDeletingListPath = '/points/deleting/';
   static readonly pointsDeletingReadPath = '/points/deleting/{id}/';
-  static readonly pointsDeletingUpdatePath = '/points/deleting/{id}/';
   static readonly pointsDeletingDeletePath = '/points/deleting/{id}/';
 
   constructor(
@@ -335,49 +331,6 @@ class PointsService extends __BaseService {
   pointsAddingRead(id: string): __Observable<PointsAddingList> {
     return this.pointsAddingReadResponse(id).pipe(
       __map(_r => _r.body as PointsAddingList)
-    );
-  }
-
-  /**
-   * @param params The `PointsService.PointsAddingUpdateParams` containing the following parameters:
-   *
-   * - `id`:
-   *
-   * - `data`:
-   */
-  pointsAddingUpdateResponse(params: PointsService.PointsAddingUpdateParams): __Observable<__StrictHttpResponse<PointsAddingUpdate>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    __body = params.data;
-    let req = new HttpRequest<any>(
-      'PUT',
-      this.rootUrl + `/points/adding/${encodeURIComponent(String(params.id))}/`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<PointsAddingUpdate>;
-      })
-    );
-  }
-  /**
-   * @param params The `PointsService.PointsAddingUpdateParams` containing the following parameters:
-   *
-   * - `id`:
-   *
-   * - `data`:
-   */
-  pointsAddingUpdate(params: PointsService.PointsAddingUpdateParams): __Observable<PointsAddingUpdate> {
-    return this.pointsAddingUpdateResponse(params).pipe(
-      __map(_r => _r.body as PointsAddingUpdate)
     );
   }
 
@@ -707,49 +660,6 @@ class PointsService extends __BaseService {
   }
 
   /**
-   * @param params The `PointsService.PointsDeletingUpdateParams` containing the following parameters:
-   *
-   * - `id`:
-   *
-   * - `data`:
-   */
-  pointsDeletingUpdateResponse(params: PointsService.PointsDeletingUpdateParams): __Observable<__StrictHttpResponse<PointsDeletingUpdate>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    __body = params.data;
-    let req = new HttpRequest<any>(
-      'PUT',
-      this.rootUrl + `/points/deleting/${encodeURIComponent(String(params.id))}/`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<PointsDeletingUpdate>;
-      })
-    );
-  }
-  /**
-   * @param params The `PointsService.PointsDeletingUpdateParams` containing the following parameters:
-   *
-   * - `id`:
-   *
-   * - `data`:
-   */
-  pointsDeletingUpdate(params: PointsService.PointsDeletingUpdateParams): __Observable<PointsDeletingUpdate> {
-    return this.pointsDeletingUpdateResponse(params).pipe(
-      __map(_r => _r.body as PointsDeletingUpdate)
-    );
-  }
-
-  /**
    * @param id undefined
    */
   pointsDeletingDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
@@ -846,14 +756,6 @@ module PointsService {
   }
 
   /**
-   * Parameters for pointsAddingUpdate
-   */
-  export interface PointsAddingUpdateParams {
-    id: string;
-    data: PointsAddingUpdate;
-  }
-
-  /**
    * Parameters for pointsDeletingCauseUpdate
    */
   export interface PointsDeletingCauseUpdateParams {
@@ -910,14 +812,6 @@ module PointsService {
      * cause
      */
     cause?: string;
-  }
-
-  /**
-   * Parameters for pointsDeletingUpdate
-   */
-  export interface PointsDeletingUpdateParams {
-    id: string;
-    data: PointsDeletingUpdate;
   }
 }
 

@@ -17,6 +17,7 @@ AdminUserViewSet = create_model_view_set(
     fields=["id", "username", "first_name", "last_name", "is_active", "is_staff", "is_superuser", "groups"],
     listing_serializer=AdminListUserSerializer,
     creating_serializer=AdminCreateUserSerializer,
+    no_pagination=True,
 )
 AdminGroupViewSet = create_model_view_set(Group, fields=["permissions"], exclude_fields=True, no_pagination=True)
 
@@ -58,7 +59,8 @@ AdminMoneyDeletingViewSet = create_model_view_set(
 AdminPointsAddingCauseViewSet = create_model_view_set(PointsAddingCause, no_pagination=True)
 AdminPointsAddingViewSet = create_model_view_set(
     PointsAdding,
-    methods=["get", "put", "delete"],
+    methods=["get", "delete"],
+    fields=["id", "student", "student_name", "master", "created_at", "cause", "value"],
     filter_fields={
         "master": ["exact"],
         "cause": ["exact"],
@@ -69,7 +71,8 @@ AdminPointsAddingViewSet = create_model_view_set(
 AdminPointsDeletingCauseViewSet = create_model_view_set(PointsDeletingCause, no_pagination=True)
 AdminPointsDeletingViewSet = create_model_view_set(
     PointsDeleting,
-    methods=["get", "put", "delete"],
+    methods=["get", "delete"],
+    fields=["id", "student", "student_name", "master", "created_at", "cause", "value"],
     filter_fields={
         "master": ["exact"],
         "cause": ["exact"],

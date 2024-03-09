@@ -107,6 +107,13 @@ export class TranslateService {
         this.translateMap.set('groups', 'المجموعات');
         this.translateMap.set('new password', 'كلمة المرور الجديدة');
         this.translateMap.set('reset password', 'تغيير كلمة المرور');
+
+        // points adding model
+        this.translateMap.set('master', 'الأستاذ');
+        this.translateMap.set('created_at', 'تاريخ الإنشاء');
+        this.translateMap.set('student_name', 'اسم الطالب');
+        this.translateMap.set('value', 'القيمة');
+        this.translateMap.set('cause', 'السبب');
     }
 
     translate(value: string): string {

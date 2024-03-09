@@ -7,6 +7,7 @@ export type GetStringKeys<T> = Extract<keyof T, string>;
 export type FieldConfig =
   | {
       display: 'normal';
+      dateFormat?: string;
       filterType?: 'date';
     }
   | {
@@ -20,8 +21,13 @@ export type FieldConfig =
     }
   | {
       display: 'link';
-      filterType: undefined;
+      filterType?: undefined;
       getUrlFunc: (id: number) => string;
+      stringField: string;
+    }
+  | {
+      display: 'ignore';
+      filterType?: undefined;
     };
 
 // Interface for configuration of table component

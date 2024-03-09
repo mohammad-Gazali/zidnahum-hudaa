@@ -19,7 +19,7 @@ class PointsAdding(models.Model):
     student = models.ForeignKey("students.Student", on_delete=models.CASCADE, verbose_name="الطالب")
     value = models.IntegerField(verbose_name="القيمة", validators=[MinValueValidator(0)])
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الإضافة")
-    cause = models.ForeignKey(PointsAddingCause, verbose_name="السبب", on_delete=models.PROTECT, null=True, blank=True)
+    cause = models.ForeignKey(PointsAddingCause, verbose_name="السبب", on_delete=models.PROTECT)
 
     def __str__(self):
         return f"إضافة نقاط {self.id}"

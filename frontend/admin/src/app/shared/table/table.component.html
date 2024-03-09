@@ -103,11 +103,19 @@
                         @if (element[column] === null || element[column] === undefined) {
                           -
                         } @else {
-                          <a class="primary" [routerLink]="$any(config.columns[column]).getUrlFunc(element[column])">
-                            {{
-                              extraData[column].map.get(element[column])
-                            }}
-                          </a>
+                          @if ($any(config.columns[column]).stringField !== undefined) {
+                            <a class="primary" [routerLink]="$any(config.columns[column]).getUrlFunc(element[column])">
+                              {{
+                                element[$any(config.columns[column]).stringField]
+                              }}
+                            </a>
+                          } @else {
+                            <a class="primary" [routerLink]="$any(config.columns[column]).getUrlFunc(element[column])">
+                              {{
+                                extraData[column].map.get(element[column])
+                              }}
+                            </a>
+                          }
                         }
                     } @else {
                       {{

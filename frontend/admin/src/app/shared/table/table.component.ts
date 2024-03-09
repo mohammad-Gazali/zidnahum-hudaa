@@ -129,6 +129,10 @@ export class TableComponent<T> implements OnInit, OnDestroy {
         if (config.filterType !== undefined) {
           this.isFileters.set(true);
         }
+
+        if (config.display === 'ignore') {
+          this.displayedColumns = this.displayedColumns.filter(c => c !== name)
+        }
       }
     );
   
@@ -229,7 +233,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
       name: this.config.searchField,
       value: searchValue,
     };
-
+    
     this.addFilter(newFilter);
 
     this.fetchData();
@@ -353,7 +357,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
         result[this.helper.snakeToCamel(filter.name + '_lt')] = endDate;
       }
     });
-
+    
     return result;
   }
 }

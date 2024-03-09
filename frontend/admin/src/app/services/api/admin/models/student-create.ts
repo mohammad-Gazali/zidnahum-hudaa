@@ -13,6 +13,6 @@ export interface StudentCreate {
   mother_phone?: null | string;
   name: string;
   notes?: null | string;
-  parts_received?: string;
+  parts_received?: null | string;
   static_phone?: null | string;
 }

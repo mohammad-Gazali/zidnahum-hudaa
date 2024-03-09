@@ -1,7 +1,6 @@
 import { Routes } from "@angular/router";
 import { AddingComponent } from "./adding.component";
 import { AddingViewComponent } from "./adding-view/adding-view.component";
-import { AddingCreateComponent } from "./adding-create/adding-create.component";
 
 export const routes: Routes = [
     {
@@ -11,9 +10,5 @@ export const routes: Routes = [
     {
         path: 'view/:id',
         component: AddingViewComponent,
-    },
-    {
-        path: 'create',
-        component: AddingCreateComponent,
     },
 ];

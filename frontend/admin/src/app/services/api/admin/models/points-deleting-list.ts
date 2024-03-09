@@ -5,5 +5,6 @@ export interface PointsDeletingList {
   id: number;
   master?: null | number;
   student: number;
+  student_name: string;
   value: number;
 }

@@ -117,7 +117,7 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
               const fieldsInfo = (this.config.fieldsInfo as any)[name] as
                 | FieldConfig
                 | undefined;
-
+              
               if (!fieldsInfo?.nonEditable) {
                 if (fieldsInfo?.type === 'relation') {
                   // here we convert the null value to -1 to display its label in the select input
@@ -161,6 +161,16 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
                   type: 'relation',
                   relationType: fieldsInfo.relationType,
                   nonEditable: fieldsInfo?.nonEditable,
+                }
+              }
+
+              if (fieldsInfo?.type === 'link') {
+                return {
+                  name,
+                  type: 'link',
+                  nonEditable: fieldsInfo?.nonEditable,
+                  stringFieldValue: (res as any)[fieldsInfo.stringField],
+                  url: fieldsInfo.getUrlFunc(value),
                 }
               }
 
