@@ -53,6 +53,7 @@ class StudentUpdateQMemoView(APIView):
         return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
 
 
+# TODO: add new protection for q_test update
 class StudentUpdateQTestView(APIView):
     permission_classes = [IsAuthenticated]
     http_method_names = ["put"]
