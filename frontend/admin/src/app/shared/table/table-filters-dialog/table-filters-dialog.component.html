@@ -2,7 +2,17 @@
 <mat-dialog-content>
     <form [formGroup]="form" class="filters-container">
         @for (filter of data.filters; track filter.name) {
-            @if (filter.type !== 'date' && filter.type !== 'datetime_date') {
+            @if (filter.type === 'boolean') {
+                <mat-form-field appearance="outline">
+                    <mat-label>{{ filter.name | translate }}</mat-label>
+                    <mat-select [formControlName]="filter.name">
+                        <mat-option value="0">{{ 'All' | translate }}</mat-option>
+                        <mat-option value="1">{{ 'Yes' | translate }}</mat-option>
+                        <mat-option value="2">{{ 'No' | translate }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+            } @else if (filter.type !== 'date' && filter.type !== 'datetime_date') {
                 <mat-form-field appearance="outline">
                     <mat-label>{{ filter.name | translate }}</mat-label>
                     <mat-select [formControlName]="filter.name">

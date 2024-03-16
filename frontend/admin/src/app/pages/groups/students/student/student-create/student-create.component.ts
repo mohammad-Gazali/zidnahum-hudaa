@@ -4,6 +4,7 @@ import { CreateComponentConfig } from '../../../../../shared/create/create.compo
 import { MasjedService } from '../../../../../services/masjed.service';
 import { StudentCreate } from '../../../../../services/api/admin/models';
 import { StudentsBase } from '../../students.base';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-student-create',
@@ -23,7 +24,7 @@ export class StudentCreateComponent extends StudentsBase {
     fields: {
       name: {
         type: 'string',
-        required: true,
+        validators: [Validators.required],
       },
       mother_name: {
         type: 'string',
@@ -34,7 +35,7 @@ export class StudentCreateComponent extends StudentsBase {
       masjed: {
         type: 'relation',
         relationType: 'normal',
-        required: true,
+        validators: [Validators.required],
         getFieldValueFunc: () => {
           return this.masjed.getMasjeds();
         },

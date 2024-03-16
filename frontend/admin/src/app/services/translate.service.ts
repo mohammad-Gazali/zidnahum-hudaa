@@ -14,6 +14,8 @@ export class TranslateService {
         this.translateMap.set('?', '؟');
         this.translateMap.set('yes', 'نعم');
         this.translateMap.set('total count', 'العدد الكلي');
+        this.translateMap.set('all', 'الكل');
+        this.translateMap.set('no', 'لا');
 
         // ====== global forms ======
         this.translateMap.set('update', 'تعديل');
@@ -114,6 +116,12 @@ export class TranslateService {
         this.translateMap.set('student_name', 'اسم الطالب');
         this.translateMap.set('value', 'القيمة');
         this.translateMap.set('cause', 'السبب');
+
+        // coming category model
+        this.translateMap.set('points', 'النقاط');
+
+        // coming model
+        this.translateMap.set('is_doubled', 'قيمة مضاعفة');
     }
 
     translate(value: string): string {

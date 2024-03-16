@@ -34,6 +34,7 @@ AdminComingCategoryViewSet = create_model_view_set(ComingCategory, no_pagination
 AdminComingViewSet = create_model_view_set(
     Coming, 
     methods=["get", "delete"],
+    fields=["id", "registered_at", "is_doubled", "master", "student", "student_name", "category"],
     filter_fields={
         "master": ["exact"],
         "category": ["exact"],
@@ -51,6 +52,7 @@ AdminAssetFileViewSet = create_model_view_set(AssetFile, filter_fields=["categor
 AdminMoneyDeletingCauseViewSet = create_model_view_set(MoneyDeletingCause, no_pagination=True)
 AdminMoneyDeletingViewSet = create_model_view_set(
     MoneyDeleting,
+    fields=["id", "created_at", "active_to_points", "value", "student", "student_name", "cause"],
     filter_fields=["cause"],
     include_student_name_filter=True,
 )

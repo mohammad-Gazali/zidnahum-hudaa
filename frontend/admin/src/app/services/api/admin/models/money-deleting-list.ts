@@ -5,5 +5,6 @@ export interface MoneyDeletingList {
   created_at?: string;
   id: number;
   student: number;
+  student_name: string;
   value: number;
 }

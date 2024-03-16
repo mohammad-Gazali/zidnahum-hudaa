@@ -35,7 +35,7 @@
         <mat-chip-row
           (removed)="removeFilter($index)"
         >
-          @if (filter.type !== 'date') {
+          @if (filter.type !== 'date' && filter.type !== 'boolean') {
             {{ filter.type | translate }}
           } {{ filter.name | translate }}:
           @if (filter.type === 'search') {
@@ -52,6 +52,8 @@
             <span dir="ltr">{{ filter.value.replaceAll('-', '/') }}</span>
           } @else if (filter.type === 'date_range') {
             <span dir="ltr">{{ filter.value.replace('=', ' → ').replaceAll('-', '/') }}</span>
+          } @else if (filter.type === 'boolean') {
+            {{ (filter.value === '1' ? 'Yes' : 'No') | translate }}
           }
           <button matChipRemove>
             <mat-icon>close</mat-icon>
@@ -134,8 +136,8 @@
       </table>
   </div>
   <div class="bottom-row">
-    @if (totalCount !== 0) {
-      <span class="total-count">{{ 'Total count' | translate }}: {{ totalCount }}</span>
+    @if (totalCount() !== 0) {
+      <span class="total-count">{{ 'Total count' | translate }}: {{ totalCount() }}</span>
     }
     <mat-paginator 
       [class.hidden]="!config.hasPagination" 

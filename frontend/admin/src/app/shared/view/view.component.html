@@ -1,4 +1,4 @@
-@if (config.updateFunc !== undefined) {
+@if (config().updateFunc !== undefined) {
     <button [color]="editMode() ? 'primary' : 'accent'" class="mode-action-button" mat-fab (click)="toggleMode()">
         <mat-icon [class.hidden]="editMode()">edit</mat-icon>
         <mat-icon [class.hidden]="!editMode()">info</mat-icon>
@@ -31,13 +31,13 @@
                             {{ date.format(field.value, 'yyyy/MM/dd hh:mm a') || '-' }}
                         </span>
                     } @else if (field.type === 'relation') {
-                        @if (extraData[field.name].getUrlFunc !== undefined && field.value !== null) {
-                            <a class="primary" routerLink="{{ extraData[field.name].getUrlFunc!(field.value) }}">
-                                {{ extraData[field.name].map.get(field.value) ?? '-' }}
+                        @if (extraData()[field.name].getUrlFunc !== undefined && field.value !== null) {
+                            <a class="primary" routerLink="{{ extraData()[field.name].getUrlFunc!(field.value) }}">
+                                {{ extraData()[field.name].map.get(field.value) ?? '-' }}
                             </a>
                         } @else {
                             <span>
-                                {{ extraData[field.name].map.get(field.value) ?? '-' }}
+                                {{ extraData()[field.name].map.get(field.value) ?? '-' }}
                             </span>
                         }
                     } @else if (field.type === 'link') {
@@ -90,26 +90,26 @@
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
                 } @else if (field.type === 'relation') {
-                    @if (extraData[field.name].getUrlFunc !== undefined && field.value !== null) {
+                    @if (extraData()[field.name].getUrlFunc !== undefined && field.value !== null) {
                         @if (field.relationType === 'multiple') {
                             @for (item of field.value; track item) {
-                                <a class="primary" [class.hidden]="editMode()" routerLink="{{ extraData[field.name].getUrlFunc!(item) }}">
-                                    {{ extraData[field.name].map.get(item) ?? '-' }}
+                                <a class="primary" [class.hidden]="editMode()" routerLink="{{ extraData()[field.name].getUrlFunc!(item) }}">
+                                    {{ extraData()[field.name].map.get(item) ?? '-' }}
                                 </a>
                                 <span [class.hidden]="editMode()">@if (!$last) {&nbsp;,&nbsp;}</span>
                             } @empty { 
                                 <span [class.hidden]="editMode()">-</span>
                             }
                         } @else {
-                            <a class="primary" [class.hidden]="editMode()" routerLink="{{ extraData[field.name].getUrlFunc!(field.value) }}">
-                                {{ extraData[field.name].map.get(field.value) ?? '-' }}
+                            <a class="primary" [class.hidden]="editMode()" routerLink="{{ extraData()[field.name].getUrlFunc!(field.value) }}">
+                                {{ extraData()[field.name].map.get(field.value) ?? '-' }}
                             </a>
                         }
                     } @else {
                         @if (field.relationType === 'multiple') {
                             <span [class.hidden]="editMode()">
                                 @for (item of field.value; track item) {
-                                    {{ extraData[field.name].map.get(item) ?? '-' }}
+                                    {{ extraData()[field.name].map.get(item) ?? '-' }}
                                     <span [class.hidden]="editMode()">@if (!$last) {&nbsp;,&nbsp;}</span>
                                 } @empty { 
                                     <span [class.hidden]="editMode()">-</span>
@@ -117,7 +117,7 @@
                             </span>
                         } @else {
                             <span [class.hidden]="editMode()">
-                                {{ extraData[field.name].map.get(field.value) ?? '-' }}
+                                {{ extraData()[field.name].map.get(field.value) ?? '-' }}
                             </span>
                         }
                     }
@@ -128,7 +128,7 @@
                                     ({{ 'empty value' | translate }})
                                 </mat-option>
                             }
-                            @for (item of extraData[field.name].data(); track item.id) {
+                            @for (item of extraData()[field.name].data(); track item.id) {
                                 <mat-option [value]="item.id">
                                     {{ item.name }}
                                 </mat-option>
@@ -162,16 +162,16 @@
         }
     }
     <div class="buttons-container">
-        @if (config.deleteFunc !== undefined) {
+        @if (config().deleteFunc !== undefined) {
             <button [disabled]="loading()" (click)="deleteFunction()" mat-flat-button color="warn" type="button">
                 <mat-icon>delete</mat-icon>
                 {{ 'Delete' | translate }}
             </button>
         }
-        @if (config.extraAction) {
-            <button [disabled]="loading()" mat-flat-button color="accent" type="button" [routerLink]="config.extraAction.link(viewId)">
-                <mat-icon>{{ config.extraAction.icon }}</mat-icon>
-                {{ config.extraAction.name | translate }}
+        @if (config().extraAction) {
+            <button [disabled]="loading()" mat-flat-button color="accent" type="button" [routerLink]="config().extraAction?.link(viewId)">
+                <mat-icon>{{ config().extraAction?.icon }}</mat-icon>
+                {{ (config().extraAction?.name ?? '') | translate }}
             </button>
         }
         @if (editMode()) {

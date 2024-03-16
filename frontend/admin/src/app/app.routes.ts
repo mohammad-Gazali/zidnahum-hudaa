@@ -4,6 +4,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { routes as studentsRoutes } from './pages/groups/students/students.routes';
 import { routes as authRoutes } from './pages/groups/auth/auth.routes';
 import { routes as pointsRoutes } from './pages/groups/points/points.routes';
+import { routes as comingsRoutes } from './pages/groups/comings/comings.routes';
 
 export const routes: Routes = [
     {
@@ -26,4 +27,8 @@ export const routes: Routes = [
         path: 'points',
         children: pointsRoutes,
     },
+    {
+        path: 'comings',
+        children: comingsRoutes,
+    }
 ];

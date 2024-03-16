@@ -4,5 +4,6 @@ export interface MoneyDeletingCreate {
   cause: number;
   created_at?: string;
   student: number;
+  student_name: string;
   value: number;
 }

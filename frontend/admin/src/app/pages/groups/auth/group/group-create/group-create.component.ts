@@ -3,6 +3,7 @@ import { CreateComponent } from '../../../../../shared/create/create.component';
 import { CreateComponentConfig } from '../../../../../shared/create/create.component.interface';
 import { GroupCreate } from '../../../../../services/api/admin/models';
 import { AuthBase } from '../../auth.base';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-group-create',
@@ -18,7 +19,7 @@ export class GroupCreateComponent extends AuthBase {
     fields: {
       name: {
         type: 'string',
-        required: true,
+        validators: [Validators.required],
       }
     },
   }

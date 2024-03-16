@@ -1,8 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  inject,
-} from '@angular/core';
+import { Component, EventEmitter, inject } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogActions,
@@ -10,13 +6,9 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
-import {
-  MatFormFieldModule,
-} from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {
-  MatDatepickerModule
-} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import {
   MAT_DATE_LOCALE,
   provideNativeDateAdapter,
@@ -80,21 +72,18 @@ export class TableFiltersDialogComponent {
             filter.name + '_gt',
             this.fb.nonNullable.control(startDate)
           );
-          
+
           this.form.addControl(
             filter.name + '_lt',
             this.fb.nonNullable.control(endDate)
           );
-          
+
           this.form.addControl(
             filter.name + '_type',
             this.fb.nonNullable.control('range')
           );
 
-          this.form.addControl(
-            filter.name,
-            this.fb.nonNullable.control('')
-          );
+          this.form.addControl(filter.name, this.fb.nonNullable.control(''));
 
           return;
         }
@@ -111,7 +100,11 @@ export class TableFiltersDialogComponent {
           filter.name + '_type',
           this.fb.nonNullable.control('single')
         );
+      }
 
+      if (filter.type === 'boolean') {
+        this.form.addControl(filter.name, this.fb.nonNullable.control(filter.defaultValue ?? '0'));
+        return;
       }
 
       this.form.addControl(
@@ -122,14 +115,17 @@ export class TableFiltersDialogComponent {
   }
 
   submitFilters() {
-    const usedFilters: Filter[] = [];
+    let usedFilters: Filter[] = [];
     const formValue = this.form.value as any;
 
     this.data.filters.forEach((filter) => {
       if (filter.type === 'date' || filter.type === 'datetime_date') {
         if (formValue[filter.name + '_type'] === 'single') {
           if (formValue[filter.name] instanceof Date) {
-            const dateValue = this.date.format(formValue[filter.name], 'yyyy-MM-dd');
+            const dateValue = this.date.format(
+              formValue[filter.name],
+              'yyyy-MM-dd'
+            );
 
             usedFilters.push({
               name: filter.name,
@@ -144,7 +140,7 @@ export class TableFiltersDialogComponent {
           ) {
             const startDateValue = this.date.format(
               formValue[filter.name + '_gt'],
-              'yyyy-MM-dd',
+              'yyyy-MM-dd'
             );
             const endDateValue = this.date.format(
               formValue[filter.name + '_lt'],
@@ -178,6 +174,14 @@ export class TableFiltersDialogComponent {
             value,
           });
         }
+      } else if (filter.type === 'boolean') {
+        const value = formValue[filter.name];
+        
+        usedFilters.push({
+          name: filter.name,
+          type: 'boolean',
+          value: value,
+        })
       }
     });
 

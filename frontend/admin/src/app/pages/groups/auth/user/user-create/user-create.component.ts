@@ -3,6 +3,7 @@ import { CreateComponent } from '../../../../../shared/create/create.component';
 import { CreateComponentConfig } from '../../../../../shared/create/create.component.interface';
 import { UserCreate } from '../../../../../services/api/admin/models';
 import { AuthBase } from '../../auth.base';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user-create',
@@ -18,19 +19,19 @@ export class UserCreateComponent extends AuthBase {
     fields: {
       username: {
         type: 'string',
-        required: true,
+        validators: [Validators.required],
       },
       password: {
         type: 'password',
-        required: true,
+        validators: [Validators.required],
       },
       first_name: {
         type: 'string',
-        required: true,
+        validators: [Validators.required],
       },
       last_name: {
         type: 'string',
-        required: true,
+        validators: [Validators.required],
       },
       groups: {
         type: 'relation',

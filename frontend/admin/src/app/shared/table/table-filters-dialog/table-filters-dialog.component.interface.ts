@@ -5,7 +5,7 @@ export interface DialogData {
 
 interface DialogFilter {
   name: string;
-  type: 'date' | 'datetime_date' | 'exact' | 'exact_null';
+  type: 'date' | 'datetime_date' | 'exact' | 'exact_null' | 'boolean';
   defaultValue?: string;
 }
 

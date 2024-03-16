@@ -3,6 +3,7 @@ import { PointsBase } from '../../points.base';
 import { CreateComponentConfig } from '../../../../../shared/create/create.component.interface';
 import { PointsDeletingCauseCreate } from '../../../../../services/api/admin/models';
 import { CreateComponent } from '../../../../../shared/create/create.component';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-deleting-cause-create',
@@ -18,7 +19,7 @@ export class DeletingCauseCreateComponent extends PointsBase {
     fields: {
       name: {
         type: 'string',
-        required: true,
+        validators: [Validators.required],
       }
     },
   }

@@ -1,3 +1,4 @@
+import { ValidatorFn } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 export interface CreateComponentConfig<T> {
@@ -11,12 +12,12 @@ export interface CreateComponentConfig<T> {
 export type FieldConfig =
   | {
       type: 'string' | 'password' | 'number' | 'boolean' | 'date';
-      required?: boolean;
+      validators?: ValidatorFn[];
     }
   | {
       type: 'relation';
       relationType: 'nullable' | 'multiple' | 'normal';
-      required?: boolean;
+      validators?: ValidatorFn[];
       getFieldValueFunc: () => Observable<{ id: number; name: string }[]>;
     };
 

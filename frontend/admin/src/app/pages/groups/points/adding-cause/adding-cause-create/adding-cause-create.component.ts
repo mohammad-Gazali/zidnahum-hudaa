@@ -3,6 +3,7 @@ import { PointsBase } from '../../points.base';
 import { CreateComponent } from '../../../../../shared/create/create.component';
 import { CreateComponentConfig } from '../../../../../shared/create/create.component.interface';
 import { PointsAddingCauseCreate } from '../../../../../services/api/admin/models';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-adding-cause-create',
@@ -18,7 +19,7 @@ export class AddingCauseCreateComponent extends PointsBase {
     fields: {
       name: {
         type: 'string',
-        required: true,
+        validators: [Validators.required],
       }
     },
   }

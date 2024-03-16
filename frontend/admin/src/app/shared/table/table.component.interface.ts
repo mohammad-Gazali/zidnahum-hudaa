@@ -12,7 +12,7 @@ export type FieldConfig =
     }
   | {
       display: 'boolean';
-      filterType?: undefined;
+      filterType?: 'boolean';
     }
   | {
       display: 'relation';
@@ -75,7 +75,7 @@ export type ExtraData = {
 };
 
 export interface Filter {
-  type: 'search' | 'select' | 'select_null' | 'date' | 'date_range';
+  type: 'search' | 'select' | 'select_null' | 'date' | 'date_range' | 'boolean';
   name: string;
   value: string;
 }

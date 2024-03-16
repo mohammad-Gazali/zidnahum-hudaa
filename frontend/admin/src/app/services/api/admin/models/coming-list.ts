@@ -6,4 +6,5 @@ export interface ComingList {
   master?: null | number;
   registered_at?: string;
   student: number;
+  student_name: string;
 }

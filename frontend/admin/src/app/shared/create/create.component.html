@@ -38,6 +38,12 @@
                     @if (form.getError('required', field.name)) {
                         <mat-error>{{ 'this field is required' | translate }}</mat-error>
                     }
+                    @if (form.getError('min', field.name)) {
+                        <mat-error>{{ 'the minimum value is' | translate }} {{ $any(form.get(field.name)?.errors).min.min }}</mat-error>
+                    }
+                    @if (form.getError('max', field.name)) {
+                        <mat-error>{{ 'the maximum value is' | translate }} {{ $any(form.get(field.name)?.errors).max.max }}</mat-error>
+                    }
                 </mat-form-field>
             } @else if (field.config.type === 'date') {
                 <mat-form-field appearance="outline">
@@ -45,6 +51,10 @@
                     <input matInput [matDatepicker]="picker" [formControlName]="field.name">
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
+
+                    @if (form.getError('required', field.name)) {
+                        <mat-error>{{ 'this field is required' | translate }}</mat-error>
+                    }
                 </mat-form-field>
             } @else if (field.config.type === 'boolean') {
                 <mat-checkbox [formControlName]="field.name"></mat-checkbox>
@@ -54,7 +64,7 @@
     }
     <div class="buttons-container">
         <button [disabled]="loading()" (click)="goToTable()" mat-flat-button type="button">
-            <mat-icon style="transform: scaleX(-1);">reply</mat-icon>
+            <mat-icon class="mat-icon-rtl-mirror">reply</mat-icon>
             {{ 'Cancel' | translate }}
         </button>
         <button [disabled]="loading()" mat-flat-button color="primary" type="submit">

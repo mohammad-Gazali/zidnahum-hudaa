@@ -82,7 +82,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
     searchValue: '',
   });
   public activeFilters = signal<Filter[]>([]);
-  public totalCount = 0;
+  public totalCount = signal(0);
   public isFileters = signal(false);
   private destroyed$ = new Subject<void>();
   private pageSizeOptions = [20, 40, 100, 200];
@@ -90,21 +90,12 @@ export class TableComponent<T> implements OnInit, OnDestroy {
   public _config = input.required<TableComponentConfig<T>>({
     alias: 'config'
   });
-
   get config() {
     return this._config();
   }
 
-  private _paginator = viewChild(MatPaginator);
-  private _sort = viewChild(MatSort);
-
-  get paginator() {
-    return this._paginator()!;
-  }
-
-  get sort() {
-    return this._sort()!;
-  }
+  private paginator = viewChild.required(MatPaginator);
+  private sort = viewChild.required(MatSort);
 
   ngOnInit(): void {
     const keys = Object.keys(this.config.columns) as GetStringKeys<
@@ -136,7 +127,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
       }
     );
   
-    this.paginator.pageSize = 20;  
+    this.paginator().pageSize = 20;  
     this.fetchData();
   }
 
@@ -151,7 +142,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
   }
 
   onSortChange() {
-    this.paginator.pageIndex = 0;
+    this.paginator().pageIndex = 0;
 
     this.fetchData(true, false);
   }
@@ -268,7 +259,16 @@ export class TableComponent<T> implements OnInit, OnDestroy {
     const sub = ref.componentInstance.onSubmit
       .pipe(takeUntil(this.destroyed$))
       .subscribe((newFilters) => {
-        newFilters.forEach((f) => this.addFilter(f));
+        newFilters.forEach((f) => {
+          // if the filter is boolean and the value is 0 (which is 'all')
+          // then we will remove any previous filter for this field
+          if (f.type === 'boolean' && f.value === '0') {
+            const { name } = f;
+            this.activeFilters.update(fs => fs.filter(f => f.name !== name));
+          } else {
+            this.addFilter(f);
+          }
+        });
         this.fetchData();
       });
 
@@ -283,21 +283,21 @@ export class TableComponent<T> implements OnInit, OnDestroy {
   fetchData(resetPagination = true, resetSort = true) {
     const options = this.activeFiltersToOptions();
 
-    if (!resetSort && this.sort.direction !== '') {
-      const activeField = this.sort.active;
+    if (!resetSort && this.sort().direction !== '') {
+      const activeField = this.sort().active;
       options.ordering =
-        this.sort.direction === 'asc' ? `${activeField}` : `-${activeField}`;
+        this.sort().direction === 'asc' ? `${activeField}` : `-${activeField}`;
     }
 
     if (resetSort) {
-      this.sort.direction = '';
+      this.sort().direction = '';
     }
     this.loading.set(true);
 
     if (this.config.hasPagination) {
       if (!resetPagination) {
-        options.limit = this.paginator.pageSize;
-        options.offset = this.paginator.pageIndex * this.paginator.pageSize;
+        options.limit = this.paginator().pageSize;
+        options.offset = this.paginator().pageIndex * this.paginator().pageSize;
       }
 
       this.config
@@ -306,12 +306,12 @@ export class TableComponent<T> implements OnInit, OnDestroy {
         .subscribe((res) => {
           this.dataSource.data = res.results;
 
-          this.totalCount = res.count;
-          this.paginator.length = res.count;
-          this.paginator.pageSizeOptions = this.getPageSizeOptions();
+          this.totalCount.set(res.count);
+          this.paginator().length = res.count;
+          this.paginator().pageSizeOptions = this.getPageSizeOptions();
 
           if (resetPagination) {
-            this.paginator.pageIndex = 0;
+            this.paginator().pageIndex = 0;
           }
 
           this.selection = new SelectionModel<T>(true, []);
@@ -360,6 +360,14 @@ export class TableComponent<T> implements OnInit, OnDestroy {
 
         result[this.helper.snakeToCamel(filter.name + '_gt')] = startDate;
         result[this.helper.snakeToCamel(filter.name + '_lt')] = endDate;
+      } else if (filter.type === 'boolean') {
+        if (filter.value === '1') {
+          result[this.helper.snakeToCamel(filter.name)] = 'true'
+        } else if (filter.value === '2') {
+          result[this.helper.snakeToCamel(filter.name)] = 'false'
+        } else {
+          delete result[this.helper.snakeToCamel(filter.name)];
+        }
       }
     });
     

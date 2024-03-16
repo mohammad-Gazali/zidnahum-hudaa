@@ -7,6 +7,8 @@ import { SnackbarService } from './services/snackbar.service';
 
 // TODO: add error handler
 
+// TODO: add translation for all itemNameAndRouteName attributes in view components
+
 @Component({
   selector: 'app-root',
   standalone: true,

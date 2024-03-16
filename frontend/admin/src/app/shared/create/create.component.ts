@@ -67,22 +67,19 @@ export class CreateComponent<T> implements OnInit, OnDestroy {
   public form = this.fb.nonNullable.group({});
   public fields = signal<Field[]>([]);
 
-  public _config = input.required<CreateComponentConfig<T>>({
-    alias: 'config',
-  });
-
-  get config() {
-    return this._config();
-  }
+  public config = input.required<CreateComponentConfig<T>>();
 
   ngOnInit(): void {
-    Object.entries<FieldConfig>(this.config.fields).forEach(
+    Object.entries<FieldConfig>(this.config().fields).forEach(
       ([name, config]) => {
-        const validators = config.required ? [Validators.required] : [];
+        const validators = config.validators ?? [];
 
         if (config.type === 'boolean') {
           this.form.addControl(name, this.fb.control(false, validators));
-        } else if (config.type === 'relation' && config.relationType === 'multiple') {
+        } else if (
+          config.type === 'relation' &&
+          config.relationType === 'multiple'
+        ) {
           this.form.addControl(name, this.fb.control([], validators));
         } else {
           this.form.addControl(name, this.fb.control(undefined, validators));
@@ -127,25 +124,32 @@ export class CreateComponent<T> implements OnInit, OnDestroy {
   submit() {
     const value: any = this.form.value;
 
-    this.fields().forEach(f => {
-      if (f.config.type === 'relation' && f.config.relationType === 'nullable' && value[f.name] === -1) {
+    this.fields().forEach((f) => {
+      if (
+        f.config.type === 'relation' &&
+        f.config.relationType === 'nullable' &&
+        value[f.name] === -1
+      ) {
         value[f.name] = null;
       } else if (f.config.type === 'date' && value[f.name] instanceof Date) {
         value[f.name] = this.date.format(value[f.name], 'yyyy-MM-dd');
       }
-    })
+    });
 
     if (this.form.valid && !this.loading()) {
       this.loading.set(true);
-      this.config.createFunc(value).pipe(takeUntil(this.destroyed$)).subscribe(() => {
-        this.snackbar.success('تمت الإضافة بنجاح');
-        this.loading.set(false);
-        this.goToTable();
-      });
+      this.config()
+        .createFunc(value)
+        .pipe(takeUntil(this.destroyed$))
+        .subscribe(() => {
+          this.snackbar.success('تمت الإضافة بنجاح');
+          this.loading.set(false);
+          this.goToTable();
+        });
     }
   }
 
   goToTable() {
-    this.router.navigateByUrl(this.config.tableRoute);
+    this.router.navigateByUrl(this.config().tableRoute);
   }
 }
