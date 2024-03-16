@@ -227,6 +227,8 @@ class PointsService extends __BaseService {
    *
    * - `student__name`: param for filtering result via student name or student id
    *
+   * - `student__masjed`: student__masjed
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
@@ -250,6 +252,7 @@ class PointsService extends __BaseService {
     let __headers = new HttpHeaders();
     let __body: any = null;
     if (params.studentName != null) __params = __params.set('student__name', params.studentName.toString());
+    if (params.studentMasjed != null) __params = __params.set('student__masjed', params.studentMasjed.toString());
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.masterIsnull != null) __params = __params.set('master__isnull', params.masterIsnull.toString());
@@ -280,6 +283,8 @@ class PointsService extends __BaseService {
    * @param params The `PointsService.PointsAddingListParams` containing the following parameters:
    *
    * - `student__name`: param for filtering result via student name or student id
+   *
+   * - `student__masjed`: student__masjed
    *
    * - `ordering`: Which field to use when ordering the results.
    *
@@ -557,6 +562,8 @@ class PointsService extends __BaseService {
    *
    * - `student__name`: param for filtering result via student name or student id
    *
+   * - `student__masjed`: student__masjed
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
@@ -580,6 +587,7 @@ class PointsService extends __BaseService {
     let __headers = new HttpHeaders();
     let __body: any = null;
     if (params.studentName != null) __params = __params.set('student__name', params.studentName.toString());
+    if (params.studentMasjed != null) __params = __params.set('student__masjed', params.studentMasjed.toString());
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.masterIsnull != null) __params = __params.set('master__isnull', params.masterIsnull.toString());
@@ -610,6 +618,8 @@ class PointsService extends __BaseService {
    * @param params The `PointsService.PointsDeletingListParams` containing the following parameters:
    *
    * - `student__name`: param for filtering result via student name or student id
+   *
+   * - `student__masjed`: student__masjed
    *
    * - `ordering`: Which field to use when ordering the results.
    *
@@ -725,6 +735,11 @@ module PointsService {
     studentName?: string;
 
     /**
+     * student__masjed
+     */
+    studentMasjed?: '1' | '2' | '3';
+
+    /**
      * Which field to use when ordering the results.
      */
     ordering?: string;
@@ -787,6 +802,11 @@ module PointsService {
      * param for filtering result via student name or student id
      */
     studentName?: string;
+
+    /**
+     * student__masjed
+     */
+    studentMasjed?: '1' | '2' | '3';
 
     /**
      * Which field to use when ordering the results.

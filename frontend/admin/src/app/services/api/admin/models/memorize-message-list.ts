@@ -7,4 +7,5 @@ export interface MemorizeMessageList {
   message_type?: 1 | 2 | 3 | 4 | 5;
   sended_at?: string;
   student: number;
+  student_name: string;
 }

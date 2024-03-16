@@ -19,7 +19,7 @@ export interface ViewComponentConfig<T, U = null> {
 }
 
 export type FieldConfig = ({
-    type: 'boolean' | 'number' | 'date' | 'datetime' | 'string' | 'q_memorize' | 'q_test' | 'q_test_awqaf';
+    type: 'boolean' | 'number' | 'date' | 'datetime' | 'string' | 'q_memorize' | 'q_test' | 'q_elite_test' | 'q_test_awqaf';
     validators?: ValidatorFn[];
     nonEditable?: boolean;
 } | {
@@ -44,7 +44,7 @@ export type FieldConfig = ({
 export type Field = {
     name: string;
     value: any;
-    type: 'string' | 'boolean' | 'number' | 'date' | 'datetime' | 'q_memorize' | 'q_test' | 'q_test_awqaf';
+    type: 'string' | 'boolean' | 'number' | 'date' | 'datetime' | 'q_memorize' | 'q_test' | 'q_elite_test' | 'q_test_awqaf';
     nonEditable?: boolean;
 } | {
     name: string;

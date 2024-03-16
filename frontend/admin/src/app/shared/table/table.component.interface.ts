@@ -37,6 +37,7 @@ export type TableComponentConfig<T> = {
   };
   searchField?: string;
   getUrlFunc: (id: string) => string;
+  useStudentMasjedFilter?: boolean;
   createUrl?: string;
 } & (
   | {

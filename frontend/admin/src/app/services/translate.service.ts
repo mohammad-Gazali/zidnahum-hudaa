@@ -16,6 +16,7 @@ export class TranslateService {
         this.translateMap.set('total count', 'العدد الكلي');
         this.translateMap.set('all', 'الكل');
         this.translateMap.set('no', 'لا');
+        this.translateMap.set('there is no data', 'لا يوجد بيانات');
 
         // ====== global forms ======
         this.translateMap.set('update', 'تعديل');
@@ -60,7 +61,7 @@ export class TranslateService {
         this.translateMap.set('start date', 'تاريخ البداية');
         this.translateMap.set('end date', 'تاريخ النهاية');
 
-        // ====== students group ======
+        // ====== Models ======
         // student model
         this.translateMap.set('students', 'الطلاب');
         this.translateMap.set('student', 'الطالب');
@@ -71,6 +72,7 @@ export class TranslateService {
         this.translateMap.set('category', 'الفئة');
         this.translateMap.set('group', 'المجموعة');
         this.translateMap.set('masjed', 'المسجد');
+        this.translateMap.set('student_masjed', 'المسجد');
         this.translateMap.set('address', 'العنوان تفصيلاً');
         this.translateMap.set('static_phone', 'الهاتف الأرضي');
         this.translateMap.set('cell_phone', 'الجوال');
@@ -83,6 +85,7 @@ export class TranslateService {
         this.translateMap.set('parts_received', 'الأجزاء المستلمة');
         this.translateMap.set('q_memorizing', 'حفظ القرآن');
         this.translateMap.set('q_test', 'السبر في المسجد');
+        this.translateMap.set('q_elite_test', 'السبر النوعي في المسجد');
         this.translateMap.set('q_awqaf_test', 'سبر القرآن في الأوقاف غيباً');
         this.translateMap.set('q_awqaf_test_looking', 'سبر القرآن في الأوقاف نظراً');
         this.translateMap.set('q_awqaf_test_explaining', 'سبر القرآن في الأوقاف تفسيراً');
@@ -110,18 +113,40 @@ export class TranslateService {
         this.translateMap.set('new password', 'كلمة المرور الجديدة');
         this.translateMap.set('reset password', 'تغيير كلمة المرور');
 
+        // points adding cause model
+        this.translateMap.set('adding-cause', 'سبب الإضافة');
+
+        // points deleting cause model
+        this.translateMap.set('deleting-cause', 'سبب الخصم');
+
         // points adding model
+        this.translateMap.set('adding', 'الإضافة');
         this.translateMap.set('master', 'الأستاذ');
         this.translateMap.set('created_at', 'تاريخ الإنشاء');
         this.translateMap.set('student_name', 'اسم الطالب');
         this.translateMap.set('value', 'القيمة');
         this.translateMap.set('cause', 'السبب');
 
+        // points deleting model
+        this.translateMap.set('deleting', 'الخصم');
+
         // coming category model
+        this.translateMap.set('coming-category', 'سبب الحضور');
         this.translateMap.set('points', 'النقاط');
 
         // coming model
+        this.translateMap.set('coming', 'تسجيل الحضور');
         this.translateMap.set('is_doubled', 'قيمة مضاعفة');
+
+        // memorize message model
+        this.translateMap.set('memorize-message', 'رسالة التسميع');
+        this.translateMap.set('message_type', 'نوع الرسالة');
+        this.translateMap.set('changes', 'محتوى الرسالة');
+
+        // memorize notes model
+        this.translateMap.set('memorize-notes', 'ملاحظة التسميع');
+        this.translateMap.set('sended_at', 'تاريخ الإرسال');
+        this.translateMap.set('content', 'المحتوى');
     }
 
     translate(value: string): string {

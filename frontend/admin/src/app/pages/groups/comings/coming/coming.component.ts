@@ -18,6 +18,7 @@ export class ComingComponent extends ComingsBase {
 
   public config: TableComponentConfig<ComingList> = {
     hasPagination: true,
+    useStudentMasjedFilter: true,
     getUrlFunc: id => `/comings/coming/view/${id}`,
     dataFunc: options => this.comings.comingsComingList(options),
     searchField: 'student_name', // here we added it like this because it will be converted to camelCase which will be converted to the right query param

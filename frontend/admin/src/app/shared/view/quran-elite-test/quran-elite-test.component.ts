@@ -1,20 +1,20 @@
 import { Component, inject, input } from '@angular/core';
-import { MemoItemType } from '../../../services/quran/quran.constatns';
 import { ControlContainer, FormArray, FormControl, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatRippleModule } from '@angular/material/core';
-import { QuranAwqafTestService } from '../../../services/quran/quran-awqaf-test.service';
+import { QuranEliteTestService } from '../../../services/quran/quran-elite-test.service';
+import { MemoItemType } from '../../../services/quran/quran.constatns';
 
 @Component({
-  selector: 'app-quran-awqaf-test',
+  selector: 'app-quran-elite-test',
   standalone: true,
   imports: [MatCardModule, MatRippleModule, ReactiveFormsModule],
-  templateUrl: './quran-awqaf-test.component.html',
-  styleUrl: './quran-awqaf-test.component.scss',
+  templateUrl: './quran-elite-test.component.html',
+  styleUrl: './quran-elite-test.component.scss',
   viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }]
 })
-export class QuranAwqafTestComponent {
-  public transform = inject(QuranAwqafTestService).transform;
+export class QuranEliteTestComponent {
+  public transform = inject(QuranEliteTestService).transform;
   public array = input.required<FormArray<FormControl<MemoItemType>>>();
   public editMode = input.required<boolean>();
   public name = input.required<string>();

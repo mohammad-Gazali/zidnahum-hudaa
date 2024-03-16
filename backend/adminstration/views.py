@@ -25,7 +25,11 @@ AdminGroupViewSet = create_model_view_set(Group, fields=["permissions"], exclude
 AdminAwqafTestNoQViewSet = create_model_view_set(AwqafTestNoQ, no_pagination=True)
 AdminAwqafNoQStudentRelationViewSet = create_model_view_set(
     AwqafNoQStudentRelation,
-    filter_fields=["test", "is_old"],
+    filter_fields={
+        "test": ["exact"],
+        "is_old": ["exact"],
+        "student__masjed": ["exact"],
+    },
     include_student_name_filter=True,
 )
 
@@ -36,10 +40,11 @@ AdminComingViewSet = create_model_view_set(
     methods=["get", "delete"],
     fields=["id", "registered_at", "is_doubled", "master", "student", "student_name", "category"],
     filter_fields={
-        "master": ["exact"],
+        "master": ["exact", "isnull"],
         "category": ["exact"],
         "is_doubled": ["exact"],
         "registered_at": ["exact", "gt", "lt"],
+        "student__masjed": ["exact"],
     },
     include_student_name_filter=True,
 )
@@ -53,7 +58,10 @@ AdminMoneyDeletingCauseViewSet = create_model_view_set(MoneyDeletingCause, no_pa
 AdminMoneyDeletingViewSet = create_model_view_set(
     MoneyDeleting,
     fields=["id", "created_at", "active_to_points", "value", "student", "student_name", "cause"],
-    filter_fields=["cause"],
+    filter_fields={
+        "cause": ["exact"],
+        "student__masjed": ["exact"],
+    },
     include_student_name_filter=True,
 )
 
@@ -67,6 +75,7 @@ AdminPointsAddingViewSet = create_model_view_set(
         "master": ["exact", "isnull"],
         "cause": ["exact"],
         "created_at": ["date", "gt", "lt"],
+        "student__masjed": ["exact"],
     },
     include_student_name_filter=True,
 )
@@ -79,6 +88,7 @@ AdminPointsDeletingViewSet = create_model_view_set(
         "master": ["exact", "isnull"],
         "cause": ["exact"],
         "created_at": ["date", "gt", "lt"],
+        "student__masjed": ["exact"],
     },
     include_student_name_filter=True,
 )
@@ -88,7 +98,7 @@ AdminStudentCategoryViewSet = create_model_view_set(StudentCategory, no_paginati
 AdminStudentGroupViewSet = create_model_view_set(StudentGroup, no_pagination=True)
 
 AdminCreateStudentSerializer = create_serializer(Student, serializer_fields=[
-        "id", "registered_at", "q_memorizing", "q_test", "q_awqaf_test",
+        "id", "registered_at", "q_memorizing", "q_test", "q_elite_test", "q_awqaf_test",
         "q_awqaf_test_looking", "q_awqaf_test_explaining",
         "alarbaein_alnawawia_new", "alarbaein_alnawawia_old",
         "riad_alsaalihin_new", "riad_alsaalihin_old",
@@ -115,21 +125,25 @@ AdminStudentViewSet = create_model_view_set(
 
 AdminMemorizeMessageViewSet = create_model_view_set(
     MemorizeMessage,
+    fields=["id", "master", "student", "student_name", "sended_at", "changes", "message_type", "is_doubled"],
     methods=["get", "delete"],
     filter_fields={
-        "master": ["exact"],
+        "master": ["exact", "isnull"],
         "message_type": ["exact"],
         "is_doubled": ["exact"],
         "sended_at": ["exact", "gt", "lt"],
+        "student__masjed": ["exact"],
     },
     include_student_name_filter=True,
 )
 AdminMemorizeNotesViewSet = create_model_view_set(
     MemorizeNotes,
+    fields=["id", "content", "student", "student_name", "master", "sended_at"],
     methods=["get", "delete"],
     filter_fields={
-        "master": ["exact"],
+        "master": ["exact", "isnull"],
         "sended_at": ["exact", "gt", "lt"],
+        "student__masjed": ["exact"],
     },
     include_student_name_filter=True
 )

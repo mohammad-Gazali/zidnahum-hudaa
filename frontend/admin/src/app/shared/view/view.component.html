@@ -10,7 +10,7 @@
             <div class="field-row">
                 <div 
                 class="row-title"
-                [class.hidden]="field.type === 'q_memorize' || field.type === 'q_test' || field.type === 'q_test_awqaf'">
+                [class.hidden]="field.type === 'q_memorize' || field.type === 'q_test' || field.type === 'q_test_awqaf' || field.type === 'q_elite_test'">
                     <span>
                         {{ field.name | translate }}
                     </span>
@@ -26,7 +26,11 @@
                         } @else {
                             <mat-icon>not_interested</mat-icon>
                         }
-                    } @else if (field.type === 'date' || field.type === 'datetime') {
+                    } @else if (field.type === 'date') {
+                        <span dir="ltr">
+                            {{ date.format(field.value, 'yyyy/MM/dd') || '-' }}
+                        </span>
+                    } @else if (field.type === 'datetime') {
                         <span dir="ltr">
                             {{ date.format(field.value, 'yyyy/MM/dd hh:mm a') || '-' }}
                         </span>
@@ -80,9 +84,15 @@
                     }
                     <mat-checkbox [class.hidden]="!editMode()" [formControlName]="field.name"></mat-checkbox>
                 } @else if (field.type === 'date' || field.type === 'datetime') {
-                    <span [class.hidden]="editMode()" dir="ltr">
-                        {{ date.format(field.value, 'yyyy/MM/dd hh:mm a') || '-' }}
-                    </span>
+                    @if (field.type === 'date') {
+                        <span [class.hidden]="editMode()" dir="ltr">
+                            {{ date.format(field.value, 'yyyy/MM/dd') || '-' }}
+                        </span>
+                    } @else {
+                        <span [class.hidden]="editMode()" dir="ltr">
+                            {{ date.format(field.value, 'yyyy/MM/dd hh:mm a') || '-' }}
+                        </span>
+                    }
                     <mat-form-field [class.hidden]="!editMode()" appearance="outline">
                         <mat-label>{{ field.name | translate }}</mat-label>
                         <input matInput [matDatepicker]="picker" [formControlName]="field.name">
@@ -144,6 +154,11 @@
                     <mat-expansion-panel>
                         <mat-expansion-panel-header>{{ field.name | translate }}</mat-expansion-panel-header>
                         <app-quran-test [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="editMode()"></app-quran-test>
+                    </mat-expansion-panel>
+                } @else if (field.type === 'q_elite_test') {
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>{{ field.name | translate }}</mat-expansion-panel-header>
+                        <app-quran-elite-test [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="editMode()"></app-quran-elite-test>
                     </mat-expansion-panel>
                 } @else if (field.type === 'q_test_awqaf') {
                     <mat-expansion-panel>

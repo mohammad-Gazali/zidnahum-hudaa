@@ -39,6 +39,7 @@ import { QuranMemorizeComponent } from './quran-memorize/quran-memorize.componen
 import { QuranTestComponent } from './quran-test/quran-test.component';
 import { QuranAwqafTestComponent } from './quran-awqaf-test/quran-awqaf-test.component';
 import { MemoItemType } from '../../services/quran/quran.constatns';
+import { QuranEliteTestComponent } from './quran-elite-test/quran-elite-test.component';
 
 @Component({
   selector: 'app-view',
@@ -56,6 +57,7 @@ import { MemoItemType } from '../../services/quran/quran.constatns';
     ReactiveFormsModule,
     QuranMemorizeComponent,
     QuranTestComponent,
+    QuranEliteTestComponent,
     QuranAwqafTestComponent,
     RouterLink,
     TranslatePipe,
@@ -127,7 +129,8 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
                 } else if (
                   fieldsInfo?.type === 'q_memorize' ||
                   fieldsInfo?.type === 'q_test' ||
-                  fieldsInfo?.type === 'q_test_awqaf'
+                  fieldsInfo?.type === 'q_test_awqaf' ||
+                  fieldsInfo?.type === 'q_elite_test'
                 ) {
                   this.form.addControl(
                     name,

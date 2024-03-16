@@ -116,6 +116,8 @@ def create_model_view_set(
 
     - `creating_serializer`, `updating_serializer`, `listing_serializer` and
     `details_serializer` are direct params for declaring serializers for certain methods.
+
+    - `no_pagination` removes the pagination if it is True
     """
 
     class Result(BaseViewSet):

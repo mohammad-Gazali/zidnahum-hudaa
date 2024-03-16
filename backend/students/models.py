@@ -51,7 +51,7 @@ class Student(models.Model):
     
     q_memorizing = models.JSONField(default=json_default_value_618, verbose_name="حفظ القرآن")
     q_test = models.JSONField(default=json_default_value_240, verbose_name="السبر في المسجد")
-    # q_elite_test = models.JSONField(default=json_default_value_60, verbose_name="السبر النوعي في المسجد")
+    q_elite_test = models.JSONField(default=json_default_value_60, verbose_name="السبر النوعي في المسجد")
     q_awqaf_test = models.JSONField(default=json_default_value_30, verbose_name="سبر القرآن في الأوقاف")
     q_awqaf_test_looking = models.JSONField(default=json_default_value_30, verbose_name="سبر القرآن نظراً في الأوقاف")
     q_awqaf_test_explaining = models.JSONField(default=json_default_value_30, verbose_name="سبر القرآن تفسيراً في الأوقاف")

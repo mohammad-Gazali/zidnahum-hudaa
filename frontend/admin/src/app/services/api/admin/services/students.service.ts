@@ -415,6 +415,8 @@ class StudentsService extends __BaseService {
    *
    * - `student__name`: param for filtering result via student name or student id
    *
+   * - `student__masjed`: student__masjed
+   *
    * - `sended_at__lt`: sended_at__lt
    *
    * - `sended_at__gt`: sended_at__gt
@@ -427,6 +429,8 @@ class StudentsService extends __BaseService {
    *
    * - `message_type`: message_type
    *
+   * - `master__isnull`: master__isnull
+   *
    * - `master`: master
    *
    * - `limit`: Number of results to return per page.
@@ -438,12 +442,14 @@ class StudentsService extends __BaseService {
     let __headers = new HttpHeaders();
     let __body: any = null;
     if (params.studentName != null) __params = __params.set('student__name', params.studentName.toString());
+    if (params.studentMasjed != null) __params = __params.set('student__masjed', params.studentMasjed.toString());
     if (params.sendedAtLt != null) __params = __params.set('sended_at__lt', params.sendedAtLt.toString());
     if (params.sendedAtGt != null) __params = __params.set('sended_at__gt', params.sendedAtGt.toString());
     if (params.sendedAt != null) __params = __params.set('sended_at', params.sendedAt.toString());
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.messageType != null) __params = __params.set('message_type', params.messageType.toString());
+    if (params.masterIsnull != null) __params = __params.set('master__isnull', params.masterIsnull.toString());
     if (params.master != null) __params = __params.set('master', params.master.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
     if (params.isDoubled != null) __params = __params.set('is_doubled', params.isDoubled.toString());
@@ -469,6 +475,8 @@ class StudentsService extends __BaseService {
    *
    * - `student__name`: param for filtering result via student name or student id
    *
+   * - `student__masjed`: student__masjed
+   *
    * - `sended_at__lt`: sended_at__lt
    *
    * - `sended_at__gt`: sended_at__gt
@@ -480,6 +488,8 @@ class StudentsService extends __BaseService {
    * - `offset`: The initial index from which to return the results.
    *
    * - `message_type`: message_type
+   *
+   * - `master__isnull`: master__isnull
    *
    * - `master`: master
    *
@@ -566,6 +576,8 @@ class StudentsService extends __BaseService {
    *
    * - `student__name`: param for filtering result via student name or student id
    *
+   * - `student__masjed`: student__masjed
+   *
    * - `sended_at__lt`: sended_at__lt
    *
    * - `sended_at__gt`: sended_at__gt
@@ -576,6 +588,8 @@ class StudentsService extends __BaseService {
    *
    * - `offset`: The initial index from which to return the results.
    *
+   * - `master__isnull`: master__isnull
+   *
    * - `master`: master
    *
    * - `limit`: Number of results to return per page.
@@ -585,11 +599,13 @@ class StudentsService extends __BaseService {
     let __headers = new HttpHeaders();
     let __body: any = null;
     if (params.studentName != null) __params = __params.set('student__name', params.studentName.toString());
+    if (params.studentMasjed != null) __params = __params.set('student__masjed', params.studentMasjed.toString());
     if (params.sendedAtLt != null) __params = __params.set('sended_at__lt', params.sendedAtLt.toString());
     if (params.sendedAtGt != null) __params = __params.set('sended_at__gt', params.sendedAtGt.toString());
     if (params.sendedAt != null) __params = __params.set('sended_at', params.sendedAt.toString());
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
+    if (params.masterIsnull != null) __params = __params.set('master__isnull', params.masterIsnull.toString());
     if (params.master != null) __params = __params.set('master', params.master.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
     let req = new HttpRequest<any>(
@@ -614,6 +630,8 @@ class StudentsService extends __BaseService {
    *
    * - `student__name`: param for filtering result via student name or student id
    *
+   * - `student__masjed`: student__masjed
+   *
    * - `sended_at__lt`: sended_at__lt
    *
    * - `sended_at__gt`: sended_at__gt
@@ -623,6 +641,8 @@ class StudentsService extends __BaseService {
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
+   *
+   * - `master__isnull`: master__isnull
    *
    * - `master`: master
    *
@@ -970,6 +990,11 @@ module StudentsService {
     studentName?: string;
 
     /**
+     * student__masjed
+     */
+    studentMasjed?: '1' | '2' | '3';
+
+    /**
      * sended_at__lt
      */
     sendedAtLt?: string;
@@ -1000,6 +1025,11 @@ module StudentsService {
     messageType?: '1' | '2' | '3' | '4' | '5';
 
     /**
+     * master__isnull
+     */
+    masterIsnull?: string;
+
+    /**
      * master
      */
     master?: string;
@@ -1026,6 +1056,11 @@ module StudentsService {
     studentName?: string;
 
     /**
+     * student__masjed
+     */
+    studentMasjed?: '1' | '2' | '3';
+
+    /**
      * sended_at__lt
      */
     sendedAtLt?: string;
@@ -1049,6 +1084,11 @@ module StudentsService {
      * The initial index from which to return the results.
      */
     offset?: number;
+
+    /**
+     * master__isnull
+     */
+    masterIsnull?: string;
 
     /**
      * master

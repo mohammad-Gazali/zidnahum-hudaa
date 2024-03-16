@@ -1,10 +1,9 @@
 import {
   Component,
-  EventEmitter,
   OnDestroy,
-  Output,
   computed,
   inject,
+  output,
   signal,
 } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -40,7 +39,7 @@ export class NavbarComponent implements OnDestroy {
   public breakpointObserver = inject(BreakpointObserver);
   public loading = inject(LoadingService).loading;
 
-  @Output() clickMenu = new EventEmitter();
+  public clickMenu = output();
 
   private destroyed$ = new Subject<void>();
   public title = computed(() => {

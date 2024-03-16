@@ -1,34 +1,49 @@
 import { Component, inject } from '@angular/core';
-import { PointsBase } from '../points.base';
+import { StudentsBase } from '../students.base';
 import { TableComponent } from '../../../../shared/table/table.component';
 import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
-import { PointsAddingList } from '../../../../services/api/admin/models';
+import { MemorizeNotesList } from '../../../../services/api/admin/models';
 import { AuthService } from '../../../../services/api/admin/services';
 import { map } from 'rxjs';
 
 @Component({
-  selector: 'app-adding',
+  selector: 'app-memorize-notes',
   standalone: true,
   imports: [TableComponent],
-  templateUrl: './adding.component.html',
-  styleUrl: './adding.component.scss',
+  templateUrl: './memorize-notes.component.html',
+  styleUrl: './memorize-notes.component.scss',
 })
-export class AddingComponent extends PointsBase {
+export class MemorizeNotesComponent extends StudentsBase {
   private auth = inject(AuthService);
 
-  public config: TableComponentConfig<PointsAddingList> = {
+  public config: TableComponentConfig<MemorizeNotesList> = {
     hasPagination: true,
     useStudentMasjedFilter: true,
-    getUrlFunc: (id) => `/points/adding/view/${id}`,
+    dataFunc: options => this.students.studentsMemorizeNotesList(options).pipe(
+      // here we reduce the content displayed size
+      map(res => ({
+        ...res,
+        results: res.results.map(note => ({
+          ...note,
+          content: note.content.length >= 30 ? note.content.slice(0, 27) + '...' : note.content,
+        }))
+      })),
+    ),
+    getUrlFunc: id => `/students/memorize-notes/view/${id}`,
     searchField: 'student_name', // here we added it like this because it will be converted to camelCase which will be converted to the right query param
-    dataFunc: (options) => this.points.pointsAddingList(options),
     columns: {
-      cause: {
-        display: 'relation',
-        filterType: 'exact',
-        getFieldValueFunc: () => this.points.pointsAddingCauseList(),
+      student: {
+        display: 'link',
+        stringField: 'student_name',
+        getUrlFunc: id => `/students/student/view/${id}`,
       },
-      created_at: {
+      student_name: {
+        display: 'ignore',
+      },
+      content: {
+        display: 'normal',
+      },
+      sended_at: {
         display: 'normal',
         filterType: 'datetime_date',
         dateFormat: 'yyyy/MM/dd hh:mm a'
@@ -45,17 +60,6 @@ export class AddingComponent extends PointsBase {
               }))
             )
           ),
-      },
-      student: {
-        display: 'link',
-        stringField: 'student_name',
-        getUrlFunc: (id) => `/students/student/view/${id}`,
-      },
-      student_name: {
-        display: 'ignore',
-      },
-      value: {
-        display: 'normal',
       },
     },
   };

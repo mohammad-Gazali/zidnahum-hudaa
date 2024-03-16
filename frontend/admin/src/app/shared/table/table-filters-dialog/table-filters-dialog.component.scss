@@ -8,3 +8,29 @@
 mat-radio-button + mat-radio-button {
     margin: 0 1rem;
 }
+
+mat-dialog-content {
+    &::-webkit-scrollbar {
+        appearance: none;
+        width: 6px;
+        height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: var(--mdc-dialog-container-color);
+    }
+
+    &::-webkit-scrollbar-button {
+        appearance: none;
+        display: none;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: rgb(223, 223, 223);
+        border-radius: 20px;
+    }
+
+    &::-webkit-scrollbar-corner {
+        display: none;
+    }
+}

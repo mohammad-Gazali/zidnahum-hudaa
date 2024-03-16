@@ -40,6 +40,7 @@ import { TableFiltersDialogComponent } from './table-filters-dialog/table-filter
 import { DateService } from '../../services/date.service';
 import { HelperService } from '../../services/helper.service';
 import { DialogData } from './table-filters-dialog/table-filters-dialog.component.interface';
+import { MasjedService } from '../../services/masjed.service';
 
 // TODO: add actions to table
 
@@ -64,12 +65,12 @@ import { DialogData } from './table-filters-dialog/table-filters-dialog.componen
   providers: [{ provide: MatPaginatorIntl, useClass: TableComponentPaginator }],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
-  
 })
 export class TableComponent<T> implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private loading = inject(LoadingService).loading;
   private dialog = inject(MatDialog);
+  private masjed = inject(MasjedService);
   public date = inject(DateService);
   public helper = inject(HelperService);
 
@@ -88,7 +89,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
   private pageSizeOptions = [20, 40, 100, 200];
 
   public _config = input.required<TableComponentConfig<T>>({
-    alias: 'config'
+    alias: 'config',
   });
   get config() {
     return this._config();
@@ -122,12 +123,23 @@ export class TableComponent<T> implements OnInit, OnDestroy {
         }
 
         if (config.display === 'ignore') {
-          this.displayedColumns = this.displayedColumns.filter(c => c !== name)
+          this.displayedColumns = this.displayedColumns.filter(
+            (c) => c !== name
+          );
         }
       }
     );
-  
-    this.paginator().pageSize = 20;  
+
+    if (this.config.useStudentMasjedFilter) {
+      this.masjed.getMasjeds().pipe(takeUntil(this.destroyed$)).subscribe(res => {
+        this.extraData['student_masjed'] = {
+          data: res,
+          map: this.convertDataToMap(res),
+        }
+      });
+    }
+
+    this.paginator().pageSize = 20;
     this.fetchData();
   }
 
@@ -224,7 +236,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
       name: this.config.searchField,
       value: searchValue,
     };
-    
+
     this.addFilter(newFilter);
 
     this.fetchData();
@@ -233,25 +245,35 @@ export class TableComponent<T> implements OnInit, OnDestroy {
   }
 
   openFiltersDialog() {
+    const fieldsFilters = Object.entries<FieldConfig>(this.config.columns)
+      .filter(([_, config]) => {
+        return config.filterType !== undefined;
+      })
+      .map(([name, config]) => {
+        const activeFilter = this.activeFilters().find((f) => f.name === name);
+
+        return {
+          name,
+          type: config.filterType!,
+          defaultValue: activeFilter?.value,
+        };
+      });
+
     const ref = this.dialog.open<TableFiltersDialogComponent, DialogData>(
       TableFiltersDialogComponent,
       {
         width: '350px',
         data: {
           extraData: this.extraData,
-          filters: Object.entries<FieldConfig>(this.config.columns)
-            .filter(([_, config]) => {
-              return config.filterType !== undefined;
-            })
-            .map(([name, config]) => {
-              const activeFilter = this.activeFilters().find(f => f.name === name);
-
-              return {
-                name,
-                type: config.filterType!,
-                defaultValue: activeFilter?.value,
-              };
-            }),
+          filters: this.config.useStudentMasjedFilter
+            ? [
+                ...fieldsFilters,
+                {
+                  name: 'student_masjed',
+                  type: 'exact',
+                },
+              ]
+            : fieldsFilters,
         },
       }
     );
@@ -264,7 +286,9 @@ export class TableComponent<T> implements OnInit, OnDestroy {
           // then we will remove any previous filter for this field
           if (f.type === 'boolean' && f.value === '0') {
             const { name } = f;
-            this.activeFilters.update(fs => fs.filter(f => f.name !== name));
+            this.activeFilters.update((fs) =>
+              fs.filter((f) => f.name !== name)
+            );
           } else {
             this.addFilter(f);
           }
@@ -338,14 +362,15 @@ export class TableComponent<T> implements OnInit, OnDestroy {
     const result: any = {};
 
     this.activeFilters().forEach((filter) => {
-      if (
-        filter.type === 'search' ||
-        filter.type === 'select'
-      ) {
+      if (filter.type === 'search' || filter.type === 'select') {
         result[this.helper.snakeToCamel(filter.name)] = filter.value;
       } else if (filter.type === 'date') {
-        if (this.config.columns[filter.name as keyof Omit<T, "id">].filterType === 'datetime_date') {
-          result[this.helper.snakeToCamel(filter.name + '_date')] = filter.value;
+        if (
+          this.config.columns[filter.name as keyof Omit<T, 'id'>].filterType ===
+          'datetime_date'
+        ) {
+          result[this.helper.snakeToCamel(filter.name + '_date')] =
+            filter.value;
         } else {
           result[this.helper.snakeToCamel(filter.name)] = filter.value;
         }
@@ -362,15 +387,15 @@ export class TableComponent<T> implements OnInit, OnDestroy {
         result[this.helper.snakeToCamel(filter.name + '_lt')] = endDate;
       } else if (filter.type === 'boolean') {
         if (filter.value === '1') {
-          result[this.helper.snakeToCamel(filter.name)] = 'true'
+          result[this.helper.snakeToCamel(filter.name)] = 'true';
         } else if (filter.value === '2') {
-          result[this.helper.snakeToCamel(filter.name)] = 'false'
+          result[this.helper.snakeToCamel(filter.name)] = 'false';
         } else {
           delete result[this.helper.snakeToCamel(filter.name)];
         }
       }
     });
-    
+
     return result;
   }
 }

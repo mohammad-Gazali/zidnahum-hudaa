@@ -37,7 +37,7 @@ export class DeletingViewComponent extends PointsBase {
       },
       master: {
         type: 'relation',
-        relationType: 'normal',
+        relationType: 'nullable',
         getUrlFunc: (id) => `/auth/user/view/${id}`,
         getFieldValueFunc: () =>
           this.auth.authUserList().pipe(

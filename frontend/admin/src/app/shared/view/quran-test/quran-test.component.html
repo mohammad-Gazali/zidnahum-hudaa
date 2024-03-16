@@ -1,1 +1,19 @@
-<p>quran-test works!</p>
+<div [formArrayName]="name()" class="test-container">
+    @for (section of splittedControlsArray(); track section) {
+        @for (part of section; track part) {
+            @for (control of part; track control) {
+                <mat-card
+                matRipple
+                [matRippleDisabled]="!editMode()"
+                [class.bg-primary]="control.value === MemoItemType.NEW"
+                [class.bg-accent]="control.value === MemoItemType.OLD"
+                [class.edit-mode]="editMode()"
+                (click)="changeValue(control)"
+                class="flex-card">
+                    <input type="hidden" [formControl]="control">
+                    {{ test.transform($index) }}
+                </mat-card>
+            }
+        }
+    }
+</div>

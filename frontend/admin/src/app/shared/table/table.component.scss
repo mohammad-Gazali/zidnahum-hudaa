@@ -67,6 +67,16 @@
                 text-decoration-thickness: 2px;
             }
         }
+
+        .no-data-row {
+            font-size: 1.2rem;
+            font-weight: 300;
+            text-align: center;
+
+            div {
+                margin: 1rem 0;
+            }
+        }
     }
 
     .bottom-row {

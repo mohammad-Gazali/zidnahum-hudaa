@@ -42,6 +42,8 @@ class AwqafService extends __BaseService {
    *
    * - `student__name`: param for filtering result via student name or student id
    *
+   * - `student__masjed`: student__masjed
+   *
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
@@ -56,6 +58,7 @@ class AwqafService extends __BaseService {
     let __body: any = null;
     if (params.test != null) __params = __params.set('test', params.test.toString());
     if (params.studentName != null) __params = __params.set('student__name', params.studentName.toString());
+    if (params.studentMasjed != null) __params = __params.set('student__masjed', params.studentMasjed.toString());
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
@@ -83,6 +86,8 @@ class AwqafService extends __BaseService {
    * - `test`: test
    *
    * - `student__name`: param for filtering result via student name or student id
+   *
+   * - `student__masjed`: student__masjed
    *
    * - `ordering`: Which field to use when ordering the results.
    *
@@ -439,6 +444,11 @@ module AwqafService {
      * param for filtering result via student name or student id
      */
     studentName?: string;
+
+    /**
+     * student__masjed
+     */
+    studentMasjed?: '1' | '2' | '3';
 
     /**
      * Which field to use when ordering the results.

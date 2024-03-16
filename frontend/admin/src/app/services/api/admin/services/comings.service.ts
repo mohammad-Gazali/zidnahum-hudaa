@@ -215,6 +215,8 @@ class ComingsService extends __BaseService {
    *
    * - `student__name`: param for filtering result via student name or student id
    *
+   * - `student__masjed`: student__masjed
+   *
    * - `registered_at__lt`: registered_at__lt
    *
    * - `registered_at__gt`: registered_at__gt
@@ -224,6 +226,8 @@ class ComingsService extends __BaseService {
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
+   *
+   * - `master__isnull`: master__isnull
    *
    * - `master`: master
    *
@@ -238,11 +242,13 @@ class ComingsService extends __BaseService {
     let __headers = new HttpHeaders();
     let __body: any = null;
     if (params.studentName != null) __params = __params.set('student__name', params.studentName.toString());
+    if (params.studentMasjed != null) __params = __params.set('student__masjed', params.studentMasjed.toString());
     if (params.registeredAtLt != null) __params = __params.set('registered_at__lt', params.registeredAtLt.toString());
     if (params.registeredAtGt != null) __params = __params.set('registered_at__gt', params.registeredAtGt.toString());
     if (params.registeredAt != null) __params = __params.set('registered_at', params.registeredAt.toString());
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
+    if (params.masterIsnull != null) __params = __params.set('master__isnull', params.masterIsnull.toString());
     if (params.master != null) __params = __params.set('master', params.master.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
     if (params.isDoubled != null) __params = __params.set('is_doubled', params.isDoubled.toString());
@@ -269,6 +275,8 @@ class ComingsService extends __BaseService {
    *
    * - `student__name`: param for filtering result via student name or student id
    *
+   * - `student__masjed`: student__masjed
+   *
    * - `registered_at__lt`: registered_at__lt
    *
    * - `registered_at__gt`: registered_at__gt
@@ -278,6 +286,8 @@ class ComingsService extends __BaseService {
    * - `ordering`: Which field to use when ordering the results.
    *
    * - `offset`: The initial index from which to return the results.
+   *
+   * - `master__isnull`: master__isnull
    *
    * - `master`: master
    *
@@ -383,6 +393,11 @@ module ComingsService {
     studentName?: string;
 
     /**
+     * student__masjed
+     */
+    studentMasjed?: '1' | '2' | '3';
+
+    /**
      * registered_at__lt
      */
     registeredAtLt?: string;
@@ -406,6 +421,11 @@ module ComingsService {
      * The initial index from which to return the results.
      */
     offset?: number;
+
+    /**
+     * master__isnull
+     */
+    masterIsnull?: string;
 
     /**
      * master

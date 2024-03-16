@@ -3,8 +3,8 @@ import { Injectable } from "@angular/core";
 @Injectable({
     providedIn: 'root',
 })
-export class QuranAwqafTestService {
+export class QuranEliteTestService {
     public transform(index: number) {
-        return `الجزء ${index + 1}`
+        return `الحزب ${index + 1}`;
     }
 }

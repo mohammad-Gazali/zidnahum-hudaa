@@ -5,4 +5,5 @@ export interface MemorizeNotesList {
   master?: null | number;
   sended_at?: string;
   student: number;
+  student_name: string;
 }

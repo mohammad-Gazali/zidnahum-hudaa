@@ -72,6 +72,9 @@ export class StudentViewComponent extends StudentsBase {
       q_test: {
         type: 'q_test',
       },
+      q_elite_test: {
+        type: 'q_elite_test',
+      },
       q_awqaf_test: {
         type: 'q_test_awqaf',
       },

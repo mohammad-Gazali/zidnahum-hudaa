@@ -18,6 +18,7 @@ export class DeletingComponent extends PointsBase {
 
   public config: TableComponentConfig<PointsDeletingList> = {
     hasPagination: true,
+    useStudentMasjedFilter: true,
     getUrlFunc: (id) => `/points/deleting/view/${id}`,
     searchField: 'student_name', // here we added it like this because it will be converted to camelCase which will be converted to the right query param
     dataFunc: (options) => this.points.pointsDeletingList(options),

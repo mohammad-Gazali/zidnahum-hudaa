@@ -22,6 +22,7 @@ export interface StudentDetails {
   q_awqaf_test?: {};
   q_awqaf_test_explaining?: {};
   q_awqaf_test_looking?: {};
+  q_elite_test?: {};
   q_memorizing?: {};
   q_test?: {};
   registered_at?: string;
