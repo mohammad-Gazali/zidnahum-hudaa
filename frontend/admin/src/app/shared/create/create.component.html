@@ -7,7 +7,7 @@
                 </span>
             </div>
             @if (field.config.type !== "date" && field.config.type !== 'boolean') {
-                <mat-form-field appearance="outline">
+                <mat-form-field>
                     <mat-label>{{ field.name | translate }}</mat-label>
                     
                     @switch(field.config.type) {
@@ -46,7 +46,7 @@
                     }
                 </mat-form-field>
             } @else if (field.config.type === 'date') {
-                <mat-form-field appearance="outline">
+                <mat-form-field>
                     <mat-label>{{ field.name | translate }}</mat-label>
                     <input matInput [matDatepicker]="picker" [formControlName]="field.name">
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>

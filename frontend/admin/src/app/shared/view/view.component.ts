@@ -1,45 +1,45 @@
 import {
   Component,
-  OnDestroy,
+  DestroyRef,
   OnInit,
   inject,
   input,
   signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  MAT_DATE_LOCALE,
+  provideNativeDateAdapter,
+} from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { ViewDeleteDialogComponent } from './view-delete-dialog/view-delete-dialog.component';
+import { DialogData } from './view-delete-dialog/view-delete-dialog.interface';
+import { QuranMemorizeComponent } from './quran-memorize/quran-memorize.component';
+import { QuranTestComponent } from './quran-test/quran-test.component';
+import { QuranAwqafTestComponent } from './quran-awqaf-test/quran-awqaf-test.component';
+import { QuranEliteTestComponent } from './quran-elite-test/quran-elite-test.component';
+import { SnackbarService } from '../../services/snackbar.service';
+import { LoadingService } from '../../services/loading.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
+import { DateService } from '../../services/date.service';
+import { MemoItemType } from '../../services/quran/quran.constatns';
 import {
   ExtraData,
   Field,
   FieldConfig,
   ViewComponentConfig,
 } from './view.component.interface';
-import { Subject, takeUntil } from 'rxjs';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { SnackbarService } from '../../services/snackbar.service';
-import { LoadingService } from '../../services/loading.service';
-import { TranslatePipe } from '../../pipes/translate.pipe';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import {
-  MAT_DATE_LOCALE,
-  provideNativeDateAdapter,
-} from '@angular/material/core';
-import { MatSelectModule } from '@angular/material/select';
-import { MatDialog } from '@angular/material/dialog';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { ViewDeleteDialogComponent } from './view-delete-dialog/view-delete-dialog.component';
-import { DialogData } from './view-delete-dialog/view-delete-dialog.interface';
-import { DateService } from '../../services/date.service';
-import { QuranMemorizeComponent } from './quran-memorize/quran-memorize.component';
-import { QuranTestComponent } from './quran-test/quran-test.component';
-import { QuranAwqafTestComponent } from './quran-awqaf-test/quran-awqaf-test.component';
-import { MemoItemType } from '../../services/quran/quran.constatns';
-import { QuranEliteTestComponent } from './quran-elite-test/quran-elite-test.component';
 
 @Component({
   selector: 'app-view',
@@ -72,16 +72,16 @@ import { QuranEliteTestComponent } from './quran-elite-test/quran-elite-test.com
   templateUrl: './view.component.html',
   styleUrl: './view.component.scss',
 })
-export class ViewComponent<T, U> implements OnInit, OnDestroy {
+export class ViewComponent<T, U> implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private snackbar = inject(SnackbarService);
   private fb = inject(FormBuilder);
   private dialog = inject(MatDialog);
+  private destroyRef = inject(DestroyRef);
   public date = inject(DateService);
   public loading = inject(LoadingService).loading;
 
-  private destroyed$ = new Subject<void>();
   public fields = signal<Field[]>([]);
   public editMode = signal(false);
   public extraData = signal<ExtraData>({});
@@ -106,7 +106,7 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
     this.viewId = routeId;
     this.config()
       .viewFunc(routeId)
-      .pipe(takeUntil(this.destroyed$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((res) => {
         this.loading.set(false);
         this.fields.set(
@@ -154,7 +154,7 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
 
                 fieldsInfo
                   .getFieldValueFunc()
-                  .pipe(takeUntil(this.destroyed$))
+                  .pipe(takeUntilDestroyed(this.destroyRef))
                   .subscribe((res) => {
                     data.set(res);
 
@@ -204,10 +204,6 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
             })
         );
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
   }
 
   toggleMode() {

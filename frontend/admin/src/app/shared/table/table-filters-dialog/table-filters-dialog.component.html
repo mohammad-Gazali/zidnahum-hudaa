@@ -3,7 +3,7 @@
     <form [formGroup]="form" class="filters-container">
         @for (filter of data.filters; track filter.name) {
             @if (filter.type === 'boolean') {
-                <mat-form-field appearance="outline">
+                <mat-form-field>
                     <mat-label>{{ filter.name | translate }}</mat-label>
                     <mat-select [formControlName]="filter.name">
                         <mat-option value="0">{{ 'All' | translate }}</mat-option>
@@ -13,7 +13,7 @@
                 </mat-form-field>
 
             } @else if (filter.type !== 'date' && filter.type !== 'datetime_date') {
-                <mat-form-field appearance="outline">
+                <mat-form-field>
                     <mat-label>{{ filter.name | translate }}</mat-label>
                     <mat-select [formControlName]="filter.name">
                         @if (filter.type === 'exact_null') {
@@ -29,13 +29,13 @@
                     <mat-radio-button value="single">{{ 'specific date' | translate }}</mat-radio-button>
                     <mat-radio-button value="range">{{ 'date range' | translate }}</mat-radio-button>
                 </mat-radio-group>
-                <mat-form-field  [class.hidden]="dateType.value === 'range'" appearance="outline">
+                <mat-form-field  [class.hidden]="dateType.value === 'range'">
                     <mat-label>{{ filter.name | translate }}</mat-label>
                     <input matInput [matDatepicker]="picker" [formControlName]="filter.name">
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
-                <mat-form-field [class.hidden]="dateType.value !== 'range'" appearance="outline">
+                <mat-form-field [class.hidden]="dateType.value !== 'range'">
                     <mat-label>{{ filter.name | translate }}</mat-label>
                     <mat-date-range-input [rangePicker]="rangePicker">
                         <input [formControlName]="filter.name + '_gt'" matStartDate [placeholder]="'start date' | translate">

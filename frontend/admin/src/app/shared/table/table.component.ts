@@ -1,19 +1,34 @@
 import {
   Component,
-  OnDestroy,
+  DestroyRef,
   OnInit,
   inject,
   input,
   signal,
   viewChild,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
 import {
   MatPaginator,
   MatPaginatorIntl,
   MatPaginatorModule,
 } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { TableComponentPaginator } from './table.component.paginator';
+import { TableFiltersDialogComponent } from './table-filters-dialog/table-filters-dialog.component';
+import { DialogData } from './table-filters-dialog/table-filters-dialog.component.interface';
 import {
   TableComponentConfig,
   GetStringKeys,
@@ -21,25 +36,10 @@ import {
   Filter,
   ExtraData,
 } from './table.component.interface';
-import { Subject, takeUntil } from 'rxjs';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { SelectionModel } from '@angular/cdk/collections';
-import { TableComponentPaginator } from './table.component.paginator';
-import { MatButtonModule } from '@angular/material/button';
-import { RouterLink } from '@angular/router';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialog } from '@angular/material/dialog';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { TranslatePipe } from '../../pipes/translate.pipe';
-import { LoadingService } from '../../services/loading.service';
-import { TableFiltersDialogComponent } from './table-filters-dialog/table-filters-dialog.component';
 import { DateService } from '../../services/date.service';
+import { LoadingService } from '../../services/loading.service';
 import { HelperService } from '../../services/helper.service';
-import { DialogData } from './table-filters-dialog/table-filters-dialog.component.interface';
 import { MasjedService } from '../../services/masjed.service';
 
 // TODO: add actions to table
@@ -66,11 +66,12 @@ import { MasjedService } from '../../services/masjed.service';
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })
-export class TableComponent<T> implements OnInit, OnDestroy {
+export class TableComponent<T> implements OnInit {
   private fb = inject(FormBuilder);
   private loading = inject(LoadingService).loading;
   private dialog = inject(MatDialog);
   private masjed = inject(MasjedService);
+  private destroyRef = inject(DestroyRef);
   public date = inject(DateService);
   public helper = inject(HelperService);
 
@@ -85,7 +86,6 @@ export class TableComponent<T> implements OnInit, OnDestroy {
   public activeFilters = signal<Filter[]>([]);
   public totalCount = signal(0);
   public isFileters = signal(false);
-  private destroyed$ = new Subject<void>();
   private pageSizeOptions = [20, 40, 100, 200];
 
   public _config = input.required<TableComponentConfig<T>>({
@@ -109,7 +109,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
         if (config.display === 'relation') {
           config
             .getFieldValueFunc()
-            .pipe(takeUntil(this.destroyed$))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((res) => {
               this.extraData[name] = {
                 data: res,
@@ -131,7 +131,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
     );
 
     if (this.config.useStudentMasjedFilter) {
-      this.masjed.getMasjeds().pipe(takeUntil(this.destroyed$)).subscribe(res => {
+      this.masjed.getMasjeds().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(res => {
         this.extraData['student_masjed'] = {
           data: res,
           map: this.convertDataToMap(res),
@@ -141,10 +141,6 @@ export class TableComponent<T> implements OnInit, OnDestroy {
 
     this.paginator().pageSize = 20;
     this.fetchData();
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
   }
 
   onPageChange() {
@@ -279,7 +275,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
     );
 
     const sub = ref.componentInstance.onSubmit
-      .pipe(takeUntil(this.destroyed$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((newFilters) => {
         newFilters.forEach((f) => {
           // if the filter is boolean and the value is 0 (which is 'all')
@@ -298,7 +294,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
 
     ref
       .afterClosed()
-      .pipe(takeUntil(this.destroyed$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
         sub.unsubscribe();
       });
@@ -326,7 +322,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
 
       this.config
         .dataFunc(options)
-        .pipe(takeUntil(this.destroyed$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe((res) => {
           this.dataSource.data = res.results;
 
@@ -349,7 +345,7 @@ export class TableComponent<T> implements OnInit, OnDestroy {
         //! SO be careful if there if any new query param added to non-pagination
         //! tables
         .dataFunc(options?.ordering)
-        .pipe(takeUntil(this.destroyed$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe((res) => {
           this.dataSource.data = res;
           this.selection = new SelectionModel<T>(true, []);

@@ -1,13 +1,13 @@
 <div class="container">
-    <form #form="ngForm" (ngSubmit)="submit(form)">
-        <mat-form-field appearance="outline">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field>
             <mat-label>{{ 'Username' | translate }}</mat-label>
-            <input matInput name="username" [(ngModel)]="username" type="text" required>
+            <input matInput [formControl]="form.controls.username" type="text" required>
             <mat-error>{{ 'this field is required' | translate }}</mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field>
             <mat-label>{{ 'Password' | translate }}</mat-label>
-            <input matInput name="password" [(ngModel)]="password" type="password" required>
+            <input matInput [formControl]="form.controls.password" type="password" required>
             <mat-error>{{ 'this field is required' | translate }}</mat-error>
         </mat-form-field>
         <button [disabled]="loading()" color="primary" mat-flat-button>

@@ -2,16 +2,15 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  OnDestroy,
   inject,
   signal,
   viewChild,
 } from '@angular/core';
-import { NavbarComponent } from './navbar/navbar.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
-import { SidenavComponent } from './sidenav/sidenav.component';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Subject, takeUntil } from 'rxjs';
+import { SidenavComponent } from './sidenav/sidenav.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @Component({
   selector: 'app-layout',
@@ -24,13 +23,12 @@ import { Subject, takeUntil } from 'rxjs';
     MatSidenavModule,
   ],
 })
-export class LayoutComponent implements OnDestroy, AfterViewInit {
+export class LayoutComponent implements AfterViewInit {
   public breakpointObserver = inject(BreakpointObserver);
   private cdr = inject(ChangeDetectorRef);
 
   public open = signal(true);
   public mode = signal<"over" | "side">("side");
-  private destroyed$ = new Subject<void>();
 
   public sidenav = viewChild(MatSidenav);
 
@@ -41,7 +39,7 @@ export class LayoutComponent implements OnDestroy, AfterViewInit {
         Breakpoints.Small,
         Breakpoints.Medium,
       ])
-      .pipe(takeUntil(this.destroyed$))
+      .pipe(takeUntilDestroyed())
       .subscribe((result) => {
         if (result.matches) {
           this.mode.set("over");
@@ -49,10 +47,6 @@ export class LayoutComponent implements OnDestroy, AfterViewInit {
           this.mode.set("side");
         }
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
   }
 
   ngAfterViewInit(): void {

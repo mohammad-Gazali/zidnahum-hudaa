@@ -1,18 +1,14 @@
 import {
   Component,
-  OnDestroy,
+  DestroyRef,
   OnInit,
   inject,
   input,
   signal,
 } from '@angular/core';
-import {
-  CreateComponentConfig,
-  Field,
-  FieldConfig,
-} from './create.component.interface';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,16 +16,20 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
 import {
   MAT_DATE_LOCALE,
   provideNativeDateAdapter,
 } from '@angular/material/core';
-import { Subject, takeUntil } from 'rxjs';
-import { MatSelectModule } from '@angular/material/select';
+import { Router } from '@angular/router';
 import { LoadingService } from '../../services/loading.service';
 import { DateService } from '../../services/date.service';
 import { SnackbarService } from '../../services/snackbar.service';
-import { Router } from '@angular/router';
+import {
+  CreateComponentConfig,
+  Field,
+  FieldConfig,
+} from './create.component.interface';
 
 @Component({
   selector: 'app-create',
@@ -56,14 +56,14 @@ import { Router } from '@angular/router';
   templateUrl: './create.component.html',
   styleUrl: './create.component.scss',
 })
-export class CreateComponent<T> implements OnInit, OnDestroy {
+export class CreateComponent<T> implements OnInit {
   private fb = inject(FormBuilder);
   private date = inject(DateService);
   private snackbar = inject(SnackbarService);
   private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
   public loading = inject(LoadingService).loading;
 
-  private destroyed$ = new Subject<void>();
   public form = this.fb.nonNullable.group({});
   public fields = signal<Field[]>([]);
 
@@ -97,7 +97,7 @@ export class CreateComponent<T> implements OnInit, OnDestroy {
         if (config.type === 'relation') {
           config
             .getFieldValueFunc()
-            .pipe(takeUntil(this.destroyed$))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((res) => {
               this.fields.update((fields) => {
                 return fields.map((f) => {
@@ -115,10 +115,6 @@ export class CreateComponent<T> implements OnInit, OnDestroy {
         }
       }
     );
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
   }
 
   submit() {
@@ -140,7 +136,7 @@ export class CreateComponent<T> implements OnInit, OnDestroy {
       this.loading.set(true);
       this.config()
         .createFunc(value)
-        .pipe(takeUntil(this.destroyed$))
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           this.snackbar.success('تمت الإضافة بنجاح');
           this.loading.set(false);

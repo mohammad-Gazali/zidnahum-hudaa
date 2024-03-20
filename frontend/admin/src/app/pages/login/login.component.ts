@@ -1,9 +1,6 @@
-import {
-  Component,
-  OnDestroy,
-  inject,
-} from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,14 +10,13 @@ import { AccountsService } from '../../services/api/accounts/accounts.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '../../services/translate.service';
 import { SnackbarService } from '../../services/snackbar.service';
-import { Subject, takeUntil } from 'rxjs';
 import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    FormsModule,
+    ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
@@ -30,27 +26,34 @@ import { LoadingService } from '../../services/loading.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent implements OnDestroy {
+export class LoginComponent {
   private accounts = inject(AccountsService);
   private snackbar = inject(SnackbarService);
   private router = inject(Router);
   private translateService = inject(TranslateService);
+  private destroyRef = inject(DestroyRef);
+  private fb = inject(FormBuilder);
   public loading = inject(LoadingService).loading;
 
-  username = '';
-  password = '';
-  destroyed$ = new Subject<void>();
+  public form = this.fb.group({
+    username: this.fb.nonNullable.control(''),
+    password: this.fb.nonNullable.control(''),
+  });
 
-  submit(form: NgForm) {
-    if (form.invalid || this.loading()) return;
+  submit() {
+    if (this.form.invalid || this.loading()) return;
+
+    const { username, password } = this.form.value;
+
+    if (!username || !password) return;
 
     this.loading.set(true);
     this.accounts
       .tokenObtainPair({
-        username: this.username,
-        password: this.password,
+        username,
+        password,
       })
-      .pipe(takeUntil(this.destroyed$))
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (res) => {
           localStorage.setItem('token', res.access);
@@ -58,7 +61,7 @@ export class LoginComponent implements OnDestroy {
 
           this.accounts
             .userDetails()
-            .pipe(takeUntil(this.destroyed$))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
               next: (res) => {
                 this.accounts.details.set(res);
@@ -92,9 +95,5 @@ export class LoginComponent implements OnDestroy {
           this.loading.set(false);
         },
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
   }
 }

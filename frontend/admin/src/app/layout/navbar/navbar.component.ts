@@ -6,14 +6,15 @@ import {
   output,
   signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { AccountsService } from '../../services/api/accounts/accounts.service';
-import { Router, RouterLink } from '@angular/router';
 import { ThemeService } from '../../services/theme.service';
 import { Subject, takeUntil } from 'rxjs';
 import { LoadingService } from '../../services/loading.service';
@@ -32,7 +33,7 @@ import { LoadingService } from '../../services/loading.service';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
-export class NavbarComponent implements OnDestroy {
+export class NavbarComponent {
   private accounts = inject(AccountsService);
   private router = inject(Router);
   public theme = inject(ThemeService);
@@ -41,7 +42,6 @@ export class NavbarComponent implements OnDestroy {
 
   public clickMenu = output();
 
-  private destroyed$ = new Subject<void>();
   public title = computed(() => {
     if (this.isSmall()) {
       return 'Zidnahum Hudaa';
@@ -56,14 +56,10 @@ export class NavbarComponent implements OnDestroy {
   constructor() {
     this.breakpointObserver
       .observe(Breakpoints.XSmall)
-      .pipe(takeUntil(this.destroyed$))
+      .pipe(takeUntilDestroyed())
       .subscribe((result) => {
         this.isSmall.set(result.matches);
       });
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
   }
 
   logout() {
