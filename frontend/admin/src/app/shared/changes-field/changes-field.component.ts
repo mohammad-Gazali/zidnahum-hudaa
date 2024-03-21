@@ -1,16 +1,16 @@
 import { Component, inject, input } from '@angular/core';
+import { QuranMemorzieService } from '../../services/quran/quran-memorize.service';
+import { QuranTestService } from '../../services/quran/quran-test.service';
 import { MatCardModule } from '@angular/material/card';
-import { QuranMemorzieService } from '../../../services/quran/quran-memorize.service';
-import { QuranTestService } from '../../../services/quran/quran-test.service';
 
 @Component({
-  selector: 'app-table-changes-field',
+  selector: 'app-changes-field',
   standalone: true,
   imports: [MatCardModule],
-  templateUrl: './table-changes-field.component.html',
-  styleUrl: './table-changes-field.component.scss'
+  templateUrl: './changes-field.component.html',
+  styleUrl: './changes-field.component.scss'
 })
-export class TableChangesFieldComponent {
+export class ChangesFieldComponent {
   public memorize = inject(QuranMemorzieService);
   public test = inject(QuranTestService);
 

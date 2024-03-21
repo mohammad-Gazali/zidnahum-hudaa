@@ -169,6 +169,12 @@
                     <a class="primary" [routerLink]="field.url">
                         {{ field.stringFieldValue }}
                     </a>
+                } @else if (field.type === 'changes') {
+                    <!-- memorize message specific -->
+                    <app-changes-field
+                    [content]="field.value"
+                    [type]="findMessageType()"></app-changes-field>
+
                 } @else {
                     INVALID
                 }

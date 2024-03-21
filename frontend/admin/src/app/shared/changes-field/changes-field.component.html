@@ -1,0 +1,46 @@
+<div class="container">
+    @switch (type()) {
+        @case (1) {
+            @for (item of content(); track item) {
+                <mat-card class="bg-primary">
+                    {{ memorize.transform(item) }}
+                </mat-card>
+            }
+        }
+        @case (2) {
+            @for (item of content(); track item) {
+                <mat-card class="bg-primary">
+                    {{ test.transform(item) }}
+                </mat-card>
+            }
+        }
+        @case (3) {
+            @if (content()[1] + 1 === content()[2]) {
+                <mat-card class="bg-primary">
+                    الحديث {{ content()[0] + content()[2] }}
+                </mat-card>
+            } @else {
+                <mat-card class="bg-primary">
+                    من الحديث {{ content()[0] + content()[1] + 1 }} إلى {{ content()[0] + content()[2] }}
+                </mat-card>
+            }
+        }
+        @case (4) {
+            @if (content()[1] + 1 === content()[2]) {
+                <mat-card class="bg-primary">
+                    الحديث {{ content()[0] + content()[2] }}
+                </mat-card>
+            } @else {
+                <mat-card class="bg-primary">
+                    من الحديث {{ content()[0] + content()[1] + 1 }} إلى {{ content()[0] + content()[2] }}
+                </mat-card>
+            }
+        }
+        @case (5) {
+            -
+        }
+        @default {
+            Unhandled Type
+        }
+    }
+</div>

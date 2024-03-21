@@ -40,6 +40,7 @@ import {
   FieldConfig,
   ViewComponentConfig,
 } from './view.component.interface';
+import { ChangesFieldComponent } from '../changes-field/changes-field.component';
 
 @Component({
   selector: 'app-view',
@@ -61,6 +62,7 @@ import {
     QuranAwqafTestComponent,
     RouterLink,
     TranslatePipe,
+    ChangesFieldComponent,
   ],
   providers: [
     {
@@ -261,5 +263,11 @@ export class ViewComponent<T, U> implements OnInit {
         }
       );
     }
+  }
+
+  // memorize message specific
+  findMessageType() {
+    const messageType = this.fields().find(f => f.name === 'message_type')
+    return messageType?.type === 'relation' && messageType.value;
   }
 }
