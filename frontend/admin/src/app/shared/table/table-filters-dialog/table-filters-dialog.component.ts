@@ -51,8 +51,8 @@ import { DialogData } from './table-filters-dialog.component.interface';
 export class TableFiltersDialogComponent {
   private fb = inject(FormBuilder);
   private date = inject(DateService);
-  public data: DialogData = inject(MAT_DIALOG_DATA);
   public ref = inject(MatDialogRef);
+  public data: DialogData = inject(MAT_DIALOG_DATA);
 
   public onSubmit = new EventEmitter<Filter[]>();
   public form = this.fb.group({});

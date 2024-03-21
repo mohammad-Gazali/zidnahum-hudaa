@@ -257,6 +257,18 @@ export class TableComponent<T> implements OnInit {
         };
       });
 
+    const masjedActiveFilter = this.activeFilters().find(f => f.name === 'student_masjed');
+
+    const masjedFilter: DialogData['filters'][number] = masjedActiveFilter !== undefined ? {
+      ...masjedActiveFilter,
+      type: 'exact',
+      defaultValue: masjedActiveFilter.value,
+    } : {
+      name: 'student_masjed',
+      type: 'exact',
+      defaultValue: undefined,
+    };
+
     const ref = this.dialog.open<TableFiltersDialogComponent, DialogData>(
       TableFiltersDialogComponent,
       {
@@ -266,10 +278,7 @@ export class TableComponent<T> implements OnInit {
           filters: this.config.useStudentMasjedFilter
             ? [
                 ...fieldsFilters,
-                {
-                  name: 'student_masjed',
-                  type: 'exact',
-                },
+                masjedFilter,
               ]
             : fieldsFilters,
         },

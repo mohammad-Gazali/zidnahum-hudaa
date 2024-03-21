@@ -147,6 +147,14 @@ export class TranslateService {
         this.translateMap.set('memorize-notes', 'ملاحظة التسميع');
         this.translateMap.set('sended_at', 'تاريخ الإرسال');
         this.translateMap.set('content', 'المحتوى');
+
+        // no quran awqaf test model
+        this.translateMap.set('no-q-test', 'سبر الأوقاف بغير القرآن');
+
+        // student no quran awqaf test relation model
+        this.translateMap.set('student-no-q-test-relation', 'سبر الطالب بالأوقاف بغير القرآن');
+        this.translateMap.set('test', 'الاختبار');
+        this.translateMap.set('is_old', 'سبر قديم');
     }
 
     translate(value: string): string {

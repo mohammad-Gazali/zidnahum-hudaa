@@ -23,7 +23,7 @@ export class ComingCategoryCreateComponent extends ComingsBase {
       },
       points: {
         type: 'number',
-        validators: [Validators.required, Validators.min(0)],
+        validators: [Validators.required, Validators.min(1)],
       },
     },
   }
