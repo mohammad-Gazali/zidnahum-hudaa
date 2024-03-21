@@ -7,7 +7,11 @@ import { FormControl } from "@angular/forms";
 })
 export class QuranTestService {
     public transform(index: number) {
-        return `الربع ${index + 1}`;
+        const orderNumber = index + 1;
+        const partOrderNumber = orderNumber % 4 === 0 ? 4 : orderNumber % 4;
+        const partNumber = Math.ceil(orderNumber / 4);
+
+        return `الربع ${partOrderNumber} من الحزب ${partNumber}`;
     }
 
     public spliteArray(array: FormControl<MemoItemType>[]): FormControl<MemoItemType>[][][] {

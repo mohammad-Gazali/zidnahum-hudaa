@@ -28,6 +28,10 @@ export type FieldConfig =
   | {
       display: 'ignore';
       filterType?: undefined;
+    }
+  | {
+      display: 'changes';
+      filterType?: undefined;
     };
 
 // Interface for configuration of table component

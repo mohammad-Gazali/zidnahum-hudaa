@@ -2,12 +2,12 @@
     @for (section of splittedControlsArray(); track section; let i = $index) {
         <div class="section-container">
             <mat-card class="section-card">
-                {{ 'الجزء ' + (i + 1) }}
+                الجزء {{ i + 1 }}
             </mat-card>
             @for (part of section; track part; let j = $index) {
                 <div class="part-container">
                     <mat-card class="flex-card part-name-card">
-                        {{ 'الحزب ' + (i * 2 + j + 1) }}
+                        الحزب {{ i * 2 + j + 1 }}
                     </mat-card>
                     <div class="self-parts-container">
                         @for (control of part; track control) {
@@ -20,7 +20,7 @@
                             (click)="changeValue(control)"
                             class="flex-card">
                                 <input type="hidden" [formControl]="control">
-                                {{ test.transform($index) }}
+                                الربع {{ $index + 1 }}
                             </mat-card>
                         }
                     </div>

@@ -91,6 +91,13 @@
                       <a class="primary" [routerLink]="config.getUrlFunc(element.id)">
                         {{ element[column] }}
                       </a>
+                    } @else if (config.columns[column].display === 'changes') {
+                      <!-- memorize message only case -->
+                      <app-table-changes-field
+                      [content]="element[column]"
+                      [type]="element['message_type']">
+                      </app-table-changes-field>
+
                     } @else if (config.columns[column].display === 'boolean') {
                       @if (element[column]) {
                         <mat-icon color="primary">check_circle_outline</mat-icon>

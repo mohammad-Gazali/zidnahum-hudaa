@@ -421,7 +421,7 @@ class StudentsService extends __BaseService {
    *
    * - `sended_at__gt`: sended_at__gt
    *
-   * - `sended_at`: sended_at
+   * - `sended_at__date`: sended_at__date
    *
    * - `ordering`: Which field to use when ordering the results.
    *
@@ -445,7 +445,7 @@ class StudentsService extends __BaseService {
     if (params.studentMasjed != null) __params = __params.set('student__masjed', params.studentMasjed.toString());
     if (params.sendedAtLt != null) __params = __params.set('sended_at__lt', params.sendedAtLt.toString());
     if (params.sendedAtGt != null) __params = __params.set('sended_at__gt', params.sendedAtGt.toString());
-    if (params.sendedAt != null) __params = __params.set('sended_at', params.sendedAt.toString());
+    if (params.sendedAtDate != null) __params = __params.set('sended_at__date', params.sendedAtDate.toString());
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.messageType != null) __params = __params.set('message_type', params.messageType.toString());
@@ -481,7 +481,7 @@ class StudentsService extends __BaseService {
    *
    * - `sended_at__gt`: sended_at__gt
    *
-   * - `sended_at`: sended_at
+   * - `sended_at__date`: sended_at__date
    *
    * - `ordering`: Which field to use when ordering the results.
    *
@@ -1005,9 +1005,9 @@ module StudentsService {
     sendedAtGt?: string;
 
     /**
-     * sended_at
+     * sended_at__date
      */
-    sendedAt?: string;
+    sendedAtDate?: string;
 
     /**
      * Which field to use when ordering the results.

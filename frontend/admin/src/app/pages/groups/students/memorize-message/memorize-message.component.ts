@@ -34,7 +34,7 @@ export class MemorizeMessageComponent extends StudentsBase {
         display: 'ignore',
       },
       changes: {
-        display: 'normal',
+        display: 'changes',
       },
       is_doubled: {
         display: 'boolean',

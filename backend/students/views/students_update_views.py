@@ -38,13 +38,14 @@ class StudentUpdateQMemoView(APIView):
 
             student.save()
 
-            MemorizeMessage.objects.create(
-                master=self.request.user,
-                student=student,
-                changes=added_memo,
-                message_type=MessageTypeChoice.MEMO,
-                is_doubled=ControlSettings.get_double_points(),
-            )
+            if added_memo:
+                MemorizeMessage.objects.create(
+                    master=self.request.user,
+                    student=student,
+                    changes=added_memo,
+                    message_type=MessageTypeChoice.MEMO,
+                    is_doubled=ControlSettings.get_double_points(),
+                )
 
             return Response({
                 "repeated_memo": repeated_memo,
@@ -81,13 +82,14 @@ class StudentUpdateQTestView(APIView):
 
             student.save()
 
-            MemorizeMessage.objects.create(
-                master=self.request.user,
-                student=student,
-                changes=added_test,
-                message_type=MessageTypeChoice.TEST,
-                is_doubled=ControlSettings.get_double_points(),
-            )
+            if added_test:
+                MemorizeMessage.objects.create(
+                    master=self.request.user,
+                    student=student,
+                    changes=added_test,
+                    message_type=MessageTypeChoice.TEST,
+                    is_doubled=ControlSettings.get_double_points(),
+                )
 
             return Response({
                 "repeated_test": repeated_test,

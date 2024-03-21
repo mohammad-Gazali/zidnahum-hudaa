@@ -41,6 +41,7 @@ import { DateService } from '../../services/date.service';
 import { LoadingService } from '../../services/loading.service';
 import { HelperService } from '../../services/helper.service';
 import { MasjedService } from '../../services/masjed.service';
+import { TableChangesFieldComponent } from './table-changes-field/table-changes-field.component';
 
 // TODO: add actions to table
 
@@ -61,6 +62,7 @@ import { MasjedService } from '../../services/masjed.service';
     ReactiveFormsModule,
     RouterLink,
     TranslatePipe,
+    TableChangesFieldComponent,
   ],
   providers: [{ provide: MatPaginatorIntl, useClass: TableComponentPaginator }],
   templateUrl: './table.component.html',
