@@ -251,7 +251,6 @@ export class ViewComponent<T, U> implements OnInit {
       this.dialog.open<ViewDeleteDialogComponent, DialogData>(
         ViewDeleteDialogComponent,
         {
-          autoFocus: false,
           width: '400px',
           data: {
             deleteFunc: () => {
