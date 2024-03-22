@@ -52,7 +52,7 @@ AdminComingViewSet = create_model_view_set(
 
 # globals view sets
 AdminAssetsCategoryViewSet = create_model_view_set(AssetsCategory, no_pagination=True)
-AdminAssetFileViewSet = create_model_view_set(AssetFile, filter_fields=["category"])
+AdminAssetFileViewSet = create_model_view_set(AssetFile, methods=["get", "post", "delete"], filter_fields=["category"], multipart=True)
 
 # money view sets
 AdminMoneyDeletingCauseViewSet = create_model_view_set(MoneyDeletingCause, no_pagination=True)

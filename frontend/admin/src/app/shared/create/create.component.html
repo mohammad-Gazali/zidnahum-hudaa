@@ -6,7 +6,7 @@
                     {{ field.name | translate }}
                 </span>
             </div>
-            @if (field.config.type !== "date" && field.config.type !== 'boolean') {
+            @if (field.config.type !== "date" && field.config.type !== 'boolean' && field.config.type !== 'file') {
                 <mat-form-field>
                     <mat-label>{{ field.name | translate }}</mat-label>
                     
@@ -58,6 +58,8 @@
                 </mat-form-field>
             } @else if (field.config.type === 'boolean') {
                 <mat-checkbox [formControlName]="field.name"></mat-checkbox>
+            } @else if (field.config.type === 'file') {
+                <input type="file" (change)="onFilePicked($event, field.name)" />
             }
         </div>
         <mat-divider></mat-divider>

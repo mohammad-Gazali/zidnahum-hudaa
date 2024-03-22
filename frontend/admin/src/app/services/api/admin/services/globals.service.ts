@@ -9,7 +9,6 @@ import { map as __map, filter as __filter } from 'rxjs/operators';
 
 import { AssetFileList } from '../models/asset-file-list';
 import { AssetFileCreate } from '../models/asset-file-create';
-import { AssetFileUpdate } from '../models/asset-file-update';
 import { AssetsCategoryList } from '../models/assets-category-list';
 import { AssetsCategoryCreate } from '../models/assets-category-create';
 import { AssetsCategoryUpdate } from '../models/assets-category-update';
@@ -20,7 +19,6 @@ class GlobalsService extends __BaseService {
   static readonly globalsAssetFileListPath = '/globals/asset-file/';
   static readonly globalsAssetFileCreatePath = '/globals/asset-file/';
   static readonly globalsAssetFileReadPath = '/globals/asset-file/{id}/';
-  static readonly globalsAssetFileUpdatePath = '/globals/asset-file/{id}/';
   static readonly globalsAssetFileDeletePath = '/globals/asset-file/{id}/';
   static readonly globalsAssetsCategoryListPath = '/globals/assets-category/';
   static readonly globalsAssetsCategoryCreatePath = '/globals/assets-category/';
@@ -89,13 +87,23 @@ class GlobalsService extends __BaseService {
   }
 
   /**
-   * @param data undefined
+   * @param params The `GlobalsService.GlobalsAssetFileCreateParams` containing the following parameters:
+   *
+   * - `name`:
+   *
+   * - `file`:
+   *
+   * - `category`:
    */
-  globalsAssetFileCreateResponse(data: AssetFileCreate): __Observable<__StrictHttpResponse<AssetFileCreate>> {
+  globalsAssetFileCreateResponse(params: GlobalsService.GlobalsAssetFileCreateParams): __Observable<__StrictHttpResponse<AssetFileCreate>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
-    __body = data;
+    let __formData = new FormData();
+    __body = __formData;
+    if (params.name != null) { __formData.append('name', params.name as string | Blob);}
+    if (params.file != null) { __formData.append('file', params.file as string | Blob);}
+    if (params.category != null) { __formData.append('category', JSON.stringify(params.category));}
     let req = new HttpRequest<any>(
       'POST',
       this.rootUrl + `/globals/asset-file/`,
@@ -114,10 +122,16 @@ class GlobalsService extends __BaseService {
     );
   }
   /**
-   * @param data undefined
+   * @param params The `GlobalsService.GlobalsAssetFileCreateParams` containing the following parameters:
+   *
+   * - `name`:
+   *
+   * - `file`:
+   *
+   * - `category`:
    */
-  globalsAssetFileCreate(data: AssetFileCreate): __Observable<AssetFileCreate> {
-    return this.globalsAssetFileCreateResponse(data).pipe(
+  globalsAssetFileCreate(params: GlobalsService.GlobalsAssetFileCreateParams): __Observable<AssetFileCreate> {
+    return this.globalsAssetFileCreateResponse(params).pipe(
       __map(_r => _r.body as AssetFileCreate)
     );
   }
@@ -153,49 +167,6 @@ class GlobalsService extends __BaseService {
   globalsAssetFileRead(id: string): __Observable<AssetFileList> {
     return this.globalsAssetFileReadResponse(id).pipe(
       __map(_r => _r.body as AssetFileList)
-    );
-  }
-
-  /**
-   * @param params The `GlobalsService.GlobalsAssetFileUpdateParams` containing the following parameters:
-   *
-   * - `id`:
-   *
-   * - `data`:
-   */
-  globalsAssetFileUpdateResponse(params: GlobalsService.GlobalsAssetFileUpdateParams): __Observable<__StrictHttpResponse<AssetFileUpdate>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    __body = params.data;
-    let req = new HttpRequest<any>(
-      'PUT',
-      this.rootUrl + `/globals/asset-file/${encodeURIComponent(String(params.id))}/`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<AssetFileUpdate>;
-      })
-    );
-  }
-  /**
-   * @param params The `GlobalsService.GlobalsAssetFileUpdateParams` containing the following parameters:
-   *
-   * - `id`:
-   *
-   * - `data`:
-   */
-  globalsAssetFileUpdate(params: GlobalsService.GlobalsAssetFileUpdateParams): __Observable<AssetFileUpdate> {
-    return this.globalsAssetFileUpdateResponse(params).pipe(
-      __map(_r => _r.body as AssetFileUpdate)
     );
   }
 
@@ -442,11 +413,12 @@ module GlobalsService {
   }
 
   /**
-   * Parameters for globalsAssetFileUpdate
+   * Parameters for globalsAssetFileCreate
    */
-  export interface GlobalsAssetFileUpdateParams {
-    id: string;
-    data: AssetFileUpdate;
+  export interface GlobalsAssetFileCreateParams {
+    name: string;
+    file: Blob;
+    category: number;
   }
 
   /**

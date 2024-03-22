@@ -6,6 +6,7 @@ import { routes as authRoutes } from './pages/groups/auth/auth.routes';
 import { routes as pointsRoutes } from './pages/groups/points/points.routes';
 import { routes as comingsRoutes } from './pages/groups/comings/comings.routes';
 import { routes as awqafRoutes } from './pages/groups/awqaf/awqaf.routes';
+import { routes as globalsRoutes } from './pages/groups/globals/globals.routes';
 
 export const routes: Routes = [
     {
@@ -36,4 +37,8 @@ export const routes: Routes = [
         path: 'awqaf',
         children: awqafRoutes,
     },
+    {
+        path: 'globals',
+        children: globalsRoutes,
+    }
 ];

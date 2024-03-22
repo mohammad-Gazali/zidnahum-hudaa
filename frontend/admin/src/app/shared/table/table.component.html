@@ -126,6 +126,13 @@
                             </a>
                           }
                         }
+                    } @else if (config.columns[column].display === 'file-link') {
+                      <a class="primary" target="_blank" [href]="element[column]">
+                        {{
+                          'File link' | translate
+                        }}
+                      </a>
+
                     } @else if ($any(config.columns[column]).dateFormat !== undefined) {
                       {{ date.format(element[column], $any(config.columns[column]).dateFormat) }}
                     } @else {

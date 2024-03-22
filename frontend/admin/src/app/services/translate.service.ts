@@ -17,6 +17,7 @@ export class TranslateService {
         this.translateMap.set('all', 'الكل');
         this.translateMap.set('no', 'لا');
         this.translateMap.set('there is no data', 'لا يوجد بيانات');
+        this.translateMap.set('file link', 'رابط الملف');
 
         // ====== global forms ======
         this.translateMap.set('update', 'تعديل');
@@ -155,6 +156,13 @@ export class TranslateService {
         this.translateMap.set('student-no-q-test-relation', 'سبر الطالب بالأوقاف بغير القرآن');
         this.translateMap.set('test', 'الاختبار');
         this.translateMap.set('is_old', 'سبر قديم');
+
+        // assets categroy model
+        this.translateMap.set('assets-category', 'فئة الملفات');
+
+        // assets file model
+        this.translateMap.set('assets-file', 'الملف');
+        this.translateMap.set('file', 'الملف');
     }
 
     translate(value: string): string {

@@ -15,7 +15,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
@@ -64,7 +64,13 @@ import { ChangesFieldComponent } from '../changes-field/changes-field.component'
     TranslatePipe,
     ChangesFieldComponent,
   ],
-  providers: [{ provide: MatPaginatorIntl, useClass: TableComponentPaginator }],
+  providers: [{ provide: MatPaginatorIntl, useClass: TableComponentPaginator }, {
+    provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+    useValue: { 
+      appearance: 'outline',
+      subscriptSizing: 'dynamic',
+    },
+  }],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })

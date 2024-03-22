@@ -11,7 +11,7 @@ export interface CreateComponentConfig<T> {
 
 export type FieldConfig =
   | {
-      type: 'string' | 'password' | 'number' | 'boolean' | 'date';
+      type: 'string' | 'password' | 'number' | 'boolean' | 'date' | 'file';
       validators?: ValidatorFn[];
     }
   | {

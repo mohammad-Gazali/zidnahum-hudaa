@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.status import HTTP_200_OK
+from rest_framework.parsers import MultiPartParser
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg.openapi import Parameter, IN_QUERY, TYPE_STRING
 from students.models import Student
@@ -93,6 +94,7 @@ def create_model_view_set(
     listing_serializer: Type[ModelSerializer] = None,
     details_serializer: Type[ModelSerializer] = None,
     no_pagination: bool = False,
+    multipart: bool = False,
 ) -> Type[BaseViewSet]:
     """
     a helper function for creating view sets without declaring an
@@ -126,6 +128,9 @@ def create_model_view_set(
 
         if no_pagination:
             pagination_class = None
+
+        if multipart:
+            parser_classes = [MultiPartParser]
 
         # here we made a condition to determine the desired decorator we want to use with list method
         if model == Student:

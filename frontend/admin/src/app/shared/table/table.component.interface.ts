@@ -32,7 +32,11 @@ export type FieldConfig =
   | {
       display: 'changes';
       filterType?: undefined;
-    };
+    }
+  | {
+    display: 'file-link';
+    filterType?: undefined;
+  };
 
 // Interface for configuration of table component
 export type TableComponentConfig<T> = {

@@ -148,4 +148,13 @@ export class CreateComponent<T> implements OnInit {
   goToTable() {
     this.router.navigateByUrl(this.config().tableRoute);
   }
+
+  // file specific
+  onFilePicked(event: Event, name: string) {
+    const file = (event.target as HTMLInputElement).files?.item(0);
+    
+    this.form.patchValue({
+      [name]: file,
+    })
+  }
 }

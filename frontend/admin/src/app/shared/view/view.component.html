@@ -175,6 +175,12 @@
                     [content]="field.value"
                     [type]="findMessageType()"></app-changes-field>
 
+                } @else if (field.type === 'file-link') {
+                    <a class="primary" target="_blank" [href]="field.value">
+                        {{
+                          'File link' | translate
+                        }}
+                    </a>
                 } @else {
                     INVALID
                 }

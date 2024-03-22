@@ -18,7 +18,6 @@ export { ComingCategoryUpdate } from './models/coming-category-update';
 export { ComingList } from './models/coming-list';
 export { AssetFileList } from './models/asset-file-list';
 export { AssetFileCreate } from './models/asset-file-create';
-export { AssetFileUpdate } from './models/asset-file-update';
 export { AssetsCategoryList } from './models/assets-category-list';
 export { AssetsCategoryCreate } from './models/assets-category-create';
 export { AssetsCategoryUpdate } from './models/assets-category-update';
