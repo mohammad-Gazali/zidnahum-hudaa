@@ -66,7 +66,7 @@ class Student(models.Model):
     category = models.ForeignKey(StudentCategory, on_delete=models.SET_NULL, verbose_name="الفئة", null=True, blank=True)
     group = models.ForeignKey(StudentGroup, on_delete=models.SET_NULL, verbose_name="المجموعة", null=True, blank=True)
 
-    masjed = models.IntegerField(verbose_name="المسجد", choices=StudentMasjedChoice.choices, default=StudentMasjedChoice.HASANIN)
+    masjed = models.IntegerField(verbose_name="المسجد", choices=StudentMasjedChoice.choices)
 
     def __str__(self) -> str:
         return self.name

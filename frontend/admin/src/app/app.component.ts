@@ -6,8 +6,7 @@ import { AccountsService } from './services/api/accounts/accounts.service';
 import { SnackbarService } from './services/snackbar.service';
 
 // TODO: add error handler
-
-// TODO: add translation for all itemNameAndRouteName attributes in view components
+// TODO: convert mat module imports to standalone components imports
 
 @Component({
   selector: 'app-root',

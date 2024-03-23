@@ -8,8 +8,6 @@ import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
 import { AwqafNoQStudentRelationList } from '../models/awqaf-no-qstudent-relation-list';
-import { AwqafNoQStudentRelationCreate } from '../models/awqaf-no-qstudent-relation-create';
-import { AwqafNoQStudentRelationUpdate } from '../models/awqaf-no-qstudent-relation-update';
 import { AwqafTestNoQList } from '../models/awqaf-test-no-qlist';
 import { AwqafTestNoQCreate } from '../models/awqaf-test-no-qcreate';
 import { AwqafTestNoQUpdate } from '../models/awqaf-test-no-qupdate';
@@ -18,9 +16,7 @@ import { AwqafTestNoQUpdate } from '../models/awqaf-test-no-qupdate';
 })
 class AwqafService extends __BaseService {
   static readonly awqafStudentNoQRelationListPath = '/awqaf/student-no-q-relation/';
-  static readonly awqafStudentNoQRelationCreatePath = '/awqaf/student-no-q-relation/';
   static readonly awqafStudentNoQRelationReadPath = '/awqaf/student-no-q-relation/{id}/';
-  static readonly awqafStudentNoQRelationUpdatePath = '/awqaf/student-no-q-relation/{id}/';
   static readonly awqafStudentNoQRelationDeletePath = '/awqaf/student-no-q-relation/{id}/';
   static readonly awqafTestNoQListPath = '/awqaf/test-no-q/';
   static readonly awqafTestNoQCreatePath = '/awqaf/test-no-q/';
@@ -104,40 +100,6 @@ class AwqafService extends __BaseService {
   }
 
   /**
-   * @param data undefined
-   */
-  awqafStudentNoQRelationCreateResponse(data: AwqafNoQStudentRelationCreate): __Observable<__StrictHttpResponse<AwqafNoQStudentRelationCreate>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    __body = data;
-    let req = new HttpRequest<any>(
-      'POST',
-      this.rootUrl + `/awqaf/student-no-q-relation/`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<AwqafNoQStudentRelationCreate>;
-      })
-    );
-  }
-  /**
-   * @param data undefined
-   */
-  awqafStudentNoQRelationCreate(data: AwqafNoQStudentRelationCreate): __Observable<AwqafNoQStudentRelationCreate> {
-    return this.awqafStudentNoQRelationCreateResponse(data).pipe(
-      __map(_r => _r.body as AwqafNoQStudentRelationCreate)
-    );
-  }
-
-  /**
    * @param id undefined
    */
   awqafStudentNoQRelationReadResponse(id: string): __Observable<__StrictHttpResponse<AwqafNoQStudentRelationList>> {
@@ -168,49 +130,6 @@ class AwqafService extends __BaseService {
   awqafStudentNoQRelationRead(id: string): __Observable<AwqafNoQStudentRelationList> {
     return this.awqafStudentNoQRelationReadResponse(id).pipe(
       __map(_r => _r.body as AwqafNoQStudentRelationList)
-    );
-  }
-
-  /**
-   * @param params The `AwqafService.AwqafStudentNoQRelationUpdateParams` containing the following parameters:
-   *
-   * - `id`:
-   *
-   * - `data`:
-   */
-  awqafStudentNoQRelationUpdateResponse(params: AwqafService.AwqafStudentNoQRelationUpdateParams): __Observable<__StrictHttpResponse<AwqafNoQStudentRelationUpdate>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    __body = params.data;
-    let req = new HttpRequest<any>(
-      'PUT',
-      this.rootUrl + `/awqaf/student-no-q-relation/${encodeURIComponent(String(params.id))}/`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<AwqafNoQStudentRelationUpdate>;
-      })
-    );
-  }
-  /**
-   * @param params The `AwqafService.AwqafStudentNoQRelationUpdateParams` containing the following parameters:
-   *
-   * - `id`:
-   *
-   * - `data`:
-   */
-  awqafStudentNoQRelationUpdate(params: AwqafService.AwqafStudentNoQRelationUpdateParams): __Observable<AwqafNoQStudentRelationUpdate> {
-    return this.awqafStudentNoQRelationUpdateResponse(params).pipe(
-      __map(_r => _r.body as AwqafNoQStudentRelationUpdate)
     );
   }
 
@@ -469,14 +388,6 @@ module AwqafService {
      * is_old
      */
     isOld?: string;
-  }
-
-  /**
-   * Parameters for awqafStudentNoQRelationUpdate
-   */
-  export interface AwqafStudentNoQRelationUpdateParams {
-    id: string;
-    data: AwqafNoQStudentRelationUpdate;
   }
 
   /**

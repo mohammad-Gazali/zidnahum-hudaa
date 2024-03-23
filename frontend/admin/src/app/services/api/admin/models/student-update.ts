@@ -12,7 +12,7 @@ export interface StudentUpdate {
   father_phone?: null | string;
   father_work?: null | string;
   group?: null | number;
-  masjed?: 1 | 2 | 3;
+  masjed: 1 | 2 | 3;
   mother_name?: null | string;
   mother_phone?: null | string;
   name: string;

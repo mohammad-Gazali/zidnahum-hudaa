@@ -25,6 +25,7 @@ AdminGroupViewSet = create_model_view_set(Group, fields=["permissions"], exclude
 AdminAwqafTestNoQViewSet = create_model_view_set(AwqafTestNoQ, no_pagination=True)
 AdminAwqafNoQStudentRelationViewSet = create_model_view_set(
     AwqafNoQStudentRelation,
+    methods=["get", "delete"],
     fields=["id", "student", "student_name", "test", "is_old"],
     filter_fields={
         "test": ["exact"],

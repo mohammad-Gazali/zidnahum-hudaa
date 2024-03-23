@@ -23,6 +23,11 @@ export class GroupsService {
           link: '/awqaf/student-no-q-test-relation',
           icon: 'call_merge',
         },
+        {
+          name: 'إضافة سبر الأوقاف للطلاب',
+          link: '/awqaf/add-awqaf-test-student',
+          icon: 'playlist_add',
+        }
       ],
     },
     {

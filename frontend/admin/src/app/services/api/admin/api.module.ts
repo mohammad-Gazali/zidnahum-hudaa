@@ -7,6 +7,7 @@ import { ActionsService } from './services/actions.service';
 import { AuthService } from './services/auth.service';
 import { AwqafService } from './services/awqaf.service';
 import { ComingsService } from './services/comings.service';
+import { ExtraService } from './services/extra.service';
 import { GlobalsService } from './services/globals.service';
 import { MoneyService } from './services/money.service';
 import { PointsService } from './services/points.service';
@@ -29,6 +30,7 @@ import { StudentsService } from './services/students.service';
     AuthService,
     AwqafService,
     ComingsService,
+    ExtraService,
     GlobalsService,
     MoneyService,
     PointsService,

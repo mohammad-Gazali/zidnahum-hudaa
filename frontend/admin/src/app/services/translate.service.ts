@@ -18,6 +18,7 @@ export class TranslateService {
         this.translateMap.set('no', 'لا');
         this.translateMap.set('there is no data', 'لا يوجد بيانات');
         this.translateMap.set('file link', 'رابط الملف');
+        this.translateMap.set('clear result', 'إزالة النتائج');
 
         // ====== global forms ======
         this.translateMap.set('update', 'تعديل');
