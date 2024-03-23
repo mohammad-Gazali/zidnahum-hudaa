@@ -58,6 +58,7 @@ AdminAssetFileViewSet = create_model_view_set(AssetFile, methods=["get", "post",
 AdminMoneyDeletingCauseViewSet = create_model_view_set(MoneyDeletingCause, no_pagination=True)
 AdminMoneyDeletingViewSet = create_model_view_set(
     MoneyDeleting,
+    methods=["get", "post", "put"],
     fields=["id", "created_at", "active_to_points", "value", "student", "student_name", "cause"],
     filter_fields={
         "cause": ["exact"],

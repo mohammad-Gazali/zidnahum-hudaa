@@ -16,7 +16,6 @@ export class MoneyDeletingViewComponent extends MoneyBase {
     groupName: 'money',
     itemNameAndRouteName: 'money-deleting',
     viewFunc: id => this.money.moneyDeletingRead(id),
-    deleteFunc: id => this.money.moneyDeletingDelete(id),
     fieldsInfo: {
       student: {
         type: 'link',

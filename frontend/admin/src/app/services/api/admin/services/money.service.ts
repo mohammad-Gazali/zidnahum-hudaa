@@ -26,7 +26,6 @@ class MoneyService extends __BaseService {
   static readonly moneyDeletingCreatePath = '/money/deleting/';
   static readonly moneyDeletingReadPath = '/money/deleting/{id}/';
   static readonly moneyDeletingUpdatePath = '/money/deleting/{id}/';
-  static readonly moneyDeletingDeletePath = '/money/deleting/{id}/';
 
   constructor(
     config: __Configuration,
@@ -405,40 +404,6 @@ class MoneyService extends __BaseService {
   moneyDeletingUpdate(params: MoneyService.MoneyDeletingUpdateParams): __Observable<MoneyDeletingUpdate> {
     return this.moneyDeletingUpdateResponse(params).pipe(
       __map(_r => _r.body as MoneyDeletingUpdate)
-    );
-  }
-
-  /**
-   * @param id undefined
-   */
-  moneyDeletingDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    let req = new HttpRequest<any>(
-      'DELETE',
-      this.rootUrl + `/money/deleting/${encodeURIComponent(String(id))}/`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
-      })
-    );
-  }
-  /**
-   * @param id undefined
-   */
-  moneyDeletingDelete(id: string): __Observable<null> {
-    return this.moneyDeletingDeleteResponse(id).pipe(
-      __map(_r => _r.body as null)
     );
   }
 }
