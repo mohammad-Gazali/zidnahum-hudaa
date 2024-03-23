@@ -62,6 +62,8 @@ AdminMoneyDeletingViewSet = create_model_view_set(
     filter_fields={
         "cause": ["exact"],
         "student__masjed": ["exact"],
+        "active_to_points": ["exact"],
+        "created_at": ["date", "gt", "lt"],
     },
     include_student_name_filter=True,
 )

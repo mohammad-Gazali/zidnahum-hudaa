@@ -227,7 +227,15 @@ class MoneyService extends __BaseService {
    *
    * - `limit`: Number of results to return per page.
    *
+   * - `created_at__lt`: created_at__lt
+   *
+   * - `created_at__gt`: created_at__gt
+   *
+   * - `created_at__date`: created_at__date
+   *
    * - `cause`: cause
+   *
+   * - `active_to_points`: active_to_points
    */
   moneyDeletingListResponse(params: MoneyService.MoneyDeletingListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<MoneyDeletingList>}>> {
     let __params = this.newParams();
@@ -238,7 +246,11 @@ class MoneyService extends __BaseService {
     if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (params.createdAtLt != null) __params = __params.set('created_at__lt', params.createdAtLt.toString());
+    if (params.createdAtGt != null) __params = __params.set('created_at__gt', params.createdAtGt.toString());
+    if (params.createdAtDate != null) __params = __params.set('created_at__date', params.createdAtDate.toString());
     if (params.cause != null) __params = __params.set('cause', params.cause.toString());
+    if (params.activeToPoints != null) __params = __params.set('active_to_points', params.activeToPoints.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/money/deleting/`,
@@ -269,7 +281,15 @@ class MoneyService extends __BaseService {
    *
    * - `limit`: Number of results to return per page.
    *
+   * - `created_at__lt`: created_at__lt
+   *
+   * - `created_at__gt`: created_at__gt
+   *
+   * - `created_at__date`: created_at__date
+   *
    * - `cause`: cause
+   *
+   * - `active_to_points`: active_to_points
    */
   moneyDeletingList(params: MoneyService.MoneyDeletingListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<MoneyDeletingList>}> {
     return this.moneyDeletingListResponse(params).pipe(
@@ -464,9 +484,29 @@ module MoneyService {
     limit?: number;
 
     /**
+     * created_at__lt
+     */
+    createdAtLt?: string;
+
+    /**
+     * created_at__gt
+     */
+    createdAtGt?: string;
+
+    /**
+     * created_at__date
+     */
+    createdAtDate?: string;
+
+    /**
      * cause
      */
     cause?: string;
+
+    /**
+     * active_to_points
+     */
+    activeToPoints?: string;
   }
 
   /**

@@ -45,8 +45,8 @@ export class GroupsService {
       name: 'الغرامات المالية',
       icon: 'payments',
       items: [
-        { name: 'أسباب الغرامة', link: '/money/deleting-cause', icon: 'paid' },
-        { name: 'الغرامات', link: '/money/deleting', icon: 'payments' },
+        { name: 'أسباب الغرامة', link: '/money/money-deleting-cause', icon: 'paid' },
+        { name: 'الغرامات', link: '/money/money-deleting', icon: 'payments' },
       ],
     },
     {

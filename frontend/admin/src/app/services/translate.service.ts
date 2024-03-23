@@ -163,6 +163,13 @@ export class TranslateService {
         // assets file model
         this.translateMap.set('assets-file', 'الملف');
         this.translateMap.set('file', 'الملف');
+
+        // money deleting cause model
+        this.translateMap.set('money-deleting-cause', 'سبب الغرامة المالية');
+
+        // money deleting
+        this.translateMap.set('money-deleting', 'الغرامة المالية');
+        this.translateMap.set('active_to_points', 'مخصومة من النقاط');
     }
 
     translate(value: string): string {
