@@ -15,6 +15,7 @@ export { ComingCategoryCreate } from './models/coming-category-create';
 export { ComingCategoryUpdate } from './models/coming-category-update';
 export { ComingList } from './models/coming-list';
 export { AddAwqafTestNoQRequestSerailizer } from './models/add-awqaf-test-no-qrequest-serailizer';
+export { AddAwqafTestQRequest } from './models/add-awqaf-test-qrequest';
 export { AssetFileList } from './models/asset-file-list';
 export { AssetFileCreate } from './models/asset-file-create';
 export { AssetsCategoryList } from './models/assets-category-list';

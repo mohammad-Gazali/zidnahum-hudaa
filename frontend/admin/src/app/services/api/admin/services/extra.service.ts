@@ -8,11 +8,13 @@ import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
 import { AddAwqafTestNoQRequestSerailizer } from '../models/add-awqaf-test-no-qrequest-serailizer';
+import { AddAwqafTestQRequest } from '../models/add-awqaf-test-qrequest';
 @Injectable({
   providedIn: 'root',
 })
 class ExtraService extends __BaseService {
   static readonly extraAddAwqafNoQTestCreatePath = '/extra/add-awqaf-no-q-test';
+  static readonly extraAddAwqafQTestCreatePath = '/extra/add-awqaf-q-test';
 
   constructor(
     config: __Configuration,
@@ -52,6 +54,40 @@ class ExtraService extends __BaseService {
   extraAddAwqafNoQTestCreate(data: AddAwqafTestNoQRequestSerailizer): __Observable<AddAwqafTestNoQRequestSerailizer> {
     return this.extraAddAwqafNoQTestCreateResponse(data).pipe(
       __map(_r => _r.body as AddAwqafTestNoQRequestSerailizer)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  extraAddAwqafQTestCreateResponse(data: AddAwqafTestQRequest): __Observable<__StrictHttpResponse<AddAwqafTestQRequest>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/extra/add-awqaf-q-test`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<AddAwqafTestQRequest>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  extraAddAwqafQTestCreate(data: AddAwqafTestQRequest): __Observable<AddAwqafTestQRequest> {
+    return this.extraAddAwqafQTestCreateResponse(data).pipe(
+      __map(_r => _r.body as AddAwqafTestQRequest)
     );
   }
 }

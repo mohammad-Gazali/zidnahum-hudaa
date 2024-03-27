@@ -56,19 +56,19 @@ $admin-dark-theme: mat.define-dark-theme(
 }
 
 :root {
-  --ttwr-success-color: #2e7d32;
-  --ttwr-error-color: #d32f2f;
+  --admin-success-color: #2e7d32;
+  --admin-error-color: #d32f2f;
 
-  --ttwr-success-text-color: #fff;
-  --ttwr-error-text-color: #fff;
+  --admin-success-text-color: #fff;
+  --admin-error-text-color: #fff;
 }
 
 .dark {
-  --ttwr-success-color: #66bb6a;
-  --ttwr-error-color: #f44336;
+  --admin-success-color: #66bb6a;
+  --admin-error-color: #f44336;
 
-  --ttwr-success-text-color: #000000de;
-  --ttwr-error-text-color: #fff;
+  --admin-success-text-color: #000000de;
+  --admin-error-text-color: #fff;
 }
 
 * {
@@ -119,13 +119,13 @@ a {
 }
 
 .snackbar-success {
-  --mdc-snackbar-container-color: var(--ttwr-success-color);
-  --mdc-snackbar-supporting-text-color: var(--ttwr-success-text-color);
-  --mat-snack-bar-button-color: var(--ttwr-success-text-color);
+  --mdc-snackbar-container-color: var(--admin-success-color);
+  --mdc-snackbar-supporting-text-color: var(--admin-success-text-color);
+  --mat-snack-bar-button-color: var(--admin-success-text-color);
 }
 
 .snackbar-error {
-  --mdc-snackbar-container-color: var(--ttwr-error-color);
-  --mdc-snackbar-supporting-text-color: var(--ttwr-error-text-color);
-  --mat-snack-bar-button-color: var(--ttwr-error-text-color);
+  --mdc-snackbar-container-color: var(--admin-error-color);
+  --mdc-snackbar-supporting-text-color: var(--admin-error-text-color);
+  --mat-snack-bar-button-color: var(--admin-error-text-color);
 }

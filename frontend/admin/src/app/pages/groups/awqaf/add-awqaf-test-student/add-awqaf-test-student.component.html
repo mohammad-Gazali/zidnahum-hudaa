@@ -17,24 +17,40 @@
     <mat-radio-button value="non-quran">بغير القرآن</mat-radio-button>
   </mat-radio-group>
   @if (mode() === 'quran') {
-    <form [formGroup]="quranForm">
+    <form #qForm="ngForm" [formGroup]="quranForm" (ngSubmit)="submitQ(qForm)">
         <mat-form-field>
-            <mat-label>الأجزاء</mat-label>
-            <input matInput [formControl]="quranForm.controls.value" />
-            <mat-hint>
-                يجب أن تكون الأجزاء متتالية مفصولة بمسافات
-            </mat-hint>
+            <mat-label>النوع</mat-label>
+            <mat-select [formControl]="quranForm.controls.type">
+                <mat-option value="normal">غيباً</mat-option>
+                <mat-option value="looking">نظراً</mat-option>
+                <mat-option value="explaining">تفسيراً</mat-option>
+            </mat-select>
             <mat-error>
-                هذا النمط غير صحيح
+                {{ 'this field is required' | translate }}
             </mat-error>
         </mat-form-field>
+        <div>
+            <p>الأجزاء</p>
+            <div class="awqaf-test-container" formArrayName="parts">
+                @for (control of quranForm.controls.parts.controls; track $index) {
+                    <mat-card
+                    matRipple
+                    [class.bg-primary]="control.value"
+                    (click)="control.setValue(!control.value)"
+                    class="flex-card">
+                        <input type="hidden" [formControl]="control">
+                        {{ transform($index) }}
+                    </mat-card>
+                }
+            </div>
+        </div>
         <button color="primary" mat-flat-button>
             إضافة
         </button>
     </form>
 
   } @else {
-    <form [formGroup]="nonQuranForm" (ngSubmit)="submitNoQ()">
+    <form #nQForm="ngForm" [formGroup]="nonQuranForm" (ngSubmit)="submitNoQ(nQForm)">
         <mat-form-field>
             <mat-label>الاختبار</mat-label>
             <mat-select [formControl]="nonQuranForm.controls.value">
