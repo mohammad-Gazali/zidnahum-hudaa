@@ -30,7 +30,6 @@ import { QuranTestComponent } from './quran-test/quran-test.component';
 import { QuranAwqafTestComponent } from './quran-awqaf-test/quran-awqaf-test.component';
 import { QuranEliteTestComponent } from './quran-elite-test/quran-elite-test.component';
 import { SnackbarService } from '../../services/snackbar.service';
-import { LoadingService } from '../../services/loading.service';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { DateService } from '../../services/date.service';
 import { MemoItemType } from '../../services/quran/quran.constatns';
@@ -41,6 +40,7 @@ import {
   ViewComponentConfig,
 } from './view.component.interface';
 import { ChangesFieldComponent } from '../changes-field/changes-field.component';
+import { LOADING } from '../../tokens/loading.token';
 
 @Component({
   selector: 'app-view',
@@ -82,7 +82,7 @@ export class ViewComponent<T, U> implements OnInit {
   private dialog = inject(MatDialog);
   private destroyRef = inject(DestroyRef);
   public date = inject(DateService);
-  public loading = inject(LoadingService).loading;
+  public loading = inject(LOADING);
 
   public fields = signal<Field[]>([]);
   public editMode = signal(false);

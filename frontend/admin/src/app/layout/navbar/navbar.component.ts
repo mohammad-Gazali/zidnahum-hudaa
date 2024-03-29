@@ -16,8 +16,7 @@ import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { AccountsService } from '../../services/api/accounts/accounts.service';
 import { ThemeService } from '../../services/theme.service';
-import { Subject, takeUntil } from 'rxjs';
-import { LoadingService } from '../../services/loading.service';
+import { LOADING } from '../../tokens/loading.token';
 
 @Component({
   selector: 'app-navbar',
@@ -38,7 +37,7 @@ export class NavbarComponent {
   private router = inject(Router);
   public theme = inject(ThemeService);
   public breakpointObserver = inject(BreakpointObserver);
-  public loading = inject(LoadingService).loading;
+  public loading = inject(LOADING);
 
   public clickMenu = output();
 

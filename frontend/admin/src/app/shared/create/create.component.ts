@@ -22,7 +22,6 @@ import {
   provideNativeDateAdapter,
 } from '@angular/material/core';
 import { Router } from '@angular/router';
-import { LoadingService } from '../../services/loading.service';
 import { DateService } from '../../services/date.service';
 import { SnackbarService } from '../../services/snackbar.service';
 import {
@@ -30,6 +29,7 @@ import {
   Field,
   FieldConfig,
 } from './create.component.interface';
+import { LOADING } from '../../tokens/loading.token';
 
 @Component({
   selector: 'app-create',
@@ -62,7 +62,7 @@ export class CreateComponent<T> implements OnInit {
   private snackbar = inject(SnackbarService);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
-  public loading = inject(LoadingService).loading;
+  public loading = inject(LOADING);
 
   public form = this.fb.nonNullable.group({});
   public fields = signal<Field[]>([]);

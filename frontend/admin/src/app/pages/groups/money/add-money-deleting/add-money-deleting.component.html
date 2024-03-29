@@ -1,0 +1,84 @@
+<mat-card>
+    <mat-radio-group (change)="radioChange($event)">
+        <mat-radio-button value="normal" checked>بحث</mat-radio-button>
+        <mat-radio-button value="category">فئة كاملة</mat-radio-button>
+    </mat-radio-group>
+    @if (mode() === 'normal') {
+        <app-student-search [(selectedStudents)]="selectedStudents"></app-student-search>
+        <div class="chips-container">
+            @for (student of selectedStudents(); track student.id) {
+              <mat-chip-row (removed)="removeStudent(student)">
+                  {{ student.id }} - {{ student.name }}
+                  <button matChipRemove>
+                      <mat-icon>close</mat-icon>
+                  </button>
+              </mat-chip-row>    
+            }
+        </div>
+        <form #normal="ngForm" [formGroup]="normalForm" (ngSubmit)="normalSubmit(normal)">
+            <mat-form-field>
+                <mat-label>السبب</mat-label>
+                <mat-select [formControl]="normalForm.controls.cause">
+                    @for (cause of causes() ?? []; track cause.id) {
+                        <mat-option [value]="cause.id">
+                            {{ cause.name }}
+                        </mat-option>
+                    }
+                </mat-select>
+                <mat-error>{{ 'this field is required' | translate }}</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>القيمة</mat-label>
+                <input matInput type="number" [formControl]="normalForm.controls.value" />
+                <mat-error>{{ 'this field is required' | translate }}</mat-error>
+            </mat-form-field>
+            <button [disabled]="loading()" color="primary" mat-flat-button>
+                إضافة
+            </button>
+        </form>
+    } @else {
+        <form #category="ngForm" [formGroup]="categoryForm" (ngSubmit)="categorySubmit(category)">
+            <mat-form-field>
+                <mat-label>المسجد</mat-label>
+                <mat-select [formControl]="categoryForm.controls.masjed">
+                    @for (m of masjeds() ?? []; track m.id) {
+                        <mat-option [value]="m.id">
+                            {{ m.name }}
+                        </mat-option>
+                    }
+                </mat-select>
+                <mat-error>{{ 'this field is required' | translate }}</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>الفئة</mat-label>
+                <mat-select [formControl]="categoryForm.controls.category">
+                    @for (category of categories() ?? []; track category.id) {
+                        <mat-option [value]="category.id">
+                            {{ category.name }}
+                        </mat-option>
+                    }
+                </mat-select>
+                <mat-error>{{ 'this field is required' | translate }}</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>السبب</mat-label>
+                <mat-select [formControl]="categoryForm.controls.cause">
+                    @for (cause of causes() ?? []; track cause.id) {
+                        <mat-option [value]="cause.id">
+                            {{ cause.name }}
+                        </mat-option>
+                    }
+                </mat-select>
+                <mat-error>{{ 'this field is required' | translate }}</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>القيمة</mat-label>
+                <input matInput type="number" [formControl]="categoryForm.controls.value" />
+                <mat-error>{{ 'this field is required' | translate }}</mat-error>
+            </mat-form-field>
+            <button [disabled]="loading()" color="primary" mat-flat-button>
+                إضافة
+            </button>
+        </form>
+    }
+</mat-card>

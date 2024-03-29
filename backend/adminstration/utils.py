@@ -195,7 +195,7 @@ def create_model_view_set(
                     regex = Student.search_student_regex(value)
                     query_set = query_set.filter(student__name__iregex="{}".format(regex))
 
-            return query_set
+            return query_set.order_by('-id')
 
         def perform_create(self, serializer):
             # here we overrided the normal way of creating model instances

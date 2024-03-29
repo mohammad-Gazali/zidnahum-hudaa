@@ -38,10 +38,10 @@ import {
 } from './table.component.interface';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { DateService } from '../../services/date.service';
-import { LoadingService } from '../../services/loading.service';
 import { HelperService } from '../../services/helper.service';
 import { MasjedService } from '../../services/masjed.service';
 import { ChangesFieldComponent } from '../changes-field/changes-field.component';
+import { LOADING } from '../../tokens/loading.token';
 
 // TODO: add actions to table
 
@@ -76,10 +76,10 @@ import { ChangesFieldComponent } from '../changes-field/changes-field.component'
 })
 export class TableComponent<T> implements OnInit {
   private fb = inject(FormBuilder);
-  private loading = inject(LoadingService).loading;
   private dialog = inject(MatDialog);
   private masjed = inject(MasjedService);
   private destroyRef = inject(DestroyRef);
+  private loading = inject(LOADING);
   public date = inject(DateService);
   public helper = inject(HelperService);
 

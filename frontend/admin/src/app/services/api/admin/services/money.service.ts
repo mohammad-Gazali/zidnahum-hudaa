@@ -11,8 +11,6 @@ import { MoneyDeletingCauseList } from '../models/money-deleting-cause-list';
 import { MoneyDeletingCauseCreate } from '../models/money-deleting-cause-create';
 import { MoneyDeletingCauseUpdate } from '../models/money-deleting-cause-update';
 import { MoneyDeletingList } from '../models/money-deleting-list';
-import { MoneyDeletingCreate } from '../models/money-deleting-create';
-import { MoneyDeletingUpdate } from '../models/money-deleting-update';
 @Injectable({
   providedIn: 'root',
 })
@@ -23,9 +21,7 @@ class MoneyService extends __BaseService {
   static readonly moneyDeletingCauseUpdatePath = '/money/deleting-cause/{id}/';
   static readonly moneyDeletingCauseDeletePath = '/money/deleting-cause/{id}/';
   static readonly moneyDeletingListPath = '/money/deleting/';
-  static readonly moneyDeletingCreatePath = '/money/deleting/';
   static readonly moneyDeletingReadPath = '/money/deleting/{id}/';
-  static readonly moneyDeletingUpdatePath = '/money/deleting/{id}/';
 
   constructor(
     config: __Configuration,
@@ -297,40 +293,6 @@ class MoneyService extends __BaseService {
   }
 
   /**
-   * @param data undefined
-   */
-  moneyDeletingCreateResponse(data: MoneyDeletingCreate): __Observable<__StrictHttpResponse<MoneyDeletingCreate>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    __body = data;
-    let req = new HttpRequest<any>(
-      'POST',
-      this.rootUrl + `/money/deleting/`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<MoneyDeletingCreate>;
-      })
-    );
-  }
-  /**
-   * @param data undefined
-   */
-  moneyDeletingCreate(data: MoneyDeletingCreate): __Observable<MoneyDeletingCreate> {
-    return this.moneyDeletingCreateResponse(data).pipe(
-      __map(_r => _r.body as MoneyDeletingCreate)
-    );
-  }
-
-  /**
    * @param id undefined
    */
   moneyDeletingReadResponse(id: string): __Observable<__StrictHttpResponse<MoneyDeletingList>> {
@@ -361,49 +323,6 @@ class MoneyService extends __BaseService {
   moneyDeletingRead(id: string): __Observable<MoneyDeletingList> {
     return this.moneyDeletingReadResponse(id).pipe(
       __map(_r => _r.body as MoneyDeletingList)
-    );
-  }
-
-  /**
-   * @param params The `MoneyService.MoneyDeletingUpdateParams` containing the following parameters:
-   *
-   * - `id`:
-   *
-   * - `data`:
-   */
-  moneyDeletingUpdateResponse(params: MoneyService.MoneyDeletingUpdateParams): __Observable<__StrictHttpResponse<MoneyDeletingUpdate>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    __body = params.data;
-    let req = new HttpRequest<any>(
-      'PUT',
-      this.rootUrl + `/money/deleting/${encodeURIComponent(String(params.id))}/`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<MoneyDeletingUpdate>;
-      })
-    );
-  }
-  /**
-   * @param params The `MoneyService.MoneyDeletingUpdateParams` containing the following parameters:
-   *
-   * - `id`:
-   *
-   * - `data`:
-   */
-  moneyDeletingUpdate(params: MoneyService.MoneyDeletingUpdateParams): __Observable<MoneyDeletingUpdate> {
-    return this.moneyDeletingUpdateResponse(params).pipe(
-      __map(_r => _r.body as MoneyDeletingUpdate)
     );
   }
 }
@@ -472,14 +391,6 @@ module MoneyService {
      * active_to_points
      */
     activeToPoints?: string;
-  }
-
-  /**
-   * Parameters for moneyDeletingUpdate
-   */
-  export interface MoneyDeletingUpdateParams {
-    id: string;
-    data: MoneyDeletingUpdate;
   }
 }
 

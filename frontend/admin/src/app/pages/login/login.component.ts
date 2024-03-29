@@ -5,12 +5,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { AccountsService } from '../../services/api/accounts/accounts.service';
-import { Router } from '@angular/router';
 import { TranslateService } from '../../services/translate.service';
 import { SnackbarService } from '../../services/snackbar.service';
-import { LoadingService } from '../../services/loading.service';
+import { LOADING } from '../../tokens/loading.token';
 
 @Component({
   selector: 'app-login',
@@ -33,7 +33,7 @@ export class LoginComponent {
   private translateService = inject(TranslateService);
   private destroyRef = inject(DestroyRef);
   private fb = inject(FormBuilder);
-  public loading = inject(LoadingService).loading;
+  public loading = inject(LOADING);
 
   public form = this.fb.group({
     username: this.fb.nonNullable.control(''),

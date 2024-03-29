@@ -11,8 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActionsService } from '../../../../../services/api/admin/services';
 import { TranslatePipe } from '../../../../../pipes/translate.pipe';
-import { LoadingService } from '../../../../../services/loading.service';
 import { SnackbarService } from '../../../../../services/snackbar.service';
+import { LOADING } from '../../../../../tokens/loading.token';
 
 @Component({
   selector: 'app-user-update-password',
@@ -35,7 +35,7 @@ export class UserUpdatePasswordComponent {
   private snackbar = inject(SnackbarService);
   private destroyRef = inject(DestroyRef);
   private fb = inject(FormBuilder);
-  public loading = inject(LoadingService).loading;
+  public loading = inject(LOADING);
 
   public form = this.fb.group({
     new_password: this.fb.nonNullable.control(''),

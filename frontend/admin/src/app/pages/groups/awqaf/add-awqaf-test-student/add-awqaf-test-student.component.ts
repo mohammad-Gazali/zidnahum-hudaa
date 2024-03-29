@@ -23,6 +23,8 @@ import {
 } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
+import { MatRipple } from '@angular/material/core';
+import { finalize } from 'rxjs';
 import { TranslatePipe } from '../../../../pipes/translate.pipe';
 import { StudentSearchComponent } from '../../../../shared/student-search/student-search.component';
 import { SearchStudent } from '../../../../shared/student-search/search-student.interface';
@@ -32,8 +34,8 @@ import {
 } from '../../../../services/api/admin/services';
 import { SnackbarService } from '../../../../services/snackbar.service';
 import { AwqafTestNoQList } from '../../../../services/api/admin/models';
-import { MatRipple } from '@angular/material/core';
 import { QuranAwqafTestService } from '../../../../services/quran/quran-awqaf-test.service';
+import { LOADING } from '../../../../tokens/loading.token';
 
 @Component({
   selector: 'app-add-awqaf-test-student',
@@ -67,6 +69,7 @@ export class AddAwqafTestStudentComponent {
   private extra = inject(ExtraService);
   private snackbar = inject(SnackbarService);
   public transform = inject(QuranAwqafTestService).transform;
+  public loading = inject(LOADING);
 
   public selectedStudents = signal<Set<SearchStudent>>(new Set());
   public mode = signal<'quran' | 'non-quran'>('quran');
@@ -108,17 +111,20 @@ export class AddAwqafTestStudentComponent {
   }
 
   submitNoQ(form: FormGroupDirective) {
-    if (!this.nonQuranForm.valid) return;
+    if (!this.nonQuranForm.valid || this.loading()) return;
     if (this.selectedStudents().size === 0) {
       this.snackbar.error('يجب اختيار الطلاب قبل الإضافة')
       return;
     }
+
+    this.loading.set(true);
 
     this.extra
       .extraAddAwqafNoQTestCreate({
         students: [...this.selectedStudents()].map((s) => s.id),
         test: this.nonQuranForm.value.value ?? -1,
       })
+      .pipe(finalize(() => this.loading.set(false)))
       .subscribe(() => {
         this.selectedStudents.set(new Set());
         this.snackbar.success('تمت الإضافة بنجاح');
@@ -127,11 +133,13 @@ export class AddAwqafTestStudentComponent {
   }
 
   submitQ(form: FormGroupDirective) {
-    if (!this.quranForm.valid) return;
+    if (!this.quranForm.valid || this.loading()) return;
     if (this.selectedStudents().size === 0) {
       this.snackbar.error('يجب اختيار الطلاب قبل الإضافة')
       return;
     }
+
+    this.loading.set(true);
 
     this.extra.extraAddAwqafQTestCreate({
       type: this.quranForm.value.type ?? 'normal',
@@ -141,6 +149,7 @@ export class AddAwqafTestStudentComponent {
           ?.map((value, index) => (value ? index : -1))
           .filter((item) => item !== -1) ?? [],
     })
+    .pipe(finalize(() => this.loading.set(false)))
     .subscribe(() => {
       this.selectedStudents.set(new Set());
       this.snackbar.success('تمت الإضافة بنجاح');
