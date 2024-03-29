@@ -3,6 +3,7 @@ import { TableComponent } from '../../../../shared/table/table.component';
 import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
 import { AssetFileList } from '../../../../services/api/admin/models';
 import { GlobalsBase } from '../globals.base';
+import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
   selector: 'app-assets-file',
@@ -18,6 +19,11 @@ export class AssetsFileComponent extends GlobalsBase {
     createUrl: '/globals/assets-file/create',
     getUrlFunc: id => `/globals/assets-file/view/${id}`,
     dataFunc: options => this.globals.globalsAssetFileList(options),
+    actions: [
+      deleteModelAction('الملفات', (ids) =>
+        this.actions.actionsAssetFileDeleteDelete({ ids })
+      ),
+    ],
     columns: {
       name: {
         display: 'normal',

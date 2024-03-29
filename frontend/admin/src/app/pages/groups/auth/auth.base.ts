@@ -1,6 +1,7 @@
 import { inject } from "@angular/core";
-import { AuthService } from "../../../services/api/admin/services";
+import { ActionsService, AuthService } from "../../../services/api/admin/services";
 
 export abstract class AuthBase {
     protected auth = inject(AuthService);
+    protected actions = inject(ActionsService);
 }

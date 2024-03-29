@@ -4,7 +4,8 @@ import { GlobalsBase } from '../../globals.base';
 import { CreateComponentConfig } from '../../../../../shared/create/create.component.interface';
 import { AssetFileCreate } from '../../../../../services/api/admin/models';
 import { Validators } from '@angular/forms';
-import { EMPTY } from 'rxjs';
+
+// TODO: add file field validator
 
 @Component({
   selector: 'app-assets-file-create',

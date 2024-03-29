@@ -7,11 +7,30 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
+import { DeleteModelAction } from '../models/delete-model-action';
 import { UserUpdatePassword } from '../models/user-update-password';
 @Injectable({
   providedIn: 'root',
 })
 class ActionsService extends __BaseService {
+  static readonly actionsAssetFileDeleteDeletePath = '/actions/asset-file/delete';
+  static readonly actionsAssetsCategoryDeleteDeletePath = '/actions/assets-category/delete';
+  static readonly actionsAwqafNoQStudentRelationDeleteDeletePath = '/actions/awqaf-no-q-student-relation/delete';
+  static readonly actionsAwqafTestNoQDeleteDeletePath = '/actions/awqaf-test-no-q/delete';
+  static readonly actionsComingCategoryDeleteDeletePath = '/actions/coming-category/delete';
+  static readonly actionsComingDeleteDeletePath = '/actions/coming/delete';
+  static readonly actionsGroupDeleteDeletePath = '/actions/group/delete';
+  static readonly actionsMemorizeMessageDeleteDeletePath = '/actions/memorize-message/delete';
+  static readonly actionsMemorizeNotesDeleteDeletePath = '/actions/memorize-notes/delete';
+  static readonly actionsMoneyDeletingCauseDeleteDeletePath = '/actions/money-deleting-cause/delete';
+  static readonly actionsPointsAddingCauseDeleteDeletePath = '/actions/points-adding-cause/delete';
+  static readonly actionsPointsAddingDeleteDeletePath = '/actions/points-adding/delete';
+  static readonly actionsPointsDeletingCauseDeleteDeletePath = '/actions/points-deleting-cause/delete';
+  static readonly actionsPointsDeletingDeleteDeletePath = '/actions/points-deleting/delete';
+  static readonly actionsStudentCategoryDeleteDeletePath = '/actions/student-category/delete';
+  static readonly actionsStudentGroupDeleteDeletePath = '/actions/student-group/delete';
+  static readonly actionsStudentDeleteDeletePath = '/actions/student/delete';
+  static readonly actionsUserDeleteDeletePath = '/actions/user/delete';
   static readonly actionsUserPasswordUpdatePath = '/actions/user/password';
 
   constructor(
@@ -19,6 +38,618 @@ class ActionsService extends __BaseService {
     http: HttpClient
   ) {
     super(config, http);
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsAssetFileDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/actions/asset-file/delete`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsAssetFileDeleteDelete(data: DeleteModelAction): __Observable<null> {
+    return this.actionsAssetFileDeleteDeleteResponse(data).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsAssetsCategoryDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/actions/assets-category/delete`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsAssetsCategoryDeleteDelete(data: DeleteModelAction): __Observable<null> {
+    return this.actionsAssetsCategoryDeleteDeleteResponse(data).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsAwqafNoQStudentRelationDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/actions/awqaf-no-q-student-relation/delete`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsAwqafNoQStudentRelationDeleteDelete(data: DeleteModelAction): __Observable<null> {
+    return this.actionsAwqafNoQStudentRelationDeleteDeleteResponse(data).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsAwqafTestNoQDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/actions/awqaf-test-no-q/delete`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsAwqafTestNoQDeleteDelete(data: DeleteModelAction): __Observable<null> {
+    return this.actionsAwqafTestNoQDeleteDeleteResponse(data).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsComingCategoryDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/actions/coming-category/delete`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsComingCategoryDeleteDelete(data: DeleteModelAction): __Observable<null> {
+    return this.actionsComingCategoryDeleteDeleteResponse(data).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsComingDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/actions/coming/delete`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsComingDeleteDelete(data: DeleteModelAction): __Observable<null> {
+    return this.actionsComingDeleteDeleteResponse(data).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsGroupDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/actions/group/delete`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsGroupDeleteDelete(data: DeleteModelAction): __Observable<null> {
+    return this.actionsGroupDeleteDeleteResponse(data).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsMemorizeMessageDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/actions/memorize-message/delete`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsMemorizeMessageDeleteDelete(data: DeleteModelAction): __Observable<null> {
+    return this.actionsMemorizeMessageDeleteDeleteResponse(data).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsMemorizeNotesDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/actions/memorize-notes/delete`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsMemorizeNotesDeleteDelete(data: DeleteModelAction): __Observable<null> {
+    return this.actionsMemorizeNotesDeleteDeleteResponse(data).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsMoneyDeletingCauseDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/actions/money-deleting-cause/delete`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsMoneyDeletingCauseDeleteDelete(data: DeleteModelAction): __Observable<null> {
+    return this.actionsMoneyDeletingCauseDeleteDeleteResponse(data).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsPointsAddingCauseDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/actions/points-adding-cause/delete`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsPointsAddingCauseDeleteDelete(data: DeleteModelAction): __Observable<null> {
+    return this.actionsPointsAddingCauseDeleteDeleteResponse(data).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsPointsAddingDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/actions/points-adding/delete`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsPointsAddingDeleteDelete(data: DeleteModelAction): __Observable<null> {
+    return this.actionsPointsAddingDeleteDeleteResponse(data).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsPointsDeletingCauseDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/actions/points-deleting-cause/delete`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsPointsDeletingCauseDeleteDelete(data: DeleteModelAction): __Observable<null> {
+    return this.actionsPointsDeletingCauseDeleteDeleteResponse(data).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsPointsDeletingDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/actions/points-deleting/delete`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsPointsDeletingDeleteDelete(data: DeleteModelAction): __Observable<null> {
+    return this.actionsPointsDeletingDeleteDeleteResponse(data).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsStudentCategoryDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/actions/student-category/delete`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsStudentCategoryDeleteDelete(data: DeleteModelAction): __Observable<null> {
+    return this.actionsStudentCategoryDeleteDeleteResponse(data).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsStudentGroupDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/actions/student-group/delete`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsStudentGroupDeleteDelete(data: DeleteModelAction): __Observable<null> {
+    return this.actionsStudentGroupDeleteDeleteResponse(data).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsStudentDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/actions/student/delete`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsStudentDeleteDelete(data: DeleteModelAction): __Observable<null> {
+    return this.actionsStudentDeleteDeleteResponse(data).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsUserDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/actions/user/delete`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsUserDeleteDelete(data: DeleteModelAction): __Observable<null> {
+    return this.actionsUserDeleteDeleteResponse(data).pipe(
+      __map(_r => _r.body as null)
+    );
   }
 
   /**

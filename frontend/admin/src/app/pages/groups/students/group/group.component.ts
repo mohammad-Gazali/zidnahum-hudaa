@@ -3,6 +3,7 @@ import { TableComponent } from '../../../../shared/table/table.component';
 import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
 import { StudentGroupList } from '../../../../services/api/admin/models';
 import { StudentsBase } from '../students.base';
+import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
   selector: 'app-student-group',
@@ -19,6 +20,11 @@ export class StudentGroupComponent extends StudentsBase {
       return this.students.studentsGroupList(options);
     },
     hasPagination: false,
+    actions: [
+      deleteModelAction('مجموعات الطلاب', (ids) =>
+        this.actions.actionsStudentGroupDeleteDelete({ ids })
+      ),
+    ],
     columns: {
       name: {
         display: 'normal',

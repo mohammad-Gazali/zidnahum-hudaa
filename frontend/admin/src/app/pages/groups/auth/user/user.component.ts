@@ -3,13 +3,14 @@ import { TableComponent } from '../../../../shared/table/table.component';
 import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
 import { UserList } from '../../../../services/api/admin/models';
 import { AuthBase } from '../auth.base';
+import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
   selector: 'app-user',
   standalone: true,
   imports: [TableComponent],
   templateUrl: './user.component.html',
-  styleUrl: './user.component.scss'
+  styleUrl: './user.component.scss',
 })
 export class UserComponent extends AuthBase {
   public config: TableComponentConfig<UserList> = {
@@ -17,9 +18,14 @@ export class UserComponent extends AuthBase {
     hasPagination: false,
     getUrlFunc: (id) => `/auth/user/view/${id}`,
     dataFunc: (options) => this.auth.authUserList(options),
+    actions: [
+      deleteModelAction('المستخدمين', (ids) =>
+        this.actions.actionsUserDeleteDelete({ ids })
+      ),
+    ],
     columns: {
       username: {
-        display: 'normal',        
+        display: 'normal',
       },
       first_name: {
         display: 'normal',
@@ -37,5 +43,5 @@ export class UserComponent extends AuthBase {
         display: 'boolean',
       },
     },
-  }
+  };
 }

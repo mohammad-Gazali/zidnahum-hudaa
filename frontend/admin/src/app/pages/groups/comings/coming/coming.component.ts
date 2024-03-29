@@ -5,6 +5,7 @@ import { ComingList } from '../../../../services/api/admin/models';
 import { ComingsBase } from '../comings.base';
 import { AuthService } from '../../../../services/api/admin/services';
 import { map } from 'rxjs';
+import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
   selector: 'app-coming',
@@ -22,6 +23,11 @@ export class ComingComponent extends ComingsBase {
     getUrlFunc: id => `/comings/coming/view/${id}`,
     dataFunc: options => this.comings.comingsComingList(options),
     searchField: 'student_name', // here we added it like this because it will be converted to camelCase which will be converted to the right query param
+    actions: [
+      deleteModelAction('تسجيلات الحضور', (ids) =>
+        this.actions.actionsComingDeleteDelete({ ids })
+      ),
+    ],
     columns: {
       student: {
         display: 'link',

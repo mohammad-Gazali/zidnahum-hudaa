@@ -4,6 +4,7 @@ import { TableComponentConfig } from '../../../../shared/table/table.component.i
 import { StudentList } from '../../../../services/api/admin/models';
 import { MasjedService } from '../../../../services/masjed.service';
 import { StudentsBase } from '../students.base';
+import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
   selector: 'app-student',
@@ -23,6 +24,11 @@ export class StudentComponent extends StudentsBase {
       return `/students/student/view/${id}`;
     },
     createUrl: '/students/student/create',
+    actions: [
+      deleteModelAction('الطلاب', (ids) =>
+        this.actions.actionsStudentDeleteDelete({ ids })
+      ),
+    ],
     columns: {
       name: {
         display: 'normal',

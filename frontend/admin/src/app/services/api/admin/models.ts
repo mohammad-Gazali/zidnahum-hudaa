@@ -1,3 +1,4 @@
+export { DeleteModelAction } from './models/delete-model-action';
 export { UserUpdatePassword } from './models/user-update-password';
 export { GroupList } from './models/group-list';
 export { GroupCreate } from './models/group-create';

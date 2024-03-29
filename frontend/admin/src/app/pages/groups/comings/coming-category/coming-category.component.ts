@@ -3,6 +3,7 @@ import { ComingsBase } from '../comings.base';
 import { TableComponent } from '../../../../shared/table/table.component';
 import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
 import { ComingCategoryList } from '../../../../services/api/admin/models';
+import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
   selector: 'app-coming-category',
@@ -17,6 +18,11 @@ export class ComingCategoryComponent extends ComingsBase {
     getUrlFunc: id => `/comings/coming-category/view/${id}`,
     dataFunc: (options) => this.comings.comingsCategoryList(options),
     hasPagination: false,
+    actions: [
+      deleteModelAction('أسباب الحضور', (ids) =>
+        this.actions.actionsComingCategoryDeleteDelete({ ids })
+      ),
+    ],
     columns: {
       name: {
         display: 'normal',

@@ -15,7 +15,10 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatButtonModule } from '@angular/material/button';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
+import {
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
+  MatFormFieldModule,
+} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
@@ -26,6 +29,7 @@ import {
   MatPaginatorIntl,
   MatPaginatorModule,
 } from '@angular/material/paginator';
+import { MatMenuModule } from '@angular/material/menu';
 import { TableComponentPaginator } from './table.component.paginator';
 import { TableFiltersDialogComponent } from './table-filters-dialog/table-filters-dialog.component';
 import { DialogData } from './table-filters-dialog/table-filters-dialog.component.interface';
@@ -35,6 +39,7 @@ import {
   FieldConfig,
   Filter,
   ExtraData,
+  TableAction,
 } from './table.component.interface';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { DateService } from '../../services/date.service';
@@ -42,8 +47,11 @@ import { HelperService } from '../../services/helper.service';
 import { MasjedService } from '../../services/masjed.service';
 import { ChangesFieldComponent } from '../changes-field/changes-field.component';
 import { LOADING } from '../../tokens/loading.token';
+import { TableConfirmationDialogComponent } from './table-confirmation-dialog/table-confirmation-dialog.component';
+import { TableConfirmationDialogData } from './table-confirmation-dialog/table-confirmation-dialog.interface';
+import { SnackbarService } from '../../services/snackbar.service';
+import { finalize } from 'rxjs';
 
-// TODO: add actions to table
 
 @Component({
   selector: 'app-table',
@@ -59,27 +67,32 @@ import { LOADING } from '../../tokens/loading.token';
     MatDividerModule,
     MatChipsModule,
     MatIconModule,
+    MatMenuModule,
     ReactiveFormsModule,
     RouterLink,
     TranslatePipe,
     ChangesFieldComponent,
   ],
-  providers: [{ provide: MatPaginatorIntl, useClass: TableComponentPaginator }, {
-    provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-    useValue: { 
-      appearance: 'outline',
-      subscriptSizing: 'dynamic',
+  providers: [
+    { provide: MatPaginatorIntl, useClass: TableComponentPaginator },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {
+        appearance: 'outline',
+        subscriptSizing: 'dynamic',
+      },
     },
-  }],
+  ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })
-export class TableComponent<T> implements OnInit {
+export class TableComponent<T extends { id: number }> implements OnInit {
   private fb = inject(FormBuilder);
   private dialog = inject(MatDialog);
   private masjed = inject(MasjedService);
   private destroyRef = inject(DestroyRef);
-  private loading = inject(LOADING);
+  private snackbar = inject(SnackbarService);
+  public loading = inject(LOADING);
   public date = inject(DateService);
   public helper = inject(HelperService);
 
@@ -139,12 +152,15 @@ export class TableComponent<T> implements OnInit {
     );
 
     if (this.config.useStudentMasjedFilter) {
-      this.masjed.getMasjeds().pipe(takeUntilDestroyed(this.destroyRef)).subscribe(res => {
-        this.extraData['student_masjed'] = {
-          data: res,
-          map: this.convertDataToMap(res),
-        }
-      });
+      this.masjed
+        .getMasjeds()
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe((res) => {
+          this.extraData['student_masjed'] = {
+            data: res,
+            map: this.convertDataToMap(res),
+          };
+        });
     }
 
     this.paginator().pageSize = 20;
@@ -263,17 +279,22 @@ export class TableComponent<T> implements OnInit {
         };
       });
 
-    const masjedActiveFilter = this.activeFilters().find(f => f.name === 'student_masjed');
+    const masjedActiveFilter = this.activeFilters().find(
+      (f) => f.name === 'student_masjed'
+    );
 
-    const masjedFilter: DialogData['filters'][number] = masjedActiveFilter !== undefined ? {
-      ...masjedActiveFilter,
-      type: 'exact',
-      defaultValue: masjedActiveFilter.value,
-    } : {
-      name: 'student_masjed',
-      type: 'exact',
-      defaultValue: undefined,
-    };
+    const masjedFilter: DialogData['filters'][number] =
+      masjedActiveFilter !== undefined
+        ? {
+            ...masjedActiveFilter,
+            type: 'exact',
+            defaultValue: masjedActiveFilter.value,
+          }
+        : {
+            name: 'student_masjed',
+            type: 'exact',
+            defaultValue: undefined,
+          };
 
     const ref = this.dialog.open<TableFiltersDialogComponent, DialogData>(
       TableFiltersDialogComponent,
@@ -282,10 +303,7 @@ export class TableComponent<T> implements OnInit {
         data: {
           extraData: this.extraData,
           filters: this.config.useStudentMasjedFilter
-            ? [
-                ...fieldsFilters,
-                masjedFilter,
-              ]
+            ? [...fieldsFilters, masjedFilter]
             : fieldsFilters,
         },
       }
@@ -410,5 +428,43 @@ export class TableComponent<T> implements OnInit {
     });
 
     return result;
+  }
+
+  handleAction(action: TableAction) {
+    const ids = this.selection.selected.map((item) => item.id);
+
+    if (action.confirmation) {
+      const ref = this.dialog.open<
+        TableConfirmationDialogComponent,
+        TableConfirmationDialogData
+      >(TableConfirmationDialogComponent, {
+        data: {
+          message: action.confirmation.message,
+        },
+      });
+
+      ref.afterClosed()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((res) => {
+        if (res) {
+          this.loading.set(true);
+          action.delegateFunc(ids)
+          .pipe(finalize(() => this.loading.set(false)))
+          .subscribe(() => {
+            this.snackbar.success('تم الإجراء بنجاح');
+            this.fetchData();
+          });
+        }
+      });
+
+    } else {
+      this.loading.set(true);
+      action.delegateFunc(ids)
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe(() => {
+        this.snackbar.success('تم الإجراء بنجاح');
+        this.fetchData();
+      });
+    }
   }
 }

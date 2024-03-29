@@ -5,6 +5,7 @@ import { TableComponentConfig } from '../../../../shared/table/table.component.i
 import { PointsAddingList } from '../../../../services/api/admin/models';
 import { AuthService } from '../../../../services/api/admin/services';
 import { map } from 'rxjs';
+import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
   selector: 'app-adding',
@@ -22,6 +23,11 @@ export class AddingComponent extends PointsBase {
     getUrlFunc: (id) => `/points/adding/view/${id}`,
     searchField: 'student_name', // here we added it like this because it will be converted to camelCase which will be converted to the right query param
     dataFunc: (options) => this.points.pointsAddingList(options),
+    actions: [
+      deleteModelAction('الإضافات', (ids) =>
+        this.actions.actionsPointsAddingDeleteDelete({ ids })
+      ),
+    ],
     columns: {
       cause: {
         display: 'relation',

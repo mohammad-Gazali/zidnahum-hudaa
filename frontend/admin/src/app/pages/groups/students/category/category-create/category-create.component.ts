@@ -3,6 +3,7 @@ import { CreateComponent } from '../../../../../shared/create/create.component';
 import { CreateComponentConfig } from '../../../../../shared/create/create.component.interface';
 import { StudentCategoryCreate } from '../../../../../services/api/admin/models';
 import { StudentsBase } from '../../students.base';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-category-create',
@@ -18,6 +19,7 @@ export class CategoryCreateComponent extends StudentsBase {
     fields: {
       name: {
         type: 'string',
+        validators: [Validators.required]
       }
     },
   }

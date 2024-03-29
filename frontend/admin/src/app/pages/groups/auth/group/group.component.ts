@@ -3,6 +3,7 @@ import { TableComponent } from '../../../../shared/table/table.component';
 import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
 import { GroupList } from '../../../../services/api/admin/models';
 import { AuthBase } from '../auth.base';
+import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
   selector: 'app-group',
@@ -17,6 +18,11 @@ export class GroupComponent extends AuthBase {
     getUrlFunc: (id) => `/auth/group/view/${id}`,
     hasPagination: false,
     createUrl: '/auth/group/create',
+    actions: [
+      deleteModelAction('المجموعات', (ids) =>
+        this.actions.actionsGroupDeleteDelete({ ids })
+      ),
+    ],
     columns: {
       name: {
         display: 'normal',

@@ -47,6 +47,7 @@ export type TableComponentConfig<T> = {
   getUrlFunc: (id: string) => string;
   useStudentMasjedFilter?: boolean;
   createUrl?: string;
+  actions?: TableAction[];
 } & (
   | {
       hasPagination: true;
@@ -87,4 +88,12 @@ export interface Filter {
   type: 'search' | 'select' | 'select_null' | 'date' | 'date_range' | 'boolean';
   name: string;
   value: string;
+}
+
+export interface TableAction {
+  name: string;
+  delegateFunc: (ids: number[]) => Observable<any>;
+  confirmation?: {
+    message: string;
+  };
 }

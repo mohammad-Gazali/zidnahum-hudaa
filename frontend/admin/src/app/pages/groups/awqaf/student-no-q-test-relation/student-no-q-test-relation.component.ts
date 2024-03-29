@@ -3,6 +3,7 @@ import { TableComponent } from '../../../../shared/table/table.component';
 import { AwqafBase } from '../awqaf.base';
 import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
 import { AwqafNoQStudentRelationList } from '../../../../services/api/admin/models';
+import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
   selector: 'app-student-no-q-test-relation',
@@ -18,6 +19,11 @@ export class StudentNoQTestRelationComponent extends AwqafBase {
     dataFunc: options => this.awqaf.awqafStudentNoQRelationList(options),
     getUrlFunc: id => `/awqaf/student-no-q-test-relation/view/${id}`,
     searchField: 'student_name',
+    actions: [
+      deleteModelAction('أسبار الطالب بالأوقاف بغير القرآن', (ids) =>
+        this.actions.actionsAwqafNoQStudentRelationDeleteDelete({ ids })
+      ),
+    ],
     columns: {
       student: {
         display: 'link',

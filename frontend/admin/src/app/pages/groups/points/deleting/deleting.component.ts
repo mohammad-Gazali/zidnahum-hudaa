@@ -5,6 +5,7 @@ import { TableComponent } from '../../../../shared/table/table.component';
 import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
 import { PointsDeletingList } from '../../../../services/api/admin/models';
 import { map } from 'rxjs';
+import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
   selector: 'app-deleting',
@@ -22,6 +23,11 @@ export class DeletingComponent extends PointsBase {
     getUrlFunc: (id) => `/points/deleting/view/${id}`,
     searchField: 'student_name', // here we added it like this because it will be converted to camelCase which will be converted to the right query param
     dataFunc: (options) => this.points.pointsDeletingList(options),
+    actions: [
+      deleteModelAction('الخصومات', (ids) =>
+        this.actions.actionsPointsDeletingDeleteDelete({ ids })
+      ),
+    ],
     columns: {
       cause: {
         display: 'relation',

@@ -6,6 +6,9 @@ import { MemorizeMessageList } from '../../../../services/api/admin/models';
 import { MemorizeMessageTypeService } from './memorize-message-type.service';
 import { map } from 'rxjs';
 import { AuthService } from '../../../../services/api/admin/services';
+import { deleteModelAction } from '../../../../common/delete-model-action';
+
+// TODO: add hide column of changes in memorize message
 
 @Component({
   selector: 'app-memorize-message',
@@ -24,6 +27,11 @@ export class MemorizeMessageComponent extends StudentsBase {
     dataFunc: options => this.students.studentsMemorizeMessageList(options),
     getUrlFunc: id => `/students/memorize-message/view/${id}`,
     searchField: 'student_name',
+    actions: [
+      deleteModelAction('رسائل التسميع', (ids) =>
+        this.actions.actionsMemorizeMessageDeleteDelete({ ids })
+      ),
+    ],
     columns: {
       student: {
         display: 'link',
