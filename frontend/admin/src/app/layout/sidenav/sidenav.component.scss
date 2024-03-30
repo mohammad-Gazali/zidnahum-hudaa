@@ -31,15 +31,11 @@ mat-divider {
     margin: 0.5rem 0;
 }
 
-[mat-subheader] {
+.subheader {
     font-size: 12px;
     font-weight: 700;
 }
 
 mat-list-item a {
     font-size: 14px;
-}
-
-::ng-deep .dark .mat-drawer-backdrop.mat-drawer-shown {
-    background-color: #000000aa;
 }

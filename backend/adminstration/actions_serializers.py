@@ -5,5 +5,9 @@ class UserUpdatePasswordSerializer(serializers.Serializer):
     new_password = serializers.CharField(max_length=128, min_length=1)
 
 
-class DeleteModelActionSerializer(serializers.Serializer):
+class IdsActionSerializer(serializers.Serializer):
     ids = serializers.ListField(child=serializers.IntegerField(), allow_empty=False)
+
+
+class ActionBooleanUpdateSerializer(IdsActionSerializer):
+    value = serializers.BooleanField()

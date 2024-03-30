@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
 from drf_yasg.utils import swagger_auto_schema
-from adminstration.actions_serializers import DeleteModelActionSerializer
+from adminstration.actions_serializers import IdsActionSerializer
 from typing import Type
 
 
@@ -14,10 +14,10 @@ def create_delete_model_action_view(model: Type[Model]) -> Type[APIView]:
         permission_classes = [IsAdminUser]
         http_method_names = ["delete"]
 
-        @swagger_auto_schema(request_body=DeleteModelActionSerializer)
+        @swagger_auto_schema(request_body=IdsActionSerializer)
         @transaction.atomic
         def delete(self, *args, **kwargs):
-            serializer = DeleteModelActionSerializer(data=self.request.data)
+            serializer = IdsActionSerializer(data=self.request.data)
             
             if serializer.is_valid():
                 ids = serializer.validated_data['ids']

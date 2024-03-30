@@ -30,6 +30,7 @@ import {
   MatPaginatorModule,
 } from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
+import { finalize } from 'rxjs';
 import { TableComponentPaginator } from './table.component.paginator';
 import { TableFiltersDialogComponent } from './table-filters-dialog/table-filters-dialog.component';
 import { DialogData } from './table-filters-dialog/table-filters-dialog.component.interface';
@@ -50,8 +51,6 @@ import { LOADING } from '../../tokens/loading.token';
 import { TableConfirmationDialogComponent } from './table-confirmation-dialog/table-confirmation-dialog.component';
 import { TableConfirmationDialogData } from './table-confirmation-dialog/table-confirmation-dialog.interface';
 import { SnackbarService } from '../../services/snackbar.service';
-import { finalize } from 'rxjs';
-
 
 @Component({
   selector: 'app-table',
@@ -98,8 +97,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
 
   public dataSource = new MatTableDataSource<T>([]);
   public selection = new SelectionModel<T>(true, []);
-  public displayedColumns: ('check' | 'id' | GetStringKeys<Omit<T, 'id'>>)[] =
-    [];
+  public displayedColumns = signal<('check' | 'id' | GetStringKeys<Omit<T, 'id'>>)[]>([]);
   public extraData: ExtraData = {};
   public searchForm = this.fb.nonNullable.group({
     searchValue: '',
@@ -107,6 +105,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
   public activeFilters = signal<Filter[]>([]);
   public totalCount = signal(0);
   public isFileters = signal(false);
+  public containsChagensField = signal(false);
   private pageSizeOptions = [20, 40, 100, 200];
 
   public _config = input.required<TableComponentConfig<T>>({
@@ -123,7 +122,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
     const keys = Object.keys(this.config.columns) as GetStringKeys<
       Omit<T, 'id'>
     >[];
-    this.displayedColumns = ['check', 'id', ...keys];
+    this.displayedColumns.set(['check', 'id', ...keys])
 
     Object.entries<FieldConfig>(this.config.columns).forEach(
       ([name, config]) => {
@@ -144,9 +143,11 @@ export class TableComponent<T extends { id: number }> implements OnInit {
         }
 
         if (config.display === 'ignore') {
-          this.displayedColumns = this.displayedColumns.filter(
-            (c) => c !== name
-          );
+          this.displayedColumns.update(pre => pre.filter(c => c !== name))
+        }
+
+        if (config.display === 'changes') {
+          this.containsChagensField.set(true);
         }
       }
     );
@@ -466,5 +467,10 @@ export class TableComponent<T extends { id: number }> implements OnInit {
         this.fetchData();
       });
     }
+  }
+
+  hideChangesColumn() {
+    this.containsChagensField.set(false);
+    this.displayedColumns.update(pre => pre.filter(c => c !== 'changes'))
   }
 }

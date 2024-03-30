@@ -1,16 +1,15 @@
 import {
   Component,
-  OnDestroy,
   computed,
   inject,
   output,
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatToolbar } from '@angular/material/toolbar';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatProgressBar } from '@angular/material/progress-bar';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '../../pipes/translate.pipe';
@@ -22,10 +21,11 @@ import { LOADING } from '../../tokens/loading.token';
   selector: 'app-navbar',
   standalone: true,
   imports: [
-    MatToolbarModule,
-    MatButtonModule,
-    MatIconModule,
-    MatProgressBarModule,
+    MatToolbar,
+    MatButton,
+    MatIconButton,
+    MatIcon,
+    MatProgressBar,
     TranslatePipe,
     RouterLink,
   ],

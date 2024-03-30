@@ -142,6 +142,8 @@ export class CreateComponent<T> implements OnInit {
           this.loading.set(false);
           this.goToTable();
         });
+    } else if (this.fields().some(f => f.config.type === 'file')) {
+      this.snackbar.error('يوجد خطأ في الاستمارة, ربما تكون قد نسيت رفع الملف');
     }
   }
 

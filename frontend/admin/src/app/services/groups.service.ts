@@ -76,6 +76,13 @@ export class GroupsService {
         { name: 'ملاحظات التسميع', link: '/students/memorize-notes', icon: 'notes' },
       ],
     },
+    {
+      name: 'الإدارة',
+      icon: 'settings',
+      items: [
+        { name: 'إعدادات الموقع', link: '/admin/settings', icon: 'settings' }
+      ],
+    }
   ];
 }
 

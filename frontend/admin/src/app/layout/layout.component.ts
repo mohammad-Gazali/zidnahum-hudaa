@@ -7,7 +7,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -20,7 +20,9 @@ import { NavbarComponent } from './navbar/navbar.component';
   imports: [
     NavbarComponent,
     SidenavComponent,
-    MatSidenavModule,
+    MatSidenavContainer,
+    MatSidenavContent,
+    MatSidenav,
   ],
 })
 export class LayoutComponent implements AfterViewInit {

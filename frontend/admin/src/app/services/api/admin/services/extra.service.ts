@@ -11,6 +11,7 @@ import { AddAwqafTestNoQRequestSerailizer } from '../models/add-awqaf-test-no-qr
 import { AddAwqafTestQRequest } from '../models/add-awqaf-test-qrequest';
 import { AddMoneyDeletingCategoryRequestSerailizer } from '../models/add-money-deleting-category-request-serailizer';
 import { AddMoneyDeletingNormalRequestSerailizer } from '../models/add-money-deleting-normal-request-serailizer';
+import { ControlSettings } from '../models/control-settings';
 @Injectable({
   providedIn: 'root',
 })
@@ -19,6 +20,8 @@ class ExtraService extends __BaseService {
   static readonly extraAddAwqafQTestCreatePath = '/extra/add-awqaf-q-test';
   static readonly extraAddMoneyDeletingCategoryCreatePath = '/extra/add-money-deleting-category';
   static readonly extraAddMoneyDeletingNormalCreatePath = '/extra/add-money-deleting-normal';
+  static readonly extraControlSettingsListPath = '/extra/control-settings';
+  static readonly extraControlSettingsUpdatePath = '/extra/control-settings';
 
   constructor(
     config: __Configuration,
@@ -160,6 +163,65 @@ class ExtraService extends __BaseService {
   extraAddMoneyDeletingNormalCreate(data: AddMoneyDeletingNormalRequestSerailizer): __Observable<AddMoneyDeletingNormalRequestSerailizer> {
     return this.extraAddMoneyDeletingNormalCreateResponse(data).pipe(
       __map(_r => _r.body as AddMoneyDeletingNormalRequestSerailizer)
+    );
+  }
+  extraControlSettingsListResponse(): __Observable<__StrictHttpResponse<ControlSettings>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/extra/control-settings`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ControlSettings>;
+      })
+    );
+  }  extraControlSettingsList(): __Observable<ControlSettings> {
+    return this.extraControlSettingsListResponse().pipe(
+      __map(_r => _r.body as ControlSettings)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  extraControlSettingsUpdateResponse(data: ControlSettings): __Observable<__StrictHttpResponse<ControlSettings>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'PUT',
+      this.rootUrl + `/extra/control-settings`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ControlSettings>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  extraControlSettingsUpdate(data: ControlSettings): __Observable<ControlSettings> {
+    return this.extraControlSettingsUpdateResponse(data).pipe(
+      __map(_r => _r.body as ControlSettings)
     );
   }
 }

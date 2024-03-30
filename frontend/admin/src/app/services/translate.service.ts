@@ -114,6 +114,8 @@ export class TranslateService {
         this.translateMap.set('groups', 'المجموعات');
         this.translateMap.set('new password', 'كلمة المرور الجديدة');
         this.translateMap.set('reset password', 'تغيير كلمة المرور');
+        this.translateMap.set('activate-users', 'تفعيل المستخدمين العاديين');
+        this.translateMap.set('decativate-users', 'تعطيل المستخدمين العاديين');
 
         // points adding cause model
         this.translateMap.set('adding-cause', 'سبب الإضافة');
@@ -167,6 +169,8 @@ export class TranslateService {
 
         // money deleting cause model
         this.translateMap.set('money-deleting-cause', 'سبب الغرامة المالية');
+        this.translateMap.set('active-to-points-true', 'خصم من النقاط');
+        this.translateMap.set('active-to-points-false', 'عدم الخصم من النقاط');
 
         // money deleting
         this.translateMap.set('money-deleting', 'الغرامة المالية');

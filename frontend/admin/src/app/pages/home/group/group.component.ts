@@ -1,14 +1,27 @@
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDividerModule } from '@angular/material/divider';
+import {
+  MatCard,
+  MatCardContent,
+  MatCardHeader,  
+  MatCardTitle,
+} from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatDivider } from '@angular/material/divider';
 import { Group } from '../../../services/groups.service';
 
 @Component({
   selector: 'app-home-group',
   standalone: true,
-  imports: [MatCardModule, MatIconModule, MatDividerModule, RouterLink],
+  imports: [
+    MatCard,
+    MatCardHeader,
+    MatCardTitle,
+    MatCardContent,
+    MatIcon,
+    MatDivider,
+    RouterLink,
+  ],
   templateUrl: './group.component.html',
   styleUrl: './group.component.scss',
 })

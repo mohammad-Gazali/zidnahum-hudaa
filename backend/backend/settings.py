@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "money.apps.MoneyConfig",
     "points.apps.PointsConfig",
     "students.apps.StudentsConfig",
+    "reports.apps.ReportsConfig",
 
     # installed apps
     "rest_framework",

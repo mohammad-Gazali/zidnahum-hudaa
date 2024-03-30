@@ -8,6 +8,7 @@ import { routes as comingsRoutes } from './pages/groups/comings/comings.routes';
 import { routes as awqafRoutes } from './pages/groups/awqaf/awqaf.routes';
 import { routes as globalsRoutes } from './pages/groups/globals/globals.routes';
 import { routes as moneyRoutes } from './pages/groups/money/money.routes';
+import { routes as adminRoutes } from './pages/groups/admin/admin.routes';
 
 export const routes: Routes = [
     {
@@ -46,4 +47,8 @@ export const routes: Routes = [
         path: 'money',
         children: moneyRoutes,
     },
+    {
+        path: 'admin',
+        children: adminRoutes,
+    }
 ];

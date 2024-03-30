@@ -7,7 +7,8 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
-import { DeleteModelAction } from '../models/delete-model-action';
+import { IdsAction } from '../models/ids-action';
+import { ActionBooleanUpdate } from '../models/action-boolean-update';
 import { UserUpdatePassword } from '../models/user-update-password';
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,7 @@ class ActionsService extends __BaseService {
   static readonly actionsMemorizeMessageDeleteDeletePath = '/actions/memorize-message/delete';
   static readonly actionsMemorizeNotesDeleteDeletePath = '/actions/memorize-notes/delete';
   static readonly actionsMoneyDeletingCauseDeleteDeletePath = '/actions/money-deleting-cause/delete';
+  static readonly actionsMoneyDeletingActiveUpdatePath = '/actions/money-deleting/active';
   static readonly actionsPointsAddingCauseDeleteDeletePath = '/actions/points-adding-cause/delete';
   static readonly actionsPointsAddingDeleteDeletePath = '/actions/points-adding/delete';
   static readonly actionsPointsDeletingCauseDeleteDeletePath = '/actions/points-deleting-cause/delete';
@@ -30,6 +32,7 @@ class ActionsService extends __BaseService {
   static readonly actionsStudentCategoryDeleteDeletePath = '/actions/student-category/delete';
   static readonly actionsStudentGroupDeleteDeletePath = '/actions/student-group/delete';
   static readonly actionsStudentDeleteDeletePath = '/actions/student/delete';
+  static readonly actionsUserActiveUpdatePath = '/actions/user/active';
   static readonly actionsUserDeleteDeletePath = '/actions/user/delete';
   static readonly actionsUserPasswordUpdatePath = '/actions/user/password';
 
@@ -43,7 +46,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsAssetFileDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+  actionsAssetFileDeleteDeleteResponse(data: IdsAction): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -68,7 +71,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsAssetFileDeleteDelete(data: DeleteModelAction): __Observable<null> {
+  actionsAssetFileDeleteDelete(data: IdsAction): __Observable<null> {
     return this.actionsAssetFileDeleteDeleteResponse(data).pipe(
       __map(_r => _r.body as null)
     );
@@ -77,7 +80,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsAssetsCategoryDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+  actionsAssetsCategoryDeleteDeleteResponse(data: IdsAction): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -102,7 +105,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsAssetsCategoryDeleteDelete(data: DeleteModelAction): __Observable<null> {
+  actionsAssetsCategoryDeleteDelete(data: IdsAction): __Observable<null> {
     return this.actionsAssetsCategoryDeleteDeleteResponse(data).pipe(
       __map(_r => _r.body as null)
     );
@@ -111,7 +114,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsAwqafNoQStudentRelationDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+  actionsAwqafNoQStudentRelationDeleteDeleteResponse(data: IdsAction): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -136,7 +139,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsAwqafNoQStudentRelationDeleteDelete(data: DeleteModelAction): __Observable<null> {
+  actionsAwqafNoQStudentRelationDeleteDelete(data: IdsAction): __Observable<null> {
     return this.actionsAwqafNoQStudentRelationDeleteDeleteResponse(data).pipe(
       __map(_r => _r.body as null)
     );
@@ -145,7 +148,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsAwqafTestNoQDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+  actionsAwqafTestNoQDeleteDeleteResponse(data: IdsAction): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -170,7 +173,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsAwqafTestNoQDeleteDelete(data: DeleteModelAction): __Observable<null> {
+  actionsAwqafTestNoQDeleteDelete(data: IdsAction): __Observable<null> {
     return this.actionsAwqafTestNoQDeleteDeleteResponse(data).pipe(
       __map(_r => _r.body as null)
     );
@@ -179,7 +182,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsComingCategoryDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+  actionsComingCategoryDeleteDeleteResponse(data: IdsAction): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -204,7 +207,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsComingCategoryDeleteDelete(data: DeleteModelAction): __Observable<null> {
+  actionsComingCategoryDeleteDelete(data: IdsAction): __Observable<null> {
     return this.actionsComingCategoryDeleteDeleteResponse(data).pipe(
       __map(_r => _r.body as null)
     );
@@ -213,7 +216,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsComingDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+  actionsComingDeleteDeleteResponse(data: IdsAction): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -238,7 +241,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsComingDeleteDelete(data: DeleteModelAction): __Observable<null> {
+  actionsComingDeleteDelete(data: IdsAction): __Observable<null> {
     return this.actionsComingDeleteDeleteResponse(data).pipe(
       __map(_r => _r.body as null)
     );
@@ -247,7 +250,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsGroupDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+  actionsGroupDeleteDeleteResponse(data: IdsAction): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -272,7 +275,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsGroupDeleteDelete(data: DeleteModelAction): __Observable<null> {
+  actionsGroupDeleteDelete(data: IdsAction): __Observable<null> {
     return this.actionsGroupDeleteDeleteResponse(data).pipe(
       __map(_r => _r.body as null)
     );
@@ -281,7 +284,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsMemorizeMessageDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+  actionsMemorizeMessageDeleteDeleteResponse(data: IdsAction): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -306,7 +309,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsMemorizeMessageDeleteDelete(data: DeleteModelAction): __Observable<null> {
+  actionsMemorizeMessageDeleteDelete(data: IdsAction): __Observable<null> {
     return this.actionsMemorizeMessageDeleteDeleteResponse(data).pipe(
       __map(_r => _r.body as null)
     );
@@ -315,7 +318,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsMemorizeNotesDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+  actionsMemorizeNotesDeleteDeleteResponse(data: IdsAction): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -340,7 +343,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsMemorizeNotesDeleteDelete(data: DeleteModelAction): __Observable<null> {
+  actionsMemorizeNotesDeleteDelete(data: IdsAction): __Observable<null> {
     return this.actionsMemorizeNotesDeleteDeleteResponse(data).pipe(
       __map(_r => _r.body as null)
     );
@@ -349,7 +352,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsMoneyDeletingCauseDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+  actionsMoneyDeletingCauseDeleteDeleteResponse(data: IdsAction): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -374,7 +377,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsMoneyDeletingCauseDeleteDelete(data: DeleteModelAction): __Observable<null> {
+  actionsMoneyDeletingCauseDeleteDelete(data: IdsAction): __Observable<null> {
     return this.actionsMoneyDeletingCauseDeleteDeleteResponse(data).pipe(
       __map(_r => _r.body as null)
     );
@@ -383,7 +386,41 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsPointsAddingCauseDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+  actionsMoneyDeletingActiveUpdateResponse(data: ActionBooleanUpdate): __Observable<__StrictHttpResponse<ActionBooleanUpdate>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'PUT',
+      this.rootUrl + `/actions/money-deleting/active`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ActionBooleanUpdate>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsMoneyDeletingActiveUpdate(data: ActionBooleanUpdate): __Observable<ActionBooleanUpdate> {
+    return this.actionsMoneyDeletingActiveUpdateResponse(data).pipe(
+      __map(_r => _r.body as ActionBooleanUpdate)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsPointsAddingCauseDeleteDeleteResponse(data: IdsAction): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -408,7 +445,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsPointsAddingCauseDeleteDelete(data: DeleteModelAction): __Observable<null> {
+  actionsPointsAddingCauseDeleteDelete(data: IdsAction): __Observable<null> {
     return this.actionsPointsAddingCauseDeleteDeleteResponse(data).pipe(
       __map(_r => _r.body as null)
     );
@@ -417,7 +454,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsPointsAddingDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+  actionsPointsAddingDeleteDeleteResponse(data: IdsAction): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -442,7 +479,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsPointsAddingDeleteDelete(data: DeleteModelAction): __Observable<null> {
+  actionsPointsAddingDeleteDelete(data: IdsAction): __Observable<null> {
     return this.actionsPointsAddingDeleteDeleteResponse(data).pipe(
       __map(_r => _r.body as null)
     );
@@ -451,7 +488,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsPointsDeletingCauseDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+  actionsPointsDeletingCauseDeleteDeleteResponse(data: IdsAction): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -476,7 +513,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsPointsDeletingCauseDeleteDelete(data: DeleteModelAction): __Observable<null> {
+  actionsPointsDeletingCauseDeleteDelete(data: IdsAction): __Observable<null> {
     return this.actionsPointsDeletingCauseDeleteDeleteResponse(data).pipe(
       __map(_r => _r.body as null)
     );
@@ -485,7 +522,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsPointsDeletingDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+  actionsPointsDeletingDeleteDeleteResponse(data: IdsAction): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -510,7 +547,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsPointsDeletingDeleteDelete(data: DeleteModelAction): __Observable<null> {
+  actionsPointsDeletingDeleteDelete(data: IdsAction): __Observable<null> {
     return this.actionsPointsDeletingDeleteDeleteResponse(data).pipe(
       __map(_r => _r.body as null)
     );
@@ -519,7 +556,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsStudentCategoryDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+  actionsStudentCategoryDeleteDeleteResponse(data: IdsAction): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -544,7 +581,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsStudentCategoryDeleteDelete(data: DeleteModelAction): __Observable<null> {
+  actionsStudentCategoryDeleteDelete(data: IdsAction): __Observable<null> {
     return this.actionsStudentCategoryDeleteDeleteResponse(data).pipe(
       __map(_r => _r.body as null)
     );
@@ -553,7 +590,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsStudentGroupDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+  actionsStudentGroupDeleteDeleteResponse(data: IdsAction): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -578,7 +615,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsStudentGroupDeleteDelete(data: DeleteModelAction): __Observable<null> {
+  actionsStudentGroupDeleteDelete(data: IdsAction): __Observable<null> {
     return this.actionsStudentGroupDeleteDeleteResponse(data).pipe(
       __map(_r => _r.body as null)
     );
@@ -587,7 +624,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsStudentDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+  actionsStudentDeleteDeleteResponse(data: IdsAction): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -612,7 +649,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsStudentDeleteDelete(data: DeleteModelAction): __Observable<null> {
+  actionsStudentDeleteDelete(data: IdsAction): __Observable<null> {
     return this.actionsStudentDeleteDeleteResponse(data).pipe(
       __map(_r => _r.body as null)
     );
@@ -621,7 +658,41 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsUserDeleteDeleteResponse(data: DeleteModelAction): __Observable<__StrictHttpResponse<null>> {
+  actionsUserActiveUpdateResponse(data: ActionBooleanUpdate): __Observable<__StrictHttpResponse<ActionBooleanUpdate>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'PUT',
+      this.rootUrl + `/actions/user/active`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ActionBooleanUpdate>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsUserActiveUpdate(data: ActionBooleanUpdate): __Observable<ActionBooleanUpdate> {
+    return this.actionsUserActiveUpdateResponse(data).pipe(
+      __map(_r => _r.body as ActionBooleanUpdate)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  actionsUserDeleteDeleteResponse(data: IdsAction): __Observable<__StrictHttpResponse<null>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -646,7 +717,7 @@ class ActionsService extends __BaseService {
   /**
    * @param data undefined
    */
-  actionsUserDeleteDelete(data: DeleteModelAction): __Observable<null> {
+  actionsUserDeleteDelete(data: IdsAction): __Observable<null> {
     return this.actionsUserDeleteDeleteResponse(data).pipe(
       __map(_r => _r.body as null)
     );

@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { LayoutComponent } from './layout/layout.component';
 import { AccountsService } from './services/api/accounts/accounts.service';
 import { SnackbarService } from './services/snackbar.service';
@@ -11,7 +11,7 @@ import { SnackbarService } from './services/snackbar.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LayoutComponent, MatProgressSpinnerModule],
+  imports: [RouterOutlet, LayoutComponent, MatProgressSpinner],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

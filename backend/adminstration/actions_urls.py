@@ -2,7 +2,9 @@ from django.urls import path
 from adminstration import actions
 
 urlpatterns = [
-    path("user/password", actions.UserPasswordUpdateView.as_view(), name="adminstration_action_update_user_password_view"),
+    path("user/password", actions.AdminUserPasswordUpdateView.as_view(), name="adminstration_action_update_user_password_view"),
+    path("user/active", actions.AdminUserUpdateActiveView.as_view(), name="adminstration_action_update_user_active_view"),
+    path("money-deleting/active", actions.AdminMoneyDeletingUpdateActiveView.as_view(), name="adminstration_action_update_money_deleting_active_view"),
 
     # delete actions
     path("user/delete", actions.AdminUserDeleteAction.as_view(), name="adminstration_action_delete_user"),

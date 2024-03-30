@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
+import { Validators } from '@angular/forms';
 import { CreateComponent } from '../../../../../shared/create/create.component';
 import { GlobalsBase } from '../../globals.base';
 import { CreateComponentConfig } from '../../../../../shared/create/create.component.interface';
 import { AssetFileCreate } from '../../../../../services/api/admin/models';
-import { Validators } from '@angular/forms';
-
-// TODO: add file field validator
 
 @Component({
   selector: 'app-assets-file-create',
@@ -31,6 +29,7 @@ export class AssetsFileCreateComponent extends GlobalsBase {
       },
       file: {
         type: 'file',
+        validators: [Validators.required],
       },
     },
   }

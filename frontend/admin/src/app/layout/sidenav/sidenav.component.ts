@@ -1,20 +1,26 @@
 import { Component, inject } from '@angular/core';
-import {
-  MatListItemIcon,
-  MatListModule,
-} from '@angular/material/list';
-import { GroupsService } from '../../services/groups.service';
 import { Router, RouterLink } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
+import {
+  MatListItem,
+  MatListItemIcon,
+  MatListItemTitle,
+  MatNavList,
+} from '@angular/material/list';
+import { MatIcon } from '@angular/material/icon';
+import { GroupsService } from '../../services/groups.service';
 import { ThemeService } from '../../services/theme.service';
+import { MatDivider } from '@angular/material/divider';
 
 @Component({
   selector: 'app-sidenav',
   standalone: true,
   imports: [
-    MatListModule,
+    MatNavList,
+    MatListItem,
+    MatListItemTitle,
     MatListItemIcon,
-    MatIconModule,
+    MatIcon,
+    MatDivider,
     RouterLink,
   ],
   templateUrl: './sidenav.component.html',

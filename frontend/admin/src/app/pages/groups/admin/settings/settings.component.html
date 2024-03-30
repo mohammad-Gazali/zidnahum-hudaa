@@ -1,0 +1,40 @@
+<mat-card>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field>
+            <mat-label>عنوان الحدث</mat-label>
+            <input matInput [formControl]="form.controls.event_title">
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>قيمة النقطة</mat-label>
+            <input matInput [formControl]="form.controls.point_value" type="number">
+            <mat-error>
+                {{ 'this field is required' | translate }}
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>المعرفات المخفية</mat-label>
+            <mat-chip-grid #chipGrid>
+              @for (id of form.value.hidden_ids ?? []; track id) {
+                <mat-chip-row (removed)="form.controls.hidden_ids.removeAt($index)">
+                  {{ id }}
+                  <button matChipRemove>
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-chip-row>
+              }
+                <input placeholder="معرف جديد...."
+                    [matChipInputFor]="chipGrid"
+                    [matChipInputAddOnBlur]="true"
+                    (matChipInputTokenEnd)="addId($event)"                    
+                    type="number"
+                />
+            </mat-chip-grid>
+        </mat-form-field>
+        <mat-checkbox [formControl]="form.controls.double_points">
+            مضاعفة النقاط
+        </mat-checkbox>
+        <button class="submit-btn" mat-flat-button color="primary">
+            تعديل
+        </button>
+    </form>
+</mat-card>

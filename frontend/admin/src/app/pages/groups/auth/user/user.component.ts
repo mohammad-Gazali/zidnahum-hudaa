@@ -22,6 +22,14 @@ export class UserComponent extends AuthBase {
       deleteModelAction('المستخدمين', (ids) =>
         this.actions.actionsUserDeleteDelete({ ids })
       ),
+      {
+        name: 'activate-users',
+        delegateFunc: ids => this.actions.actionsUserActiveUpdate({ ids, value: true }),
+      },
+      {
+        name: 'decativate-users',
+        delegateFunc: ids => this.actions.actionsUserActiveUpdate({ ids, value: false }),
+      },
     ],
     columns: {
       username: {

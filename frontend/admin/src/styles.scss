@@ -53,6 +53,7 @@ $admin-dark-theme: mat.define-dark-theme(
 .dark {
   color-scheme: dark;
   @include mat.all-component-colors($admin-dark-theme);
+  --mat-sidenav-scrim-color: #000000aa;
 }
 
 :root {

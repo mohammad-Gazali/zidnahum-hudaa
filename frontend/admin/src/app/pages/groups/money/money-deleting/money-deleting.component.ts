@@ -18,6 +18,22 @@ export class MoneyDeletingComponent extends MoneyBase {
     searchField: 'student_name',
     dataFunc: options => this.money.moneyDeletingList(options),
     getUrlFunc: id => `/money/money-deleting/view/${id}`,
+    actions: [
+      {
+        name: 'active-to-points-true',
+        delegateFunc: ids => this.actions.actionsMoneyDeletingActiveUpdate({ ids, value: true }),
+        confirmation: {
+          message: 'هل أنت متأكد من جعل الغرامات مخصومة من النقاط ؟',
+        },
+      },
+      {
+        name: 'active-to-points-false',
+        delegateFunc: ids => this.actions.actionsMoneyDeletingActiveUpdate({ ids, value: false }),
+        confirmation: {
+          message: 'هل أنت متأكد من جعل الغرامات غير مخصومة من النقاط ؟',
+        },
+      },
+    ],
     columns: {
       student: {
         display: 'link',

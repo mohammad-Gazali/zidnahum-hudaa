@@ -1,7 +1,13 @@
 from django.shortcuts import get_object_or_404
+from django.db import transaction
+from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAdminUser
-from adminstration.extra_serializers import AddAwqafTestNoQRequestSerailizer, AddAwqafTestQRequestSerializer, AddMoneyDeletingNormalRequestSerailizer, AddMoneyDeletingCategoryRequestSerailizer
+from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
+from drf_yasg.utils import swagger_auto_schema
+from adminstration.extra_serializers import AddAwqafTestNoQRequestSerailizer, AddAwqafTestQRequestSerializer, AddMoneyDeletingNormalRequestSerailizer, AddMoneyDeletingCategoryRequestSerailizer, ControlSettingsSerializer
+from adminstration.models import ControlSettings
 from awqaf.models import AwqafNoQStudentRelation
 from students.models import Student
 from students.constants import NEW, OLD
@@ -47,7 +53,6 @@ class AddAwqafQTestCreateView(CreateAPIView):
             
             student.save()
 
-    
 
 class AddMoneyDeletingNormalCreateView(CreateAPIView):
     permission_classes = [IsAdminUser]
@@ -77,3 +82,34 @@ class AddMoneyDeletingCategoryCreateView(CreateAPIView):
                 cause_id=serializer.validated_data['cause'],
                 value=serializer.validated_data['value'],
             )
+
+
+class ControlSettingsReadUpdateView(APIView):
+    permission_classes = [IsAdminUser]
+    http_method_names = ["get", "put"]
+
+    @swagger_auto_schema(responses={
+        HTTP_200_OK: ControlSettingsSerializer
+    })
+    def get(self, *args, **kwargs):
+        serializer = ControlSettingsSerializer(ControlSettings.objects.first())
+        return Response(data=serializer.data, status=HTTP_200_OK)
+
+    @swagger_auto_schema(request_body=ControlSettingsSerializer)
+    @transaction.atomic
+    def put(self, *args, **kwargs):
+        serializer = ControlSettingsSerializer(data=self.request.data)
+
+        if serializer.is_valid():
+            settings = ControlSettings.objects.first()
+
+            settings.double_points = serializer.validated_data['double_points']
+            settings.point_value = serializer.validated_data['point_value']
+            settings.event_title = serializer.validated_data['event_title']
+            settings.hidden_ids = serializer.validated_data['hidden_ids']
+
+            settings.save()
+
+            return Response(status=HTTP_204_NO_CONTENT)
+
+        return Response({ "detail": serializer.errors }, HTTP_400_BAD_REQUEST)

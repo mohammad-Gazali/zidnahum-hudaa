@@ -1,4 +1,4 @@
 /* tslint:disable */
-export interface DeleteModelAction {
+export interface IdsAction {
   ids: Array<number>;
 }

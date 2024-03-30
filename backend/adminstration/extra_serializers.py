@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from adminstration.models import ControlSettings
 from students.models import StudentMasjedChoice
 
 class AddAwqafTestNoQRequestSerailizer(serializers.Serializer):
@@ -27,3 +28,9 @@ class AddMoneyDeletingCategoryRequestSerailizer(serializers.Serializer):
     cause = serializers.IntegerField()
     value = serializers.IntegerField()
     masjed = serializers.ChoiceField(choices=StudentMasjedChoice.choices)
+
+
+class ControlSettingsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ControlSettings
+        exclude = ['id']
