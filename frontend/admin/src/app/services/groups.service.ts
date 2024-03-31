@@ -80,9 +80,10 @@ export class GroupsService {
       name: 'الإدارة',
       icon: 'settings',
       items: [
-        { name: 'إعدادات الموقع', link: '/admin/settings', icon: 'settings' }
+        { name: 'إعدادات الموقع', link: '/admin/settings', icon: 'settings' },
+        { name: 'التقارير', link: '/admin/reports', icon: 'assessment' }
       ],
-    }
+    },
   ];
 }
 

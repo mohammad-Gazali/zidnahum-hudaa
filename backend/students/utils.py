@@ -1,4 +1,5 @@
 from django.utils import timezone
+from students.constants import LAST_PART_MAP
 import pytz
 
 
@@ -72,3 +73,17 @@ def get_second_month_half_range():
         timezone.datetime(year=year, month=month, day=16, tzinfo=pytz.UTC),
         timezone.datetime(year=year_for_next_month, month=next_month, day=1, tzinfo=pytz.UTC),
     ]
+
+
+def get_num_pages_memo(changes) -> float:
+    result = 0
+    for item in changes:
+        if 0 <= item <= 580:
+            result += 1
+        else:
+            result += LAST_PART_MAP.get(item, 0) / 5
+
+    return result
+
+def get_num_pages_test(changes) -> float:
+    return len(changes) * 2.5

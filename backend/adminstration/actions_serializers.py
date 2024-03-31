@@ -6,7 +6,7 @@ class UserUpdatePasswordSerializer(serializers.Serializer):
 
 
 class IdsActionSerializer(serializers.Serializer):
-    ids = serializers.ListField(child=serializers.IntegerField(), allow_empty=False)
+    ids = serializers.ListField(child=serializers.IntegerField(min_value=1), allow_empty=False)
 
 
 class ActionBooleanUpdateSerializer(IdsActionSerializer):
