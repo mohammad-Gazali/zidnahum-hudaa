@@ -1,11 +1,12 @@
 from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
 from drf_yasg.utils import swagger_auto_schema
-from reports.serializers import ReportsRequestSerializer, ReportsStudentResponseSerializer, ReportsStudentCategoryOrGroupResponseSerializer
-from reports.utils import get_student_report, get_category_or_group_report
+from reports.serializers import ReportsRequestSerializer, ReportsRequestWithMasjedSerializer, ReportsStudentResponseSerializer, ReportsStudentCategoryOrGroupResponseSerializer
+from reports.utils import get_student_report, get_category_or_group_report, excel_student_report, excel_category_or_group_report
 from students.models import Student, StudentCategory, StudentGroup
 from drf_yasg.openapi import Parameter, IN_QUERY, TYPE_BOOLEAN
 
@@ -21,7 +22,8 @@ class ReportsStudentView(APIView):
         manual_parameters=[excel_param],
         request_body=ReportsRequestSerializer,
         responses={
-            HTTP_200_OK: ReportsStudentResponseSerializer
+            HTTP_200_OK: ReportsStudentResponseSerializer,
+            HTTP_204_NO_CONTENT: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8'
         },
     )
     def post(self, *args, **kwargs):
@@ -33,7 +35,27 @@ class ReportsStudentView(APIView):
             start_date = serializer.validated_data['start_date']
             end_date = serializer.validated_data['end_date']
 
-            return Response(get_student_report(student, start_date, end_date), HTTP_200_OK)
+            report_data = get_student_report(student, start_date, end_date)
+
+            if excel:
+                file_bytes = excel_student_report(
+                    data=report_data, 
+                    student_name=student.name, 
+                    start_date=start_date.strftime('%Y-%m-%d'), 
+                    end_date=end_date.strftime('%Y-%m-%d'),
+                )
+                response = HttpResponse(
+                    file_bytes,
+                    content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8',
+                    status=HTTP_204_NO_CONTENT,
+                )
+
+                response['Content-Disposition'] = f'attachment; filename="report.xlsx"'
+
+                return response
+                
+
+            return Response(report_data, HTTP_200_OK)
 
         return Response({ "detail": serializer.errors }, HTTP_400_BAD_REQUEST)
 
@@ -44,21 +66,45 @@ class ReportsCategoryView(APIView):
 
     @swagger_auto_schema(
         manual_parameters=[excel_param],
-        request_body=ReportsRequestSerializer,
+        request_body=ReportsRequestWithMasjedSerializer,
         responses={
-            HTTP_200_OK: ReportsStudentCategoryOrGroupResponseSerializer
+            HTTP_200_OK: ReportsStudentCategoryOrGroupResponseSerializer,
+            HTTP_204_NO_CONTENT: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8'
         },
     )
     def post(self, *args, **kwargs):
-        serializer = ReportsRequestSerializer(data=self.request.data)
+        serializer = ReportsRequestWithMasjedSerializer(data=self.request.data)
         excel = self.request.GET.get('excel', '').lower() == 'true'
-        category = get_object_or_404(StudentCategory, pk=kwargs.get("id"))
+        category = get_object_or_404(StudentCategory.objects.prefetch_related('student_set__memorizemessage_set'), pk=kwargs.get("id"))
 
         if serializer.is_valid():
             start_date = serializer.validated_data['start_date']
             end_date = serializer.validated_data['end_date']
+            masjed = serializer.validated_data['masjed']
 
-            return Response(get_category_or_group_report(category, start_date, end_date), HTTP_200_OK)
+            report_data = get_category_or_group_report(category, masjed, start_date, end_date)
+
+            if excel:
+                file_bytes = excel_category_or_group_report(
+                    data=report_data, 
+                    category_or_group_name=category.name,
+                    masjed=masjed,
+                    start_date=start_date.strftime('%Y-%m-%d'), 
+                    end_date=end_date.strftime('%Y-%m-%d'),
+                    is_category=True,
+                )
+
+                response = HttpResponse(
+                    file_bytes,
+                    content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8',
+                    status=HTTP_204_NO_CONTENT,
+                )
+
+                response['Content-Disposition'] = f'attachment; filename="report.xlsx"'
+
+                return response
+
+            return Response(report_data, HTTP_200_OK)
 
         return Response({ "detail": serializer.errors }, HTTP_400_BAD_REQUEST)
 
@@ -69,20 +115,44 @@ class ReportsGroupView(APIView):
 
     @swagger_auto_schema(
         manual_parameters=[excel_param],
-        request_body=ReportsRequestSerializer,
+        request_body=ReportsRequestWithMasjedSerializer,
         responses={
-            HTTP_200_OK: ReportsStudentCategoryOrGroupResponseSerializer
+            HTTP_200_OK: ReportsStudentCategoryOrGroupResponseSerializer,
+            HTTP_204_NO_CONTENT: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8'
         },
     )
     def post(self, *args, **kwargs):
-        serializer = ReportsRequestSerializer(data=self.request.data)
+        serializer = ReportsRequestWithMasjedSerializer(data=self.request.data)
         excel = self.request.GET.get('excel', '').lower() == 'true'
-        group = get_object_or_404(StudentGroup, pk=kwargs.get("id"))
+        group = get_object_or_404(StudentGroup.objects.prefetch_related('student_set__memorizemessage_set'), pk=kwargs.get("id"))
 
         if serializer.is_valid():
             start_date = serializer.validated_data['start_date']
             end_date = serializer.validated_data['end_date']
+            masjed = serializer.validated_data['masjed']
 
-            return Response(get_category_or_group_report(group, start_date, end_date), HTTP_200_OK)
+            report_data = get_category_or_group_report(group, masjed, start_date, end_date)
+
+            if excel:
+                file_bytes = excel_category_or_group_report(
+                    data=report_data, 
+                    category_or_group_name=group.name,
+                    masjed=masjed,
+                    start_date=start_date.strftime('%Y-%m-%d'), 
+                    end_date=end_date.strftime('%Y-%m-%d'),
+                    is_category=False,
+                )
+
+                response = HttpResponse(
+                    file_bytes,
+                    content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8',
+                    status=HTTP_204_NO_CONTENT,
+                )
+
+                response['Content-Disposition'] = f'attachment; filename="report.xlsx"'
+
+                return response
+
+            return Response(report_data, HTTP_200_OK)
 
         return Response({ "detail": serializer.errors }, HTTP_400_BAD_REQUEST)

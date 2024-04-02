@@ -1,10 +1,15 @@
 from rest_framework import serializers
-from students.models import MemorizeMessage
+from students.models import MemorizeMessage, StudentMasjedChoice
 
 
 class ReportsRequestSerializer(serializers.Serializer):
     start_date = serializers.DateTimeField()
     end_date = serializers.DateTimeField()
+
+class ReportsRequestWithMasjedSerializer(serializers.Serializer):
+    start_date = serializers.DateTimeField()
+    end_date = serializers.DateTimeField()
+    masjed = serializers.ChoiceField(choices=StudentMasjedChoice.choices)
 
 class ReportMemorizeMessageSerializer(serializers.ModelSerializer):
     class Meta:

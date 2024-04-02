@@ -1,5 +1,6 @@
 from django.utils import timezone
-from students.constants import LAST_PART_MAP
+from students.constants import LAST_PART_POINT_MAP, LAST_PART_MAP
+from math import ceil
 import pytz
 
 
@@ -81,9 +82,39 @@ def get_num_pages_memo(changes) -> float:
         if 0 <= item <= 580:
             result += 1
         else:
-            result += LAST_PART_MAP.get(item, 0) / 5
+            result += LAST_PART_POINT_MAP.get(item, 0) / 5
 
     return result
 
 def get_num_pages_test(changes) -> float:
     return len(changes) * 2.5
+
+
+# display memorize message changes util function
+def display_memorize_message_changes(changes, message_type) -> str:
+    if message_type == 1:
+        return ' - '.join(map(_convert_memo_item, changes))
+
+    elif message_type == 2:
+        return ' - '.join(map(_convert_test_item, changes))
+
+    else:
+        return '!!'
+
+def _convert_memo_item(item: int):
+    if 0 <= item <= 580:
+        return str(item + 1)
+    elif item <= 617:
+        return LAST_PART_MAP.get(item, '!!')
+    else:
+        return '!!'
+
+def _convert_test_item(item: int):
+    if item < 0 or item > 239:
+        return '!!'
+
+    orderNumber = item + 1
+    partOrderNumber =  4 if orderNumber % 4 == 0 else orderNumber % 4
+    partNumber = ceil(orderNumber / 4)
+
+    return f'الربع {partOrderNumber} من الحزب {partNumber}'
