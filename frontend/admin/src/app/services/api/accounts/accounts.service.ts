@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { TokenObtainPairBody, TokenObtainPairResponse, TokenRefreshBody, TokenRefreshResponse, UserDetailsResponse } from './accounts.types';
+import { ApiConfiguration } from '../admin/api-configuration';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AccountsService {
     private http = inject(HttpClient);
-    private rootUrl = 'http://127.0.0.1:8000/api/v1/accounts'
+    private rootUrl = inject(ApiConfiguration).rootUrl.slice(0, -5) + 'accounts'
 
     public details = signal<UserDetailsResponse | null>(null);
     public loading = signal(true);

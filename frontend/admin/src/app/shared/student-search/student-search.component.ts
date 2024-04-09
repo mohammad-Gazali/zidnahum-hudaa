@@ -1,5 +1,5 @@
-import { Component, DestroyRef, inject, model, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Component, DestroyRef, inject, input, model, output, signal } from '@angular/core';
+import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -43,15 +43,18 @@ import { MasjedService } from '../../services/masjed.service';
 export class StudentSearchComponent {
   private studetns = inject(StudentsService);
   private destroyRef = inject(DestroyRef);
-  private fb = inject(FormBuilder);
+  private fb = inject(NonNullableFormBuilder);
   public masjed = inject(MasjedService);
 
   public students = signal<SearchStudent[]>([]);
-  public selectedStudents = model.required<Set<SearchStudent>>();
+
+  public selectedStudents = model<Set<SearchStudent>>();
+  public studentChoose = output<SearchStudent>();
+  public removeResultOnChoose = input<boolean>();
 
   public loading = signal(false);
   public form = this.fb.group({
-    search: this.fb.nonNullable.control(''),
+    search: this.fb.control(''),
   });
 
   clear() {
@@ -82,6 +85,11 @@ export class StudentSearchComponent {
   }
 
   choose(student: SearchStudent) {
-    this.selectedStudents.update((pre) => new Set([...pre, student]));
+    this.studentChoose.emit(student);
+    this.selectedStudents.update((pre) => new Set([...(pre ?? []), student]));
+
+    if (this.removeResultOnChoose()) {
+      this.clear();
+    }
   }
 }

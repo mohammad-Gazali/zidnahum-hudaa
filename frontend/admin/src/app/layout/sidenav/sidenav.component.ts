@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import {
   MatListItem,
   MatListItemIcon,
@@ -22,6 +22,7 @@ import { MatDivider } from '@angular/material/divider';
     MatIcon,
     MatDivider,
     RouterLink,
+    RouterLinkActive,
   ],
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss',
@@ -29,5 +30,4 @@ import { MatDivider } from '@angular/material/divider';
 export class SidenavComponent {
   public groupsService = inject(GroupsService);
   public theme = inject(ThemeService);
-  public router = inject(Router);
 }

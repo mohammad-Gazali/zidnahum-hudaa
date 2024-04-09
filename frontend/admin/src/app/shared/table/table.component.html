@@ -37,8 +37,12 @@
           </mat-menu>
         }
         @if (containsChagensField()) {
-          <button mat-flat-button color="accent" (click)="hideChangesColumn()">
-            إخفاء عمود محتوى الرسالة
+          <button mat-flat-button color="accent" (click)="changesFieldHidden.set(!changesFieldHidden())">
+            @if (changesFieldHidden()) {
+              إظهار عمود محتوى الرسالة
+            } @else {
+              إخفاء عمود محتوى الرسالة
+            }
           </button>
         }
       </div>
@@ -163,7 +167,7 @@
 
         <!-- Row shown when there is no matching data. -->
         <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell no-data-row" [attr.colspan]="displayedColumns.length">
+          <td class="mat-cell no-data-row" [attr.colspan]="displayedColumns().length">
             <div>
               {{ 'there is no data' | translate }}
             </div>

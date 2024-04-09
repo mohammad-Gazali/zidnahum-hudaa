@@ -7,7 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
@@ -78,7 +78,7 @@ export class ViewComponent<T, U> implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private snackbar = inject(SnackbarService);
-  private fb = inject(FormBuilder);
+  private fb = inject(NonNullableFormBuilder);
   private dialog = inject(MatDialog);
   private destroyRef = inject(DestroyRef);
   public date = inject(DateService);
@@ -87,7 +87,7 @@ export class ViewComponent<T, U> implements OnInit {
   public fields = signal<Field[]>([]);
   public editMode = signal(false);
   public extraData = signal<ExtraData>({});
-  public form = this.fb.nonNullable.group({});
+  public form = this.fb.group({});
   public viewId!: string;
 
   public config = input.required<ViewComponentConfig<T, U>>();
@@ -138,7 +138,7 @@ export class ViewComponent<T, U> implements OnInit {
                     name,
                     this.fb.array(
                       (value as MemoItemType[]).map((item) =>
-                        this.fb.nonNullable.control(item)
+                        this.fb.control(item)
                       )
                     )
                   );

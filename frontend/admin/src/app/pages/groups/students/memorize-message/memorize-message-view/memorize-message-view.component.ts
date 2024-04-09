@@ -5,7 +5,7 @@ import { MemorizeMessageList } from '../../../../../services/api/admin/models';
 import { map } from 'rxjs';
 import { StudentsBase } from '../../students.base';
 import { AuthService } from '../../../../../services/api/admin/services';
-import { MemorizeMessageTypeService } from '../memorize-message-type.service';
+import { MemorizeMessageTypeService } from '../../../../../services/memorize-message-type.service';
 
 @Component({
   selector: 'app-memorize-message-view',

@@ -1,14 +1,13 @@
 import { Component, inject } from '@angular/core';
+import { map } from 'rxjs';
 import { TableComponent } from '../../../../shared/table/table.component';
 import { StudentsBase } from '../students.base';
 import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
 import { MemorizeMessageList } from '../../../../services/api/admin/models';
-import { MemorizeMessageTypeService } from './memorize-message-type.service';
-import { map } from 'rxjs';
 import { AuthService } from '../../../../services/api/admin/services';
 import { deleteModelAction } from '../../../../common/delete-model-action';
+import { MemorizeMessageTypeService } from '../../../../services/memorize-message-type.service';
 
-// TODO: add hide column of changes in memorize message
 
 @Component({
   selector: 'app-memorize-message',

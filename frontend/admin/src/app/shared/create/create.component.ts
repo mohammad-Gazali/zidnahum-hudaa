@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -57,14 +57,14 @@ import { LOADING } from '../../tokens/loading.token';
   styleUrl: './create.component.scss',
 })
 export class CreateComponent<T> implements OnInit {
-  private fb = inject(FormBuilder);
+  private fb = inject(NonNullableFormBuilder);
   private date = inject(DateService);
   private snackbar = inject(SnackbarService);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
   public loading = inject(LOADING);
 
-  public form = this.fb.nonNullable.group({});
+  public form = this.fb.group({});
   public fields = signal<Field[]>([]);
 
   public config = input.required<CreateComponentConfig<T>>();

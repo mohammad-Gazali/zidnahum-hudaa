@@ -1,7 +1,7 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
-  FormBuilder,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
 } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -36,11 +36,11 @@ export class UserUpdatePasswordComponent {
   private router = inject(Router);
   private snackbar = inject(SnackbarService);
   private destroyRef = inject(DestroyRef);
-  private fb = inject(FormBuilder);
+  private fb = inject(NonNullableFormBuilder);
   public loading = inject(LOADING);
 
   public form = this.fb.group({
-    new_password: this.fb.nonNullable.control(''),
+    new_password: this.fb.control(''),
   });
 
   submit() {

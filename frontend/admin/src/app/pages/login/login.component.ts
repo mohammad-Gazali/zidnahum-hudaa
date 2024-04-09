@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -34,12 +34,12 @@ export class LoginComponent {
   private router = inject(Router);
   private translateService = inject(TranslateService);
   private destroyRef = inject(DestroyRef);
-  private fb = inject(FormBuilder);
+  private fb = inject(NonNullableFormBuilder);
   public loading = inject(LOADING);
 
   public form = this.fb.group({
-    username: this.fb.nonNullable.control(''),
-    password: this.fb.nonNullable.control(''),
+    username: this.fb.control(''),
+    password: this.fb.control(''),
   });
 
   submit() {

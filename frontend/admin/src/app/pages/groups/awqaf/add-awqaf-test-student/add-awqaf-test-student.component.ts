@@ -1,7 +1,7 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
-  FormBuilder,
+  NonNullableFormBuilder,
   FormGroupDirective,
   ReactiveFormsModule,
   Validators,
@@ -65,9 +65,10 @@ import { LOADING } from '../../../../tokens/loading.token';
 })
 export class AddAwqafTestStudentComponent {
   private awqaf = inject(AwqafService);
-  private fb = inject(FormBuilder);
+  private fb = inject(NonNullableFormBuilder);
   private extra = inject(ExtraService);
   private snackbar = inject(SnackbarService);
+  private destroyRef = inject(DestroyRef);
   public transform = inject(QuranAwqafTestService).transform;
   public loading = inject(LOADING);
 
@@ -76,21 +77,20 @@ export class AddAwqafTestStudentComponent {
   public awqafNoQTests = signal<AwqafTestNoQList[]>([]);
 
   public quranForm = this.fb.group({
-    type: this.fb.nonNullable.control<'normal' | 'looking' | 'explaining'>(
-      'normal',
-      [Validators.required]
-    ),
+    type: this.fb.control<'normal' | 'looking' | 'explaining'>('normal', [
+      Validators.required,
+    ]),
     parts: this.fb.array(
       Array(30)
         .fill(-1)
         .map(() => {
-          return this.fb.nonNullable.control<boolean>(false);
+          return this.fb.control<boolean>(false);
         })
     ),
   });
 
   public nonQuranForm = this.fb.group({
-    value: this.fb.nonNullable.control(undefined, [Validators.required]),
+    value: this.fb.control(undefined, [Validators.required]),
   });
 
   constructor() {
@@ -113,7 +113,7 @@ export class AddAwqafTestStudentComponent {
   submitNoQ(form: FormGroupDirective) {
     if (!this.nonQuranForm.valid || this.loading()) return;
     if (this.selectedStudents().size === 0) {
-      this.snackbar.error('يجب اختيار الطلاب قبل الإضافة')
+      this.snackbar.error('يجب اختيار الطلاب قبل الإضافة');
       return;
     }
 
@@ -124,7 +124,10 @@ export class AddAwqafTestStudentComponent {
         students: [...this.selectedStudents()].map((s) => s.id),
         test: this.nonQuranForm.value.value ?? -1,
       })
-      .pipe(finalize(() => this.loading.set(false)))
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.loading.set(false))
+      )
       .subscribe(() => {
         this.selectedStudents.set(new Set());
         this.snackbar.success('تمت الإضافة بنجاح');
@@ -135,25 +138,29 @@ export class AddAwqafTestStudentComponent {
   submitQ(form: FormGroupDirective) {
     if (!this.quranForm.valid || this.loading()) return;
     if (this.selectedStudents().size === 0) {
-      this.snackbar.error('يجب اختيار الطلاب قبل الإضافة')
+      this.snackbar.error('يجب اختيار الطلاب قبل الإضافة');
       return;
     }
 
     this.loading.set(true);
 
-    this.extra.extraAddAwqafQTestCreate({
-      type: this.quranForm.value.type ?? 'normal',
-      students: [...this.selectedStudents()].map((s) => s.id),
-      parts:
-        this.quranForm.value.parts
-          ?.map((value, index) => (value ? index : -1))
-          .filter((item) => item !== -1) ?? [],
-    })
-    .pipe(finalize(() => this.loading.set(false)))
-    .subscribe(() => {
-      this.selectedStudents.set(new Set());
-      this.snackbar.success('تمت الإضافة بنجاح');
-      form.resetForm();
-    });
+    this.extra
+      .extraAddAwqafQTestCreate({
+        type: this.quranForm.value.type ?? 'normal',
+        students: [...this.selectedStudents()].map((s) => s.id),
+        parts:
+          this.quranForm.value.parts
+            ?.map((value, index) => (value ? index : -1))
+            .filter((item) => item !== -1) ?? [],
+      })
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.loading.set(false))
+      )
+      .subscribe(() => {
+        this.selectedStudents.set(new Set());
+        this.snackbar.success('تمت الإضافة بنجاح');
+        form.resetForm();
+      });
   }
 }

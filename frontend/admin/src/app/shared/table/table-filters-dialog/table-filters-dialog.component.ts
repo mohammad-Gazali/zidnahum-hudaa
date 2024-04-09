@@ -17,7 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { DateService } from '../../../services/date.service';
 import { Filter } from '../table.component.interface';
 import { DialogData } from './table-filters-dialog.component.interface';
@@ -49,7 +49,7 @@ import { DialogData } from './table-filters-dialog.component.interface';
   styleUrl: './table-filters-dialog.component.scss',
 })
 export class TableFiltersDialogComponent {
-  private fb = inject(FormBuilder);
+  private fb = inject(NonNullableFormBuilder);
   private date = inject(DateService);
   public ref = inject(MatDialogRef);
   public data: DialogData = inject(MAT_DIALOG_DATA);
@@ -70,46 +70,46 @@ export class TableFiltersDialogComponent {
 
           this.form.addControl(
             filter.name + '_gt',
-            this.fb.nonNullable.control(startDate)
+            this.fb.control(startDate)
           );
 
           this.form.addControl(
             filter.name + '_lt',
-            this.fb.nonNullable.control(endDate)
+            this.fb.control(endDate)
           );
 
           this.form.addControl(
             filter.name + '_type',
-            this.fb.nonNullable.control('range')
+            this.fb.control('range')
           );
 
-          this.form.addControl(filter.name, this.fb.nonNullable.control(''));
+          this.form.addControl(filter.name, this.fb.control(''));
 
           return;
         }
 
         this.form.addControl(
           filter.name + '_gt',
-          this.fb.nonNullable.control('')
+          this.fb.control('')
         );
         this.form.addControl(
           filter.name + '_lt',
-          this.fb.nonNullable.control('')
+          this.fb.control('')
         );
         this.form.addControl(
           filter.name + '_type',
-          this.fb.nonNullable.control('single')
+          this.fb.control('single')
         );
       }
 
       if (filter.type === 'boolean') {
-        this.form.addControl(filter.name, this.fb.nonNullable.control(filter.defaultValue ?? '0'));
+        this.form.addControl(filter.name, this.fb.control(filter.defaultValue ?? '0'));
         return;
       }
 
       this.form.addControl(
         filter.name,
-        this.fb.nonNullable.control(filter.defaultValue ?? '')
+        this.fb.control(filter.defaultValue ?? '')
       );
     });
   }

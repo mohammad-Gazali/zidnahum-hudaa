@@ -1,8 +1,8 @@
-import { Component, effect, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Component, DestroyRef, effect, inject } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
-  FormBuilder,
   FormControl,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -43,17 +43,18 @@ import { SnackbarService } from '../../../../services/snackbar.service';
 })
 export class SettingsComponent {
   private extra = inject(ExtraService);
-  private fb = inject(FormBuilder);
+  private fb = inject(NonNullableFormBuilder);
   private snackbar = inject(SnackbarService);
+  private destroyRef = inject(DestroyRef);
   public loading = inject(LOADING);
 
   public settings = toSignal(this.extra.extraControlSettingsList());
   public form = this.fb.group({
-    event_title: this.fb.nonNullable.control<string | undefined>(undefined),
-    point_value: this.fb.nonNullable.control<number | undefined>(undefined, [
+    event_title: this.fb.control<string | undefined>(undefined),
+    point_value: this.fb.control<number | undefined>(undefined, [
       Validators.required,
     ]),
-    double_points: this.fb.nonNullable.control<boolean>(false, [
+    double_points: this.fb.control<boolean>(false, [
       Validators.required,
     ]),
     hidden_ids: this.fb.array<FormControl<number>>([]),
@@ -71,7 +72,7 @@ export class SettingsComponent {
           settings.double_points ?? false
         );
         (settings.hidden_ids as number[]).forEach((id) => {
-          this.form.controls.hidden_ids.push(this.fb.nonNullable.control(id));
+          this.form.controls.hidden_ids.push(this.fb.control(id));
         });
       } else {
         this.form.disable();
@@ -86,7 +87,7 @@ export class SettingsComponent {
 
     this.extra
       .extraControlSettingsUpdate(this.form.value as any)
-      .pipe(finalize(() => this.loading.set(false)))
+      .pipe(takeUntilDestroyed(this.destroyRef), finalize(() => this.loading.set(false)))
       .subscribe(() => {
         this.snackbar.success('تم التعديل بنجاح');
       });
@@ -96,7 +97,7 @@ export class SettingsComponent {
     if (!event.value) return;
 
     this.form.controls.hidden_ids.push(
-      this.fb.nonNullable.control(parseInt(event.value))
+      this.fb.control(parseInt(event.value))
     );
 
     event.chipInput.clear();

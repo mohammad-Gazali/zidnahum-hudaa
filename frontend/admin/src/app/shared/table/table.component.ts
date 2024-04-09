@@ -2,6 +2,7 @@ import {
   Component,
   DestroyRef,
   OnInit,
+  computed,
   inject,
   input,
   signal,
@@ -11,7 +12,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatButtonModule } from '@angular/material/button';
@@ -86,7 +87,7 @@ import { SnackbarService } from '../../services/snackbar.service';
   styleUrl: './table.component.scss',
 })
 export class TableComponent<T extends { id: number }> implements OnInit {
-  private fb = inject(FormBuilder);
+  private fb = inject(NonNullableFormBuilder);
   private dialog = inject(MatDialog);
   private masjed = inject(MasjedService);
   private destroyRef = inject(DestroyRef);
@@ -97,15 +98,15 @@ export class TableComponent<T extends { id: number }> implements OnInit {
 
   public dataSource = new MatTableDataSource<T>([]);
   public selection = new SelectionModel<T>(true, []);
-  public displayedColumns = signal<('check' | 'id' | GetStringKeys<Omit<T, 'id'>>)[]>([]);
   public extraData: ExtraData = {};
-  public searchForm = this.fb.nonNullable.group({
+  public searchForm = this.fb.group({
     searchValue: '',
   });
   public activeFilters = signal<Filter[]>([]);
   public totalCount = signal(0);
   public isFileters = signal(false);
   public containsChagensField = signal(false);
+  public changesFieldHidden = signal(true);
   private pageSizeOptions = [20, 40, 100, 200];
 
   public _config = input.required<TableComponentConfig<T>>({
@@ -118,12 +119,19 @@ export class TableComponent<T extends { id: number }> implements OnInit {
   private paginator = viewChild.required(MatPaginator);
   private sort = viewChild.required(MatSort);
 
-  ngOnInit(): void {
-    const keys = Object.keys(this.config.columns) as GetStringKeys<
-      Omit<T, 'id'>
-    >[];
-    this.displayedColumns.set(['check', 'id', ...keys])
+  public displayedColumns = computed(() => {
+    const columns = Object.entries<FieldConfig>(this.config.columns)
+      .filter(([, field]) => field.display !== 'ignore')
+      .filter(([name]) => name !== 'changes' || !this.changesFieldHidden())
+      .map(([name]) => name);
+    return ['check', 'id', ...columns] as (
+      | 'check'
+      | 'id'
+      | GetStringKeys<Omit<T, 'id'>>
+    )[];
+  });
 
+  ngOnInit(): void {
     Object.entries<FieldConfig>(this.config.columns).forEach(
       ([name, config]) => {
         if (config.display === 'relation') {
@@ -140,10 +148,6 @@ export class TableComponent<T extends { id: number }> implements OnInit {
 
         if (config.filterType !== undefined) {
           this.isFileters.set(true);
-        }
-
-        if (config.display === 'ignore') {
-          this.displayedColumns.update(pre => pre.filter(c => c !== name))
         }
 
         if (config.display === 'changes') {
@@ -444,33 +448,36 @@ export class TableComponent<T extends { id: number }> implements OnInit {
         },
       });
 
-      ref.afterClosed()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((res) => {
-        if (res) {
-          this.loading.set(true);
-          action.delegateFunc(ids)
-          .pipe(finalize(() => this.loading.set(false)))
-          .subscribe(() => {
-            this.snackbar.success('تم الإجراء بنجاح');
-            this.fetchData();
-          });
-        }
-      });
-
+      ref
+        .afterClosed()
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe((res) => {
+          if (res) {
+            this.loading.set(true);
+            action
+              .delegateFunc(ids)
+              .pipe(
+                takeUntilDestroyed(this.destroyRef),
+                finalize(() => this.loading.set(false))
+              )
+              .subscribe(() => {
+                this.snackbar.success('تم الإجراء بنجاح');
+                this.fetchData();
+              });
+          }
+        });
     } else {
       this.loading.set(true);
-      action.delegateFunc(ids)
-      .pipe(finalize(() => this.loading.set(false)))
-      .subscribe(() => {
-        this.snackbar.success('تم الإجراء بنجاح');
-        this.fetchData();
-      });
+      action
+        .delegateFunc(ids)
+        .pipe(
+          takeUntilDestroyed(this.destroyRef),
+          finalize(() => this.loading.set(false))
+        )
+        .subscribe(() => {
+          this.snackbar.success('تم الإجراء بنجاح');
+          this.fetchData();
+        });
     }
-  }
-
-  hideChangesColumn() {
-    this.containsChagensField.set(false);
-    this.displayedColumns.update(pre => pre.filter(c => c !== 'changes'))
   }
 }
