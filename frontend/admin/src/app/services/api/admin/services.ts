@@ -6,5 +6,4 @@ export { ExtraService } from './services/extra.service';
 export { GlobalsService } from './services/globals.service';
 export { MoneyService } from './services/money.service';
 export { PointsService } from './services/points.service';
-export { ReportsService } from './services/reports.service';
 export { StudentsService } from './services/students.service';

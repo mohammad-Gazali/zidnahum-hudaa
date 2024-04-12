@@ -19,19 +19,23 @@ import { SnackbarService } from '../../../../services/snackbar.service';
 import { TranslatePipe } from '../../../../pipes/translate.pipe';
 import {
   AuthService,
-  ReportsService,
   StudentsService,
 } from '../../../../services/api/admin/services';
+import { ReportsService } from '../../../../services/api/reports/reports.service';
+import {
+  ReportsStudentCategoryOrGroupResponse,
+  ReportsStudentResponse,
+} from '../../../../services/api/reports/reports.type';
 import { SearchStudent } from '../../../../shared/student-search/search-student.interface';
 import { StudentSearchComponent } from '../../../../shared/student-search/student-search.component';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MasjedService } from '../../../../services/masjed.service';
 import { LOADING } from '../../../../tokens/loading.token';
-import { ReportsStudentCategoryOrGroupResponse, ReportsStudentResponse } from '../../../../services/api/admin/models';
 import { MatTableModule } from '@angular/material/table';
 import { MemorizeMessageTypeService } from '../../../../services/memorize-message-type.service';
 import { DatePipe } from '@angular/common';
+import { ChangesFieldComponent } from '../../../../shared/changes-field/changes-field.component';
 
 @Component({
   selector: 'app-reports',
@@ -47,6 +51,7 @@ import { DatePipe } from '@angular/common';
     MatButtonModule,
     MatTableModule,
     StudentSearchComponent,
+    ChangesFieldComponent,
     TranslatePipe,
     DatePipe,
   ],
@@ -68,7 +73,7 @@ export class ReportsComponent {
   private destroyRef = inject(DestroyRef);
   private masjed = inject(MasjedService);
   private auth = inject(AuthService);
-  private messageType = inject(MemorizeMessageTypeService)
+  private messageType = inject(MemorizeMessageTypeService);
   public loading = inject(LOADING);
 
   public selectedStudent = signal<SearchStudent | null>(null);
@@ -81,24 +86,44 @@ export class ReportsComponent {
   public masterMap = computed(() => {
     const map = new Map<number | null | undefined, string>();
 
-    map.set(null, '-')
-    map.set(undefined, '-')
+    map.set(null, '-');
+    map.set(undefined, '-');
 
-    this.masters()?.forEach(master => {
-      map.set(master.id, master.first_name ?? '' + master.last_name ?? '')  
-    })
+    this.masters()?.forEach((master) => {
+      map.set(master.id, master.first_name ?? '' + master.last_name ?? '');
+    });
 
     return map;
+  });
+  public categoryMap = computed(() => {
+    const map = new Map<number | undefined, string>();
+    
+    map.set(undefined, '-')
+
+    this.categories()?.forEach(category => {
+      map.set(category.id, category.name)
+    })
+    return map
+  })
+  public groupMap = computed(() => {
+    const map = new Map<number | undefined, string>();
+    
+    map.set(undefined, '-')
+
+    this.groups()?.forEach(category => {
+      map.set(category.id, category.name)
+    })
+    return map
   })
   public messageTypeMap = computed(() => {
     const map = new Map<MessageType, string>();
 
-    this.messageTypes()?.forEach(type => {
+    this.messageTypes()?.forEach((type) => {
       map.set(type.id as MessageType, type.name);
     });
 
     return map;
-  })
+  });
 
   public form = this.fb.group({
     masjed: this.fb.control<1 | 2 | 3 | undefined>(undefined),
@@ -113,8 +138,10 @@ export class ReportsComponent {
   });
 
   public studentResponse = signal<ReportsStudentResponse | null>(null);
-  public categoryOrGroupResponse = signal<ReportsStudentCategoryOrGroupResponse | null>(null);
+  public categoryOrGroupResponse =
+    signal<ReportsStudentCategoryOrGroupResponse | null>(null);
   public type = this.fb.control<'student' | 'category' | 'group'>('student');
+  public changesColumnHidden = signal(true);
 
   constructor() {
     this.type.valueChanges.pipe(takeUntilDestroyed()).subscribe((value) => {
@@ -143,49 +170,76 @@ export class ReportsComponent {
     });
   }
 
-  public studentSubmit(excel?: boolean) {
-    return this.reports
-      .reportsStudentCreate({
-        id: this.selectedStudent()!.id.toString(),
-        data: this.getDurationData(),
-        excel,
-      })
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-        finalize(() => this.loading.set(false))
-      );
+  public studentSubmit(excel?: boolean): void {
+    const id = this.selectedStudent()!.id;
+    if (excel) {
+      this.reports
+        .createStudentReportExcel(id, this.getDurationData())
+        .pipe(
+          takeUntilDestroyed(this.destroyRef),
+          finalize(() => this.loading.set(false))
+        )
+        .subscribe((res) => this.downloadBlob(res));
+    } else {
+      this.reports
+        .createStudentReport(id, this.getDurationData())
+        .pipe(
+          takeUntilDestroyed(this.destroyRef),
+          finalize(() => this.loading.set(false))
+        )
+        .subscribe((res) => this.studentResponse.set(res));
+    }
   }
 
-  public categorySubmit(excel?: boolean) {
-    return this.reports
-      .reportsCategoryCreate({
-        id: this.form.value.category!.toString(),
-        data: {
-          ...this.getDurationData(),
-          masjed: this.form.value.masjed!,
-        },
-        excel,
-      })
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-        finalize(() => this.loading.set(false))
-      );
+  public categorySubmit(excel?: boolean): void {
+    const id = this.form.value.category!;
+    const data = {
+      ...this.getDurationData(),
+      masjed: this.form.value.masjed!,
+    };
+
+    if (excel) {
+      this.reports
+        .createCategoryReportExcel(id, data)
+        .pipe(
+          takeUntilDestroyed(this.destroyRef),
+          finalize(() => this.loading.set(false))
+        )
+        .subscribe((res) => this.downloadBlob(res));
+    } else {
+      this.reports
+        .createCategoryReport(id, data)
+        .pipe(
+          takeUntilDestroyed(this.destroyRef),
+          finalize(() => this.loading.set(false))
+        )
+        .subscribe((res) => this.categoryOrGroupResponse.set(res));
+    }
   }
 
-  public groupSubmit(excel?: boolean) {
-    return this.reports
-      .reportsGroupCreate({
-        id: this.form.value.group!.toString(),
-        data: {
-          ...this.getDurationData(),
-          masjed: this.form.value.masjed!,
-        },
-        excel,
-      })
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-        finalize(() => this.loading.set(false))
-      )
+  public groupSubmit(excel?: boolean): void {
+    const id = this.form.value.group!;
+    const data = {
+      ...this.getDurationData(),
+      masjed: this.form.value.masjed!,
+    };
+    if (excel) {
+      this.reports
+        .createGroupReportExcel(id, data)
+        .pipe(
+          takeUntilDestroyed(this.destroyRef),
+          finalize(() => this.loading.set(false))
+        )
+        .subscribe((res) => this.downloadBlob(res));
+    } else {
+      this.reports
+        .createGroupReport(id, data)
+        .pipe(
+          takeUntilDestroyed(this.destroyRef),
+          finalize(() => this.loading.set(false))
+        )
+        .subscribe((res) => this.categoryOrGroupResponse.set(res));
+    }
   }
 
   submit(excel?: boolean) {
@@ -200,13 +254,11 @@ export class ReportsComponent {
     this.loading.set(true);
 
     if (this.type.value === 'student') {
-      this.studentSubmit(excel).subscribe((res) => this.studentResponse.set(res))
-
+      this.studentSubmit(excel);
     } else if (this.type.value === 'category') {
-      this.categorySubmit(excel).subscribe((res) => this.categoryOrGroupResponse.set(res))
-
+      this.categorySubmit(excel);
     } else {
-      this.groupSubmit(excel).subscribe((res) => this.categoryOrGroupResponse.set(res))
+      this.groupSubmit(excel);
     }
   }
 
@@ -220,6 +272,16 @@ export class ReportsComponent {
       end_date: this.form.value.end_date as any,
     };
   }
+
+  private downloadBlob(blob: Blob): void {
+    const downloadLink = document.createElement('a');
+    downloadLink.style.display = 'none';
+    downloadLink.href = window.URL.createObjectURL(new Blob([blob]));
+    downloadLink.download = 'report.xlsx';
+    document.body.append(downloadLink);
+    downloadLink.click();
+    // downloadLink.remove();
+  }
 }
 
-type MessageType = 1 | 2 | 3 | 4 | 5
+type MessageType = 1 | 2 | 3 | 4 | 5;

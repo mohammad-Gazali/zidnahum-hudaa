@@ -11,7 +11,6 @@ import { ExtraService } from './services/extra.service';
 import { GlobalsService } from './services/globals.service';
 import { MoneyService } from './services/money.service';
 import { PointsService } from './services/points.service';
-import { ReportsService } from './services/reports.service';
 import { StudentsService } from './services/students.service';
 
 /**
@@ -35,7 +34,6 @@ import { StudentsService } from './services/students.service';
     GlobalsService,
     MoneyService,
     PointsService,
-    ReportsService,
     StudentsService
   ],
 })

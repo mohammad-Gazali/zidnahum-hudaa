@@ -23,12 +23,12 @@ urlpatterns = [
     path("api/v1/money/", include("money.urls")),
     path("api/v1/points/", include("points.urls")),
     path("api/v1/students/", include("students.urls")),
+    path("api/v1/reports/", include("reports.urls")),
 
     # admin urls
     path("api/v1/admin/", include("adminstration.urls")),
     path("api/v1/admin/actions/", include("adminstration.actions_urls")),
     path("api/v1/admin/extra/", include("adminstration.extra_urls")),
-    path("api/v1/admin/reports/", include("reports.urls")),
 
 
     # swagger

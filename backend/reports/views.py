@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from drf_yasg.utils import swagger_auto_schema
 from reports.serializers import ReportsRequestSerializer, ReportsRequestWithMasjedSerializer, ReportsStudentResponseSerializer, ReportsStudentCategoryOrGroupResponseSerializer
 from reports.utils import get_student_report, get_category_or_group_report, excel_student_report, excel_category_or_group_report
@@ -23,7 +23,6 @@ class ReportsStudentView(APIView):
         request_body=ReportsRequestSerializer,
         responses={
             HTTP_200_OK: ReportsStudentResponseSerializer,
-            HTTP_204_NO_CONTENT: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8'
         },
     )
     def post(self, *args, **kwargs):
@@ -47,10 +46,13 @@ class ReportsStudentView(APIView):
                 response = HttpResponse(
                     file_bytes,
                     content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8',
-                    status=HTTP_204_NO_CONTENT,
+                    status=HTTP_200_OK,
                 )
 
-                response['Content-Disposition'] = f'attachment; filename="report.xlsx"'
+                response['Content-Disposition'] = 'attachment; filename="report.xlsx"'
+
+                print('At excel')
+                print(response.content)
 
                 return response
                 
@@ -69,7 +71,6 @@ class ReportsCategoryView(APIView):
         request_body=ReportsRequestWithMasjedSerializer,
         responses={
             HTTP_200_OK: ReportsStudentCategoryOrGroupResponseSerializer,
-            HTTP_204_NO_CONTENT: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8'
         },
     )
     def post(self, *args, **kwargs):
@@ -97,7 +98,7 @@ class ReportsCategoryView(APIView):
                 response = HttpResponse(
                     file_bytes,
                     content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8',
-                    status=HTTP_204_NO_CONTENT,
+                    status=HTTP_200_OK,
                 )
 
                 response['Content-Disposition'] = f'attachment; filename="report.xlsx"'
@@ -118,7 +119,6 @@ class ReportsGroupView(APIView):
         request_body=ReportsRequestWithMasjedSerializer,
         responses={
             HTTP_200_OK: ReportsStudentCategoryOrGroupResponseSerializer,
-            HTTP_204_NO_CONTENT: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8'
         },
     )
     def post(self, *args, **kwargs):
@@ -146,7 +146,7 @@ class ReportsGroupView(APIView):
                 response = HttpResponse(
                     file_bytes,
                     content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8',
-                    status=HTTP_204_NO_CONTENT,
+                    status=HTTP_200_OK,
                 )
 
                 response['Content-Disposition'] = f'attachment; filename="report.xlsx"'
