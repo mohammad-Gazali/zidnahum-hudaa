@@ -1,14 +1,16 @@
 from django.db.models import Model
 from django.http import QueryDict
 from django.contrib.auth import get_user_model
+from django.db.models.deletion import ProtectedError
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.serializers import ModelSerializer, IntegerField, CharField
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.status import HTTP_200_OK
+from rest_framework.status import HTTP_200_OK, HTTP_403_FORBIDDEN
 from rest_framework.parsers import MultiPartParser
+from rest_framework.response import Response
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg.openapi import Parameter, IN_QUERY, TYPE_STRING
 from students.models import Student
@@ -125,6 +127,13 @@ def create_model_view_set(
     class Result(BaseViewSet):
         http_method_names = methods or ["get", "post", "put", "delete"]
         filterset_fields = filter_fields
+
+        def handle_exception(self, exc):
+            if isinstance(exc, ProtectedError):
+                model = exc.protected_objects.pop()
+                return Response({ "detail": f"لا يمكن حذف العناصر لأنها مرتبطة بـ '{model.__class__._meta.verbose_name_plural}'" }, HTTP_403_FORBIDDEN)
+                
+            return super().handle_exception(exc)
 
         if no_pagination:
             pagination_class = None

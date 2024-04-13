@@ -1,9 +1,10 @@
 from django.db import transaction
 from django.db.models import Model
+from django.db.models.deletion import ProtectedError
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
-from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN
 from drf_yasg.utils import swagger_auto_schema
 from adminstration.actions_serializers import IdsActionSerializer
 from typing import Type
@@ -13,6 +14,13 @@ def create_delete_model_action_view(model: Type[Model]) -> Type[APIView]:
     class Result(APIView):
         permission_classes = [IsAdminUser]
         http_method_names = ["delete"]
+
+        def handle_exception(self, exc):
+            if isinstance(exc, ProtectedError):
+                model = exc.protected_objects.pop()
+                return Response({ "detail": f"لا يمكن حذف العناصر لأنها مرتبطة بـ '{model.__class__._meta.verbose_name_plural}'" }, HTTP_403_FORBIDDEN)
+                
+            return super().handle_exception(exc)
 
         @swagger_auto_schema(request_body=IdsActionSerializer)
         @transaction.atomic

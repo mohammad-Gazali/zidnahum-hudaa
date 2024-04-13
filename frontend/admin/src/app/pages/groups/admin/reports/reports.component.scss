@@ -87,63 +87,34 @@ form {
   *:not(span) {
     flex-grow: 1;
   }
-}
 
-.total-counts {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-  background-color: var(--mat-table-row-item-outline-color);
-  width: fit-content;
-  overflow: hidden;
-  border-radius: 8px;
-
-  li {
+  ul {
     display: flex;
+    flex-direction: column;
     gap: 0.1rem;
-    text-align: center;
-
-    .label {
-      width: 180px;
-      white-space: nowrap;
-      padding: 0.25rem;
-      background-color: var(--mat-table-background-color);
-    }
-    
-    .value {
-      font-weight: 500;
-      width: 100%;
-      padding: 0.25rem;
-      background-color: var(--mat-table-background-color);
-    }
-  }
-}
-
-.extra-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-  background-color: var(--mat-table-row-item-outline-color);
-  overflow: hidden;
-  border-radius: 8px;
-
-  li {
-    display: flex;
-    gap: 0.1rem;
-    white-space: nowrap;
-    text-align: center;
-
-    .label {
-      width: 180px;
-      padding: 0.25rem;
-      background-color: var(--mat-table-background-color);
-    }
-    
-    .value {
-      width: 100%;
-      font-weight: 500;      
-      padding: 0.25rem;
-      background-color: var(--mat-table-background-color);
+    background-color: var(--mat-table-row-item-outline-color);
+    width: fit-content;
+    overflow: hidden;
+    border-radius: 8px;
+  
+    li {
+      display: flex;
+      gap: 0.1rem;
+      text-align: center;
+  
+      .label {
+        width: 180px;
+        white-space: nowrap;
+        padding: 0.25rem;
+        background-color: var(--mat-table-background-color);
+      }
+      
+      .value {
+        font-weight: 500;
+        width: 100%;
+        padding: 0.25rem;
+        background-color: var(--mat-table-background-color);
+      }
     }
   }
 }

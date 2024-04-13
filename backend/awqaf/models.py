@@ -20,3 +20,5 @@ class AwqafNoQStudentRelation(models.Model):
 
     class Meta:
         unique_together = ["test", "student"]
+        verbose_name = "سبر الطالب بالأوقاف بغير القرآن"
+        verbose_name_plural = "سبر الطلاب بالأوقاف بغير القرآن"

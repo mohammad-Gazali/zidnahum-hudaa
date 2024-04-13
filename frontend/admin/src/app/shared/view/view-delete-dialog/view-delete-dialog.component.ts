@@ -12,6 +12,8 @@ import { Router } from '@angular/router';
 import { DialogData } from './view-delete-dialog.interface';
 import { TranslatePipe } from '../../../pipes/translate.pipe';
 import { SnackbarService } from '../../../services/snackbar.service';
+import { EMPTY, catchError, finalize } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-view-delete-dialog',
@@ -40,9 +42,18 @@ export class ViewDeleteDialogComponent {
     this.ref.disableClose = true;
     this.data
       .deleteFunc()
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.loading.set(false)),
+        catchError((err: HttpErrorResponse) => {
+          if ('detail' in err.error) {
+            this.snackbar.error(err.error.detail);
+          }
+          this.ref.close();
+          return EMPTY;
+        })
+      )
       .subscribe(() => {
-        this.loading.set(false);
         this.router.navigateByUrl(
           `/${this.data.groupName}/${this.data.itemNameAndRouteName}`
         );

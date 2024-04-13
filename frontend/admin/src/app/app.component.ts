@@ -5,9 +5,6 @@ import { LayoutComponent } from './layout/layout.component';
 import { AccountsService } from './services/api/accounts/accounts.service';
 import { SnackbarService } from './services/snackbar.service';
 
-// TODO: add error handler
-// TODO: convert mat module imports to standalone components imports
-
 @Component({
   selector: 'app-root',
   standalone: true,
