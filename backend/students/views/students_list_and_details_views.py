@@ -5,10 +5,11 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.pagination import PageNumberPagination
 from students.serializers import StudentListSerializer, StudentDetailsSerializer
 from students.models import Student, MemorizeMessage
 from students.utils import get_last_sat_date_range_for_previous_week, get_last_sat_date_range, get_first_month_half_range, get_second_month_half_range
+from students.permissions import IsComingGroup
 from comings.models import Coming
 from adminstration.models import ControlSettings
 from awqaf.models import AwqafNoQStudentRelation
@@ -37,7 +38,7 @@ class StudentListView(ListAPIView):
 
 
 class StudentNonRegisterdTodayListView(ListAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsComingGroup]
     serializer_class = StudentListSerializer
 
     def handle_exception(self, exc):

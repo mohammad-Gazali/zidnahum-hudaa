@@ -1,23 +1,23 @@
 from django.utils import timezone
 from rest_framework.generics import ListAPIView, DestroyAPIView, ListCreateAPIView
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_403_FORBIDDEN
 from rest_framework.exceptions import ValidationError
 from comings.serializers import ComingCategorySerializer, ComingCreateSerializer, ComingListSerializer
 from comings.models import ComingCategory, Coming
 from comings.permissions import IsMasterForComing
+from students.permissions import IsComingGroup
 from adminstration.models import ControlSettings
 
 
 class ComingCategroyListView(ListAPIView):
     queryset = ComingCategory.objects.all().order_by("id")
-    pagination_class = None
     serializer_class = ComingCategorySerializer
+    pagination_class = None
 
 
 class ComingListCreateView(ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsComingGroup]
 
     def get_serializer_class(self):
         if self.request.method == "POST":
@@ -47,5 +47,5 @@ class ComingListCreateView(ListCreateAPIView):
 
 
 class ComingDeleteView(DestroyAPIView):
-    permission_classes = [IsAuthenticated, IsMasterForComing]
+    permission_classes = [IsComingGroup, IsMasterForComing]
     queryset = Coming.objects.all()

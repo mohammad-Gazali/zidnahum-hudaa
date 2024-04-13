@@ -38,3 +38,11 @@ class ReportsStudentCategoryOrGroupResponseSerializer(serializers.Serializer):
 class ReportsCategoryOrGroupSpecificResponseSerializer(ReportsStudentCategoryOrGroupResponseSerializer):
     category_id = serializers.IntegerField()
     category_name = serializers.CharField()
+
+class ReportsPointsRequestSerializer(serializers.Serializer):
+    start_date = serializers.DateTimeField(required=False)
+    end_date = serializers.DateTimeField(required=False)
+    masjed = serializers.ChoiceField(choices=StudentMasjedChoice.choices)
+
+class ReportsPointsResponseSerializer(serializers.Serializer):
+    pass

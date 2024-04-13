@@ -81,3 +81,9 @@ LAST_PART_MAP = {
     616: 'الفلق',
     617: 'الناس',
 }
+
+MEMO_GROUP = 'تسميع'
+COMING_GROUP = 'حضور'
+POINTS_GROUP = 'نقاط'
+REPORTS_GROUP = 'التقارير'
+HADEETH_GROUP = 'حديث'

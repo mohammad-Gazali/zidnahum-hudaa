@@ -1,8 +1,10 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT
-from students.models import Student, MemorizeNotes
+from students.models import Student, StudentMasjedChoice, MemorizeNotes
+from students.constants import MEMO_GROUP
 from adminstration.models import ControlSettings
 from typing import List
 
@@ -11,9 +13,7 @@ class MemorizeNotesTestCase(TestCase):
     def setUp(self):
         User = get_user_model()
 
-        self.control_settings = ControlSettings.objects.create(
-            point_value=10,
-        )
+        self.control_settings = ControlSettings.objects.first()
 
         self.username = "test"
         self.password = "mysecretpassword"
@@ -23,6 +23,7 @@ class MemorizeNotesTestCase(TestCase):
         )
 
         self.user.set_password(self.password)
+        self.user.groups.add(Group.objects.get(name=MEMO_GROUP))
 
         self.user.save()
 
@@ -38,7 +39,8 @@ class MemorizeNotesTestCase(TestCase):
         self.token = res.json()["access"]
 
         self.student = Student.objects.create(
-            name="test"
+            name="test",
+            masjed=StudentMasjedChoice.HASANIN,
         )
 
         self.notes: List[MemorizeNotes] = []

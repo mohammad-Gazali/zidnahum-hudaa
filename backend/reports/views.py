@@ -1,21 +1,21 @@
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from rest_framework.permissions import IsAdminUser
 from drf_yasg.utils import swagger_auto_schema
-from reports.serializers import ReportsRequestSerializer, ReportsRequestWithMasjedSerializer, ReportsStudentResponseSerializer, ReportsStudentCategoryOrGroupResponseSerializer, ReportsCategoryOrGroupSpecificResponseSerializer
+from reports.serializers import ReportsRequestSerializer, ReportsRequestWithMasjedSerializer, ReportsStudentResponseSerializer, ReportsStudentCategoryOrGroupResponseSerializer, ReportsCategoryOrGroupSpecificResponseSerializer, ReportsPointsRequestSerializer, ReportsPointsResponseSerializer
 from reports.utils import get_student_report, get_category_or_group_report, excel_student_report, excel_category_or_group_report, excel_all_categories_or_groups_report
 from students.models import Student, StudentCategory, StudentGroup
+from students.permissions import IsReportsGroup
 from drf_yasg.openapi import Parameter, IN_QUERY, TYPE_BOOLEAN
 
-# TODO: continue by testing all of them
 
 excel_param = Parameter("excel", IN_QUERY, type=TYPE_BOOLEAN, description="param for determining if the response is excel file or not")
 
 class ReportsStudentView(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsReportsGroup]
     http_method_names = ["post"]
 
     @swagger_auto_schema(
@@ -51,9 +51,6 @@ class ReportsStudentView(APIView):
 
                 response['Content-Disposition'] = 'attachment; filename="report.xlsx"'
 
-                print('At excel')
-                print(response.content)
-
                 return response
                 
 
@@ -63,7 +60,7 @@ class ReportsStudentView(APIView):
 
 
 class ReportsCategoryView(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsReportsGroup]
     http_method_names = ["post"]
 
     @swagger_auto_schema(
@@ -111,7 +108,7 @@ class ReportsCategoryView(APIView):
 
 
 class ReportsGroupView(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsReportsGroup]
     http_method_names = ["post"]
 
     @swagger_auto_schema(
@@ -159,7 +156,7 @@ class ReportsGroupView(APIView):
 
 
 class ReportsAllCategoriesView(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsReportsGroup]
     http_method_names = ["post"]
 
     @swagger_auto_schema(
@@ -214,7 +211,7 @@ class ReportsAllCategoriesView(APIView):
 
 
 class ReportsAllGroupsView(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsReportsGroup]
     http_method_names = ["post"]
 
     @swagger_auto_schema(
@@ -264,5 +261,26 @@ class ReportsAllGroupsView(APIView):
                 return response
 
             return Response(report_data, HTTP_200_OK)
+
+        return Response({ "detail": serializer.errors }, HTTP_400_BAD_REQUEST)
+
+
+class ReportsPointsView(APIView):
+    permission_classes = [IsAdminUser]
+    http_method_names = ["post"]
+
+    @swagger_auto_schema(
+        manual_parameters=[excel_param],
+        request_body=ReportsPointsRequestSerializer,
+        responses={
+            HTTP_200_OK: ReportsPointsResponseSerializer(many=True),
+        }
+    )
+    def post(self, *args, **kwargs):
+        serializer = ReportsPointsRequestSerializer(data=self.request.data)
+        excel = self.request.GET.get('excel', '').lower() == 'true'
+
+        if serializer.is_valid():
+            pass
 
         return Response({ "detail": serializer.errors }, HTTP_400_BAD_REQUEST)

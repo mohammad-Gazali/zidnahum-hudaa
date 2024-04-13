@@ -1,11 +1,12 @@
 from rest_framework.generics import ListAPIView, DestroyAPIView
-from rest_framework.permissions import IsAuthenticated
 from students.serializers import MemorizeMessageSerializer
 from students.models import MemorizeMessage
-from students.permissions import IsMasterForMessage
+from students.permissions import IsMemoGroup, IsMasterForMessage
 
 class MemorizeMessageListView(ListAPIView):
-    permission_classes = [IsAuthenticated]
+    # there is case where the message is maybe hadeeth
+    # but it is rare so I ignore it
+    permission_classes = [IsMemoGroup]
     serializer_class = MemorizeMessageSerializer
 
     def get_queryset(self):
@@ -13,5 +14,7 @@ class MemorizeMessageListView(ListAPIView):
 
 
 class MemorizeMessageDeleteView(DestroyAPIView):
-    permission_classes = [IsAuthenticated, IsMasterForMessage]
+    # there is case where the message is maybe hadeeth
+    # but it is rare so I ignore it
+    permission_classes = [IsMemoGroup, IsMasterForMessage]
     queryset = MemorizeMessage.objects.all()

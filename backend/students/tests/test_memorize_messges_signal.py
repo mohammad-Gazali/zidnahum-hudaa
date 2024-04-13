@@ -1,9 +1,10 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT
-from students.models import Student, MemorizeMessage
-from students.constants import NEW, NON
+from students.models import Student, StudentMasjedChoice, MemorizeMessage
+from students.constants import NEW, NON, MEMO_GROUP, HADEETH_GROUP
 from adminstration.models import ControlSettings
 
 
@@ -11,9 +12,7 @@ class MemorizeMessageSignal(TestCase):
     def setUp(self):
         User = get_user_model()
 
-        self.control_settings = ControlSettings.objects.create(
-            point_value=10,
-        )
+        self.control_settings = ControlSettings.objects.first()
 
         self.username = "test"
         self.password = "mysecretpassword"
@@ -23,6 +22,8 @@ class MemorizeMessageSignal(TestCase):
         )
 
         self.user.set_password(self.password)
+        self.user.groups.add(Group.objects.get(name=MEMO_GROUP))
+        self.user.groups.add(Group.objects.get(name=HADEETH_GROUP))
 
         self.user.save()
 
@@ -38,7 +39,8 @@ class MemorizeMessageSignal(TestCase):
         self.token = res.json()["access"]
 
         student = Student.objects.create(
-            name="test"
+            name="test",
+            masjed=StudentMasjedChoice.HASANIN,
         )
 
         self.existing_qmemo = [0, 530, 100]

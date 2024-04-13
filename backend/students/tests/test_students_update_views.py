@@ -1,9 +1,10 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
-from students.models import Student, MemorizeMessage
-from students.constants import NEW
+from django.contrib.auth.models import Group
+from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN
+from students.models import Student, StudentMasjedChoice, MemorizeMessage
+from students.constants import NEW, MEMO_GROUP, HADEETH_GROUP
 from adminstration.models import ControlSettings
 from typing import List
 from random import randint
@@ -13,20 +14,28 @@ class StudentUpdateTestCase(TestCase):
     def setUp(self):
         User = get_user_model()
 
-        self.control_settings = ControlSettings.objects.create(
-            point_value=10,
-        )
+        self.control_settings = ControlSettings.objects.first()
 
         self.username = "test"
+        self.non_valid_username = "test_non_valid"
         self.password = "mysecretpassword"
 
         self.user = User.objects.create(
             username=self.username,
         )
 
+        self.non_valid_user = User.objects.create(
+            username=self.non_valid_username
+        )
+
         self.user.set_password(self.password)
+        self.user.groups.add(Group.objects.get(name=MEMO_GROUP))
+        self.user.groups.add(Group.objects.get(name=HADEETH_GROUP))
+
+        self.non_valid_user.set_password(self.password)
 
         self.user.save()
+        self.non_valid_user.save()
 
         url_token = reverse("accounts_token_obtain_pair")
 
@@ -39,6 +48,15 @@ class StudentUpdateTestCase(TestCase):
 
         self.token = res.json()["access"]
 
+        res = self.client.post(url_token, {
+            "username": self.non_valid_username,
+            "password": self.password,
+        }, content_type="application/json")
+
+        self.assertEqual(res.status_code, HTTP_200_OK, res.json())
+
+        self.non_valid_token = res.json()["access"]
+
         self.students: List[Student] = []
         self.total_count = 100
 
@@ -46,7 +64,8 @@ class StudentUpdateTestCase(TestCase):
             self.students.append(
                 Student.objects.create(
                     id=i,
-                    name=f"test {i}"
+                    name=f"test {i}",
+                    masjed=StudentMasjedChoice.HASANIN,
                 )
             )
 
@@ -65,6 +84,12 @@ class StudentUpdateTestCase(TestCase):
 
             res = self.client.put(url, {
                 "q_memo": q_memo
+            }, HTTP_AUTHORIZATION=f"Bearer {self.non_valid_token}", content_type="application/json")
+
+            self.assertEqual(res.status_code, HTTP_403_FORBIDDEN, res.json())
+
+            res = self.client.put(url, {
+                "q_memo": q_memo,
             }, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
 
             self.assertEqual(res.status_code, HTTP_200_OK, res.json())
@@ -95,6 +120,12 @@ class StudentUpdateTestCase(TestCase):
 
             res = self.client.put(url, {
                 "q_test": q_test
+            }, HTTP_AUTHORIZATION=f"Bearer {self.non_valid_token}", content_type="application/json")
+
+            self.assertEqual(res.status_code, HTTP_403_FORBIDDEN, res.json())
+
+            res = self.client.put(url, {
+                "q_test": q_test
             }, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
 
             self.assertEqual(res.status_code, HTTP_200_OK, res.json())
@@ -108,7 +139,7 @@ class StudentUpdateTestCase(TestCase):
             message = MemorizeMessage.objects.get(student=student)
 
             self.assertEqual(set(message.changes), set(q_test))
-            self.assertEqual(self.control_settings.double_points, message.is_doubled)
+            self.assertEqual(self.control_settings.double_points, message.is_doubled, f"id = {student.pk}")
             
 
     def test_update_alarbaein_alnawawia_view(self):
@@ -116,6 +147,12 @@ class StudentUpdateTestCase(TestCase):
             value = randint(1, 50)
 
             url = reverse("students_update_alarbaein_alnawawia_view", args=[student.pk])
+
+            res = self.client.put(url, {
+                "value": value,
+            }, HTTP_AUTHORIZATION=f"Bearer {self.non_valid_token}", content_type="application/json")
+
+            self.assertEqual(res.status_code, HTTP_403_FORBIDDEN)
 
             res = self.client.put(url, {
                 "value": value,
@@ -173,6 +210,12 @@ class StudentUpdateTestCase(TestCase):
 
             res = self.client.put(url, {
                 "value": value,
+            }, HTTP_AUTHORIZATION=f"Bearer {self.non_valid_token}", content_type="application/json")
+
+            self.assertEqual(res.status_code, HTTP_403_FORBIDDEN)
+
+            res = self.client.put(url, {
+                "value": value,
             }, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
 
             self.assertEqual(res.status_code, HTTP_204_NO_CONTENT)
@@ -216,6 +259,10 @@ class StudentUpdateTestCase(TestCase):
     def test_update_allah_names_view(self):
         for student in self.students[1:]:
             url = reverse("students_update_allah_names_view", args=[student.pk])
+
+            res = self.client.put(url, HTTP_AUTHORIZATION=f"Bearer {self.non_valid_token}")
+
+            self.assertEqual(res.status_code, HTTP_403_FORBIDDEN)
 
             res = self.client.put(url, HTTP_AUTHORIZATION=f"Bearer {self.token}")
 
@@ -263,6 +310,12 @@ class StudentUpdateTestCase(TestCase):
         parts_received = "test"
 
         url = reverse("students_update_parts_received_view", args=[student.pk])
+
+        res = self.client.put(url, {
+            "parts_received": parts_received
+        }, HTTP_AUTHORIZATION=f"Bearer {self.non_valid_token}", content_type="application/json")
+
+        self.assertEqual(res.status_code, HTTP_403_FORBIDDEN)
 
         res = self.client.put(url, {
             "parts_received": parts_received

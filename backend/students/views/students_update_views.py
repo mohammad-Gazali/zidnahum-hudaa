@@ -1,18 +1,18 @@
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
 from students.models import Student, MemorizeMessage, MessageTypeChoice
 from students.serializers import StudentUpdateQMemoSerializer, StudentUpdateQTestSerializer, StudentUpdateAlarbaeinAlnawawiaSerializer, StudentUpdateRiadAlsaalihinSerializer, StudentUpdatePartsReceivedSerializer
 from students.constants import NON, NEW
+from students.permissions import IsMemoGroup, IsHadeethGroup
 from adminstration.models import ControlSettings
 from typing import List
 
 
 class StudentUpdateQMemoView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsMemoGroup]
     http_method_names = ["put"]
 
     @transaction.atomic
@@ -54,9 +54,8 @@ class StudentUpdateQMemoView(APIView):
         return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
 
 
-# TODO: add new protection for q_test update
 class StudentUpdateQTestView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsMemoGroup]
     http_method_names = ["put"]
 
     @transaction.atomic
@@ -99,7 +98,7 @@ class StudentUpdateQTestView(APIView):
 
 
 class StudentUpdateAlarbaeinAlnawawiaView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsHadeethGroup]
     http_method_names = ["put"]
 
     @transaction.atomic
@@ -135,7 +134,7 @@ class StudentUpdateAlarbaeinAlnawawiaView(APIView):
 
 
 class StudentUpdateRiadAlsaalihinView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsHadeethGroup]
     http_method_names = ["put"]
 
     @transaction.atomic
@@ -171,7 +170,7 @@ class StudentUpdateRiadAlsaalihinView(APIView):
 
 
 class StudentUpdateAllahNamesView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsHadeethGroup]
     http_method_names = ["put"]
 
     @transaction.atomic
@@ -197,7 +196,7 @@ class StudentUpdateAllahNamesView(APIView):
 
 
 class StudentUpdatePartsReceivedView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsMemoGroup]
     http_method_names = ["put"]
 
     def put(self, *args, **kwargs):

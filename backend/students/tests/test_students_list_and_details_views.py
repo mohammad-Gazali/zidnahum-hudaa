@@ -1,10 +1,12 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.conf import settings
 from django.utils import timezone
-from rest_framework.status import HTTP_200_OK
-from students.models import Student, StudentCategory, StudentGroup, MemorizeMessage
+from rest_framework.status import HTTP_200_OK, HTTP_403_FORBIDDEN
+from students.models import Student, StudentMasjedChoice, StudentCategory, StudentGroup, MemorizeMessage
+from students.constants import COMING_GROUP
 from comings.models import Coming, ComingCategory
 from adminstration.models import ControlSettings
 from awqaf.models import AwqafTestNoQ, AwqafNoQStudentRelation
@@ -18,9 +20,7 @@ class StudentListAndDetailsTestCase(TestCase):
     def setUp(self):
         User = get_user_model()
 
-        self.control_settings = ControlSettings.objects.create(
-            point_value=10,
-        )
+        self.control_settings = ControlSettings.objects.first()
 
         self.username = "test"
         self.password = "mysecretpassword"
@@ -77,7 +77,8 @@ class StudentListAndDetailsTestCase(TestCase):
         for i in range(1, self.total_count + 1):
             new_student = Student.objects.create(
                 id=i,
-                name=f"test name {i}"
+                name=f"test name {i}",
+                masjed=StudentMasjedChoice.HASANIN,
             )
 
             if i % 3 == 0:
@@ -150,8 +151,12 @@ class StudentListAndDetailsTestCase(TestCase):
 
         res = self.client.get(url, HTTP_AUTHORIZATION=f"Bearer {self.token}")
 
-        self.assertEqual(res.status_code, HTTP_200_OK, res.json())
+        self.assertEqual(res.status_code, HTTP_403_FORBIDDEN, res.json())
 
+        self.user.groups.add(Group.objects.get(name=COMING_GROUP))
+
+        res = self.client.get(url, HTTP_AUTHORIZATION=f"Bearer {self.token}")
+        
         self.assertEqual(res.json()["count"], self.total_count - self.registerd_count)
 
         res_ids = list(map(lambda x: x["id"], res.json()["results"]))
@@ -195,7 +200,8 @@ class StudentListAndDetailsTestCase(TestCase):
 
     def test_student_details_for_nested_relations(self):
         student = Student.objects.create(
-            name="testy testy"
+            name="testy testy",
+            masjed=StudentMasjedChoice.HASANIN,
         )
 
         for _ in range(11):
@@ -281,8 +287,13 @@ class StudentListAndDetailsTestCase(TestCase):
                 student=student,
                 changes=[1],
             )
+            if timezone.now().day <= 15:
+                previous_month = current_month - 1 if current_month != 1 else 12
+                year_for_previous_month = current_year if previous_month != 12 else current_year - 1
+                message.sended_at = timezone.datetime(year=year_for_previous_month, month=previous_month, day=20, tzinfo=pytz.UTC)
+            else:
+                message.sended_at = timezone.datetime(year=current_year, month=current_month, day=20, tzinfo=pytz.UTC)
 
-            message.sended_at = timezone.datetime(year=current_year, month=current_month, day=20, tzinfo=pytz.UTC)
             message.save()
 
             second_half_month_messages.append(message)
@@ -295,7 +306,7 @@ class StudentListAndDetailsTestCase(TestCase):
 
         expected_first_half_month_messages_ids = set(map(lambda m: m.pk, first_half_month_messages))
         res_first_half_month_messages_ids = set(map(lambda m: m["id"], res.json()["first_half_month_messages"]))
-
+        
         expected_second_half_month_messages_ids = set(map(lambda m: m.pk, second_half_month_messages))
         res_second_half_month_messages_ids = set(map(lambda m: m["id"], res.json()["second_half_month_messages"]))
 

@@ -1,8 +1,10 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.contrib.auth.models import Group
 from django.contrib.auth import get_user_model
 from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT, HTTP_401_UNAUTHORIZED, HTTP_403_FORBIDDEN
-from students.models import Student, MemorizeMessage
+from students.models import Student, StudentMasjedChoice, MemorizeMessage
+from students.constants import MEMO_GROUP
 from adminstration.models import ControlSettings
 from typing import List
 from time import sleep
@@ -11,9 +13,7 @@ class MemorizeMessageTestCase(TestCase):
     def setUp(self):
         User = get_user_model()
 
-        self.control_settings = ControlSettings.objects.create(
-            point_value=10,
-        )
+        self.control_settings = ControlSettings.objects.first()
 
         self.username1 = "test1"
         self.password1 = "mysecretpassword1"
@@ -55,7 +55,8 @@ class MemorizeMessageTestCase(TestCase):
         self.token2 = res.json()["access"]
 
         self.student = Student.objects.create(
-            name="test"
+            name="test",
+            masjed=StudentMasjedChoice.HASANIN,
         )
 
         self.messages: List[MemorizeMessage] = []
@@ -71,6 +72,16 @@ class MemorizeMessageTestCase(TestCase):
 
     def test_memorize_message_list_view(self):
         url = reverse("students_message_list_view")
+
+        res1 = self.client.get(url, HTTP_AUTHORIZATION=f"Bearer {self.token1}")
+        res2 = self.client.get(url, HTTP_AUTHORIZATION=f"Bearer {self.token2}")
+
+        # test without group
+        self.assertEqual(res1.status_code, HTTP_403_FORBIDDEN)
+        self.assertEqual(res2.status_code, HTTP_403_FORBIDDEN)
+
+        self.user1.groups.add(Group.objects.get(name=MEMO_GROUP))
+        self.user2.groups.add(Group.objects.get(name=MEMO_GROUP))
 
         res1 = self.client.get(url, HTTP_AUTHORIZATION=f"Bearer {self.token1}")
         res2 = self.client.get(url, HTTP_AUTHORIZATION=f"Bearer {self.token2}")
@@ -97,6 +108,13 @@ class MemorizeMessageTestCase(TestCase):
         failed_res = self.client.delete(url, HTTP_AUTHORIZATION=f"Bearer {self.token2}")
 
         self.assertEqual(failed_res.status_code, HTTP_403_FORBIDDEN)
+
+        res = self.client.delete(url, HTTP_AUTHORIZATION=f"Bearer {self.token1}")
+
+        # test without group
+        self.assertEqual(res.status_code, HTTP_403_FORBIDDEN)
+
+        self.user1.groups.add(Group.objects.get(name=MEMO_GROUP))
 
         res = self.client.delete(url, HTTP_AUTHORIZATION=f"Bearer {self.token1}")
 

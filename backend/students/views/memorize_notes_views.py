@@ -1,11 +1,11 @@
 from rest_framework.generics import CreateAPIView, DestroyAPIView
-from rest_framework.permissions import IsAuthenticated
 from students.serializers import MemorizeNotesCreateSerializer
 from students.models import MemorizeNotes
+from students.permissions import IsMemoGroup
 
 
 class MemorizeNotesCreateView(CreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsMemoGroup]
     serializer_class = MemorizeNotesCreateSerializer
     queryset = MemorizeNotes.objects.all()
 
@@ -17,5 +17,5 @@ class MemorizeNotesCreateView(CreateAPIView):
 
 
 class MemorizeNotesDeleteView(DestroyAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsMemoGroup]
     queryset = MemorizeNotes.objects.all()
