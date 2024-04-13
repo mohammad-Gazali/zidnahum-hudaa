@@ -36,6 +36,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MemorizeMessageTypeService } from '../../../../services/memorize-message-type.service';
 import { DatePipe } from '@angular/common';
 import { ChangesFieldComponent } from '../../../../shared/changes-field/changes-field.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-reports',
@@ -50,6 +51,7 @@ import { ChangesFieldComponent } from '../../../../shared/changes-field/changes-
     MatDatepickerModule,
     MatButtonModule,
     MatTableModule,
+    MatDividerModule,
     StudentSearchComponent,
     ChangesFieldComponent,
     TranslatePipe,
@@ -71,9 +73,9 @@ export class ReportsComponent {
   private students = inject(StudentsService);
   private snackbar = inject(SnackbarService);
   private destroyRef = inject(DestroyRef);
-  private masjed = inject(MasjedService);
   private auth = inject(AuthService);
   private messageType = inject(MemorizeMessageTypeService);
+  public masjed = inject(MasjedService);
   public loading = inject(LOADING);
 
   public selectedStudent = signal<SearchStudent | null>(null);
@@ -97,24 +99,24 @@ export class ReportsComponent {
   });
   public categoryMap = computed(() => {
     const map = new Map<number | undefined, string>();
-    
-    map.set(undefined, '-')
 
-    this.categories()?.forEach(category => {
-      map.set(category.id, category.name)
-    })
-    return map
-  })
+    map.set(undefined, '-');
+
+    this.categories()?.forEach((category) => {
+      map.set(category.id, category.name);
+    });
+    return map;
+  });
   public groupMap = computed(() => {
     const map = new Map<number | undefined, string>();
-    
-    map.set(undefined, '-')
 
-    this.groups()?.forEach(category => {
-      map.set(category.id, category.name)
-    })
-    return map
-  })
+    map.set(undefined, '-');
+
+    this.groups()?.forEach((category) => {
+      map.set(category.id, category.name);
+    });
+    return map;
+  });
   public messageTypeMap = computed(() => {
     const map = new Map<MessageType, string>();
 
@@ -140,7 +142,10 @@ export class ReportsComponent {
   public studentResponse = signal<ReportsStudentResponse | null>(null);
   public categoryOrGroupResponse =
     signal<ReportsStudentCategoryOrGroupResponse | null>(null);
-  public type = this.fb.control<'student' | 'category' | 'group'>('student');
+  public allResponse = signal<ReportsAllResponseItem[] | null>(null);
+  public type = this.fb.control<
+    'student' | 'category' | 'group' | 'all-categories' | 'all-groups'
+  >('student');
   public changesColumnHidden = signal(true);
 
   constructor() {
@@ -166,11 +171,19 @@ export class ReportsComponent {
           this.form.controls.category.updateValueAndValidity();
           this.form.controls.group.addValidators([Validators.required]);
           break;
+        case 'all-categories':
+        case 'all-groups':
+          this.form.controls.masjed.addValidators([Validators.required]);
+          this.form.controls.category.clearValidators();
+          this.form.controls.group.clearValidators();
+          this.form.controls.category.updateValueAndValidity();
+          this.form.controls.group.updateValueAndValidity();
+          break;
       }
     });
   }
 
-  public studentSubmit(excel?: boolean): void {
+  private studentSubmit(excel?: boolean): void {
     const id = this.selectedStudent()!.id;
     if (excel) {
       this.reports
@@ -191,7 +204,7 @@ export class ReportsComponent {
     }
   }
 
-  public categorySubmit(excel?: boolean): void {
+  private categorySubmit(excel?: boolean): void {
     const id = this.form.value.category!;
     const data = {
       ...this.getDurationData(),
@@ -217,7 +230,7 @@ export class ReportsComponent {
     }
   }
 
-  public groupSubmit(excel?: boolean): void {
+  private groupSubmit(excel?: boolean): void {
     const id = this.form.value.group!;
     const data = {
       ...this.getDurationData(),
@@ -242,6 +255,72 @@ export class ReportsComponent {
     }
   }
 
+  private submitAllCategories(excel?: boolean) {
+    const data = {
+      ...this.getDurationData(),
+      masjed: this.form.value.masjed!,
+    };
+
+    if (excel) {
+      this.reports
+        .createAllCategoriesReportExcel(data)
+        .pipe(
+          takeUntilDestroyed(this.destroyRef),
+          finalize(() => this.loading.set(false))
+        )
+        .subscribe((res) => this.downloadBlob(res));
+    } else {
+      this.reports
+        .createAllCategoriesReport(data)
+        .pipe(
+          takeUntilDestroyed(this.destroyRef),
+          finalize(() => this.loading.set(false))
+        )
+        .subscribe((res) => {
+          this.allResponse.set(
+            res.map((item) => ({
+              ...item,
+              id: item.category_id,
+              name: item.category_name,
+            }))
+          );
+        });
+    }
+  }
+
+  private submitAllGroups(excel?: boolean) {
+    const data = {
+      ...this.getDurationData(),
+      masjed: this.form.value.masjed!,
+    };
+
+    if (excel) {
+      this.reports
+        .createAllGroupsReportExcel(data)
+        .pipe(
+          takeUntilDestroyed(this.destroyRef),
+          finalize(() => this.loading.set(false))
+        )
+        .subscribe((res) => this.downloadBlob(res));
+    } else {
+      this.reports
+        .createAllGroupsReport(data)
+        .pipe(
+          takeUntilDestroyed(this.destroyRef),
+          finalize(() => this.loading.set(false))
+        )
+        .subscribe((res) => {
+          this.allResponse.set(
+            res.map((item) => ({
+              ...item,
+              id: item.group_id,
+              name: item.group_name,
+            }))
+          );
+        });
+    }
+  }
+
   submit(excel?: boolean) {
     if (!this.form.valid || this.loading()) return;
 
@@ -257,8 +336,12 @@ export class ReportsComponent {
       this.studentSubmit(excel);
     } else if (this.type.value === 'category') {
       this.categorySubmit(excel);
-    } else {
+    } else if (this.type.value === 'group') {
       this.groupSubmit(excel);
+    } else if (this.type.value === 'all-categories') {
+      this.submitAllCategories(excel);
+    } else if (this.type.value === 'all-groups') {
+      this.submitAllGroups(excel);
     }
   }
 
@@ -285,3 +368,8 @@ export class ReportsComponent {
 }
 
 type MessageType = 1 | 2 | 3 | 4 | 5;
+
+interface ReportsAllResponseItem extends ReportsStudentCategoryOrGroupResponse {
+  id: number;
+  name: string;
+}

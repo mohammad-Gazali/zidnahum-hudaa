@@ -1,9 +1,11 @@
-<mat-radio-group [class.hidden]="studentResponse() || categoryOrGroupResponse()" [formControl]="type">
+<mat-radio-group [class.hidden]="studentResponse() || categoryOrGroupResponse() || allResponse()" [formControl]="type">
     <mat-radio-button value="student">طالب</mat-radio-button>
     <mat-radio-button value="category">فئة</mat-radio-button>
     <mat-radio-button value="group">مجموعة</mat-radio-button>
+    <mat-radio-button value="all-categories">كل الفئات</mat-radio-button>
+    <mat-radio-button value="all-groups">كل المجموعات</mat-radio-button>
 </mat-radio-group>
-<form [class.hidden]="studentResponse() || categoryOrGroupResponse()" [formGroup]="form" (ngSubmit)="submit()">
+<form [class.hidden]="studentResponse() || categoryOrGroupResponse() || allResponse()" [formGroup]="form" (ngSubmit)="submit()">
     @switch (type.value) {
         @case ('student') {
             <app-student-search
@@ -212,6 +214,10 @@
                 </li>
             }
             <li>
+                <span class="label">المسجد</span>
+                <span class="value">{{ masjed.getMasjed(form.value.masjed ?? 1) }}</span>
+            </li>
+            <li>
                 <span class="label">تاريخ البداية</span>
                 <span class="value">{{ form.value.start_date| date: 'yyyy/MM/dd' }}</span>
             </li>
@@ -255,4 +261,106 @@
             </table>
         </div>
     </div>
+}
+
+@if (allResponse(); as response) {
+    <div class="btns-container">
+        <button mat-flat-button color="accent" (click)="submit(true)">
+            التصدير إلى إكسل
+        </button>
+    </div>
+    <div class="info-container">
+        <ul class="extra-info">
+            <li>
+                <span class="label">تقرير</span>
+                <span class="value">
+                    @if (type.value === 'all-categories') {
+                        فئات
+                    } @else {
+                        مجموعات
+                    }
+                </span>
+            </li>
+            <li>
+                <span class="label">المسجد</span>
+                <span class="value">{{ masjed.getMasjed(form.value.masjed ?? 1) }}</span>
+            </li>
+            <li>
+                <span class="label">تاريخ البداية</span>
+                <span class="value">{{ form.value.start_date| date: 'yyyy/MM/dd' }}</span>
+            </li>
+            <li>
+                <span class="label">تاريخ النهاية</span>
+                <span class="value">{{ form.value.end_date | date: 'yyyy/MM/dd' }}</span>
+            </li>
+        </ul>
+    </div>
+
+    @for (item of response; track item.id) {
+        <mat-divider></mat-divider>
+        <div class="info-container">
+            <ul class="total-counts">
+                <li>
+                    <span class="label">
+                        @if (type.value === 'all-categories') {
+                            الفئة
+                        } @else {
+                            المجموعة
+                        }
+                    </span>
+                    <span class="value">{{ item.name }}</span>
+                </li>
+                <li>
+                    <span class="label">صفحات التسميع</span>
+                    <span class="value">{{ item.total_memo }}</span>
+                </li>
+                <li>
+                    <span class="label">صفحات التسميع</span>
+                    <span class="value">{{ item.total_memo }}</span>
+                </li>
+                <li>
+                    <span class="label">صفحات السبر</span>
+                    <span class="value">{{ item.total_test }}</span>
+                </li>
+                <li>
+                    <span class="label">كلي الصفحات</span>
+                    <span class="value">{{ item.total }}</span>
+                </li>
+            </ul>
+        </div>
+        <div class="mat-elevation-z8">
+            <div class="responsive-container">
+                <table class="mat-mdc-table mdc-data-table__table">
+                    <thead role="rowgroup">
+                        <tr class="mat-mdc-header-row">
+                            <th class="mat-mdc-header-cell mdc-data-table__header-cell">معرف الطالب</th>
+                            <th class="mat-mdc-header-cell mdc-data-table__header-cell">اسم الطالب</th>
+                            <th class="mat-mdc-header-cell mdc-data-table__header-cell">صفحات التسميع</th>
+                            <th class="mat-mdc-header-cell mdc-data-table__header-cell">صفحات السبر</th>
+                            <th class="mat-mdc-header-cell mdc-data-table__header-cell">كلي الصفحات</th>
+                        </tr>
+                    </thead>
+                    <tbody class="mdc-data-table__content" role="rowgroup">
+                        @for (student of item.students; track student.student_id) {
+                            <tr class="mat-mdc-row">
+                                <td class="mat-mdc-cell mdc-data-table__cell">{{ student.student_id }}</td>
+                                <td class="mat-mdc-cell mdc-data-table__cell">{{ student.student_name }}</td>
+                                <td class="mat-mdc-cell mdc-data-table__cell">{{ student.sum_memo }}</td>
+                                <td class="mat-mdc-cell mdc-data-table__cell">{{ student.sum_test }}</td>
+                                <td class="mat-mdc-cell mdc-data-table__cell">{{ student.sum_all }}</td>
+                            </tr>
+                        } @empty {
+                            <tr class="mat-mdc-row">
+                                <td class="mat-mdc-cell no-data-row" [attr.colspan]="6">
+                                    <div>
+                                      {{ 'there is no data' | translate }}
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
 }

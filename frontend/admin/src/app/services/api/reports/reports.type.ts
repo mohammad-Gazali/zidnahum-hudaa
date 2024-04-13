@@ -39,3 +39,13 @@ export interface ReportMemorizeMessage {
   message_type: 1 | 2 | 3 | 4 | 5;
   sended_at: string;
 }
+
+export interface ReportsAllCategoriesResponseItem extends ReportsStudentCategoryOrGroupResponse {
+  category_id: number;
+  category_name: string;
+}
+
+export interface ReportsAllGroupsResponseItem extends ReportsStudentCategoryOrGroupResponse {
+  group_id: number;
+  group_name: string;
+}

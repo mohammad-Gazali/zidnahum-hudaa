@@ -34,3 +34,7 @@ class ReportsStudentCategoryOrGroupResponseSerializer(serializers.Serializer):
     total_memo = serializers.FloatField()
     total_test = serializers.FloatField()
     total = serializers.FloatField()
+
+class ReportsCategoryOrGroupSpecificResponseSerializer(ReportsStudentCategoryOrGroupResponseSerializer):
+    category_id = serializers.IntegerField()
+    category_name = serializers.CharField()

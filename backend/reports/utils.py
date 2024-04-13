@@ -59,6 +59,7 @@ def get_category_or_group_report(category_or_group: StudentCategory | StudentGro
             'sum_all': sum_memo + sum_test,
         }).data)
 
+    students_result.sort(key=lambda x: x['sum_all'], reverse=True)
 
     return ReportsStudentCategoryOrGroupResponseSerializer({
         'students': students_result,
@@ -259,6 +260,124 @@ def excel_category_or_group_report(data, category_or_group_name: str, masjed: in
         sheet.cell(row, 3, sum_memo).alignment = alignment
         sheet.cell(row, 4, sum_test).alignment = alignment
         sheet.cell(row, 5, sum_all).alignment = alignment
+
+    buffer = BytesIO()
+
+    workbook.save(buffer)
+
+    buffer.seek(0)
+
+    return buffer.getvalue()
+
+
+def excel_all_categories_or_groups_report(data, masjed: int, start_date: str, end_date: str, is_category: bool):
+    workbook = Workbook()
+
+    sheet: Worksheet = workbook.active
+
+    sheet.title = 'التقرير'
+
+    alignment = Alignment(horizontal='center', vertical='center') 
+    header_font = Font(bold=True)
+
+    cell = sheet.cell(1, 1, 'تقرير')
+    cell.alignment = alignment
+    cell.font = header_font
+    sheet.cell(1, 2, 'فئات' if is_category else 'مجموعات').alignment = alignment
+
+    cell = sheet.cell(2, 1, 'المسجد')
+    cell.alignment = alignment
+    cell.font = header_font
+    if masjed == StudentMasjedChoice.HASANIN:
+        sheet.cell(2, 2, 'الحسنين').alignment = alignment
+    elif masjed == StudentMasjedChoice.SALAM:
+        sheet.cell(2, 2, 'السلام').alignment = alignment
+    else:
+        sheet.cell(2, 2, 'القزاز').alignment = alignment
+
+    cell = sheet.cell(3, 1, 'تاريخ البداية')
+    cell.alignment = alignment
+    cell.font = header_font
+    sheet.cell(3, 2, start_date).alignment = alignment
+
+    cell = sheet.cell(4, 1, 'تاريخ النهاية')
+    cell.alignment = alignment
+    cell.font = header_font
+    sheet.cell(4, 2, end_date).alignment = alignment
+
+    details_cell_start = 6
+
+    for one_data in data:
+        cell = sheet.cell(details_cell_start, 1, 'الفئة' if is_category else 'المجموعة')
+        cell.alignment = alignment
+        cell.font = header_font
+
+        cell = sheet.cell(details_cell_start, 2, one_data['category_name' if is_category else 'group_name'])
+        cell.alignment = alignment
+
+        cell = sheet.cell(details_cell_start + 1, 1, 'صفحات التسميع')
+        cell.alignment = alignment
+        cell.font = header_font
+
+        cell = sheet.cell(details_cell_start + 1, 2, one_data['total_memo'])
+        cell.alignment = alignment
+
+        cell = sheet.cell(details_cell_start + 2, 1, 'صفحات السبر')
+        cell.alignment = alignment
+        cell.font = header_font
+
+        cell = sheet.cell(details_cell_start + 2, 2, one_data['total_test'])
+        cell.alignment = alignment
+
+        cell = sheet.cell(details_cell_start + 3, 1, 'كلي الصفحات')
+        cell.alignment = alignment
+        cell.font = header_font
+
+        cell = sheet.cell(details_cell_start + 3, 2, one_data['total'])
+        cell.alignment = alignment
+
+        cell = sheet.cell(details_cell_start + 4, 1, 'معرف الطالب')
+        cell.alignment = alignment
+        cell.font = header_font
+
+        cell = sheet.cell(details_cell_start + 4, 2, 'اسم الطالب')
+        cell.alignment = alignment
+        cell.font = header_font
+
+        cell = sheet.cell(details_cell_start + 4, 3, 'صفحات التسميع')
+        cell.alignment = alignment
+        cell.font = header_font
+
+        cell = sheet.cell(details_cell_start + 4, 4, 'صفحات السبر')
+        cell.alignment = alignment
+        cell.font = header_font
+
+        cell = sheet.cell(details_cell_start + 4, 5, 'كلي الصفحات')
+        cell.alignment = alignment
+        cell.font = header_font
+
+        for row, student in enumerate(one_data['students'], details_cell_start + 5):
+            student_id = student['student_id']
+            student_name = student['student_name']
+            sum_memo = student['sum_memo']
+            sum_test = student['sum_test']
+            sum_all = student['sum_all']
+
+            sheet.column_dimensions['A'].width = 20
+            sheet.column_dimensions['B'].width = 24
+            sheet.column_dimensions['C'].width = 12
+            sheet.column_dimensions['D'].width = 12
+            sheet.column_dimensions['E'].width = 12
+
+            sheet.cell(row, 1, student_id).alignment = alignment
+            sheet.cell(row, 2, student_name).alignment = alignment
+            sheet.cell(row, 3, sum_memo).alignment = alignment
+            sheet.cell(row, 4, sum_test).alignment = alignment
+            sheet.cell(row, 5, sum_all).alignment = alignment
+
+            details_cell_start += 1
+
+        details_cell_start += 7
 
     buffer = BytesIO()
 

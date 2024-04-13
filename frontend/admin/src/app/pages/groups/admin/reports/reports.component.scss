@@ -83,9 +83,8 @@ form {
   gap: 1rem;
   flex-wrap: wrap;
   margin-top: 1rem;
-  align-items: center;
 
-  > * {
+  *:not(span) {
     flex-grow: 1;
   }
 }
@@ -147,4 +146,8 @@ form {
       background-color: var(--mat-table-background-color);
     }
   }
+}
+
+mat-divider {
+  margin: 2rem 0;
 }
