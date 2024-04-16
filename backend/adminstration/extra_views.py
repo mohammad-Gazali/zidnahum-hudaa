@@ -6,7 +6,8 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
 from drf_yasg.utils import swagger_auto_schema
-from adminstration.extra_serializers import AddAwqafTestNoQRequestSerailizer, AddAwqafTestQRequestSerializer, AddMoneyDeletingNormalRequestSerailizer, AddMoneyDeletingCategoryRequestSerailizer, ControlSettingsSerializer
+from adminstration.extra_serializers import AddAwqafTestNoQRequestSerailizer, AddAwqafTestQRequestSerializer, AddMoneyDeletingNormalRequestSerailizer, AddMoneyDeletingCategoryRequestSerailizer, ControlSettingsSerializer, StatisticsRequestSerializer, StatisticsResponseSerializer
+from adminstration.extra_utils import get_students_memo, get_students_test, get_students_awqaf_test, get_students_awqaf_test_looking, get_students_awqaf_test_explaining, get_active_students
 from adminstration.models import ControlSettings
 from awqaf.models import AwqafNoQStudentRelation
 from students.models import Student
@@ -114,5 +115,54 @@ class ControlSettingsReadUpdateView(APIView):
 
         return Response({ "detail": serializer.errors }, HTTP_400_BAD_REQUEST)
 
+#! important TODO: test
 class StatisticsView(APIView):
-    pass
+    permission_classes = [IsAdminUser]
+    http_method_names = ["post"]
+
+    @swagger_auto_schema(request_body=StatisticsRequestSerializer, responses={
+        HTTP_200_OK: StatisticsResponseSerializer,
+    })
+    def post(self, *args, **kwargs):
+        serializer = StatisticsRequestSerializer(data=self.request.data)
+
+        if serializer.is_valid():
+            start_date = serializer.validated_data.get('start_date', None)
+            end_date = serializer.validated_data.get('end_date', None)
+            memo = serializer.validated_data['memo']
+            test = serializer.validated_data['test']
+            awqaf_test = serializer.validated_data['awqaf_test']
+            awqaf_test_looking = serializer.validated_data['awqaf_test_looking']
+            awqaf_test_explaining = serializer.validated_data['awqaf_test_explaining']
+            active_students = serializer.validated_data['active_students']
+            
+            result_dict = {
+                'memo': None,
+                'test': None,
+                'awqaf_test': None,
+                'awqaf_test_looking': None,
+                'awqaf_test_explaining': None,
+                'active_students': None,
+            }
+
+            if memo:
+                result_dict['memo'] = get_students_memo(start_date, end_date)
+            
+            if test:
+                result_dict['test'] = get_students_test(start_date, end_date)
+
+            if awqaf_test:
+                result_dict['awqaf_test'] = get_students_awqaf_test()
+
+            if awqaf_test_looking:
+                result_dict['awqaf_test_looking'] = get_students_awqaf_test_looking()
+
+            if awqaf_test_explaining:
+                result_dict['awqaf_test_explaining'] = get_students_awqaf_test_explaining()
+
+            if active_students:
+                result_dict['active_students'] = get_active_students(start_date, end_date)
+
+            return Response(result_dict, HTTP_200_OK)
+
+        return Response({ "detail": serializer.errors }, HTTP_400_BAD_REQUEST)
