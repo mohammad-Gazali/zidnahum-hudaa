@@ -1,5 +1,7 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import {
   MAT_DATE_LOCALE,
@@ -12,11 +14,9 @@ import { MatCardModule } from '@angular/material/card';
 import { finalize } from 'rxjs';
 import { ExtraService } from '../../../../services/api/admin/services';
 import { LOADING } from '../../../../tokens/loading.token';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { StatisticsResponse } from '../../../../services/api/admin/models';
 import { TranslatePipe } from '../../../../pipes/translate.pipe';
 import { MasjedService } from '../../../../services/masjed.service';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-statistics',
