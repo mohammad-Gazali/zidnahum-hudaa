@@ -1,0 +1,48 @@
+<mat-card [class.hidden]="response()">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field>
+            <mat-label>فترة الإحصائية</mat-label>
+            <mat-date-range-input [rangePicker]="rangePicker">
+                <input [formControl]="form.controls.start_date" matStartDate placeholder="تاريخ البداية">
+                <input [formControl]="form.controls.end_date" matEndDate placeholder="تاريخ النهاية">
+            </mat-date-range-input>
+            <mat-date-range-picker #rangePicker></mat-date-range-picker>
+            <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
+            <mat-hint>ملاحظة: وقت النهاية غير مضمن, كما أن هذه المدة لا أثر لها في سبر الأوقاف</mat-hint>
+        </mat-form-field>
+        <div class="checkboxs-container">
+            <mat-checkbox [formControl]="form.controls.memo">التسميع</mat-checkbox>
+            <mat-checkbox [formControl]="form.controls.test">السبر</mat-checkbox>
+            <mat-checkbox [formControl]="form.controls.awqaf_test">سبر الأوقاف</mat-checkbox>
+            <mat-checkbox [formControl]="form.controls.awqaf_test_looking">سبر الأوقاف نظراً</mat-checkbox>
+            <mat-checkbox [formControl]="form.controls.awqaf_test_explaining">سبر الأوقاف تفسيراً</mat-checkbox>
+            <mat-checkbox [formControl]="form.controls.active_students">الطلاب المدوامين</mat-checkbox>
+        </div>
+        <button [disabled]="loading()" mat-flat-button color="primary">
+            إنشاء الإحصائية
+        </button>
+    </form>
+</mat-card>
+<mat-card class="dates-card" [class.hidden]="!response()">
+    {{ (form.value.start_date | date: 'yyyy/MM/dd') || 'بداية الدورة' }} -
+    {{ (form.value.end_date | date: 'yyyy/MM/dd') || 'الوقت الحالي' }}
+</mat-card>
+<div class="response-cards-container">
+    @if (response(); as response) {
+        @for (item of responseToArray(response); track item.name) {
+            <mat-card>
+                <h2>
+                    {{ item.name | translate }}
+                </h2>
+                <div class="masjed-statistics-container">
+                    @for (number of item.value; track number) {
+                        <div class="bg-primary">
+                            <h3>{{ getMasjed($any($index + 1)) }}</h3>
+                            <span>{{ number }}</span>
+                        </div>
+                    }
+                </div>
+            </mat-card>
+        }
+    }
+</div>

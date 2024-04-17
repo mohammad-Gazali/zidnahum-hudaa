@@ -175,6 +175,15 @@ export class TranslateService {
         // money deleting
         this.translateMap.set('money-deleting', 'الغرامة المالية');
         this.translateMap.set('active_to_points', 'مخصومة من النقاط');
+
+
+        // statistics
+        this.translateMap.set('memo', 'التسميع');
+        this.translateMap.set('test', 'السبر');
+        this.translateMap.set('awqaf_test', 'سبر الأوقاف');
+        this.translateMap.set('awqaf_test_looking', 'سبر الأوقاف نظراً');
+        this.translateMap.set('awqaf_test_explaining', 'سبر الأوقاف تفسيراً');
+        this.translateMap.set('active_students', 'الطلاب المدوامين');
     }
 
     translate(value: string): string {

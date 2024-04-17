@@ -149,7 +149,7 @@ class StatisticsView(APIView):
                 result_dict['memo'] = get_students_memo(start_date, end_date)
             
             if test:
-                result_dict['test'] = get_students_test(start_date, end_date)
+                result_dict['test'] = list(map(lambda x: x / 20, get_students_test(start_date, end_date)))
 
             if awqaf_test:
                 result_dict['awqaf_test'] = get_students_awqaf_test()

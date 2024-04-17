@@ -1,0 +1,71 @@
+mat-card {
+    padding: 1rem;
+}
+
+form {
+    display: grid;
+    gap: 1rem;
+
+    button {
+        width: fit-content;
+    }
+
+    mat-form-field {
+        max-width: 400px;
+    }
+
+    .checkboxs-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        width: fit-content;
+        column-gap: 1rem;
+        margin-top: 1rem;
+    }
+}
+
+.dates-card {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.response-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+
+    mat-card {
+        h2 {
+            text-align: center;
+        }
+
+        .masjed-statistics-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+
+            div {
+                font-weight: 300;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                width: 8rem;
+                height: 8rem;
+
+                h3 {
+                    font-size: 1.25rem;
+                    font-weight: 300;
+                }
+
+                span {
+                    font-size: 1.5rem;
+                }
+            }
+        }
+    }
+}

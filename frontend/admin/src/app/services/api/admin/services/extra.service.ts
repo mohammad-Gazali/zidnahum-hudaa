@@ -12,6 +12,8 @@ import { AddAwqafTestQRequest } from '../models/add-awqaf-test-qrequest';
 import { AddMoneyDeletingCategoryRequestSerailizer } from '../models/add-money-deleting-category-request-serailizer';
 import { AddMoneyDeletingNormalRequestSerailizer } from '../models/add-money-deleting-normal-request-serailizer';
 import { ControlSettings } from '../models/control-settings';
+import { StatisticsResponse } from '../models/statistics-response';
+import { StatisticsRequest } from '../models/statistics-request';
 @Injectable({
   providedIn: 'root',
 })
@@ -22,6 +24,7 @@ class ExtraService extends __BaseService {
   static readonly extraAddMoneyDeletingNormalCreatePath = '/extra/add-money-deleting-normal';
   static readonly extraControlSettingsListPath = '/extra/control-settings';
   static readonly extraControlSettingsUpdatePath = '/extra/control-settings';
+  static readonly extraStatisticsCreatePath = '/extra/statistics';
 
   constructor(
     config: __Configuration,
@@ -222,6 +225,40 @@ class ExtraService extends __BaseService {
   extraControlSettingsUpdate(data: ControlSettings): __Observable<ControlSettings> {
     return this.extraControlSettingsUpdateResponse(data).pipe(
       __map(_r => _r.body as ControlSettings)
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  extraStatisticsCreateResponse(data: StatisticsRequest): __Observable<__StrictHttpResponse<StatisticsResponse>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/extra/statistics`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<StatisticsResponse>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  extraStatisticsCreate(data: StatisticsRequest): __Observable<StatisticsResponse> {
+    return this.extraStatisticsCreateResponse(data).pipe(
+      __map(_r => _r.body as StatisticsResponse)
     );
   }
 }

@@ -21,6 +21,8 @@ export { AddAwqafTestQRequest } from './models/add-awqaf-test-qrequest';
 export { AddMoneyDeletingCategoryRequestSerailizer } from './models/add-money-deleting-category-request-serailizer';
 export { AddMoneyDeletingNormalRequestSerailizer } from './models/add-money-deleting-normal-request-serailizer';
 export { ControlSettings } from './models/control-settings';
+export { StatisticsRequest } from './models/statistics-request';
+export { StatisticsResponse } from './models/statistics-response';
 export { AssetFileList } from './models/asset-file-list';
 export { AssetFileCreate } from './models/asset-file-create';
 export { AssetsCategoryList } from './models/assets-category-list';

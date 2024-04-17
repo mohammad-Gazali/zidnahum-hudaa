@@ -37,6 +37,7 @@ import { MemorizeMessageTypeService } from '../../../../services/memorize-messag
 import { DatePipe } from '@angular/common';
 import { ChangesFieldComponent } from '../../../../shared/changes-field/changes-field.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatCard } from '@angular/material/card';
 
 @Component({
   selector: 'app-reports',
@@ -52,6 +53,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatButtonModule,
     MatTableModule,
     MatDividerModule,
+    MatCard,
     StudentSearchComponent,
     ChangesFieldComponent,
     TranslatePipe,

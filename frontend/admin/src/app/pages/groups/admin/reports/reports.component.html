@@ -1,90 +1,92 @@
-<mat-radio-group [class.hidden]="studentResponse() || categoryOrGroupResponse() || allResponse()" [formControl]="type">
-    <mat-radio-button value="student">طالب</mat-radio-button>
-    <mat-radio-button value="category">فئة</mat-radio-button>
-    <mat-radio-button value="group">مجموعة</mat-radio-button>
-    <mat-radio-button value="all-categories">كل الفئات</mat-radio-button>
-    <mat-radio-button value="all-groups">كل المجموعات</mat-radio-button>
-</mat-radio-group>
-<form [class.hidden]="studentResponse() || categoryOrGroupResponse() || allResponse()" [formGroup]="form" (ngSubmit)="submit()">
-    @switch (type.value) {
-        @case ('student') {
-            <app-student-search
-            (studentChoose)="selectedStudent.set($event)"
-            [removeResultOnChoose]="true"
-            ></app-student-search>
-            @if (selectedStudent(); as student) {
-                <div class="chips-container">
-                    <mat-chip-row (removed)="removeStudent()">
-                        {{ student.id }} - {{ student.name }}
-                        <button matChipRemove>
-                            <mat-icon>close</mat-icon>
-                        </button>
-                    </mat-chip-row>    
-                </div>
-            }
-    
-        } @case ('category') {
-            @if (categories(); as categories) {
-                <mat-form-field>
-                    <mat-label>الفئة</mat-label>
-                    <mat-select [formControl]="form.controls.category">
-                        @for (category of categories; track category.id) {
-                            <mat-option [value]="category.id">
-                                {{ category.name }}
-                            </mat-option>
-                        }
-                    </mat-select>
-                    <mat-error>{{ 'this field is required' | translate }}</mat-error>
-                </mat-form-field>
-            }
-    
-        } @case ('group') {
-            @if (groups(); as groups) {
-                <mat-form-field>
-                    <mat-label>المجموعة</mat-label>
-                    <mat-select [formControl]="form.controls.group">
-                        @for (group of groups; track group.id) {
-                            <mat-option [value]="group.id">
-                                {{ group.name }}
-                            </mat-option>
-                        }
-                    </mat-select>
-                    <mat-error>{{ 'this field is required' | translate }}</mat-error>
-                </mat-form-field>
-            }
-    
-        }
-    }
-    @if (type.value !== 'student') {
-        <mat-form-field>
-            <mat-label>المسجد</mat-label>
-            <mat-select [formControl]="form.controls.masjed">
-                @if (masjeds(); as masjeds) {
-                    @for (masjed of masjeds; track masjed.id) {
-                        <mat-option [value]="masjed.id">
-                            {{ masjed.name }}
-                        </mat-option>
-                    }
+<mat-card [class.hidden]="studentResponse() || categoryOrGroupResponse() || allResponse()">
+    <mat-radio-group [formControl]="type">
+        <mat-radio-button value="student">طالب</mat-radio-button>
+        <mat-radio-button value="category">فئة</mat-radio-button>
+        <mat-radio-button value="group">مجموعة</mat-radio-button>
+        <mat-radio-button value="all-categories">كل الفئات</mat-radio-button>
+        <mat-radio-button value="all-groups">كل المجموعات</mat-radio-button>
+    </mat-radio-group>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+        @switch (type.value) {
+            @case ('student') {
+                <app-student-search
+                (studentChoose)="selectedStudent.set($event)"
+                [removeResultOnChoose]="true"
+                ></app-student-search>
+                @if (selectedStudent(); as student) {
+                    <div class="chips-container">
+                        <mat-chip-row (removed)="removeStudent()">
+                            {{ student.id }} - {{ student.name }}
+                            <button matChipRemove>
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-chip-row>    
+                    </div>
                 }
-            </mat-select>
+        
+            } @case ('category') {
+                @if (categories(); as categories) {
+                    <mat-form-field>
+                        <mat-label>الفئة</mat-label>
+                        <mat-select [formControl]="form.controls.category">
+                            @for (category of categories; track category.id) {
+                                <mat-option [value]="category.id">
+                                    {{ category.name }}
+                                </mat-option>
+                            }
+                        </mat-select>
+                        <mat-error>{{ 'this field is required' | translate }}</mat-error>
+                    </mat-form-field>
+                }
+        
+            } @case ('group') {
+                @if (groups(); as groups) {
+                    <mat-form-field>
+                        <mat-label>المجموعة</mat-label>
+                        <mat-select [formControl]="form.controls.group">
+                            @for (group of groups; track group.id) {
+                                <mat-option [value]="group.id">
+                                    {{ group.name }}
+                                </mat-option>
+                            }
+                        </mat-select>
+                        <mat-error>{{ 'this field is required' | translate }}</mat-error>
+                    </mat-form-field>
+                }
+        
+            }
+        }
+        @if (type.value !== 'student') {
+            <mat-form-field>
+                <mat-label>المسجد</mat-label>
+                <mat-select [formControl]="form.controls.masjed">
+                    @if (masjeds(); as masjeds) {
+                        @for (masjed of masjeds; track masjed.id) {
+                            <mat-option [value]="masjed.id">
+                                {{ masjed.name }}
+                            </mat-option>
+                        }
+                    }
+                </mat-select>
+                <mat-error>{{ 'this field is required' | translate }}</mat-error>
+            </mat-form-field>
+        }
+        <mat-form-field>
+            <mat-label>فترة التقرير</mat-label>
+            <mat-date-range-input [rangePicker]="rangePicker">
+                <input [formControl]="form.controls.start_date" matStartDate placeholder="تاريخ البداية">
+                <input [formControl]="form.controls.end_date" matEndDate placeholder="تاريخ النهاية">
+            </mat-date-range-input>
+            <mat-date-range-picker #rangePicker></mat-date-range-picker>
+            <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
+            <mat-hint>ملاحظة: وقت النهاية غير مضمن</mat-hint>
             <mat-error>{{ 'this field is required' | translate }}</mat-error>
         </mat-form-field>
-    }
-    <mat-form-field>
-        <mat-label>فترة التقرير</mat-label>
-        <mat-date-range-input [rangePicker]="rangePicker">
-            <input [formControl]="form.controls.start_date" matStartDate placeholder="تاريخ البداية">
-            <input [formControl]="form.controls.end_date" matEndDate placeholder="تاريخ النهاية">
-        </mat-date-range-input>
-        <mat-date-range-picker #rangePicker></mat-date-range-picker>
-        <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
-        <mat-hint>ملاحظة: وقت النهاية غير مضمن</mat-hint>
-        <mat-error>{{ 'this field is required' | translate }}</mat-error>
-    </mat-form-field>
-    <button [disabled]="loading()" mat-flat-button color="primary">
-        إنشاء التقرير
-    </button>
-</form>
+        <button [disabled]="loading()" mat-flat-button color="primary">
+            إنشاء التقرير
+        </button>
+    </form>
+</mat-card>
 <mat-table class="hidden">
     <mat-header-row *matHeaderRowDef="[]"></mat-header-row>
 </mat-table>

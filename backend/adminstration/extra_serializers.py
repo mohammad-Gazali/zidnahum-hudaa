@@ -37,8 +37,8 @@ class ControlSettingsSerializer(serializers.ModelSerializer):
 
 
 class StatisticsRequestSerializer(serializers.Serializer):
-    start_date = serializers.DateField(required=False)
-    end_date = serializers.DateField(required=False)
+    start_date = serializers.DateTimeField(required=False)
+    end_date = serializers.DateTimeField(required=False)
     memo = serializers.BooleanField(default=False)
     test = serializers.BooleanField(default=False)
     awqaf_test = serializers.BooleanField(default=False)
@@ -46,14 +46,10 @@ class StatisticsRequestSerializer(serializers.Serializer):
     awqaf_test_explaining = serializers.BooleanField(default=False)
     active_students = serializers.BooleanField(default=False)
 
-
-class StatisticsListField(serializers.ListField):
-    child = serializers.FloatField()
-
 class StatisticsResponseSerializer(serializers.Serializer):
-    memo = StatisticsListField()
-    test = StatisticsListField()
-    awqaf_test = StatisticsListField()
-    awqaf_test_looking = StatisticsListField()
-    awqaf_test_explaining = StatisticsListField()
-    active_students = StatisticsListField()
+    memo = serializers.ListField(child = serializers.FloatField(), required=False)
+    test = serializers.ListField(child = serializers.FloatField(), required=False)
+    awqaf_test = serializers.ListField(child = serializers.FloatField(), required=False)
+    awqaf_test_looking = serializers.ListField(child = serializers.FloatField(), required=False)
+    awqaf_test_explaining = serializers.ListField(child = serializers.FloatField(), required=False)
+    active_students = serializers.ListField(child = serializers.FloatField(), required=False)

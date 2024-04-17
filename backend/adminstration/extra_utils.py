@@ -1,6 +1,5 @@
 from students.models import MemorizeMessage, MessageTypeChoice, StudentMasjedChoice, Student
 from students.constants import NEW
-from comings.models import Coming
 from reports import utils
 
 def get_students_memo(start_date, end_date):
@@ -76,19 +75,19 @@ def get_active_students(start_date, end_date):
 
 def _get_messages_from_dates(messages, start_date, end_date):
     if start_date is not None and end_date is not None:
-        return messages.filter(sended_at__range=[start_date, end_date])
+        return messages.filter(sended_at__date__range=[start_date, end_date])
     elif start_date is not None:
-        return messages.filter(sended_at__gt=start_date)
+        return messages.filter(sended_at__date__gt=start_date)
     elif end_date is not None:
-        return messages.filter(sended_at__lt=end_date)
+        return messages.filter(sended_at__date__lt=end_date)
     return messages
 
 
 def _get_students_from_coming_dates(students, start_date, end_date):
     if start_date is not None and end_date is not None:
-        return students.filter(coming__registered_at__range=[start_date, end_date])
+        return students.filter(coming__registered_at__date__range=[start_date, end_date])
     elif start_date is not None:
-        return students.filter(coming__registered_at__gt=start_date)
+        return students.filter(coming__registered_at__date__gt=start_date)
     elif end_date is not None:
-        return students.filter(coming__registered_at__lt=end_date)
+        return students.filter(coming__registered_at__date__lt=end_date)
     return students
