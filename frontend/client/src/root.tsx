@@ -6,7 +6,9 @@ const Root = () => {
 	return (
 		<ThemeProvider>
 			<Navbar />
-			<Outlet />
+			<div className="px-3 flex flex-1">
+				<Outlet />
+			</div>
 		</ThemeProvider>
 	);
 };

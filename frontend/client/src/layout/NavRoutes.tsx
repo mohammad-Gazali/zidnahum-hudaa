@@ -1,5 +1,5 @@
 import { IconType } from "react-icons";
-import { MdFileCopy, MdNotificationsActive, MdSettings, MdWidgets } from "react-icons/md";
+import { MdFileCopy, MdNotificationsActive, MdSettings, MdWidgets, MdPerson } from "react-icons/md";
 
 export const routes = [
     {
@@ -22,7 +22,12 @@ export const routes = [
         name: "نشاطاتي",
         icon: MdWidgets
     },
+    {
+        link: "/login",
+        name: "تسجيل الدخول",
+        icon: MdPerson,
 
+    }
 ] satisfies {
     link: string;
     name: string;
