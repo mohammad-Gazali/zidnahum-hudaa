@@ -1,0 +1,14 @@
+<form (ngSubmit)="submit()">
+  <mat-form-field>
+    <input
+      [(ngModel)]="search"
+      [ngModelOptions]="{ standalone: true }"
+      matInput
+      placeholder="اكتب اسم الطالب أو معرفه"
+    />
+  </mat-form-field>
+  <button mat-flat-button>
+    بحث
+    <mat-icon iconPositionEnd> person_search </mat-icon>
+  </button>
+</form>

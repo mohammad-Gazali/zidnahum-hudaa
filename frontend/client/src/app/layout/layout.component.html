@@ -1,0 +1,61 @@
+<mat-sidenav-container>
+    <mat-sidenav [hidden]="layout.isSmall$ | async" #sidenav mode="over">
+        <div class="top-section">
+            <button mat-icon-button (click)="layout.toggleTheme()">
+                <mat-icon>
+                    {{ layout.isDarkMode() ? "wb_sunny" : "nights_stay" }}
+                </mat-icon>
+            </button>
+        </div>
+        <mat-nav-list>
+            @for (route of layout.routes; track route.name) {
+                <mat-list-item (click)="sidenav.close()" [routerLink]="route.link" [routerLinkActiveOptions]="route.link === '/' ? { exact: true } : { exact: false }" routerLinkActive="mdc-list-item--activated">
+                    <a matListItemTitle [routerLink]="route.link">{{ route.name }}</a>
+                    <mat-icon matListItemIcon>{{ route.icon }}</mat-icon>
+                </mat-list-item>
+            }
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <mat-toolbar class="bg-surface">
+            @if (router.url === '/') {
+                <img class="logo" [src]="layout.isDarkMode() ? '/assets/logo-dark.svg' : '/assets/logo.svg'" alt="logo">
+            } @else {
+                <button (click)="location.back()" mat-icon-button>
+                    <mat-icon class="mat-icon-rtl-mirror">arrow_back</mat-icon>
+                </button>
+            }
+            <div class="spacer"></div>
+            @if (layout.isSmall$ | async) {
+                <button class="menu-button" (click)="sidenav.toggle()" mat-icon-button>
+                    <mat-icon>menu</mat-icon>
+                </button>
+            } @else {
+                <ul>
+                    @for (route of layout.routes; track route.name) {
+                        <li>
+                            <button [routerLink]="route.link" mat-flat-button>
+                                <mat-icon iconPositionEnd>{{ route.icon }}</mat-icon>
+                                {{ route.name }}
+                            </button>
+                        </li>
+                    }
+                    <li>
+                        <button mat-icon-button (click)="layout.toggleTheme()">
+                            <mat-icon>
+                                {{ layout.isDarkMode() ? "wb_sunny" : "nights_stay" }}
+                            </mat-icon>
+                        </button>
+                    </li>
+                </ul>
+            }
+        </mat-toolbar>
+        <main>
+            @if (loading()) {
+                <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+            } @else {
+                <ng-content></ng-content>
+            }
+        </main>
+    </mat-sidenav-content>
+</mat-sidenav-container>

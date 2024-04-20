@@ -1,0 +1,19 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <mat-form-field>
+        <mat-label>اسم المستخدم</mat-label>
+        <input matInput [formControl]="form.controls.username">
+        <mat-error>
+            هذا الحقل مطلوب
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>كلمة المرور</mat-label>
+        <input matInput [formControl]="form.controls.password" type="password">
+        <mat-error>
+            هذا الحقل مطلوب
+        </mat-error>
+    </mat-form-field>
+    <button mat-flat-button>
+        تسجيل الدخول
+    </button>
+</form>
