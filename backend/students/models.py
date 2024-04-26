@@ -120,7 +120,7 @@ class Student(models.Model):
 class MemorizeNotes(models.Model):
     master = models.ForeignKey(AUTH_USER_MODEL, verbose_name="الأستاذ", on_delete=models.CASCADE, null=True)
     content = models.CharField(max_length=60, verbose_name="المحتوى")
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="اسم الطالب")
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="اسم الطالب", related_name="memo_notes")
     sended_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الإرسال")
 
     def __str__(self):

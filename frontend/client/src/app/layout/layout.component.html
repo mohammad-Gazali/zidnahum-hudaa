@@ -1,10 +1,13 @@
 <mat-sidenav-container>
-    <mat-sidenav [hidden]="layout.isSmall$ | async" #sidenav mode="over">
+    <mat-sidenav position="end" [hidden]="layout.isSmall$ | async" #sidenav mode="over">
         <div class="top-section">
             <button mat-icon-button (click)="layout.toggleTheme()">
                 <mat-icon>
                     {{ layout.isDarkMode() ? "wb_sunny" : "nights_stay" }}
                 </mat-icon>
+            </button>
+            <button mat-icon-button (click)="sidenav.close()">
+                <mat-icon>close</mat-icon>
             </button>
         </div>
         <mat-nav-list>
@@ -17,7 +20,7 @@
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
-        <mat-toolbar class="bg-surface">
+        <mat-toolbar class="bg-surface mat-elevation-z8">
             @if (router.url === '/') {
                 <img class="logo" [src]="layout.isDarkMode() ? '/assets/logo-dark.svg' : '/assets/logo.svg'" alt="logo">
             } @else {
@@ -50,12 +53,11 @@
                 </ul>
             }
         </mat-toolbar>
+        @if (layout.loading()) {
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>   
+        }
         <main>
-            @if (loading()) {
-                <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-            } @else {
-                <ng-content></ng-content>
-            }
+            <ng-content></ng-content>
         </main>
     </mat-sidenav-content>
 </mat-sidenav-container>

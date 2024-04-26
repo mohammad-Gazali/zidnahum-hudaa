@@ -37,7 +37,35 @@ html {
 }
 
 .bg-surface {
-  background-color: mat.get-theme-color($client-theme, surface-container);
+  background-color: mat.get-theme-color($client-theme, surface-container) !important;
+}
+
+.bg-primary {
+  background-color: mat.get-theme-color($client-theme, primary) !important;
+}
+
+.bg-tertiary {
+  background-color: mat.get-theme-color($client-theme, tertiary) !important;
+}
+
+.text-primary {
+  color: mat.get-theme-color($client-theme, primary) !important;
+}
+
+.text-tertiary {
+  color: mat.get-theme-color($client-theme, tertiary) !important;
+}
+
+.text-on-primary {
+  color: mat.get-theme-color($client-theme, on-primary) !important;
+}
+
+.text-on-tertiary {
+  color: mat.get-theme-color($client-theme, on-tertiary) !important;
+}
+
+.tertiary {
+  @include mat.button-color($client-theme, $color-variant: tertiary)
 }
 
 .dark {
@@ -54,7 +82,35 @@ html {
   --client-error-text-color: #fff;
 
   .bg-surface {
-    background-color: mat.get-theme-color($client-dark-theme, surface-container);
+    background-color: mat.get-theme-color($client-dark-theme, surface-container) !important;
+  }
+
+  .bg-primary {
+    background-color: mat.get-theme-color($client-dark-theme, primary) !important;
+  }
+  
+  .bg-tertiary {
+    background-color: mat.get-theme-color($client-dark-theme, tertiary) !important;
+  }
+
+  .text-primary {
+    color: mat.get-theme-color($client-dark-theme, primary) !important;
+  }
+
+  .text-tertiary {
+    color: mat.get-theme-color($client-dark-theme, tertiary) !important;
+  }
+
+  .text-on-primary {
+    color: mat.get-theme-color($client-dark-theme, on-primary) !important;
+  }
+  
+  .text-on-tertiary {
+    color: mat.get-theme-color($client-dark-theme, on-tertiary) !important;
+  }
+
+  .tertiary {
+    @include mat.button-color($client-dark-theme, $color-variant: tertiary)
   }
 }
 
@@ -173,4 +229,8 @@ router-outlet + * {
   &::-webkit-scrollbar-corner {
     display: none;
   }
+}
+
+.font-bold {
+  font-weight: bold;
 }

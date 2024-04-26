@@ -1,0 +1,32 @@
+:host {
+    max-width: 1024px;
+    margin: 0 auto;
+}
+
+.top-section {
+    padding: 1rem;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+mat-progress-spinner {
+    margin: 0 auto;
+}
+
+mat-expansion-panel {
+    margin-top: 1rem;
+    box-shadow: none !important;
+    --mat-expansion-header-indicator-color: currentColor;
+    --mat-expansion-container-shape: 40px;
+}
+
+mat-panel-title {
+    color: inherit;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}

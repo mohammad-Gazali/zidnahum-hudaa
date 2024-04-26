@@ -12,3 +12,87 @@
     <mat-icon iconPositionEnd> person_search </mat-icon>
   </button>
 </form>
+@if (submited()) {
+  @if (response(); as response) {
+    <mat-divider class="section-divider"></mat-divider>
+    <div class="bg-surface text-primary search-results-title">
+      نتائج البحث
+    </div>
+    <div class="card-container">
+      @for (student of response.results; track student.id) {
+        <mat-card>
+          <p class="student-name">{{ student.name }}</p>
+          <ul class="bg-surface info-list">
+            <li>
+              <span class="label">المعرف: </span>
+              <span class="value text-tertiary font-bold">{{ student.id }}</span>
+            </li>
+            <mat-divider></mat-divider>
+            <li>
+              <span class="label">المسجد: </span>
+              <span class="value">{{ student.masjed | masjed }}</span>
+            </li>
+            <mat-divider></mat-divider>
+            <li>
+              <span class="label">الفئة: </span>
+              <span class="value">{{ student.category?.name ?? '-' }}</span>
+            </li>
+            <mat-divider></mat-divider>
+            <li>
+              <span class="label">المجموعة: </span>
+              <span class="value">{{ student.group?.name ?? '-' }}</span>
+            </li>
+            <mat-divider></mat-divider>
+            <li>
+              <span class="label">تاريخ الميلاد: </span>
+              <span class="value" dir="rtl">{{ (student.birthdate | date: 'yyyy-MM-dd') || '-' }}</span>
+            </li>
+            <mat-divider></mat-divider>
+            <li>
+              <span class="label">اسم الأم: </span>
+              <span class="value">{{ student.mother_name ?? '-' }}</span>
+            </li>
+            <mat-divider></mat-divider>
+            <li>
+              <span class="label">الأجزاء المستلمة: </span>
+              <span class="value">{{ student.parts_received || '-' }}</span>
+            </li>
+          </ul>
+          <div class="actions">
+            <button [routerLink]="'/student/' + student.id.toString()" mat-flat-button>
+              عرض التفاصيل
+              <mat-icon iconPositionEnd>info</mat-icon>
+            </button>
+            <button mat-stroked-button>
+              إضافة تسميع أو سبر
+              <mat-icon iconPositionEnd>add_circle</mat-icon>
+            </button>
+            <button mat-stroked-button>
+              إضافة ملاحظة
+              <mat-icon iconPositionEnd>edit_note</mat-icon>
+            </button>
+          </div>
+        </mat-card>
+  
+      } @empty {
+        <p class="not-found">لا يوجد طلاب بهذه التفاصيل</p>
+      }
+    </div>
+    @if (response.results.length < response.count) {
+      <div class="pagination-buttons tertiary">
+        <button 
+        (click)="getStudents(response.previous ?? '')" 
+        mat-flat-button 
+        [disabled]="!response.previous || loading()">
+          الصفحة السابقة
+        </button>
+        <button 
+        (click)="getStudents(response.next ?? '')" 
+        mat-flat-button 
+        [disabled]="!response.next || loading()">
+          الصفحة التالية
+        </button>
+      </div>
+    }
+  }
+}

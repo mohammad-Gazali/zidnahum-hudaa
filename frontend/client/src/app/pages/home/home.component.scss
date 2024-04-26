@@ -5,3 +5,76 @@ form {
     margin: 0 auto;
     --mdc-outlined-text-field-container-shape: 30px;
 }
+
+.section-divider {
+    margin: 2rem 0;
+}
+
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    width: 100%;
+    max-width: 1024px;
+    margin: 0 auto;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+
+    mat-card {
+        padding: 1rem;
+
+        .student-name {
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 1rem;
+
+            .label {
+                font-weight: bold;
+            }
+
+            mat-divider {
+                margin: 0.5rem 0;
+            }
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+    }
+
+    @media (max-width: 1024px) {
+        & {
+            max-width: unset;
+        }
+    }
+}
+
+.pagination-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.search-results-title {
+    font-weight: 500;
+    border-radius: 30px;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem;
+}
+
+.not-found {
+    grid-column: -1 / 1;
+    text-align: center;
+    font-size: 1.6rem;
+}

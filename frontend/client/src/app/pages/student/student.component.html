@@ -1,0 +1,71 @@
+@if (student(); as student) {
+    <div class="top-section bg-surface">
+        <h3>الطالب: {{ student.name }}</h3>
+        <h4 class="text-tertiary">المعرف: {{ student.id }}</h4>
+    </div>
+    <mat-expansion-panel expanded>
+        <mat-expansion-panel-header class="text-on-primary bg-primary">
+            <mat-panel-title>
+                المعلومات الشخصية للطالب 
+                <mat-icon>account_box</mat-icon>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-student-info />
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header class="text-on-tertiary bg-tertiary">
+            <mat-panel-title>
+                آخر نشاطات الطالب
+                <mat-icon>calendar_month</mat-icon>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-student-activities />
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header class="text-on-primary bg-primary">
+            <mat-panel-title>
+                تسميعات الطالب 
+                <mat-icon>contact_page</mat-icon>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-student-memo />
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header class="text-on-tertiary bg-tertiary">
+            <mat-panel-title>
+                سبر الطالب في المسجد 
+                <mat-icon>event_available</mat-icon>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-student-test />
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header class="text-on-primary bg-primary">
+            <mat-panel-title>
+                سبر الطالب في وزارة الأوقاف 
+                <mat-icon>mosque</mat-icon>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-student-awqaf-test />
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header class="text-on-tertiary bg-tertiary">
+            <mat-panel-title>
+                متفرقات 
+                <mat-icon>checklist</mat-icon>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-student-general />
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header class="text-on-primary bg-primary">
+            <mat-panel-title>
+                ملاحظات الطالب 
+                <mat-icon>edit_note</mat-icon>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-student-notes />
+    </mat-expansion-panel>
+} @else {
+    <mat-progress-spinner mode="indeterminate" />
+}

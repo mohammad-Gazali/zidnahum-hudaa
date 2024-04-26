@@ -1,0 +1,45 @@
+/* tslint:disable */
+import { AwqafRelation } from './awqaf-relation';
+import { StudentCategory } from './student-category';
+import { MemorizeMessageForStudent } from './memorize-message-for-student';
+import { StudentGroup } from './student-group';
+import { ComingListForStudent } from './coming-list-for-student';
+import { MemorizeNotesGet } from './memorize-notes-get';
+export interface StudentDetails {
+  address?: null | string;
+  alarbaein_alnawawia_new?: number;
+  alarbaein_alnawawia_old?: number;
+  allah_names_new?: boolean;
+  allah_names_old?: boolean;
+  awqaf_relations: Array<AwqafRelation>;
+  birthdate?: null | string;
+  bring_him?: null | string;
+  category: StudentCategory;
+  cell_phone?: null | string;
+  current_date: string;
+  current_week_messages: Array<MemorizeMessageForStudent>;
+  father_phone?: null | string;
+  father_work?: null | string;
+  first_half_month_messages: Array<MemorizeMessageForStudent>;
+  group: StudentGroup;
+  id?: number;
+  last_comings: Array<ComingListForStudent>;
+  masjed: 1 | 2 | 3;
+  mother_name?: null | string;
+  mother_phone?: null | string;
+  name: string;
+  memo_notes: Array<MemorizeNotesGet>;
+  parts_received?: null | string;
+  previous_week_messages: Array<MemorizeMessageForStudent>;
+  q_awqaf_test?: {};
+  q_awqaf_test_explaining?: {};
+  q_awqaf_test_looking?: {};
+  q_elite_test?: {};
+  q_memorizing?: {};
+  q_test?: {};
+  registered_at?: string;
+  riad_alsaalihin_new?: number;
+  riad_alsaalihin_old?: number;
+  second_half_month_messages: Array<MemorizeMessageForStudent>;
+  static_phone?: null | string;
+}

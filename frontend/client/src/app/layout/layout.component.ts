@@ -8,11 +8,10 @@ import {
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatIcon } from '@angular/material/icon';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatListItem, MatListItemIcon, MatListItemTitle, MatNavList } from '@angular/material/list';
 import { MatDivider } from '@angular/material/divider';
 import { MatButton, MatIconButton } from '@angular/material/button';
-import { LOADING } from '../services/loading.service';
 import { LayoutService } from './layout.service';
 
 @Component({
@@ -28,7 +27,7 @@ import { LayoutService } from './layout.service';
     MatIcon,
     MatButton,
     MatIconButton,
-    MatProgressSpinner,
+    MatProgressBar,
     MatNavList,
     MatListItem,
     MatListItemTitle,
@@ -42,7 +41,6 @@ import { LayoutService } from './layout.service';
 })
 export class LayoutComponent {
   public layout = inject(LayoutService);
-  public loading = inject(LOADING);
   public router = inject(Router);
   public location = inject(Location);
 }

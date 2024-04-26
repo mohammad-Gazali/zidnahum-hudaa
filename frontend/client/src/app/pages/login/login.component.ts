@@ -7,7 +7,7 @@ import {
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
-import { LOADING } from '../../services/loading.service';
+import { LayoutService } from '../../layout/layout.service';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +25,7 @@ import { LOADING } from '../../services/loading.service';
 })
 export class LoginComponent {
   private fb = inject(NonNullableFormBuilder);
-  private loading = inject(LOADING);
+  private loading = inject(LayoutService).loading;
 
   public form = this.fb.group({
     username: this.fb.control('', [Validators.required]),

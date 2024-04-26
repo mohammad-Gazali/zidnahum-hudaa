@@ -1,12 +1,10 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Injectable, inject, signal } from '@angular/core';
-import { ChildrenOutletContexts } from '@angular/router';
 import { map, shareReplay } from 'rxjs';
 
 @Injectable()
 export class LayoutService {
-  private breakpointObserver = inject(BreakpointObserver);
-  private contexts = inject(ChildrenOutletContexts);
+  private breakpointObserver = inject(BreakpointObserver);  
 
   public isSmall$ = this.breakpointObserver.observe('(max-width: 1024px)').pipe(
     map((result) => result.matches),
@@ -76,6 +74,8 @@ export class LayoutService {
       icon: 'person',
     },
   ];
+
+  public loading = signal(false);
 }
 
 interface LayoutRoute {

@@ -1,3 +1,7 @@
+:host {
+    --mat-toolbar-height: 80px;
+}
+
 main {
     position: relative;
     padding: 2rem 1rem;
@@ -5,6 +9,8 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: var(--mat-toolbar-height);
+    margin-bottom: var(--mat-toolbar-height);
 }
 
 mat-sidenav {
@@ -14,7 +20,8 @@ mat-sidenav {
     .top-section {
         display: flex;
         justify-content: space-between;
-        padding: 1rem;
+        padding: 1rem 6px;
+        overflow: hidden;
     }
 }
 
@@ -27,8 +34,15 @@ mat-sidenav-content {
         position: fixed;
         padding-top: 1rem;
         padding-bottom: 1rem;
-        height: 80px;
-        z-index: 1;
+        height: var(--mat-toolbar-height);
+        z-index: 10;
+        box-shadow: 0 3px 1px -2px #0003, 0 2px 2px #00000024, 0 1px 5px #0000001f;
+    }
+
+    mat-progress-bar {
+        position: fixed;
+        top: var(--mat-toolbar-height);
+        z-index: 10;
     }
 }
 
