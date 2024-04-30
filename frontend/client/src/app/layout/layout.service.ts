@@ -6,7 +6,7 @@ import { map, shareReplay } from 'rxjs';
 export class LayoutService {
   private breakpointObserver = inject(BreakpointObserver);  
 
-  public isSmall$ = this.breakpointObserver.observe('(max-width: 1024px)').pipe(
+  public isSmall$ = this.breakpointObserver.observe('(max-width: 1200px)').pipe(
     map((result) => result.matches),
     shareReplay()
   );
@@ -72,6 +72,7 @@ export class LayoutService {
       link: '/login',
       name: 'تسجيل الدخول',
       icon: 'person',
+      nonAuthOnly: true,
     },
   ];
 
@@ -82,5 +83,6 @@ interface LayoutRoute {
   name: string;
   link: string;
   icon: string;
-  nonAuth?: boolean;
+  nonAuthOnly?: boolean;
+  authOnly?: boolean;
 }

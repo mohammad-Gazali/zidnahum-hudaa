@@ -1,11 +1,11 @@
 :host {
-    max-width: 1024px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
 .top-section {
     padding: 1rem;
-    border-radius: 40px;
+    border-radius: 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -21,7 +21,7 @@ mat-expansion-panel {
     margin-top: 1rem;
     box-shadow: none !important;
     --mat-expansion-header-indicator-color: currentColor;
-    --mat-expansion-container-shape: 40px;
+    --mat-expansion-container-shape: 2rem;
 }
 
 mat-panel-title {

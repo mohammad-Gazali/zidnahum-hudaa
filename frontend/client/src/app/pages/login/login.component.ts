@@ -8,6 +8,10 @@ import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { LayoutService } from '../../layout/layout.service';
+import { AuthService } from '../../services/auth.service';
+import { finalize } from 'rxjs';
+import { SnackbarService } from '../../services/snackbar.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +29,10 @@ import { LayoutService } from '../../layout/layout.service';
 })
 export class LoginComponent {
   private fb = inject(NonNullableFormBuilder);
-  private loading = inject(LayoutService).loading;
+  private auth = inject(AuthService);
+  private snackbar = inject(SnackbarService);
+  private router = inject(Router);
+  public loading = inject(LayoutService).loading;
 
   public form = this.fb.group({
     username: this.fb.control('', [Validators.required]),
@@ -34,7 +41,14 @@ export class LoginComponent {
 
   submit() {
     if (this.form.invalid) return;
-    console.log(this.form.getRawValue())
     this.loading.set(true);
+
+    this.auth
+      .login(this.form.getRawValue())
+      .pipe(finalize(() => this.loading.set(false)))
+      .subscribe(() => {
+        this.snackbar.success('تم تسجيل الدخول بنجاح');
+        this.router.navigateByUrl('/');
+      });
   }
 }

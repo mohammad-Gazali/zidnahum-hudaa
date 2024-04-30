@@ -122,6 +122,11 @@ html {
   --client-error-text-color: #fff;
 }
 
+.mat-expansion-panel-body {
+  padding: unset !important;
+  padding-bottom: 1.5rem !important;
+}
+
 * {
   margin: 0;
   padding: 0;

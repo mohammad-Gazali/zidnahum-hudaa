@@ -13,7 +13,7 @@
             هذا الحقل مطلوب
         </mat-error>
     </mat-form-field>
-    <button mat-flat-button>
+    <button [disabled]="loading()" mat-flat-button>
         تسجيل الدخول
     </button>
 </form>

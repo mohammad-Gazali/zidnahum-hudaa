@@ -14,14 +14,14 @@ export interface StudentDetails {
   awqaf_relations: Array<AwqafRelation>;
   birthdate?: null | string;
   bring_him?: null | string;
-  category: StudentCategory;
+  category?: StudentCategory;
   cell_phone?: null | string;
   current_date: string;
   current_week_messages: Array<MemorizeMessageForStudent>;
   father_phone?: null | string;
   father_work?: null | string;
   first_half_month_messages: Array<MemorizeMessageForStudent>;
-  group: StudentGroup;
+  group?: StudentGroup;
   id?: number;
   last_comings: Array<ComingListForStudent>;
   masjed: 1 | 2 | 3;

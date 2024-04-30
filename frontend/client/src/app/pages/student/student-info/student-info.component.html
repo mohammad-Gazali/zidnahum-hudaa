@@ -1,1 +1,28 @@
-<p>student-info works!</p>
+@if (student(); as student) {
+    @if (currentUser()) {
+        <mat-form-field>
+            <mat-label>اسم الأم</mat-label>
+            <input matInput [value]="student.mother_name ?? '-'" readonly type="text">
+        </mat-form-field>
+    }
+    <mat-form-field>
+        <mat-label>المسجد</mat-label>
+        <input matInput [value]="student.masjed | masjed" readonly>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>تاريخ الميلاد</mat-label>
+        <input matInput [value]="student.birthdate ?? '-'" readonly>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>الفئة</mat-label>
+        <input matInput [value]="student.category?.name ?? '-'" readonly>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>المجموعة</mat-label>
+        <input matInput [value]="student.group?.name ?? '-'" readonly>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>الأجزاء المستلمة</mat-label>
+        <input matInput [value]="student.parts_received || '-'" readonly>
+    </mat-form-field>
+}

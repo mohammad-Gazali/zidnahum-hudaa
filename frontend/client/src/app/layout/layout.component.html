@@ -11,10 +11,23 @@
             </button>
         </div>
         <mat-nav-list>
-            @for (route of layout.routes; track route.name) {
-                <mat-list-item (click)="sidenav.close()" [routerLink]="route.link" [routerLinkActiveOptions]="route.link === '/' ? { exact: true } : { exact: false }" routerLinkActive="mdc-list-item--activated">
+            @for (route of routes(); track route.name) {
+                <mat-list-item 
+                (click)="sidenav.close()"
+                [routerLink]="route.link"
+                [routerLinkActiveOptions]="route.link === '/' ? { exact: true } : { exact: false }" 
+                routerLinkActive="mdc-list-item--activated"
+                >
                     <a matListItemTitle [routerLink]="route.link">{{ route.name }}</a>
                     <mat-icon matListItemIcon>{{ route.icon }}</mat-icon>
+                </mat-list-item>
+            }
+            @if (currentUser()) {
+                <mat-list-item
+                (click)="sidenav.close(); logout()"
+                >
+                    <span matListItemTitle>تسجيل خروج</span>
+                    <mat-icon matListItemIcon>logout</mat-icon>
                 </mat-list-item>
             }
         </mat-nav-list>
@@ -28,6 +41,9 @@
                     <mat-icon class="mat-icon-rtl-mirror">arrow_back</mat-icon>
                 </button>
             }
+            @if (currentUser(); as user) {
+                <p class="user">أهلاً {{ user.firstName }}</p>
+            }
             <div class="spacer"></div>
             @if (layout.isSmall$ | async) {
                 <button class="menu-button" (click)="sidenav.toggle()" mat-icon-button>
@@ -35,11 +51,19 @@
                 </button>
             } @else {
                 <ul>
-                    @for (route of layout.routes; track route.name) {
+                    @for (route of routes(); track route.name) {
                         <li>
                             <button [routerLink]="route.link" mat-flat-button>
                                 <mat-icon iconPositionEnd>{{ route.icon }}</mat-icon>
                                 {{ route.name }}
+                            </button>
+                        </li>
+                    }
+                    @if (currentUser()) {
+                        <li>
+                            <button (click)="logout()" mat-flat-button>
+                                <mat-icon iconPositionEnd>logout</mat-icon>
+                                تسجيل الخروج
                             </button>
                         </li>
                     }
