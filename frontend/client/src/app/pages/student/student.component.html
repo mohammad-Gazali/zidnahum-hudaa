@@ -3,69 +3,71 @@
         <h3>الطالب: {{ student.name }}</h3>
         <h4 class="text-tertiary">المعرف: {{ student.id }}</h4>
     </div>
-    <mat-expansion-panel>
-        <mat-expansion-panel-header class="text-on-primary bg-primary">
-            <mat-panel-title>
-                المعلومات الشخصية للطالب 
-                <mat-icon>account_box</mat-icon>
-            </mat-panel-title>
-        </mat-expansion-panel-header>
-        <app-student-info />
-    </mat-expansion-panel>
-    <mat-expansion-panel>
-        <mat-expansion-panel-header class="text-on-tertiary bg-tertiary">
-            <mat-panel-title>
-                آخر نشاطات الطالب
-                <mat-icon>calendar_month</mat-icon>
-            </mat-panel-title>
-        </mat-expansion-panel-header>
-        <app-student-activities />
-    </mat-expansion-panel>
-    <mat-expansion-panel>
-        <mat-expansion-panel-header class="text-on-primary bg-primary">
-            <mat-panel-title>
-                تسميعات الطالب 
-                <mat-icon>contact_page</mat-icon>
-            </mat-panel-title>
-        </mat-expansion-panel-header>
-        <app-student-memo />
-    </mat-expansion-panel>
-    <mat-expansion-panel>
-        <mat-expansion-panel-header class="text-on-tertiary bg-tertiary">
-            <mat-panel-title>
-                سبر الطالب في المسجد 
-                <mat-icon>event_available</mat-icon>
-            </mat-panel-title>
-        </mat-expansion-panel-header>
-        <app-student-test />
-    </mat-expansion-panel>
-    <mat-expansion-panel>
-        <mat-expansion-panel-header class="text-on-primary bg-primary">
-            <mat-panel-title>
-                سبر الطالب في الأوقاف 
-                <mat-icon>mosque</mat-icon>
-            </mat-panel-title>
-        </mat-expansion-panel-header>
-        <app-student-awqaf-test />
-    </mat-expansion-panel>
-    <mat-expansion-panel>
-        <mat-expansion-panel-header class="text-on-tertiary bg-tertiary">
-            <mat-panel-title>
-                متفرقات 
-                <mat-icon>checklist</mat-icon>
-            </mat-panel-title>
-        </mat-expansion-panel-header>
-        <app-student-general />
-    </mat-expansion-panel>
-    <mat-expansion-panel>
-        <mat-expansion-panel-header class="text-on-primary bg-primary">
-            <mat-panel-title>
-                ملاحظات الطالب 
-                <mat-icon>edit_note</mat-icon>
-            </mat-panel-title>
-        </mat-expansion-panel-header>
-        <app-student-notes />
-    </mat-expansion-panel>
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon>account_box</mat-icon>
+                    المعلومات الشخصية للطالب 
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-student-info />
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon>calendar_month</mat-icon>
+                    آخر نشاطات الطالب
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-student-activities />
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon>contact_page</mat-icon>
+                    تسميعات الطالب 
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-student-memo />
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon>event_available</mat-icon>
+                    سبر الطالب في المسجد 
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-student-test />
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon>mosque</mat-icon>
+                    سبر الطالب في الأوقاف 
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-student-awqaf-test />
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon>checklist</mat-icon>
+                    متفرقات 
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-student-general />
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon>edit_note</mat-icon>
+                    ملاحظات الطالب 
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <app-student-notes />
+        </mat-expansion-panel>
+    </mat-accordion>
 } @else {
     <mat-progress-spinner mode="indeterminate" />
 }

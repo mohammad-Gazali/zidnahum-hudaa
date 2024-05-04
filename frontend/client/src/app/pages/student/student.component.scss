@@ -13,20 +13,21 @@
     gap: 1rem;
 }
 
-mat-progress-spinner {
-    margin: 0 auto;
+mat-accordion {
+    margin-top: 2rem;
+    display: block;
 }
 
 mat-expansion-panel {
-    margin-top: 1rem;
-    box-shadow: none !important;
-    --mat-expansion-header-indicator-color: currentColor;
     --mat-expansion-container-shape: 2rem;
 }
 
 mat-panel-title {
-    color: inherit;
     display: flex;
-    justify-content: center;
+    justify-content: start;
     gap: 1rem;
+}
+
+mat-progress-spinner {
+    margin: 0 auto;
 }

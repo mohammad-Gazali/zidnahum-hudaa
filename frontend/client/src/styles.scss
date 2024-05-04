@@ -40,28 +40,12 @@ html {
   background-color: mat.get-theme-color($client-theme, surface-container) !important;
 }
 
-.bg-primary {
-  background-color: mat.get-theme-color($client-theme, primary) !important;
-}
-
-.bg-tertiary {
-  background-color: mat.get-theme-color($client-theme, tertiary) !important;
-}
-
 .text-primary {
   color: mat.get-theme-color($client-theme, primary) !important;
 }
 
 .text-tertiary {
   color: mat.get-theme-color($client-theme, tertiary) !important;
-}
-
-.text-on-primary {
-  color: mat.get-theme-color($client-theme, on-primary) !important;
-}
-
-.text-on-tertiary {
-  color: mat.get-theme-color($client-theme, on-tertiary) !important;
 }
 
 .tertiary {
@@ -85,28 +69,12 @@ html {
     background-color: mat.get-theme-color($client-dark-theme, surface-container) !important;
   }
 
-  .bg-primary {
-    background-color: mat.get-theme-color($client-dark-theme, primary) !important;
-  }
-  
-  .bg-tertiary {
-    background-color: mat.get-theme-color($client-dark-theme, tertiary) !important;
-  }
-
   .text-primary {
     color: mat.get-theme-color($client-dark-theme, primary) !important;
   }
 
   .text-tertiary {
     color: mat.get-theme-color($client-dark-theme, tertiary) !important;
-  }
-
-  .text-on-primary {
-    color: mat.get-theme-color($client-dark-theme, on-primary) !important;
-  }
-  
-  .text-on-tertiary {
-    color: mat.get-theme-color($client-dark-theme, on-tertiary) !important;
   }
 
   .tertiary {
@@ -120,11 +88,6 @@ html {
 
   --client-success-text-color: #fff;
   --client-error-text-color: #fff;
-}
-
-.mat-expansion-panel-body {
-  padding: unset !important;
-  padding-bottom: 1.5rem !important;
 }
 
 * {
@@ -148,28 +111,6 @@ a {
   text-decoration: none;
   color: inherit;
 }
-
-.hidden {
-  display: none !important;
-}
-
-// .primary {
-//   color: mat.get-color-from-palette($client-primary) !important;
-// }
-
-// .bg-primary {
-//   background-color: mat.get-color-from-palette($client-primary) !important;
-//   color: white !important;
-// }
-
-// .accent {
-//   color: mat.get-color-from-palette($client-accent) !important;
-// }
-
-// .bg-accent {
-//   background-color: mat.get-color-from-palette($client-accent) !important;
-//   color: black !important;
-// }
 
 .snackbar-success {
   --mdc-snackbar-container-color: var(--client-success-color);

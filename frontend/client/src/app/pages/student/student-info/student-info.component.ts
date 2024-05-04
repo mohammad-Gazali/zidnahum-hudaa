@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { STUDENT } from '../student.token';
 import { AuthService } from '../../../services/auth.service';
 import { MasjedPipe } from '../../../pipes/masjed.pipe';
+import { StudentComponent } from '../student.component';
 
 @Component({
   selector: 'app-student-info',
@@ -22,6 +22,6 @@ import { MasjedPipe } from '../../../pipes/masjed.pipe';
   ],
 })
 export class StudentInfoComponent {
-  public student = inject(STUDENT);
+  public student = inject(StudentComponent).student;
   public currentUser = inject(AuthService).currentUser;
 }
