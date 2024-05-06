@@ -1,0 +1,25 @@
+<div class="bg-surface top-section">
+  <div>
+    <mat-card class="bg-primary-fixed-dim" />
+    <span>يشير إلى السبر الجديد.</span>
+  </div>
+  <div>
+    <mat-card class="bg-tertiary-fixed" />
+    <span>يشير إلى السبر القديم.</span>
+  </div>
+  <div>
+    <mat-card />
+    <span>يشير إلى الأحزاب التي لم تُسبر.</span>
+  </div>
+</div>
+<mat-divider />
+<div class="cards-container">
+    @for (item of $any(student()?.q_elite_test); track $index) {
+        <mat-card
+        [class.bg-primary-fixed-dim]="item === MemoItemType.NEW"
+        [class.bg-tertiary-fixed]="item === MemoItemType.OLD"
+        >
+            الحزب {{ $index + 1 }}
+        </mat-card>
+    }
+</div>

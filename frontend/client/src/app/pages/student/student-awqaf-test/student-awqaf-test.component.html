@@ -1,1 +1,72 @@
-<p>student-awqaf-test works!</p>
+<div class="bg-surface top-section">
+  <div>
+    <mat-card class="bg-primary-fixed-dim" />
+    <span>يشير إلى السبر الجديد.</span>
+  </div>
+  <div>
+    <mat-card class="bg-tertiary-fixed" />
+    <span>يشير إلى السبر القديم.</span>
+  </div>
+  <div>
+    <mat-card />
+    <span>يشير إلى الأجزاء التي لم تُسبر.</span>
+  </div>
+</div>
+<mat-divider />
+<mat-card class="bg-surface-container-highest section-card">
+    سبر القرآن الكريم غيباً
+</mat-card>
+<div class="cards-container">
+    @for (item of $any(student()?.q_awqaf_test); track $index) {
+        <mat-card
+        [class.bg-primary-fixed-dim]="item === MemoItemType.NEW"
+        [class.bg-tertiary-fixed]="item === MemoItemType.OLD"
+        >
+            الجزء {{ $index + 1 }}
+        </mat-card>
+    }
+</div>
+
+<mat-card class="bg-surface-container-highest section-card">
+    سبر القرآن الكريم نظراً
+</mat-card>
+<div class="cards-container">
+    @for (item of $any(student()?.q_awqaf_test_looking); track $index) {
+        <mat-card
+        [class.bg-primary-fixed-dim]="item === MemoItemType.NEW"
+        [class.bg-tertiary-fixed]="item === MemoItemType.OLD"
+        >
+            الجزء {{ $index + 1 }}
+        </mat-card>
+    }
+</div>
+
+<mat-card class="bg-surface-container-highest section-card">
+    سبر التفسير الجامع للقرآن الكريم
+</mat-card>
+<div class="cards-container">
+    @for (item of $any(student()?.q_awqaf_test_explaining); track $index) {
+        <mat-card
+        [class.bg-primary-fixed-dim]="item === MemoItemType.NEW"
+        [class.bg-tertiary-fixed]="item === MemoItemType.OLD"
+        >
+            الجزء {{ $index + 1 }}
+        </mat-card>
+    }
+</div>
+
+<mat-card class="bg-surface-container-highest section-card">
+    سبر المواد العلمية
+</mat-card>
+<div class="no-q-cards-container">
+    @if (awqafTestNoQ(); as awqafTestNoQ) {
+        @for (test of awqafTestNoQ; track test.id) {
+            <mat-card
+            [class.bg-primary-fixed-dim]="containsNewRelation(student()?.awqaf_relations ?? [], test.id)"
+            [class.bg-tertiary-fixed]="containsOldRelation(student()?.awqaf_relations ?? [], test.id)"
+            >
+                {{ test.name }}
+            </mat-card>
+        }
+    }
+</div>

@@ -7,10 +7,10 @@ import { ComingListForStudent } from './coming-list-for-student';
 import { MemorizeNotesGet } from './memorize-notes-get';
 export interface StudentDetails {
   address?: null | string;
-  alarbaein_alnawawia_new?: number;
-  alarbaein_alnawawia_old?: number;
-  allah_names_new?: boolean;
-  allah_names_old?: boolean;
+  alarbaein_alnawawia_new: number;
+  alarbaein_alnawawia_old: number;
+  allah_names_new: boolean;
+  allah_names_old: boolean;
   awqaf_relations: Array<AwqafRelation>;
   birthdate?: null | string;
   bring_him?: null | string;
@@ -38,8 +38,8 @@ export interface StudentDetails {
   q_memorizing?: {};
   q_test?: {};
   registered_at?: string;
-  riad_alsaalihin_new?: number;
-  riad_alsaalihin_old?: number;
+  riad_alsaalihin_new: number;
+  riad_alsaalihin_old: number;
   second_half_month_messages: Array<MemorizeMessageForStudent>;
   static_phone?: null | string;
 }

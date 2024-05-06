@@ -17,10 +17,23 @@
 mat-accordion {
     margin-top: 2rem;
     display: block;
+
+    @media (max-width: 600px) {
+        & {
+            margin: 0 -16px;
+            margin-top: 2rem;
+        }
+    }
 }
 
 mat-expansion-panel {
     --mat-expansion-container-shape: 2rem;
+
+    @media (max-width: 600px) {
+        & {
+            --mat-expansion-container-shape: 0;
+        }
+    }
 }
 
 mat-panel-title {

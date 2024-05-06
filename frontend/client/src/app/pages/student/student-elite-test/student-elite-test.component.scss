@@ -28,16 +28,16 @@ mat-divider {
     margin: 2rem 0;
 }
 
-.group + .group {
-    margin-top: 1rem;
-}
+.cards-container {
+    margin-bottom: 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
 
-.group mat-card {
-    padding: 0.5rem;
-    text-align: center;
-}
-
-p {
-    margin-top: 1rem;
-    text-align: center;
+    mat-card {
+        text-align: center;
+        padding: 0.5rem 0;
+        width: 5rem;
+        flex-grow: 1;
+    }
 }

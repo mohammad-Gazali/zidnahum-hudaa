@@ -11,4 +11,4 @@ class AwqafTestNoQSerializer(serializers.ModelSerializer):
 class AwqafRelationSerializer(serializers.ModelSerializer):
     class Meta:
         model = AwqafNoQStudentRelation
-        fields = ["id", "test"]
+        exclude = ["student"]

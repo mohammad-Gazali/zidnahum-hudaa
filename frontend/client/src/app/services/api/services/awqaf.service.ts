@@ -40,7 +40,9 @@ class AwqafService extends __BaseService {
         return _r as __StrictHttpResponse<Array<AwqafTestNoQ>>;
       })
     );
-  }  awqafTestNoQList(): __Observable<Array<AwqafTestNoQ>> {
+  }  
+  
+  awqafTestNoQList(): __Observable<Array<AwqafTestNoQ>> {
     return this.awqafTestNoQListResponse().pipe(
       __map(_r => _r.body as Array<AwqafTestNoQ>)
     );

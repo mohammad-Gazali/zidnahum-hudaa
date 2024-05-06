@@ -1,5 +1,6 @@
 /* tslint:disable */
 export interface AwqafRelation {
-  id?: number;
+  id: number;
   test: number;
+  is_old: boolean;
 }

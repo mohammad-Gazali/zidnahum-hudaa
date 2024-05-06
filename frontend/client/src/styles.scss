@@ -50,6 +50,10 @@ html {
   color: mat.get-theme-color($client-theme, on-tertiary-fixed) !important;
 }
 
+.bg-surface-container-highest {
+  background-color: mat.get-theme-color($client-theme, surface-container-highest) !important;
+}
+
 .text-primary {
   color: mat.get-theme-color($client-theme, primary) !important;
 }
@@ -58,8 +62,20 @@ html {
   color: mat.get-theme-color($client-theme, tertiary) !important;
 }
 
+.text-outline {
+  color: mat.get-theme-color($client-theme, outline) !important;
+}
+
+.border-color-outline {
+  border-color: mat.get-theme-color($client-theme, outline) !important;
+}
+
 .tertiary {
   @include mat.button-color($client-theme, $color-variant: tertiary)
+}
+
+.error {
+  @include mat.button-color($client-theme, $color-variant: error)
 }
 
 .dark {
@@ -89,6 +105,10 @@ html {
     color: mat.get-theme-color($client-dark-theme, on-tertiary-fixed) !important;
   }
 
+  .bg-surface-container-highest {
+    background-color: mat.get-theme-color($client-dark-theme, surface-container-highest) !important;
+  }
+
   .text-primary {
     color: mat.get-theme-color($client-dark-theme, primary) !important;
   }
@@ -97,8 +117,20 @@ html {
     color: mat.get-theme-color($client-dark-theme, tertiary) !important;
   }
 
+  .text-outline {
+    color: mat.get-theme-color($client-dark-theme, outline) !important;
+  }
+
+  .border-color-outline {
+    border-color: mat.get-theme-color($client-dark-theme, outline) !important;
+  }
+
   .tertiary {
     @include mat.button-color($client-dark-theme, $color-variant: tertiary)
+  }
+
+  .error {
+    @include mat.button-color($client-dark-theme, $color-variant: error)
   }
 }
 

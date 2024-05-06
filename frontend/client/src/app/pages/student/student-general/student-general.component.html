@@ -1,1 +1,78 @@
-<p>student-general works!</p>
+<div class="bg-surface top-section">
+  <div>
+    <mat-card class="bg-primary-fixed-dim" />
+    <span>يشير إلى الحفظ الجديد.</span>
+  </div>
+  <div>
+    <mat-card class="bg-tertiary-fixed" />
+    <span>يشير إلى الحفظ القديم.</span>
+  </div>
+</div>
+@if (student(); as student) {
+    @if (
+        student.alarbaein_alnawawia_old ||
+        student.alarbaein_alnawawia_new ||
+        student.riad_alsaalihin_old ||
+        student.riad_alsaalihin_new ||
+        student.allah_names_old ||
+        student.allah_names_new
+    ) {
+        <mat-divider />
+        <div class="group">
+            @if (student.alarbaein_alnawawia_old) {
+                <mat-card class="bg-tertiary-fixed">
+                    @if (student.alarbaein_alnawawia_old === 1) {
+                        الأربعين النووية قديم: الحديث 1
+                    } @else {
+                        الأربعين النووية قديم: 1 إلى {{ student.alarbaein_alnawawia_old }}
+                    }
+                </mat-card>
+            }
+            @if (student.alarbaein_alnawawia_new) {
+                <mat-card class="bg-primary-fixed-dim">
+                    @if (student.alarbaein_alnawawia_new === 1) {
+                        الأربعين النووية جديد: الحديث {{ student.alarbaein_alnawawia_old + 1 }}
+
+                    } @else {
+                        الأربعين النووية جديد: {{ student.alarbaein_alnawawia_old + 1 }} إلى {{ student.alarbaein_alnawawia_old + student.alarbaein_alnawawia_new }}
+                    }
+                </mat-card>
+            }
+        </div>
+        <div class="group">
+            @if (student.riad_alsaalihin_old) {
+                <mat-card class="bg-tertiary-fixed">
+                    @if (student.riad_alsaalihin_old === 1) {
+                        رياض الصالحين قديم: الحديث 1
+                    } @else {
+                        رياض الصالحين قديم: 1 إلى {{ student.alarbaein_alnawawia_old }}
+                    }
+                </mat-card>
+            }
+            @if (student.riad_alsaalihin_new) {
+                <mat-card class="bg-primary-fixed-dim">
+                    @if (student.riad_alsaalihin_new === 1) {
+                        رياض الصالحين جديد: الحديث {{ student.riad_alsaalihin_old + 1 }}
+
+                    } @else {
+                        رياض الصالحين جديد: {{ student.riad_alsaalihin_old + 1 }} إلى {{ student.riad_alsaalihin_old + student.riad_alsaalihin_new }}
+                    }
+                </mat-card>
+            }
+        </div>
+        <div class="group">
+            @if (student.allah_names_old || student.allah_names_new) {
+                <mat-card
+                [class.bg-primary-fixed-dim]="student.allah_names_new"
+                [class.bg-tertiary-fixed]="student.allah_names_old"
+                >
+                    أسماء الله الحسنى
+                </mat-card>
+            }
+        </div>
+    } @else {
+        <p>
+            لا يوجد
+        </p>
+    }
+}
