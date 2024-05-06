@@ -1,1 +1,39 @@
-<p>student-test works!</p>
+<div class="bg-surface top-section">
+  <div>
+    <mat-card class="bg-primary-fixed-dim" />
+    <span>يشير إلى السبر الجديد.</span>
+  </div>
+  <div>
+    <mat-card class="bg-tertiary-fixed" />
+    <span>يشير إلى السبر القديم.</span>
+  </div>
+  <div>
+    <mat-card />
+    <span>يشير إلى الأرباع التي لم تُسبر.</span>
+  </div>
+</div>
+<mat-divider />
+<div class="test-container">
+  @for (section of testArray(); track section; let i = $index) {
+    <div>
+        <mat-card class="section-card bg-surface"> الجزء {{ i + 1 }} </mat-card>
+        <div class="part-container">
+            @for (part of section; track part; let j = $index) {
+                <div class="part-row">
+                    <mat-card class="part-card bg-surface"> الحزب {{ i * 2 + j + 1 }} </mat-card>
+                    <div class="parts-row">
+                        @for (quarter of part; track $index) {
+                            <mat-card
+                            [class.bg-primary-fixed-dim]="quarter === MemoItemType.NEW"
+                            [class.bg-tertiary-fixed]="quarter === MemoItemType.OLD"
+                            >
+                                الربع {{ $index + 1 }}
+                            </mat-card>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+  }
+</div>

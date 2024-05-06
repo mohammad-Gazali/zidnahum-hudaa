@@ -40,6 +40,16 @@ html {
   background-color: mat.get-theme-color($client-theme, surface-container) !important;
 }
 
+.bg-primary-fixed-dim {
+  background-color: mat.get-theme-color($client-theme, primary-fixed-dim) !important;
+  color: mat.get-theme-color($client-theme, on-primary-fixed) !important;
+}
+
+.bg-tertiary-fixed {
+  background-color: mat.get-theme-color($client-theme, tertiary-fixed) !important;
+  color: mat.get-theme-color($client-theme, on-tertiary-fixed) !important;
+}
+
 .text-primary {
   color: mat.get-theme-color($client-theme, primary) !important;
 }
@@ -67,6 +77,16 @@ html {
 
   .bg-surface {
     background-color: mat.get-theme-color($client-dark-theme, surface-container) !important;
+  }
+
+  .bg-primary-fixed-dim {
+    background-color: mat.get-theme-color($client-dark-theme, primary-fixed-dim) !important;
+    color: mat.get-theme-color($client-dark-theme, on-primary-fixed) !important;
+  }
+
+  .bg-tertiary-fixed {
+    background-color: mat.get-theme-color($client-dark-theme, tertiary-fixed) !important;
+    color: mat.get-theme-color($client-dark-theme, on-tertiary-fixed) !important;
   }
 
   .text-primary {
