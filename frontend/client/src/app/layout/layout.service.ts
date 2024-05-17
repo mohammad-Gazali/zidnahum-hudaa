@@ -1,10 +1,11 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Injectable, inject, signal } from '@angular/core';
 import { map, shareReplay } from 'rxjs';
+import { Group } from '../constants/group.enum';
 
 @Injectable()
 export class LayoutService {
-  private breakpointObserver = inject(BreakpointObserver);  
+  private breakpointObserver = inject(BreakpointObserver);
 
   public isSmall$ = this.breakpointObserver.observe('(max-width: 1200px)').pipe(
     map((result) => result.matches),
@@ -67,6 +68,33 @@ export class LayoutService {
       link: '/activities',
       name: 'نشاطاتي',
       icon: 'widgets',
+      authOnly: true,
+    },
+    {
+      link: '',
+      name: 'الإضافات',
+      icon: 'add',
+      authOnly: true,
+      routes: [
+        {
+          link: '/add-memo',
+          name: 'إضافة تسميع',
+          icon: 'book',
+          groups: [Group.Memo],
+        },
+        {
+          link: '/add-coming',
+          name: 'إضافة حضور',
+          icon: 'edit_calendar',
+          groups: [Group.Coming],
+        },
+        {
+          link: '/add-points',
+          name: 'إضافة نقاط',
+          icon: 'add_circle_outline',
+          groups: [Group.Points],
+        },
+      ],
     },
     {
       link: '/login',
@@ -79,10 +107,12 @@ export class LayoutService {
   public loading = signal(false);
 }
 
-interface LayoutRoute {
+export interface LayoutRoute {
   name: string;
   link: string;
   icon: string;
   nonAuthOnly?: boolean;
   authOnly?: boolean;
+  routes?: LayoutRoute[];
+  groups?: Group[];
 }

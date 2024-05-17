@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { EMPTY, catchError, tap } from 'rxjs';
 import { AccountsService } from './api/services';
 import { SnackbarService } from './snackbar.service';
+import { Group } from '../constants/group.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -120,11 +121,11 @@ export class AuthService {
   }
 }
 
-interface CurrentUser {
+export interface CurrentUser {
   id: number;
   username: string;
   firstName: string;
   lastName: string;
-  groups: number[];
+  groups: Group[];
   isAdmin: boolean;
 }

@@ -1,10 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { AsyncPipe, Location } from '@angular/common';
-import {
-  MatSidenav,
-  MatSidenavContainer,
-  MatSidenavContent,
-} from '@angular/material/sidenav';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatIcon } from '@angular/material/icon';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
@@ -12,8 +8,10 @@ import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatListItem, MatListItemIcon, MatListItemTitle, MatNavList } from '@angular/material/list';
 import { MatDivider } from '@angular/material/divider';
 import { MatButton, MatIconButton } from '@angular/material/button';
-import { LayoutService } from './layout.service';
-import { AuthService } from '../services/auth.service';
+import { MatMenuModule } from '@angular/material/menu';
+import { LayoutRoute, LayoutService } from './layout.service';
+import { AuthService, CurrentUser } from '../services/auth.service';
+import {MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle} from "@angular/material/expansion";
 
 @Component({
   selector: 'app-layout',
@@ -34,9 +32,13 @@ import { AuthService } from '../services/auth.service';
     MatListItemTitle,
     MatListItemIcon,
     MatDivider,
+    MatMenuModule,
     AsyncPipe,
     RouterLink,
     RouterLinkActive,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
   ],
   providers: [LayoutService],
 })
@@ -48,16 +50,24 @@ export class LayoutComponent {
 
   public currentUser = this.auth.currentUser;
 
-  public routes = computed(() => {
-    return this.layout.routes.filter(route => {
-      if (route.nonAuthOnly) return !this.currentUser();
-      if (route.authOnly) return !!this.currentUser();
-
-      return true;
-    })
+  public routes = computed<LayoutRoute[]>(() => {
+    return this.layout.routes.filter(this.handleRoute(this.currentUser())).map(r => ({
+      ...r,
+      routes: r.routes?.filter(this.handleRoute(this.currentUser())),
+    }))
   });
 
   public logout() {
     this.auth.logout();
+  }
+
+  private handleRoute(user: CurrentUser | null | undefined): (route: LayoutRoute) => boolean {
+    return (route: LayoutRoute) => {
+      if (route.nonAuthOnly) return !user;
+      if (route.authOnly) return !!user;
+      if (user?.isAdmin) return true;
+
+      return !route.groups || !!route.groups?.some(g => user?.groups.indexOf(g) !== -1);
+    }
   }
 }

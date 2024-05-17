@@ -1,87 +1,125 @@
 <mat-sidenav-container>
-    <mat-sidenav position="end" [hidden]="layout.isSmall$ | async" #sidenav mode="over">
-        <div class="top-section">
-            <button mat-icon-button (click)="layout.toggleTheme()">
-                <mat-icon>
-                    {{ layout.isDarkMode() ? "wb_sunny" : "nights_stay" }}
-                </mat-icon>
-            </button>
-            <button mat-icon-button (click)="sidenav.close()">
-                <mat-icon>close</mat-icon>
-            </button>
-        </div>
-        <mat-nav-list>
-            @for (route of routes(); track route.name) {
-                <mat-list-item 
+  <mat-sidenav #sidenav [hidden]="layout.isSmall$ | async" mode="over" position="end">
+    <div class="top-section">
+      <button (click)="layout.toggleTheme()" mat-icon-button>
+        <mat-icon>
+          {{ layout.isDarkMode() ? "wb_sunny" : "nights_stay" }}
+        </mat-icon>
+      </button>
+      <button (click)="sidenav.close()" mat-icon-button>
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <mat-nav-list>
+      @for (route of routes(); track route.name) {
+        @if (route.routes) {
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon>{{ route.icon }}</mat-icon>
+                {{ route.name }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            @for (route of route.routes; track route.name) {
+              <mat-list-item
                 (click)="sidenav.close()"
                 [routerLink]="route.link"
-                [routerLinkActiveOptions]="route.link === '/' ? { exact: true } : { exact: false }" 
+                [routerLinkActiveOptions]="route.link === '/' ? { exact: true } : { exact: false }"
                 routerLinkActive="mdc-list-item--activated"
-                >
-                    <a matListItemTitle [routerLink]="route.link">{{ route.name }}</a>
-                    <mat-icon matListItemIcon>{{ route.icon }}</mat-icon>
-                </mat-list-item>
+              >
+                {{ route.name }}
+                <mat-icon matListItemIcon>{{ route.icon }}</mat-icon>
+              </mat-list-item>
             }
-            @if (currentUser()) {
-                <mat-list-item
-                (click)="sidenav.close(); logout()"
-                >
-                    <span matListItemTitle>تسجيل خروج</span>
-                    <mat-icon matListItemIcon>logout</mat-icon>
-                </mat-list-item>
-            }
-        </mat-nav-list>
-    </mat-sidenav>
-    <mat-sidenav-content>
-        <mat-toolbar class="bg-surface mat-elevation-z8">
-            @if (router.url === '/') {
-                <img class="logo" [src]="layout.isDarkMode() ? '/assets/logo-dark.svg' : '/assets/logo.svg'" alt="logo">
-            } @else {
-                <button (click)="location.back()" mat-icon-button>
-                    <mat-icon class="mat-icon-rtl-mirror">arrow_back</mat-icon>
-                </button>
-            }
-            @if (currentUser(); as user) {
-                <p class="user">أهلاً {{ user.firstName }}</p>
-            }
-            <div class="spacer"></div>
-            @if (layout.isSmall$ | async) {
-                <button class="menu-button" (click)="sidenav.toggle()" mat-icon-button>
-                    <mat-icon>menu</mat-icon>
-                </button>
-            } @else {
-                <ul>
-                    @for (route of routes(); track route.name) {
-                        <li>
-                            <button [routerLink]="route.link" mat-flat-button>
-                                <mat-icon iconPositionEnd>{{ route.icon }}</mat-icon>
-                                {{ route.name }}
-                            </button>
-                        </li>
-                    }
-                    @if (currentUser()) {
-                        <li>
-                            <button (click)="logout()" mat-flat-button>
-                                <mat-icon iconPositionEnd>logout</mat-icon>
-                                تسجيل الخروج
-                            </button>
-                        </li>
-                    }
-                    <li>
-                        <button mat-icon-button (click)="layout.toggleTheme()">
-                            <mat-icon>
-                                {{ layout.isDarkMode() ? "wb_sunny" : "nights_stay" }}
-                            </mat-icon>
-                        </button>
-                    </li>
-                </ul>
-            }
-        </mat-toolbar>
-        @if (layout.loading()) {
-            <mat-progress-bar mode="indeterminate"></mat-progress-bar>   
+          </mat-expansion-panel>
+        } @else {
+          <mat-list-item
+            (click)="sidenav.close()"
+            [routerLink]="route.link"
+            [routerLinkActiveOptions]="route.link === '/' ? { exact: true } : { exact: false }"
+            routerLinkActive="mdc-list-item--activated"
+          >
+            <a matListItemTitle [routerLink]="route.link">{{ route.name }}</a>
+            <mat-icon matListItemIcon>{{ route.icon }}</mat-icon>
+          </mat-list-item>
         }
-        <main>
-            <ng-content></ng-content>
-        </main>
-    </mat-sidenav-content>
+      }
+      @if (currentUser()) {
+        <mat-list-item
+          (click)="sidenav.close(); logout()"
+        >
+          <span matListItemTitle>تسجيل خروج</span>
+          <mat-icon matListItemIcon>logout</mat-icon>
+        </mat-list-item>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar class="bg-surface mat-elevation-z8">
+      @if (router.url === '/') {
+        <img class="logo" [src]="layout.isDarkMode() ? '/assets/logo-dark.svg' : '/assets/logo.svg'" alt="logo">
+      } @else {
+        <button (click)="location.back()" mat-icon-button>
+          <mat-icon class="mat-icon-rtl-mirror">arrow_back</mat-icon>
+        </button>
+      }
+      @if (currentUser(); as user) {
+        <p class="user">أهلاً {{ user.firstName }}</p>
+      }
+      <div class="spacer"></div>
+      @if (layout.isSmall$ | async) {
+        <button class="menu-button" (click)="sidenav.toggle()" mat-icon-button>
+          <mat-icon>menu</mat-icon>
+        </button>
+      } @else {
+        <ul>
+          @for (route of routes(); track route.name) {
+            @if (route.routes) {
+              <li>
+                <button mat-flat-button [matMenuTriggerFor]="menu">
+                  <mat-icon iconPositionEnd>{{ route.icon }}</mat-icon>
+                  {{ route.name }}
+                </button>
+                <mat-menu #menu>
+                  @for (route of route.routes; track route.name) {
+                    <a mat-menu-item [routerLink]="route.link">
+                      {{ route.name }}
+                    </a>
+                  }
+                </mat-menu>
+              </li>
+            } @else {
+              <li>
+                <button [routerLink]="route.link" mat-flat-button>
+                  <mat-icon iconPositionEnd>{{ route.icon }}</mat-icon>
+                  {{ route.name }}
+                </button>
+              </li>
+            }
+          }
+          @if (currentUser()) {
+            <li>
+              <button (click)="logout()" mat-flat-button>
+                <mat-icon iconPositionEnd>logout</mat-icon>
+                تسجيل الخروج
+              </button>
+            </li>
+          }
+          <li>
+            <button mat-icon-button (click)="layout.toggleTheme()">
+              <mat-icon>
+                {{ layout.isDarkMode() ? "wb_sunny" : "nights_stay" }}
+              </mat-icon>
+            </button>
+          </li>
+        </ul>
+      }
+    </mat-toolbar>
+    @if (layout.loading()) {
+      <mat-progress-bar mode="indeterminate" />
+    }
+    <main>
+      <ng-content />
+    </main>
+  </mat-sidenav-content>
 </mat-sidenav-container>
