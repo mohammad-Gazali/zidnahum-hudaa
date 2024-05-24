@@ -1,8 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { AuthService } from '../../../services/auth.service';
-import { MasjedPipe } from '../../../pipes/masjed.pipe';
+import { AuthService, MasjedPipe } from '@shared';
 import { StudentComponent } from '../student.component';
 
 @Component({

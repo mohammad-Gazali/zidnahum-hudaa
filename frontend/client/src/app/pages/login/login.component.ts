@@ -7,10 +7,8 @@ import {
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
-import { LayoutService } from '../../layout/layout.service';
-import { AuthService } from '../../services/auth.service';
+import { LayoutService, AuthService, SnackbarService } from '@shared';
 import { finalize } from 'rxjs';
-import { SnackbarService } from '../../services/snackbar.service';
 import { Router } from '@angular/router';
 
 @Component({

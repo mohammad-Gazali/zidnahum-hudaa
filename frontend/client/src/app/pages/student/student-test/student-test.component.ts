@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { MatCard } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
+import { MemoItemType } from '@shared';
 import { StudentComponent } from '../student.component';
-import { MemoItemType } from '../../../constants/memo-item.enum';
 
 @Component({
   selector: 'app-student-test',
@@ -13,7 +13,7 @@ import { MemoItemType } from '../../../constants/memo-item.enum';
 })
 export class StudentTestComponent {
   public student = inject(StudentComponent).student;
-  
+
   public testArray = signal<MemoItemType[][][]>([]);
 
   MemoItemType = MemoItemType;
@@ -25,7 +25,7 @@ export class StudentTestComponent {
       const currentBigChunk: MemoItemType[][] = [];
 
       const chunk = array.slice(i, i + 8);
-        
+
       currentBigChunk.push(chunk.slice(0, 4));
       currentBigChunk.push(chunk.slice(4));
 

@@ -1,14 +1,14 @@
 @if (student(); as student) {
     <div class="top-section bg-surface">
         <h3>الطالب: {{ student.name }}</h3>
-        <h4 class="text-tertiary">المعرف: {{ student.id }}</h4>
+        <h4 class="text-secondary">المعرف: {{ student.id }}</h4>
     </div>
     <mat-accordion>
         <mat-expansion-panel>
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <mat-icon>account_box</mat-icon>
-                    المعلومات الشخصية للطالب 
+                    المعلومات الشخصية للطالب
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <app-student-info />
@@ -26,7 +26,7 @@
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <mat-icon>contact_page</mat-icon>
-                    تسميعات الطالب 
+                    تسميعات الطالب
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <app-student-memo />
@@ -35,7 +35,7 @@
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <mat-icon>event_available</mat-icon>
-                    سبر الطالب في المسجد 
+                    سبر الطالب في المسجد
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <app-student-test />
@@ -44,7 +44,7 @@
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <mat-icon>mosque</mat-icon>
-                    سبر الطالب في الأوقاف 
+                    سبر الطالب في الأوقاف
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <app-student-awqaf-test />
@@ -53,7 +53,7 @@
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <mat-icon>star</mat-icon>
-                    سبر الطالب النوعي 
+                    سبر الطالب النوعي
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <app-student-elite-test />
@@ -62,7 +62,7 @@
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <mat-icon>checklist</mat-icon>
-                    متفرقات 
+                    متفرقات
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <app-student-general />
@@ -71,7 +71,7 @@
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <mat-icon>edit_note</mat-icon>
-                    ملاحظات الطالب 
+                    ملاحظات الطالب
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <app-student-notes />

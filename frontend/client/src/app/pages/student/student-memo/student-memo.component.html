@@ -4,7 +4,7 @@
         <span>يشير إلى التسميع الجديد.</span>
     </div>
     <div>
-        <mat-card class="bg-tertiary-fixed" />
+        <mat-card class="bg-secondary-fixed" />
         <span>يشير إلى التسميع القديم.</span>
     </div>
     <div>
@@ -15,10 +15,10 @@
 <mat-divider />
 <div class="memo-container">
     @if (student(); as student) {
-        @for (item of $any(student.q_memorizing); track item) {
+        @for (item of $any(student.q_memorizing); track $index) {
             <mat-card
             [class.bg-primary-fixed-dim]="item === MemoItemType.NEW"
-            [class.bg-tertiary-fixed]="item === MemoItemType.OLD"
+            [class.bg-secondary-fixed]="item === MemoItemType.OLD"
             [class.flex-width]="$index >= 581"
             >
                 {{ $index | memo }}

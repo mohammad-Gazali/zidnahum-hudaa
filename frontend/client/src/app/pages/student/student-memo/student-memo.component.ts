@@ -1,9 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { MatCard } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
+import { MemoPipe, MemoItemType } from '@shared';
 import { StudentComponent } from '../student.component';
-import { MemoPipe } from '../../../pipes/memo.pipe';
-import { MemoItemType } from '../../../constants/memo-item.enum';
 
 @Component({
   selector: 'app-student-memo',

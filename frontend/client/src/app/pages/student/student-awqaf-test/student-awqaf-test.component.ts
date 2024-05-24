@@ -1,11 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatCard } from '@angular/material/card';
-import { StudentComponent } from '../student.component';
 import { MatDivider } from '@angular/material/divider';
-import { MemoItemType } from '../../../constants/memo-item.enum';
-import { AwqafService } from '../../../services/api/services';
-import { AwqafRelation } from '../../../services/api/models';
+import { MemoItemType, AwqafService, AwqafRelation } from '@shared';
+import { StudentComponent } from '../student.component';
 
 @Component({
   selector: 'app-student-awqaf-test',

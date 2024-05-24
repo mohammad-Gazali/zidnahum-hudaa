@@ -3,8 +3,8 @@ import { DatePipe } from '@angular/common';
 import { MatCard } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { AuthService } from '@shared';
 import { StudentComponent } from '../student.component';
-import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-student-notes',
@@ -19,7 +19,7 @@ export class StudentNotesComponent {
 
   // TODO
   removeNote() {
-    
+
   }
 
   // TODO

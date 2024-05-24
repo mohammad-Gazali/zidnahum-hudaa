@@ -27,7 +27,7 @@
                 [routerLinkActiveOptions]="route.link === '/' ? { exact: true } : { exact: false }"
                 routerLinkActive="mdc-list-item--activated"
               >
-                {{ route.name }}
+                <span>{{ route.name }}</span>
                 <mat-icon matListItemIcon>{{ route.icon }}</mat-icon>
               </mat-list-item>
             }
@@ -57,7 +57,7 @@
   <mat-sidenav-content>
     <mat-toolbar class="bg-surface mat-elevation-z8">
       @if (router.url === '/') {
-        <img class="logo" [src]="layout.isDarkMode() ? '/assets/logo-dark.svg' : '/assets/logo.svg'" alt="logo">
+        <img class="logo" [src]="layout.isDarkMode() ? 'logo-dark.svg' : 'logo.svg'" alt="logo">
       } @else {
         <button (click)="location.back()" mat-icon-button>
           <mat-icon class="mat-icon-rtl-mirror">arrow_back</mat-icon>

@@ -4,7 +4,7 @@
     <span>يشير إلى الحفظ الجديد.</span>
   </div>
   <div>
-    <mat-card class="bg-tertiary-fixed" />
+    <mat-card class="bg-secondary-fixed" />
     <span>يشير إلى الحفظ القديم.</span>
   </div>
 </div>
@@ -20,7 +20,7 @@
         <mat-divider />
         <div class="group">
             @if (student.alarbaein_alnawawia_old) {
-                <mat-card class="bg-tertiary-fixed">
+                <mat-card class="bg-secondary-fixed">
                     @if (student.alarbaein_alnawawia_old === 1) {
                         الأربعين النووية قديم: الحديث 1
                     } @else {
@@ -41,7 +41,7 @@
         </div>
         <div class="group">
             @if (student.riad_alsaalihin_old) {
-                <mat-card class="bg-tertiary-fixed">
+                <mat-card class="bg-secondary-fixed">
                     @if (student.riad_alsaalihin_old === 1) {
                         رياض الصالحين قديم: الحديث 1
                     } @else {
@@ -64,7 +64,7 @@
             @if (student.allah_names_old || student.allah_names_new) {
                 <mat-card
                 [class.bg-primary-fixed-dim]="student.allah_names_new"
-                [class.bg-tertiary-fixed]="student.allah_names_old"
+                [class.bg-secondary-fixed]="student.allah_names_old"
                 >
                     أسماء الله الحسنى
                 </mat-card>

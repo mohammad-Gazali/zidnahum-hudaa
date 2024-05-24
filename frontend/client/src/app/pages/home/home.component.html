@@ -25,7 +25,7 @@
           <ul class="bg-surface info-list">
             <li>
               <span class="label">المعرف: </span>
-              <span class="value text-tertiary font-bold">{{ student.id }}</span>
+              <span class="value text-secondary font-bold">{{ student.id }}</span>
             </li>
             <mat-divider></mat-divider>
             <li>
@@ -73,22 +73,22 @@
             </button>
           </div>
         </mat-card>
-  
+
       } @empty {
         <p class="not-found">لا يوجد طلاب بهذه التفاصيل</p>
       }
     </div>
     @if (response.results.length < response.count) {
-      <div class="pagination-buttons tertiary">
-        <button 
-        (click)="getStudents(response.previous ?? '')" 
-        mat-flat-button 
+      <div class="pagination-buttons secondary">
+        <button
+        (click)="getStudents(response.previous ?? '')"
+        mat-flat-button
         [disabled]="!response.previous || loading()">
           الصفحة السابقة
         </button>
-        <button 
-        (click)="getStudents(response.next ?? '')" 
-        mat-flat-button 
+        <button
+        (click)="getStudents(response.next ?? '')"
+        mat-flat-button
         [disabled]="!response.next || loading()">
           الصفحة التالية
         </button>

@@ -4,7 +4,7 @@
     <span>يشير إلى السبر الجديد.</span>
   </div>
   <div>
-    <mat-card class="bg-tertiary-fixed" />
+    <mat-card class="bg-secondary-fixed" />
     <span>يشير إلى السبر القديم.</span>
   </div>
   <div>
@@ -20,7 +20,7 @@
     @for (item of $any(student()?.q_awqaf_test); track $index) {
         <mat-card
         [class.bg-primary-fixed-dim]="item === MemoItemType.NEW"
-        [class.bg-tertiary-fixed]="item === MemoItemType.OLD"
+        [class.bg-secondary-fixed]="item === MemoItemType.OLD"
         >
             الجزء {{ $index + 1 }}
         </mat-card>
@@ -34,7 +34,7 @@
     @for (item of $any(student()?.q_awqaf_test_looking); track $index) {
         <mat-card
         [class.bg-primary-fixed-dim]="item === MemoItemType.NEW"
-        [class.bg-tertiary-fixed]="item === MemoItemType.OLD"
+        [class.bg-secondary-fixed]="item === MemoItemType.OLD"
         >
             الجزء {{ $index + 1 }}
         </mat-card>
@@ -48,7 +48,7 @@
     @for (item of $any(student()?.q_awqaf_test_explaining); track $index) {
         <mat-card
         [class.bg-primary-fixed-dim]="item === MemoItemType.NEW"
-        [class.bg-tertiary-fixed]="item === MemoItemType.OLD"
+        [class.bg-secondary-fixed]="item === MemoItemType.OLD"
         >
             الجزء {{ $index + 1 }}
         </mat-card>
@@ -63,7 +63,7 @@
         @for (test of awqafTestNoQ; track test.id) {
             <mat-card
             [class.bg-primary-fixed-dim]="containsNewRelation(student()?.awqaf_relations ?? [], test.id)"
-            [class.bg-tertiary-fixed]="containsOldRelation(student()?.awqaf_relations ?? [], test.id)"
+            [class.bg-secondary-fixed]="containsOldRelation(student()?.awqaf_relations ?? [], test.id)"
             >
                 {{ test.name }}
             </mat-card>

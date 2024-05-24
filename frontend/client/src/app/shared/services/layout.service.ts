@@ -1,7 +1,7 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Injectable, inject, signal } from '@angular/core';
 import { map, shareReplay } from 'rxjs';
-import { Group } from '../constants/group.enum';
+import { Group } from '@shared';
 
 @Injectable()
 export class LayoutService {

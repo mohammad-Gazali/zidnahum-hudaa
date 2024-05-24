@@ -9,7 +9,7 @@ import {
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
-import { StudentsService } from '../../services/api/services';
+import { StudentsService, StudentDetails } from '@shared';
 import { StudentInfoComponent } from './student-info/student-info.component';
 import { StudentActivitiesComponent } from './student-activities/student-activities.component';
 import { StudentMemoComponent } from './student-memo/student-memo.component';
@@ -17,7 +17,6 @@ import { StudentTestComponent } from './student-test/student-test.component';
 import { StudentAwqafTestComponent } from './student-awqaf-test/student-awqaf-test.component';
 import { StudentGeneralComponent } from './student-general/student-general.component';
 import { StudentNotesComponent } from './student-notes/student-notes.component';
-import { StudentDetails } from '../../services/api/models';
 import { StudentEliteTestComponent } from "./student-elite-test/student-elite-test.component";
 
 @Component({

@@ -1,17 +1,16 @@
 import { Component, computed, inject } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AsyncPipe, Location } from '@angular/common';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatIcon } from '@angular/material/icon';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatListItem, MatListItemIcon, MatListItemTitle, MatNavList } from '@angular/material/list';
 import { MatDivider } from '@angular/material/divider';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
-import { LayoutRoute, LayoutService } from './layout.service';
-import { AuthService, CurrentUser } from '../services/auth.service';
-import {MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle} from "@angular/material/expansion";
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { AuthService, CurrentUser, LayoutRoute, LayoutService } from '@shared';
 
 @Component({
   selector: 'app-layout',
@@ -54,7 +53,7 @@ export class LayoutComponent {
     return this.layout.routes.filter(this.handleRoute(this.currentUser())).map(r => ({
       ...r,
       routes: r.routes?.filter(this.handleRoute(this.currentUser())),
-    }))
+    }));
   });
 
   public logout() {
@@ -68,6 +67,6 @@ export class LayoutComponent {
       if (user?.isAdmin) return true;
 
       return !route.groups || !!route.groups?.some(g => user?.groups.indexOf(g) !== -1);
-    }
+    };
   }
 }

@@ -4,7 +4,7 @@
     <span>يشير إلى السبر الجديد.</span>
   </div>
   <div>
-    <mat-card class="bg-tertiary-fixed" />
+    <mat-card class="bg-secondary-fixed" />
     <span>يشير إلى السبر القديم.</span>
   </div>
   <div>
@@ -25,7 +25,7 @@
                         @for (quarter of part; track $index) {
                             <mat-card
                             [class.bg-primary-fixed-dim]="quarter === MemoItemType.NEW"
-                            [class.bg-tertiary-fixed]="quarter === MemoItemType.OLD"
+                            [class.bg-secondary-fixed]="quarter === MemoItemType.OLD"
                             >
                               الربع {{ $index + 1 }}
                             </mat-card>

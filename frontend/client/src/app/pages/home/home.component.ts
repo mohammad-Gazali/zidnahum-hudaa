@@ -1,19 +1,16 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { finalize } from 'rxjs';
 import { MatButton } from '@angular/material/button';
 import { MatFormField } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatCard } from '@angular/material/card';
-import { DatePipe } from '@angular/common';
-import { finalize } from 'rxjs';
-import { StudentsService } from '../../services/api/services';
-import { StudentList } from '../../services/api/models';
 import { MatDivider } from '@angular/material/divider';
-import { MasjedPipe } from '../../pipes/masjed.pipe';
-import { RouterLink } from '@angular/router';
-import { LayoutService } from '../../layout/layout.service';
+import { LayoutService, MasjedPipe, StudentList, StudentsService } from '@shared';
 
 @Component({
   selector: 'app-home',
@@ -40,11 +37,11 @@ export class HomeComponent {
 
   public response = signal<
     | {
-        count: number;
-        next?: string | null | undefined;
-        previous?: string | null | undefined;
-        results: StudentList[];
-      }
+    count: number;
+    next?: string | null | undefined;
+    previous?: string | null | undefined;
+    results: StudentList[];
+  }
     | undefined
   >(undefined);
   public submited = signal(false);
