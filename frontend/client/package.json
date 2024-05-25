@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "generate:services": "ng-swagger-gen -i http://127.0.0.1:8000?format=openapi -o ./src/app/services/api"
+    "generate:services": "ng-swagger-gen -i http://127.0.0.1:8000?format=openapi -o ./src/app/shared/services/api"
   },
   "private": true,
   "dependencies": {
@@ -22,8 +22,7 @@
     "@angular/platform-browser-dynamic": "^18.0.0",
     "@angular/router": "^18.0.0",
     "rxjs": "~7.8.1",
-    "tslib": "^2.6.2",
-    "zone.js": "~0.14.6"
+    "tslib": "^2.6.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.0.1",

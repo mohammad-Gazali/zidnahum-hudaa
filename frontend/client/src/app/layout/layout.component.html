@@ -39,7 +39,7 @@
             [routerLinkActiveOptions]="route.link === '/' ? { exact: true } : { exact: false }"
             routerLinkActive="mdc-list-item--activated"
           >
-            <a matListItemTitle [routerLink]="route.link">{{ route.name }}</a>
+            <span>{{ route.name }}</span>
             <mat-icon matListItemIcon>{{ route.icon }}</mat-icon>
           </mat-list-item>
         }

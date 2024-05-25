@@ -44,7 +44,7 @@ export class HomeComponent {
   }
     | undefined
   >(undefined);
-  public submited = signal(false);
+  public submitted = signal(false);
 
   public search = '';
 
@@ -60,7 +60,7 @@ export class HomeComponent {
     const query = params.get('query') ?? this.search;
     const page = Number(params.get('page')) || 1;
 
-    this.submited.set(true);
+    this.submitted.set(true);
     this.loading.set(true);
 
     this.students

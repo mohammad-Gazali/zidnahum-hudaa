@@ -1,0 +1,9 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <mat-form-field>
+    <mat-label>صفحة خارج جزء عم</mat-label>
+    <input matInput [formControl]="form.controls.single" />
+  </mat-form-field>
+  <div class="bg-surface text-primary">
+    نتائج البحث
+  </div>
+</form>

@@ -12,7 +12,7 @@
     <mat-icon iconPositionEnd> person_search </mat-icon>
   </button>
 </form>
-@if (submited()) {
+@if (submitted()) {
   @if (response(); as response) {
     <mat-divider class="section-divider"></mat-divider>
     <div class="bg-surface text-primary search-results-title">
@@ -63,7 +63,7 @@
               عرض التفاصيل
               <mat-icon iconPositionEnd>info</mat-icon>
             </button>
-            <button mat-stroked-button>
+            <button mat-stroked-button routerLink="add-memo" [queryParams]="{ id: student.id }">
               إضافة تسميع أو سبر
               <mat-icon iconPositionEnd>add_circle</mat-icon>
             </button>
