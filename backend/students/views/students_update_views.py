@@ -3,6 +3,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
+from drf_yasg.utils import  swagger_auto_schema
+from drf_yasg import openapi
 from students.models import Student, MemorizeMessage, MessageTypeChoice
 from students.serializers import StudentUpdateQMemoSerializer, StudentUpdateQTestSerializer, StudentUpdateAlarbaeinAlnawawiaSerializer, StudentUpdateRiadAlsaalihinSerializer, StudentUpdatePartsReceivedSerializer
 from students.constants import NON, NEW
@@ -15,6 +17,20 @@ class StudentUpdateQMemoView(APIView):
     permission_classes = [IsMemoGroup]
     http_method_names = ["put"]
 
+    @swagger_auto_schema(
+        request_body=StudentUpdateQMemoSerializer,
+        responses={
+            200: openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    'repeated_memo': openapi.Schema(
+                        type=openapi.TYPE_ARRAY, 
+                        items=openapi.Items(type=openapi.TYPE_NUMBER),
+                    )
+                }
+            ),
+        },
+    )
     @transaction.atomic
     def put(self, *args, **kwargs):
         pk: int = kwargs.get("pk")
@@ -58,6 +74,20 @@ class StudentUpdateQTestView(APIView):
     permission_classes = [IsMemoGroup]
     http_method_names = ["put"]
 
+    @swagger_auto_schema(
+        request_body=StudentUpdateQTestSerializer,
+        responses={
+            200: openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                properties={
+                    'repeated_test': openapi.Schema(
+                        type=openapi.TYPE_ARRAY, 
+                        items=openapi.Items(type=openapi.TYPE_NUMBER),
+                    )
+                }
+            ),
+        },
+    )
     @transaction.atomic
     def put(self, *args, **kwargs):
         pk: int = kwargs.get("pk")
@@ -101,6 +131,7 @@ class StudentUpdateAlarbaeinAlnawawiaView(APIView):
     permission_classes = [IsHadeethGroup]
     http_method_names = ["put"]
 
+    @swagger_auto_schema(request_body=StudentUpdateAlarbaeinAlnawawiaSerializer)
     @transaction.atomic
     def put(self, *args, **kwargs):
         pk: int = kwargs.get("pk")
@@ -137,6 +168,7 @@ class StudentUpdateRiadAlsaalihinView(APIView):
     permission_classes = [IsHadeethGroup]
     http_method_names = ["put"]
 
+    @swagger_auto_schema(request_body=StudentUpdateRiadAlsaalihinSerializer)
     @transaction.atomic
     def put(self, *args, **kwargs):
         pk: int = kwargs.get("pk")
@@ -199,6 +231,7 @@ class StudentUpdatePartsReceivedView(APIView):
     permission_classes = [IsMemoGroup]
     http_method_names = ["put"]
 
+    @swagger_auto_schema(request_body=StudentUpdatePartsReceivedSerializer)
     def put(self, *args, **kwargs):
         pk: int = kwargs.get("pk")
         student: Student = get_object_or_404(Student, pk=pk)

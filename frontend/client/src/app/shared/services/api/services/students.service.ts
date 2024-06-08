@@ -10,6 +10,11 @@ import { map as __map, filter as __filter } from 'rxjs/operators';
 import { StudentList } from '../models/student-list';
 import { MemorizeMessage } from '../models/memorize-message';
 import { MemorizeNotesCreate } from '../models/memorize-notes-create';
+import { StudentUpdateAlarbaeinAlnawawia } from '../models/student-update-alarbaein-alnawawia';
+import { StudentUpdatePartsReceived } from '../models/student-update-parts-received';
+import { StudentUpdateQMemo } from '../models/student-update-qmemo';
+import { StudentUpdateQTest } from '../models/student-update-qtest';
+import { StudentUpdateRiadAlsaalihin } from '../models/student-update-riad-alsaalihin';
 import { StudentDetails } from '../models/student-details';
 @Injectable({
   providedIn: 'root',
@@ -259,16 +264,21 @@ class StudentsService extends __BaseService {
   }
 
   /**
-   * @param id undefined
+   * @param params The `StudentsService.StudentsUpdateAlarbaeinAlnawawiaUpdateParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `data`:
    */
-  studentsUpdateAlarbaeinAlnawawiaUpdateResponse(id: string): __Observable<__StrictHttpResponse<null>> {
+  studentsUpdateAlarbaeinAlnawawiaUpdateResponse(params: StudentsService.StudentsUpdateAlarbaeinAlnawawiaUpdateParams): __Observable<__StrictHttpResponse<StudentUpdateAlarbaeinAlnawawia>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
 
+    __body = params.data;
     let req = new HttpRequest<any>(
       'PUT',
-      this.rootUrl + `/students/update/alarbaein-alnawawia/${encodeURIComponent(String(id))}`,
+      this.rootUrl + `/students/update/alarbaein-alnawawia/${encodeURIComponent(String(params.id))}`,
       __body,
       {
         headers: __headers,
@@ -279,16 +289,20 @@ class StudentsService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<StudentUpdateAlarbaeinAlnawawia>;
       })
     );
   }
   /**
-   * @param id undefined
+   * @param params The `StudentsService.StudentsUpdateAlarbaeinAlnawawiaUpdateParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `data`:
    */
-  studentsUpdateAlarbaeinAlnawawiaUpdate(id: string): __Observable<null> {
-    return this.studentsUpdateAlarbaeinAlnawawiaUpdateResponse(id).pipe(
-      __map(_r => _r.body as null)
+  studentsUpdateAlarbaeinAlnawawiaUpdate(params: StudentsService.StudentsUpdateAlarbaeinAlnawawiaUpdateParams): __Observable<StudentUpdateAlarbaeinAlnawawia> {
+    return this.studentsUpdateAlarbaeinAlnawawiaUpdateResponse(params).pipe(
+      __map(_r => _r.body as StudentUpdateAlarbaeinAlnawawia)
     );
   }
 
@@ -327,16 +341,21 @@ class StudentsService extends __BaseService {
   }
 
   /**
-   * @param id undefined
+   * @param params The `StudentsService.StudentsUpdatePartsReceivedUpdateParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `data`:
    */
-  studentsUpdatePartsReceivedUpdateResponse(id: string): __Observable<__StrictHttpResponse<null>> {
+  studentsUpdatePartsReceivedUpdateResponse(params: StudentsService.StudentsUpdatePartsReceivedUpdateParams): __Observable<__StrictHttpResponse<StudentUpdatePartsReceived>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
 
+    __body = params.data;
     let req = new HttpRequest<any>(
       'PUT',
-      this.rootUrl + `/students/update/parts-received/${encodeURIComponent(String(id))}`,
+      this.rootUrl + `/students/update/parts-received/${encodeURIComponent(String(params.id))}`,
       __body,
       {
         headers: __headers,
@@ -347,30 +366,39 @@ class StudentsService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<StudentUpdatePartsReceived>;
       })
     );
   }
   /**
-   * @param id undefined
+   * @param params The `StudentsService.StudentsUpdatePartsReceivedUpdateParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `data`:
    */
-  studentsUpdatePartsReceivedUpdate(id: string): __Observable<null> {
-    return this.studentsUpdatePartsReceivedUpdateResponse(id).pipe(
-      __map(_r => _r.body as null)
+  studentsUpdatePartsReceivedUpdate(params: StudentsService.StudentsUpdatePartsReceivedUpdateParams): __Observable<StudentUpdatePartsReceived> {
+    return this.studentsUpdatePartsReceivedUpdateResponse(params).pipe(
+      __map(_r => _r.body as StudentUpdatePartsReceived)
     );
   }
 
   /**
-   * @param id undefined
+   * @param params The `StudentsService.StudentsUpdateQmemoUpdateParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `data`:
    */
-  studentsUpdateQmemoUpdateResponse(id: string): __Observable<__StrictHttpResponse<null>> {
+  studentsUpdateQmemoUpdateResponse(params: StudentsService.StudentsUpdateQmemoUpdateParams): __Observable<__StrictHttpResponse<{ repeated_memo: number[] }>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
 
+    __body = params.data;
     let req = new HttpRequest<any>(
       'PUT',
-      this.rootUrl + `/students/update/qmemo/${encodeURIComponent(String(id))}`,
+      this.rootUrl + `/students/update/qmemo/${encodeURIComponent(String(params.id))}`,
       __body,
       {
         headers: __headers,
@@ -381,30 +409,39 @@ class StudentsService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<{ repeated_memo: number[] }>;
       })
     );
   }
   /**
-   * @param id undefined
+   * @param params The `StudentsService.StudentsUpdateQmemoUpdateParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `data`:
    */
-  studentsUpdateQmemoUpdate(id: string): __Observable<null> {
-    return this.studentsUpdateQmemoUpdateResponse(id).pipe(
-      __map(_r => _r.body as null)
+  studentsUpdateQmemoUpdate(params: StudentsService.StudentsUpdateQmemoUpdateParams): __Observable<{ repeated_memo: number[] }> {
+    return this.studentsUpdateQmemoUpdateResponse(params).pipe(
+      __map(_r => _r.body as { repeated_memo: number[] })
     );
   }
 
   /**
-   * @param id undefined
+   * @param params The `StudentsService.StudentsUpdateQtestUpdateParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `data`:
    */
-  studentsUpdateQtestUpdateResponse(id: string): __Observable<__StrictHttpResponse<null>> {
+  studentsUpdateQtestUpdateResponse(params: StudentsService.StudentsUpdateQtestUpdateParams): __Observable<__StrictHttpResponse<{ repeated_test: number[] }>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
 
+    __body = params.data;
     let req = new HttpRequest<any>(
       'PUT',
-      this.rootUrl + `/students/update/qtest/${encodeURIComponent(String(id))}`,
+      this.rootUrl + `/students/update/qtest/${encodeURIComponent(String(params.id))}`,
       __body,
       {
         headers: __headers,
@@ -415,30 +452,39 @@ class StudentsService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<{ repeated_test: number[] }>;
       })
     );
   }
   /**
-   * @param id undefined
+   * @param params The `StudentsService.StudentsUpdateQtestUpdateParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `data`:
    */
-  studentsUpdateQtestUpdate(id: string): __Observable<null> {
-    return this.studentsUpdateQtestUpdateResponse(id).pipe(
-      __map(_r => _r.body as null)
+  studentsUpdateQtestUpdate(params: StudentsService.StudentsUpdateQtestUpdateParams): __Observable<{ repeated_test: number[] }> {
+    return this.studentsUpdateQtestUpdateResponse(params).pipe(
+      __map(_r => _r.body as { repeated_test: number[] })
     );
   }
 
   /**
-   * @param id undefined
+   * @param params The `StudentsService.StudentsUpdateRiadAlsaalihinUpdateParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `data`:
    */
-  studentsUpdateRiadAlsaalihinUpdateResponse(id: string): __Observable<__StrictHttpResponse<null>> {
+  studentsUpdateRiadAlsaalihinUpdateResponse(params: StudentsService.StudentsUpdateRiadAlsaalihinUpdateParams): __Observable<__StrictHttpResponse<StudentUpdateRiadAlsaalihin>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
 
+    __body = params.data;
     let req = new HttpRequest<any>(
       'PUT',
-      this.rootUrl + `/students/update/riad-alsaalihin/${encodeURIComponent(String(id))}`,
+      this.rootUrl + `/students/update/riad-alsaalihin/${encodeURIComponent(String(params.id))}`,
       __body,
       {
         headers: __headers,
@@ -449,16 +495,20 @@ class StudentsService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<null>;
+        return _r as __StrictHttpResponse<StudentUpdateRiadAlsaalihin>;
       })
     );
   }
   /**
-   * @param id undefined
+   * @param params The `StudentsService.StudentsUpdateRiadAlsaalihinUpdateParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `data`:
    */
-  studentsUpdateRiadAlsaalihinUpdate(id: string): __Observable<null> {
-    return this.studentsUpdateRiadAlsaalihinUpdateResponse(id).pipe(
-      __map(_r => _r.body as null)
+  studentsUpdateRiadAlsaalihinUpdate(params: StudentsService.StudentsUpdateRiadAlsaalihinUpdateParams): __Observable<StudentUpdateRiadAlsaalihin> {
+    return this.studentsUpdateRiadAlsaalihinUpdateResponse(params).pipe(
+      __map(_r => _r.body as StudentUpdateRiadAlsaalihin)
     );
   }
 
@@ -525,6 +575,46 @@ module StudentsService {
      * A page number within the paginated result set.
      */
     page?: number;
+  }
+
+  /**
+   * Parameters for studentsUpdateAlarbaeinAlnawawiaUpdate
+   */
+  export interface StudentsUpdateAlarbaeinAlnawawiaUpdateParams {
+    id: string;
+    data: StudentUpdateAlarbaeinAlnawawia;
+  }
+
+  /**
+   * Parameters for studentsUpdatePartsReceivedUpdate
+   */
+  export interface StudentsUpdatePartsReceivedUpdateParams {
+    id: string;
+    data: StudentUpdatePartsReceived;
+  }
+
+  /**
+   * Parameters for studentsUpdateQmemoUpdate
+   */
+  export interface StudentsUpdateQmemoUpdateParams {
+    id: string;
+    data: StudentUpdateQMemo;
+  }
+
+  /**
+   * Parameters for studentsUpdateQtestUpdate
+   */
+  export interface StudentsUpdateQtestUpdateParams {
+    id: string;
+    data: StudentUpdateQTest;
+  }
+
+  /**
+   * Parameters for studentsUpdateRiadAlsaalihinUpdate
+   */
+  export interface StudentsUpdateRiadAlsaalihinUpdateParams {
+    id: string;
+    data: StudentUpdateRiadAlsaalihin;
   }
 }
 

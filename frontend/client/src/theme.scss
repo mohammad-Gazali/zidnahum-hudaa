@@ -138,9 +138,6 @@ $_tertiary: map.merge(map.get($_palettes, tertiary), $_rest);
 $_typography: (
   plain-family: "Noto Kufi Arabic",
   brand-family: "Noto Kufi Arabic",
-  bold-weight: "Noto Kufi Arabic",
-  medium-weight: "Noto Kufi Arabic",
-  regular-weight: "Noto Kufi Arabic",
 );
 
 $light-theme: mat.define-theme((

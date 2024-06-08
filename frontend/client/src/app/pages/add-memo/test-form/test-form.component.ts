@@ -1,10 +1,26 @@
 import { Component, inject, output } from '@angular/core';
-import { NonNullableFormBuilder, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCard } from '@angular/material/card';
+import { MatRippleModule } from '@angular/material/core';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-test-form',
   standalone: true,
-  imports: [],
+  imports: [
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatRadioModule,
+    MatCard,
+    MatRippleModule,
+    MatInput,
+    MatButton,
+    MatIcon,
+  ],
   templateUrl: './test-form.component.html',
   styleUrl: './test-form.component.scss'
 })
@@ -13,7 +29,7 @@ export class TestFormComponent {
 
   public onSubmit = output<TestSubmit>();
 
-  private form = this.fb.group({
+  protected form = this.fb.group({
     type: this.fb.control<'quarter' | 'half' | 'whole'>('quarter', [Validators.required]),
     part: this.fb.control<number | undefined>(undefined, [Validators.required]),
     extra: this.fb.control<1 | 2 | 3 | 4>(1, [Validators.required]),

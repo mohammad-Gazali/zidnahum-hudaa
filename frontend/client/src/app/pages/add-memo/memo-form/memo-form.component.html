@@ -1,9 +1,56 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
   <mat-form-field>
     <mat-label>صفحة خارج جزء عم</mat-label>
-    <input matInput [formControl]="form.controls.single" />
+    <input type="number" min="1" max="581" matInput [formControl]="form.controls.single" />
+    <mat-error>
+      يجب أن تكون الصفحة بين 1 و 581
+    </mat-error>
   </mat-form-field>
-  <div class="bg-surface text-primary">
-    نتائج البحث
+  <div class="bg-surface text-primary section-title">
+    تسجيل صفحات متتالية
+    <mat-icon>
+      done_all
+    </mat-icon>
   </div>
+  <mat-error id="from-to-error">
+    @if (fromToError()) {
+      يجب أن تكون صفحة البداية أصغر من صفحة النهاية
+    }
+  </mat-error>
+  <div class="sequence-pages">
+    <mat-form-field>
+      <mat-label>البداية</mat-label>
+      <input type="number" min="1" max="580" matInput [formControl]="form.controls.from" />
+      <mat-error>
+        يجب أن تكون البداية بين 1 و 580
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>النهاية</mat-label>
+      <input type="number" min="2" max="581" matInput [formControl]="form.controls.to" />
+      <mat-error>
+        يجب أن تكون النهاية بين 2 و 581
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title class="text-primary">
+        سور جزء عم
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div formArrayName="exact" class="checkboxes-container">
+      @for (control of form.controls.exact.controls; track $index) {
+        <mat-checkbox [formControl]="control">
+          {{ ($index + 581) | memo }}
+        </mat-checkbox>
+      }
+    </div>
+  </mat-expansion-panel>
+  <button mat-flat-button>
+    تسجيل التسميع
+    <mat-icon iconPositionEnd>
+      add
+    </mat-icon>
+  </button>
 </form>

@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { EMPTY, catchError, tap } from 'rxjs';
 import { AccountsService } from './api/services';
 import { SnackbarService } from './snackbar.service';
-import { Group } from '../constants/group.enum';
+import { Group } from '@shared';
 
 @Injectable({
   providedIn: 'root',

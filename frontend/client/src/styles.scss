@@ -7,7 +7,6 @@ $client-theme: theme.$light-theme;
 $client-dark-theme: theme.$dark-theme;
 
 html {
-  @include mat.core-theme($client-theme);
   @include mat.all-component-themes($client-theme);
 }
 
@@ -53,6 +52,23 @@ html {
   @include mat.button-color($client-theme, $color-variant: error)
 }
 
+:root {
+  $_success_error: mat.define-theme((
+    color: (
+      primary: mat.$green-palette,
+      tertiary: mat.$red-palette,
+    )
+  ));
+
+  --client-success-color: #{mat.get-theme-color($_success_error, primary-container)};
+  --client-success-text-color: #{mat.get-theme-color($_success_error, on-primary-container)};
+
+  --client-error-color: #{mat.get-theme-color($_success_error, tertiary-container)};
+  --client-error-text-color: #{mat.get-theme-color($_success_error, on-tertiary-container)};
+
+  --mat-dialog-with-actions-content-padding: 20px 24px 16px;
+}
+
 .dark {
   color-scheme: dark;
 
@@ -61,11 +77,20 @@ html {
 
   --mat-sidenav-scrim-color: #000000aa;
 
-  --client-success-color: #66bb6a;
-  --client-error-color: #f44336;
+  $_success_error_dark: mat.define-theme((
+    color: (
+      primary: mat.$green-palette,
+      tertiary: mat.$red-palette,
+      theme-type: dark,
+    )
+  ));
 
-  --client-success-text-color: #000000de;
-  --client-error-text-color: #fff;
+  --client-success-color: #{mat.get-theme-color($_success_error_dark, primary-container)};
+  --client-success-text-color: #{mat.get-theme-color($_success_error_dark, on-primary-container)};
+
+  --client-error-color: #{mat.get-theme-color($_success_error_dark, tertiary-container)};
+  --client-error-text-color: #{mat.get-theme-color($_success_error_dark, on-tertiary-container)};
+
 
   .bg-surface {
     background-color: mat.get-theme-color($client-dark-theme, surface-container) !important;
@@ -108,14 +133,6 @@ html {
   .error {
     @include mat.button-color($client-dark-theme, $color-variant: error)
   }
-}
-
-:root {
-  --client-success-color: #2e7d32;
-  --client-error-color: #d32f2f;
-
-  --client-success-text-color: #fff;
-  --client-error-text-color: #fff;
 }
 
 * {
@@ -217,4 +234,8 @@ mat-sidenav {
   .mat-expansion-panel-body {
     padding: 0;
   }
+}
+
+.hidden {
+  display: none !important;
 }

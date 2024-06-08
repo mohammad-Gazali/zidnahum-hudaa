@@ -1,54 +1,14 @@
-import { Pipe, PipeTransform } from "@angular/core";
+import { inject, Pipe, PipeTransform } from '@angular/core';
+import { MemoService } from '../services/memo.service';
 
 @Pipe({
     name: 'memo',
     standalone: true,
 })
 export class MemoPipe implements PipeTransform {
-    transform(value: number) {
-        if (value < 0) return 'INVALID';
-        
-        if (value <= 580) return String(value + 1);
+    private memo = inject(MemoService);
 
-        switch (value) {
-            case 581: return 'النبأ'
-            case 582: return 'النازعات'
-            case 583: return 'عبس'
-            case 584: return 'تكوير'
-            case 585: return 'الانفطار'
-            case 586: return 'المططفين'
-            case 587: return 'الانشقاق'
-            case 588: return 'البروج'
-            case 589: return 'الطارق'
-            case 590: return 'الأعلى'
-            case 591: return 'الغاشية'
-            case 592: return 'الفجر'
-            case 593: return 'البلد'
-            case 594: return 'الشمس'
-            case 595: return 'الليل'
-            case 596: return 'الضحى'
-            case 597: return 'الشرح'
-            case 598: return 'التين'
-            case 599: return 'العلق'
-            case 600: return 'القدر'
-            case 601: return 'البينة'
-            case 602: return 'الزلزلة'
-            case 603: return 'العاديات'
-            case 604: return 'القارعة'
-            case 605: return 'التكاثر'
-            case 606: return 'العصر'
-            case 607: return 'الهمزة'
-            case 608: return 'الفيل'
-            case 609: return 'قريش'
-            case 610: return 'الماعون'
-            case 611: return 'الكوثر'
-            case 612: return 'الكافرون'
-            case 613: return 'النصر'
-            case 614: return 'المسد'
-            case 615: return 'الإخلاص'
-            case 616: return 'الفلق'
-            case 617: return 'الناس'
-            default: return 'INVALID'
-        }       
+    transform(value: number) {
+      return this.memo.transform(value);
     }
 }

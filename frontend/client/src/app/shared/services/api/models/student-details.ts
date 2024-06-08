@@ -25,10 +25,11 @@ export interface StudentDetails {
   id?: number;
   last_comings: Array<ComingListForStudent>;
   masjed: 1 | 2 | 3;
+  memo_notes: Array<MemorizeNotesGet>;
   mother_name?: null | string;
   mother_phone?: null | string;
   name: string;
-  memo_notes: Array<MemorizeNotesGet>;
+  notes?: null | string;
   parts_received?: null | string;
   previous_week_messages: Array<MemorizeMessageForStudent>;
   q_awqaf_test?: {};

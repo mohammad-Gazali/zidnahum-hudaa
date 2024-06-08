@@ -50,11 +50,6 @@ export class LayoutService {
       icon: 'home',
     },
     {
-      link: '/news',
-      name: 'الإعلانات',
-      icon: 'notifications_active',
-    },
-    {
       link: '/files',
       name: 'الملفات',
       icon: 'file_copy',

@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class SnackbarService {
   private snackbar = inject(MatSnackBar);
-  
+
   public success(message: string) {
     this.snackbar.open(message, 'إغلاق', {
       duration: 5000,

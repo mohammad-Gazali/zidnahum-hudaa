@@ -1,1 +1,69 @@
-<p>test-form works!</p>
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <mat-radio-group [formControl]="form.controls.type">
+    <mat-radio-button value="quarter">ربع حزب</mat-radio-button>
+    <mat-radio-button value="half">نصف حزب</mat-radio-button>
+    <mat-radio-button value="whole">حزب</mat-radio-button>
+  </mat-radio-group>
+
+  <div class="cards-container">
+    <mat-card
+      class="bg-surface"
+      matRipple
+      [class.bg-primary-fixed-dim]="form.controls.extra.value === 1"
+      (click)="form.controls.extra.setValue(1)"
+      [class.hidden]="form.controls.type.value === 'whole'"
+    >
+      @if (form.controls.type.value === 'half') {
+        النصف الأول
+      } @else {
+        الربع الأول
+      }
+    </mat-card>
+    <mat-card
+      class="bg-surface"
+      matRipple
+      [class.bg-primary-fixed-dim]="form.controls.extra.value === 2"
+      (click)="form.controls.extra.setValue(2)"
+      [class.hidden]="form.controls.type.value === 'whole'"
+    >
+      @if (form.controls.type.value === 'half') {
+        النصف الثاني
+      } @else {
+        الربع الثاني
+      }
+    </mat-card>
+    <mat-card
+      class="bg-surface"
+      matRipple
+      [class.bg-primary-fixed-dim]="form.controls.extra.value === 3"
+      (click)="form.controls.extra.setValue(3)"
+      [class.hidden]="form.controls.type.value !== 'quarter'"
+    >
+      الربع الثالث
+    </mat-card>
+    <mat-card
+      class="bg-surface"
+      matRipple
+      [class.bg-primary-fixed-dim]="form.controls.extra.value === 4"
+      (click)="form.controls.extra.setValue(4)"
+      [class.hidden]="form.controls.type.value !== 'quarter'"
+    >
+      الربع الرابع
+    </mat-card>
+  </div>
+  <mat-form-field>
+    <mat-label>رقم الحزب</mat-label>
+    <input type="number" matInput min="1" max="60" [formControl]="form.controls.part" />
+    <mat-error>
+      @if (form.controls.part.hasError('required')) {
+        هذا الحقل مطلوب
+      } @else {
+        يجب أن يكون رقم الحزب بين 1 و 60
+      }
+    </mat-error>
+  </mat-form-field>
+  <button mat-flat-button>
+    تسجيل السبر
+    <mat-icon iconPositionEnd>add</mat-icon>
+  </button>
+</form>
