@@ -6,13 +6,12 @@ import { MatButton } from '@angular/material/button';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { LayoutService, SnackbarService, StudentList, StudentsService } from '@shared';
+import { LayoutService, MemoService, SnackbarService, StudentList, StudentsService, TestService } from '@shared';
 import { catchError, distinctUntilChanged, EMPTY, filter, map, merge, Subject, switchMap, tap } from 'rxjs';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { MemoFormComponent, MemoSubmit } from './memo-form/memo-form.component';
 import { TestFormComponent, TestSubmit } from './test-form/test-form.component';
-import { MemoService } from '../../shared/services/memo.service';
 
 @Component({
   selector: 'app-add-memo',
@@ -42,6 +41,7 @@ export class AddMemoComponent {
   private loading = inject(LayoutService).loading;
   private snackbar = inject(SnackbarService);
   private memo = inject(MemoService);
+  private test = inject(TestService);
 
   constructor() {
     this.destroyRef.onDestroy(() => {
@@ -129,7 +129,7 @@ export class AddMemoComponent {
         next: (res) => {
           this.loading.set(false);
           if (res.repeated_memo.length !== 0) {
-            this.snackbar.open(' تم التسجيل التسميع بنجاح, ولكن يوجد تكرار بـ:' + res.repeated_memo.map((item: number) => this.memo.transform(item)).join(', '))
+            this.snackbar.open(' تم التسجيل التسميع بنجاح, ولكن يوجد تكرار بـ:' + res.repeated_memo.map((item: number) => this.memo.transform(item)).join(', '));
           } else {
             this.snackbar.success('تم تسجيل التسميع بنجاح');
           }
@@ -142,11 +142,21 @@ export class AddMemoComponent {
 
     if (!selectedStudent) return;
 
-    // TODO: continue from here
-    const q_test = value.type === 'quarter' ?
-      [value.part] :
-      value.type === 'half' ?
-        [] : []
+    const partArray = this.testArrayFromPartNumber(value.part);
+
+    let q_test: number[];
+
+    if (value.type === 'quarter') {
+      q_test = [partArray[value.extra - 1]];
+    } else if (value.type === 'half') {
+      if (value.extra === 1) {
+        q_test = partArray.slice(0, 2);
+      } else {
+        q_test = partArray.slice(2);
+      }
+    } else {
+      q_test = partArray;
+    }
 
     this.loading.set(true);
 
@@ -156,5 +166,25 @@ export class AddMemoComponent {
         q_test: q_test.map(n => n - 1),
       },
     })
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+      ).subscribe({
+      error: () => {
+        this.loading.set(false);
+      },
+      next: (res) => {
+        this.loading.set(false);
+        if (res.repeated_test.length !== 0) {
+          this.snackbar.open(' تم التسجيل التسميع بنجاح, ولكن يوجد تكرار بـ:' + res.repeated_test.map((item: number) => this.test.transform(item)).join(', '));
+        } else {
+          this.snackbar.success('تم تسجيل التسميع بنجاح');
+        }
+      }
+    });
+  }
+
+  testArrayFromPartNumber(part: number) {
+    let initial = part === 1 ? 1 : 4 * part - 3;
+    return Array(4).fill(null).map(() => initial++);
   }
 }

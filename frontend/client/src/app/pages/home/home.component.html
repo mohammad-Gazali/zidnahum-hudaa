@@ -1,10 +1,9 @@
-<form (ngSubmit)="submit()">
+<form [formGroup]="searchForm" (ngSubmit)="submit()">
   <mat-form-field>
     <input
-      [(ngModel)]="search"
-      [ngModelOptions]="{ standalone: true }"
       matInput
       placeholder="اكتب اسم الطالب أو معرفه"
+      [formControl]="searchForm.controls.search"
     />
   </mat-form-field>
   <button mat-flat-button>
@@ -14,7 +13,7 @@
 </form>
 @if (submitted()) {
   @if (response(); as response) {
-    <mat-divider class="section-divider"></mat-divider>
+    <mat-divider class="section-divider" />
     <div class="bg-surface text-primary search-results-title">
       نتائج البحث
     </div>
@@ -27,32 +26,32 @@
               <span class="label">المعرف: </span>
               <span class="value text-secondary font-bold">{{ student.id }}</span>
             </li>
-            <mat-divider></mat-divider>
+            <mat-divider />
             <li>
               <span class="label">المسجد: </span>
               <span class="value">{{ student.masjed | masjed }}</span>
             </li>
-            <mat-divider></mat-divider>
+            <mat-divider />
             <li>
               <span class="label">الفئة: </span>
               <span class="value">{{ student.category?.name ?? '-' }}</span>
             </li>
-            <mat-divider></mat-divider>
+            <mat-divider />
             <li>
               <span class="label">المجموعة: </span>
               <span class="value">{{ student.group?.name ?? '-' }}</span>
             </li>
-            <mat-divider></mat-divider>
+            <mat-divider />
             <li>
               <span class="label">تاريخ الميلاد: </span>
               <span class="value" dir="rtl">{{ (student.birthdate | date: 'yyyy-MM-dd') || '-' }}</span>
             </li>
-            <mat-divider></mat-divider>
+            <mat-divider />
             <li>
               <span class="label">اسم الأم: </span>
               <span class="value">{{ student.mother_name ?? '-' }}</span>
             </li>
-            <mat-divider></mat-divider>
+            <mat-divider />
             <li>
               <span class="label">الأجزاء المستلمة: </span>
               <span class="value">{{ student.parts_received || '-' }}</span>
@@ -63,14 +62,16 @@
               عرض التفاصيل
               <mat-icon iconPositionEnd>info</mat-icon>
             </button>
-            <button mat-stroked-button routerLink="add-memo" [queryParams]="{ id: student.id }">
-              إضافة تسميع أو سبر
-              <mat-icon iconPositionEnd>add_circle</mat-icon>
-            </button>
-            <button mat-stroked-button>
-              إضافة ملاحظة
-              <mat-icon iconPositionEnd>edit_note</mat-icon>
-            </button>
+            @if (hasMemoGroup()) {
+              <button mat-stroked-button routerLink="add-memo" [queryParams]="{ id: student.id }">
+                إضافة تسميع أو سبر
+                <mat-icon iconPositionEnd>add_circle</mat-icon>
+              </button>
+              <button mat-stroked-button>
+                إضافة ملاحظة
+                <mat-icon iconPositionEnd>edit_note</mat-icon>
+              </button>
+            }
           </div>
         </mat-card>
 

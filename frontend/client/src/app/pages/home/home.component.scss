@@ -1,83 +1,84 @@
 form {
-    display: flex;
-    flex-direction: column;
-    max-width: 31rem;
-    margin: 0 auto;
-    --mdc-outlined-text-field-container-shape: 2rem;
+  display: flex;
+  flex-direction: column;
+  max-width: 31rem;
+  margin: 0 auto;
+  --mdc-outlined-text-field-container-shape: 2rem;
 }
 
 .section-divider {
-    margin: 2rem auto;
-    max-width: 1200px;
+  margin: 2rem auto;
+  max-width: 1200px;
 }
 
 .card-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+  gap: 1.5rem;
 
-    mat-card {
-        padding: 1rem;
+  mat-card {
+    flex: 1 0 300px;
+    max-width: 400px;
+    padding: 1rem;
 
-        .student-name {
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .info-list {
-            display: flex;
-            flex-direction: column;
-            border-radius: 1rem;
-            padding: 1rem;
-            margin-top: 1rem;
-
-            .label {
-                font-weight: bold;
-            }
-
-            mat-divider {
-                margin: 0.5rem 0;
-            }
-        }
-
-        .actions {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
+    .student-name {
+      font-weight: bold;
+      text-align: center;
     }
 
-    @media (max-width: 1200px) {
-        & {
-            max-width: unset;
-        }
+    .info-list {
+      display: flex;
+      flex-direction: column;
+      border-radius: 1rem;
+      padding: 1rem;
+      margin-top: 1rem;
+
+      .label {
+        font-weight: bold;
+      }
+
+      mat-divider {
+        margin: 0.5rem 0;
+      }
     }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+  }
+
+  @media (max-width: 1200px) {
+    & {
+      max-width: unset;
+    }
+  }
 }
 
 .pagination-buttons {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .search-results-title {
-    max-width: 1200px;
-    margin: 0 auto;
-    font-weight: 500;
-    border-radius: 2rem;
-    text-align: center;
-    margin-bottom: 1.5rem;
-    padding: 0.5rem;
+  max-width: 400px;
+  margin: 0 auto 1.5rem;
+  font-weight: 500;
+  border-radius: 2rem;
+  text-align: center;
+  padding: 0.5rem;
 }
 
 .not-found {
-    grid-column: -1 / 1;
-    text-align: center;
-    font-size: 1.6rem;
+  grid-column: -1 / 1;
+  text-align: center;
+  font-size: 1.6rem;
 }

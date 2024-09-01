@@ -8,6 +8,12 @@ $client-dark-theme: theme.$dark-theme;
 
 html {
   @include mat.all-component-themes($client-theme);
+
+  @media (max-width: 600px) {
+    & {
+      font-size: 14px;
+    }
+  }
 }
 
 .bg-surface {
@@ -38,10 +44,6 @@ html {
 
 .text-outline {
   color: mat.get-theme-color($client-theme, outline) !important;
-}
-
-.border-color-outline {
-  border-color: mat.get-theme-color($client-theme, outline) !important;
 }
 
 .secondary {
@@ -120,10 +122,6 @@ html {
 
   .text-outline {
     color: mat.get-theme-color($client-dark-theme, outline) !important;
-  }
-
-  .border-color-outline {
-    border-color: mat.get-theme-color($client-dark-theme, outline) !important;
   }
 
   .secondary {

@@ -1,5 +1,5 @@
 <mat-sidenav-container>
-  <mat-sidenav #sidenav [hidden]="layout.isSmall$ | async" mode="over" position="end">
+  <mat-sidenav fixedInViewport #sidenav [hidden]="layout.isSmall$ | async" mode="over" position="end">
     <div class="top-section">
       <button (click)="layout.toggleTheme()" mat-icon-button>
         <mat-icon>

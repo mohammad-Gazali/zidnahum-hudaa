@@ -9,7 +9,6 @@ export const groupGuard: CanActivateFn = (route) => {
   const router = inject(Router);
 
   const groups = route.data as any[];
-
   return toObservable(auth.currentUser).pipe(
     filter((user) => user !== undefined),
     map((user) => user?.isAdmin || user?.groups.some(g => groups.indexOf(g) !== -1)),

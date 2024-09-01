@@ -1,6 +1,6 @@
 @if (student(); as student) {
     @for (note of student.memo_notes; track note.content) {
-        <mat-card class="border-color-outline">
+        <mat-card appearance="outlined">
             @if (hasGroup()) {
                 <button (click)="removeNote()" class="error" mat-flat-button>
                     <mat-icon>delete</mat-icon>

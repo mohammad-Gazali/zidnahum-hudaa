@@ -1,6 +1,6 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
@@ -10,7 +10,8 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatCard } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
-import { LayoutService, MasjedPipe, StudentList, StudentsService } from '@shared';
+import { AuthService, Group, LayoutService, MasjedPipe, StudentsService } from '@shared';
+import { StudentListService } from './student-list.service';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +19,7 @@ import { LayoutService, MasjedPipe, StudentList, StudentsService } from '@shared
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   imports: [
-    FormsModule,
+    ReactiveFormsModule,
     MatFormField,
     MatInput,
     MatButton,
@@ -33,23 +34,23 @@ import { LayoutService, MasjedPipe, StudentList, StudentsService } from '@shared
 export class HomeComponent {
   private students = inject(StudentsService);
   private destroyRef = inject(DestroyRef);
+  private list = inject(StudentListService);
+  private auth = inject(AuthService);
   public loading = inject(LayoutService).loading;
 
-  public response = signal<
-    | {
-    count: number;
-    next?: string | null | undefined;
-    previous?: string | null | undefined;
-    results: StudentList[];
-  }
-    | undefined
-  >(undefined);
-  public submitted = signal(false);
+  public response = this.list.lastResponse;
+  public searchForm = this.list.searchForm;
+  public submitted = computed(() => this.response() !== undefined);
+  public hasMemoGroup = computed(() => {
+    const user = this.auth.currentUser();
+    if (!user) return false;
+    if (user.isAdmin) return true;
 
-  public search = '';
+    return user.groups.indexOf(Group.Memo) !== -1
+  })
 
   submit() {
-    if (!this.search) return;
+    if (!this.searchForm.value.search) return;
 
     this.getStudents();
   }
@@ -57,10 +58,9 @@ export class HomeComponent {
   getStudents(url?: string) {
     const params = new URLSearchParams(url?.split('?')[1]);
 
-    const query = params.get('query') ?? this.search;
+    const query = params.get('query') ?? this.searchForm.value.search;
     const page = Number(params.get('page')) || 1;
 
-    this.submitted.set(true);
     this.loading.set(true);
 
     this.students
