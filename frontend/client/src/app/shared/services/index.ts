@@ -5,3 +5,5 @@ export * from './snackbar.service';
 export * from './layout.service';
 export * from './memo.service';
 export * from './test.service';
+export * from './confirmation.service';
+export * from './masjed.service';

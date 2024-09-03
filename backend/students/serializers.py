@@ -19,7 +19,7 @@ class StudentGroupSerializer(serializers.ModelSerializer):
 class MemorizeNotesGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = MemorizeNotes
-        fields = ["content", "sended_at"]
+        fields = ["id", "content", "sended_at"]
 
 
 class MemorizeNotesCreateSerializer(serializers.ModelSerializer):
@@ -35,6 +35,16 @@ class StudentListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = ["id", "name", "category", "group", "mother_name", "birthdate", "parts_received", "masjed"]
+
+
+class StudentListWithComingRegistrationSerializer(serializers.ModelSerializer):
+    category = StudentCategorySerializer()
+    group = StudentGroupSerializer()
+    is_registered_today = serializers.BooleanField()
+
+    class Meta:
+        model = Student
+        fields = ["id", "name", "category", "group", "mother_name", "birthdate", "masjed", "is_registered_today"]
 
 
 class MemorizeMessageForStudentSerializer(serializers.ModelSerializer):

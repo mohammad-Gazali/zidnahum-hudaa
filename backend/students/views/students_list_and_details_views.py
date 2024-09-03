@@ -1,5 +1,5 @@
 from django.utils import timezone
-from django.db.models import Prefetch, Value
+from django.db.models import Prefetch, Value, OuterRef, Exists
 from django.conf import settings
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.exceptions import ValidationError
@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg.openapi import Parameter, IN_QUERY, TYPE_STRING
-from students.serializers import StudentListSerializer, StudentDetailsSerializer
+from students.serializers import StudentListSerializer, StudentListWithComingRegistrationSerializer, StudentDetailsSerializer
 from students.models import Student, MemorizeMessage
 from students.utils import get_last_sat_date_range_for_previous_week, get_last_sat_date_range, get_first_month_half_range, get_second_month_half_range
 from students.permissions import IsComingGroup
@@ -43,9 +43,9 @@ class StudentListView(ListAPIView):
             return Student.search_student(query).exclude(pk__in=ControlSettings.get_hidden_ids()).order_by("id")
 
 
-class StudentNonRegisterdTodayListView(ListAPIView):
+class StudentWithComingRegistrationListView(ListAPIView):
     permission_classes = [IsComingGroup]
-    serializer_class = StudentListSerializer
+    serializer_class = StudentListWithComingRegistrationSerializer
 
     def handle_exception(self, exc):
 
@@ -56,18 +56,37 @@ class StudentNonRegisterdTodayListView(ListAPIView):
 
     def get_queryset(self):
         query = self.request.GET.get("query")
+        masjed = self.request.GET.get("masjed")
         category_id: int = self.kwargs["coming_category_id"]
 
         if query is None:
             raise ValidationError("query param is required")
 
-            
+        masjed_kwargs = {"masjed": int(masjed)} if masjed else {}
+
         # getting students ids of regestired students in the same day
         # and this is for excluding them from the result
-        registered_today = Coming.objects.filter(registered_at__date=timezone.now().date(), category_id=category_id)
-        registered_today_ids = set(map(lambda x: x.student_id, registered_today))
+        registered_today_ids = (
+            Coming.objects
+            .filter(
+                registered_at__date=timezone.now().date(), 
+                category_id=category_id
+            )
+            .values('student_id')
+            .distinct()
+        )
 
-        return Student.search_student(query).exclude(pk__in=registered_today_ids).order_by("id")
+        return (
+            Student
+            .search_student(query)
+            .filter(**masjed_kwargs)
+            .annotate(
+                is_registered_today=Exists(
+                    registered_today_ids.filter(student_id=OuterRef('id'))
+                )
+            )
+            .order_by('id')
+        )
 
 
 class StudentDetailsView(RetrieveAPIView):

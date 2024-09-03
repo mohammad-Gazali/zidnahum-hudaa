@@ -118,9 +118,9 @@ class Student(models.Model):
 
 
 class MemorizeNotes(models.Model):
-    master = models.ForeignKey(AUTH_USER_MODEL, verbose_name="الأستاذ", on_delete=models.CASCADE, null=True)
+    master = models.ForeignKey(AUTH_USER_MODEL, verbose_name="الأستاذ", on_delete=models.SET_NULL, null=True)
     content = models.CharField(max_length=60, verbose_name="المحتوى")
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="اسم الطالب", related_name="memo_notes")
+    student = models.ForeignKey(Student, on_delete=models.PROTECT, verbose_name="اسم الطالب", related_name="memo_notes")
     sended_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الإرسال")
 
     def __str__(self):
@@ -140,8 +140,8 @@ class MessageTypeChoice(models.IntegerChoices):
 
 
 class MemorizeMessage(models.Model):
-    master = models.ForeignKey(AUTH_USER_MODEL, verbose_name="اسم الأستاذ", on_delete=models.CASCADE, null=True)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="اسم الطالب")
+    master = models.ForeignKey(AUTH_USER_MODEL, verbose_name="اسم الأستاذ", on_delete=models.SET_NULL, null=True)
+    student = models.ForeignKey(Student, on_delete=models.PROTECT, verbose_name="اسم الطالب")
     sended_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الإرسال")
 
     # for type MEMO, TEST the changes is the "list" of changed indexes in the related field

@@ -1,1 +1,120 @@
-<p>add-coming works!</p>
+<form class="secondary" [formGroup]="searchForm" (ngSubmit)="submit()">
+  <div class="title bg-secondary-fixed">
+    تسجيل الحضور
+  </div>
+  <mat-form-field>
+    <input
+      matInput
+      placeholder="اكتب اسم الطالب أو معرفه"
+      [formControl]="searchForm.controls.search"
+    />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select
+      placeholder=""
+      [formControl]="searchForm.controls.masjed"
+    >
+      @for (option of masjedOptions; track option) {
+        <mat-option [value]="option">
+          مسجد {{ option | masjed }}
+        </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select
+      placeholder="نوع الحضور"
+      [formControl]="searchForm.controls.categoryId"
+    >
+      @for (category of categories(); track category.id) {
+        <mat-option [value]="category.id">
+          {{ category.name }}
+        </mat-option>
+      }
+    </mat-select>
+    <mat-error>هذا الحقل مطلوب</mat-error>
+  </mat-form-field>
+  <button mat-flat-button>
+    بحث
+    <mat-icon iconPositionEnd> person_search </mat-icon>
+  </button>
+</form>
+
+@if (submitted()) {
+  @if (response(); as response) {
+    <mat-divider class="section-divider" />
+    <div class="bg-surface text-primary search-results-title">
+      نتائج البحث
+    </div>
+    <div class="card-container">
+      @for (student of response.results; track student.id) {
+        <mat-card>
+          <p class="student-name">{{ student.name }}</p>
+          <ul class="bg-surface info-list">
+            <li>
+              <span class="label">المعرف: </span>
+              <span class="value text-secondary font-bold">{{ student.id }}</span>
+            </li>
+            <mat-divider />
+            <li>
+              <span class="label">المسجد: </span>
+              <span class="value">{{ student.masjed | masjed }}</span>
+            </li>
+            <mat-divider />
+            <li>
+              <span class="label">الفئة: </span>
+              <span class="value">{{ student.category?.name ?? '-' }}</span>
+            </li>
+            <mat-divider />
+            <li>
+              <span class="label">المجموعة: </span>
+              <span class="value">{{ student.group?.name ?? '-' }}</span>
+            </li>
+            <mat-divider />
+            <li>
+              <span class="label">تاريخ الميلاد: </span>
+              <span class="value" dir="rtl">{{ (student.birthdate | date: 'yyyy-MM-dd') || '-' }}</span>
+            </li>
+            <mat-divider />
+            <li>
+              <span class="label">اسم الأم: </span>
+              <span class="value">{{ student.mother_name ?? '-' }}</span>
+            </li>
+          </ul>
+          <div class="actions">
+            @if (student.is_registered_today) {
+              <button disabled class="secondary" mat-flat-button>
+                تم تسجيل الطالب
+                <mat-icon iconPositionEnd>how_to_reg</mat-icon>
+              </button>
+            } @else {
+              <button [disabled]="loadingIds().indexOf(student.id) !== -1" (click)="addComing(student.id)" class="secondary" mat-flat-button>
+                تسجيل
+                <mat-icon iconPositionEnd>how_to_reg</mat-icon>
+              </button>
+            }
+          </div>
+        </mat-card>
+
+      } @empty {
+        <p class="not-found">لا يوجد طلاب بهذه التفاصيل</p>
+      }
+    </div>
+    @if (response.results.length < response.count) {
+      <div class="pagination-buttons secondary">
+        <button
+          (click)="getStudents(response.previous ?? '')"
+          mat-flat-button
+          [disabled]="!response.previous || loading()">
+          الصفحة السابقة
+        </button>
+        <button
+          (click)="getStudents(response.next ?? '')"
+          mat-flat-button
+          [disabled]="!response.next || loading()">
+          الصفحة التالية
+        </button>
+      </div>
+    }
+  }
+}

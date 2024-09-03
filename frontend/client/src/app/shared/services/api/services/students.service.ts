@@ -16,16 +16,17 @@ import { StudentUpdateQMemo } from '../models/student-update-qmemo';
 import { StudentUpdateQTest } from '../models/student-update-qtest';
 import { StudentUpdateRiadAlsaalihin } from '../models/student-update-riad-alsaalihin';
 import { StudentDetails } from '../models/student-details';
+import { StudentWithComingRegistrationList } from '../models/student-with-coming-registration-list';
 @Injectable({
   providedIn: 'root',
 })
 class StudentsService extends __BaseService {
   static readonly studentsListPath = '/students/';
+  static readonly studentsWithComingRegistrationListPath = '/students/with-coming-registration/{coming_category_id}';
   static readonly studentsMemorizeMessageListPath = '/students/memorize-message';
   static readonly studentsMemorizeMessageDeletePath = '/students/memorize-message/{id}';
   static readonly studentsMemorizeNotesCreatePath = '/students/memorize-notes';
   static readonly studentsMemorizeNotesDeletePath = '/students/memorize-notes/{id}';
-  static readonly studentsNonRegTodayReadPath = '/students/non-reg-today/{coming_category_id}';
   static readonly studentsUpdateAlarbaeinAlnawawiaUpdatePath = '/students/update/alarbaein-alnawawia/{id}';
   static readonly studentsUpdateAllahNamesUpdatePath = '/students/update/allah-names/{id}';
   static readonly studentsUpdatePartsReceivedUpdatePath = '/students/update/parts-received/{id}';
@@ -227,15 +228,18 @@ class StudentsService extends __BaseService {
    *
    * - `page`: A page number within the paginated result set.
    */
-  studentsNonRegTodayReadResponse(params: StudentsService.StudentsNonRegTodayReadParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<StudentList>}>> {
+  studentsWithComingRegistrationListResponse(params: StudentsService.StudentsWithComingRegistrationListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<StudentWithComingRegistrationList>}>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
 
+    if (params.query != null) __params = __params.set('query', params.query.toString());
     if (params.page != null) __params = __params.set('page', params.page.toString());
+    if (params.masjed) __params = __params.set('masjed', params.masjed.toString());
+
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/students/non-reg-today/${encodeURIComponent(String(params.comingCategoryId))}`,
+      this.rootUrl + `/students/with-coming-registration/${encodeURIComponent(String(params.comingCategoryId))}`,
       __body,
       {
         headers: __headers,
@@ -246,7 +250,7 @@ class StudentsService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<StudentList>}>;
+        return _r as __StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<StudentWithComingRegistrationList>}>;
       })
     );
   }
@@ -257,9 +261,9 @@ class StudentsService extends __BaseService {
    *
    * - `page`: A page number within the paginated result set.
    */
-  studentsNonRegTodayRead(params: StudentsService.StudentsNonRegTodayReadParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<StudentList>}> {
-    return this.studentsNonRegTodayReadResponse(params).pipe(
-      __map(_r => _r.body as {count: number, next?: null | string, previous?: null | string, results: Array<StudentList>})
+  studentsWithComingRegistrationList(params: StudentsService.StudentsWithComingRegistrationListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<StudentWithComingRegistrationList>}> {
+    return this.studentsWithComingRegistrationListResponse(params).pipe(
+      __map(_r => _r.body as {count: number, next?: null | string, previous?: null | string, results: Array<StudentWithComingRegistrationList>})
     );
   }
 
@@ -566,9 +570,19 @@ module StudentsService {
   }
 
   /**
-   * Parameters for studentsNonRegTodayRead
+   * Parameters for StudentsWithComingRegistrationListParams
    */
-  export interface StudentsNonRegTodayReadParams {
+  export interface StudentsWithComingRegistrationListParams {
+    /**
+    * param for filtering result via student name or student id
+    */
+    query?: string;
+
+    /**
+     * param for filtering result via masjed
+     */
+    masjed?: 1 | 2 | 3;
+
     comingCategoryId: string;
 
     /**

@@ -47,7 +47,9 @@ html {
 }
 
 .secondary {
-  @include mat.button-color($client-theme, $color-variant: secondary)
+  @include mat.button-color($client-theme, $color-variant: secondary);
+  @include mat.form-field-color($client-theme, $color-variant: secondary);
+  @include mat.select-color($client-theme, $color-variant: secondary);
 }
 
 .error {
@@ -125,7 +127,9 @@ html {
   }
 
   .secondary {
-    @include mat.button-color($client-dark-theme, $color-variant: secondary)
+    @include mat.button-color($client-dark-theme, $color-variant: secondary);
+    @include mat.form-field-color($client-dark-theme, $color-variant: secondary);
+    @include mat.select-color($client-dark-theme, $color-variant: secondary);
   }
 
   .error {
@@ -232,6 +236,10 @@ mat-sidenav {
   .mat-expansion-panel-body {
     padding: 0;
   }
+}
+
+.mat-toolbar-single-row {
+  padding: 0 1rem 0 0.3rem !important;
 }
 
 .hidden {

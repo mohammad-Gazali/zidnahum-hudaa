@@ -15,8 +15,8 @@ class ComingCategory(models.Model):
 
 
 class Coming(models.Model):
-    master = models.ForeignKey(AUTH_USER_MODEL, verbose_name="اسم الأستاذ", on_delete=models.CASCADE, null=True)
-    student = models.ForeignKey("students.Student", verbose_name="اسم الطالب", on_delete=models.CASCADE)
+    master = models.ForeignKey(AUTH_USER_MODEL, verbose_name="اسم الأستاذ", on_delete=models.SET_NULL, null=True)
+    student = models.ForeignKey("students.Student", verbose_name="اسم الطالب", on_delete=models.PROTECT)
     registered_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ التسجيل")
     category = models.ForeignKey(ComingCategory, on_delete=models.PROTECT, verbose_name="سبب الحضور")
     is_doubled = models.BooleanField(verbose_name="القيمة مضاعفة", default=False)

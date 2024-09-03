@@ -67,7 +67,10 @@
                 إضافة تسميع أو سبر
                 <mat-icon iconPositionEnd>add_circle</mat-icon>
               </button>
-              <button mat-stroked-button>
+              <button
+                mat-stroked-button
+                (click)="openNoteDialog(student.id)"
+              >
                 إضافة ملاحظة
                 <mat-icon iconPositionEnd>edit_note</mat-icon>
               </button>

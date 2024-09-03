@@ -1,5 +1,5 @@
 from django.urls import path
-from students.views.students_list_and_details_views import StudentListView, StudentNonRegisterdTodayListView, StudentDetailsView
+from students.views.students_list_and_details_views import StudentListView, StudentWithComingRegistrationListView, StudentDetailsView
 from students.views.students_update_views import StudentUpdateQMemoView, StudentUpdateQTestView, StudentUpdateAlarbaeinAlnawawiaView, StudentUpdateRiadAlsaalihinView, StudentUpdateAllahNamesView, StudentUpdatePartsReceivedView
 from students.views.memorize_messages_views import MemorizeMessageListView, MemorizeMessageDeleteView
 from students.views.memorize_notes_views import MemorizeNotesCreateView, MemorizeNotesDeleteView
@@ -7,7 +7,7 @@ from students.views.memorize_notes_views import MemorizeNotesCreateView, Memoriz
 urlpatterns = [
     # students list and details urls
     path("", StudentListView.as_view(), name="students_list_view"),
-    path("non-reg-today/<int:coming_category_id>", StudentNonRegisterdTodayListView.as_view(), name="students_non_reg_today_list_view"),
+    path("with-coming-registration/<int:coming_category_id>", StudentWithComingRegistrationListView.as_view(), name="students_with_coming_registeration_list_view"),
     path("<int:pk>", StudentDetailsView.as_view(), name="students_details_view"),
 
     # student update urls

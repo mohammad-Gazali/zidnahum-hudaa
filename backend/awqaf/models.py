@@ -14,8 +14,8 @@ class AwqafTestNoQ(models.Model):
 
 
 class AwqafNoQStudentRelation(models.Model):
-    test = models.ForeignKey(AwqafTestNoQ, on_delete=models.CASCADE)
-    student = models.ForeignKey("students.Student", on_delete=models.CASCADE)
+    test = models.ForeignKey(AwqafTestNoQ, on_delete=models.PROTECT)
+    student = models.ForeignKey("students.Student", on_delete=models.PROTECT)
     is_old = models.BooleanField(default=False)
 
     class Meta:

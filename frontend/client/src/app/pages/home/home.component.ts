@@ -3,7 +3,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { finalize } from 'rxjs';
 import { MatButton } from '@angular/material/button';
 import { MatFormField } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
@@ -11,7 +10,9 @@ import { MatInput } from '@angular/material/input';
 import { MatCard } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
 import { AuthService, Group, LayoutService, MasjedPipe, StudentsService } from '@shared';
-import { StudentListService } from './student-list.service';
+import { HomeStudentListService } from './home-student-list.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddMemorizeNoteDialogComponent } from './add-memorize-note-dialog/add-memorize-note-dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -34,9 +35,14 @@ import { StudentListService } from './student-list.service';
 export class HomeComponent {
   private students = inject(StudentsService);
   private destroyRef = inject(DestroyRef);
-  private list = inject(StudentListService);
+  private list = inject(HomeStudentListService);
   private auth = inject(AuthService);
+  private dialog = inject(MatDialog);
   public loading = inject(LayoutService).loading;
+
+  constructor() {
+    this.destroyRef.onDestroy(() => this.loading.set(false))
+  }
 
   public response = this.list.lastResponse;
   public searchForm = this.list.searchForm;
@@ -70,8 +76,21 @@ export class HomeComponent {
       })
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        finalize(() => this.loading.set(false))
       )
-      .subscribe((res) => this.response.set(res));
+      .subscribe({
+        error: () => this.loading.set(false),
+        next: (res) => {
+          this.loading.set(false);
+          this.response.set(res);
+        },
+      });
+  }
+
+  openNoteDialog(studentId: number) {
+    this.dialog.open(AddMemorizeNoteDialogComponent, {
+      data: studentId,
+      // maxWidth: '500px',
+      width: '80%',
+    })
   }
 }

@@ -1,20 +1,24 @@
 mat-card {
-    padding: 1rem;
-    box-shadow: none;
-    border: 1px solid;
+  padding: 1rem;
+  box-shadow: none;
+  border: 1px solid;
+
+  &:not(:first-child) {
+    margin-top: 1rem;
+  }
 }
 
 .not-found {
-    text-align: center;
+  text-align: center;
 }
 
 button {
-    width: fit-content;
-    margin-right: auto;
-    margin-bottom: 1rem;
+  width: fit-content;
+  margin-right: auto;
+  margin-bottom: 1rem;
 }
 
 span {
-    margin-right: auto;
-    font-size: 12px;
+  margin-right: auto;
+  font-size: 12px;
 }

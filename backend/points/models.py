@@ -15,8 +15,8 @@ class PointsAddingCause(models.Model):
 
 
 class PointsAdding(models.Model):
-    master = models.ForeignKey(AUTH_USER_MODEL, verbose_name="اسم الأستاذ", on_delete=models.CASCADE, null=True)
-    student = models.ForeignKey("students.Student", on_delete=models.CASCADE, verbose_name="الطالب")
+    master = models.ForeignKey(AUTH_USER_MODEL, verbose_name="اسم الأستاذ", on_delete=models.SET_NULL, null=True)
+    student = models.ForeignKey("students.Student", on_delete=models.PROTECT, verbose_name="الطالب")
     value = models.IntegerField(verbose_name="القيمة", validators=[MinValueValidator(0)])
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الإضافة")
     cause = models.ForeignKey(PointsAddingCause, verbose_name="السبب", on_delete=models.PROTECT)
@@ -41,8 +41,8 @@ class PointsDeletingCause(models.Model):
 
 
 class PointsDeleting(models.Model):
-    master = models.ForeignKey(AUTH_USER_MODEL, verbose_name="اسم الأستاذ", on_delete=models.CASCADE, null=True)
-    student = models.ForeignKey("students.Student", on_delete=models.CASCADE, verbose_name="الطالب")
+    master = models.ForeignKey(AUTH_USER_MODEL, verbose_name="اسم الأستاذ", on_delete=models.SET_NULL, null=True)
+    student = models.ForeignKey("students.Student", on_delete=models.PROTECT, verbose_name="الطالب")
     value = models.IntegerField(verbose_name="القيمة", validators=[MinValueValidator(0)])
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الإضافة")
     cause = models.ForeignKey(PointsDeletingCause, verbose_name="السبب", on_delete=models.PROTECT, null=True, blank=True)

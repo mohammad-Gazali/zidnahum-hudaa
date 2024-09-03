@@ -1,5 +1,5 @@
 /* tslint:disable */
 export interface ComingCategory {
-  id?: number;
+  id: number;
   name: string;
 }

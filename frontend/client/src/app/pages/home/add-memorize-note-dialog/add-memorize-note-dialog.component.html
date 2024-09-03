@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>
+  إضافة ملاحظة
+</h2>
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field>
+      <mat-label>الملاحظة</mat-label>
+      <textarea [formControl]="form.controls.note" matInput></textarea>
+      <mat-error>هذا الحقل مطلوب</mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button [disabled]="loading()" (click)="submit()" mat-flat-button>
+    إضافة
+    <mat-icon iconPositionEnd>
+      add
+    </mat-icon>
+  </button>
+</mat-dialog-actions>

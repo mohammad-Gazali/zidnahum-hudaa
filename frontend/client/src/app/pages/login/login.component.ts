@@ -1,15 +1,11 @@
-import { Component, inject } from '@angular/core';
-import {
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
-import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators, } from '@angular/forms';
+import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
-import { LayoutService, AuthService, SnackbarService } from '@shared';
-import { finalize } from 'rxjs';
+import { AuthService, LayoutService, SnackbarService } from '@shared';
 import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-login',
@@ -30,7 +26,12 @@ export class LoginComponent {
   private auth = inject(AuthService);
   private snackbar = inject(SnackbarService);
   private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
   public loading = inject(LayoutService).loading;
+
+  constructor() {
+    this.destroyRef.onDestroy(() => this.loading.set(false))
+  }
 
   public form = this.fb.group({
     username: this.fb.control('', [Validators.required]),
@@ -43,10 +44,16 @@ export class LoginComponent {
 
     this.auth
       .login(this.form.getRawValue())
-      .pipe(finalize(() => this.loading.set(false)))
-      .subscribe(() => {
-        this.snackbar.success('تم تسجيل الدخول بنجاح');
-        this.router.navigateByUrl('/');
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe({
+        error: () => this.loading.set(false),
+        next: () => {
+          this.loading.set(false);
+          this.snackbar.success('تم تسجيل الدخول بنجاح');
+          return this.router.navigateByUrl('/');
+        }
       });
   }
 }

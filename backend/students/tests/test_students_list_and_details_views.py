@@ -146,8 +146,8 @@ class StudentListAndDetailsTestCase(TestCase):
         self.assertListEqual(res_ids, expected_ids)
 
 
-    def test_list_non_registerd_today_students_view(self):
-        url = reverse("students_non_reg_today_list_view", args=[self.coming_category.pk]) + "?query=test"
+    def test_students_with_coming_registeration_list_view(self):
+        url = reverse("students_with_coming_registeration_list_view", args=[self.coming_category.pk]) + "?query=test"
 
         res = self.client.get(url, HTTP_AUTHORIZATION=f"Bearer {self.token}")
 
@@ -157,17 +157,36 @@ class StudentListAndDetailsTestCase(TestCase):
 
         res = self.client.get(url, HTTP_AUTHORIZATION=f"Bearer {self.token}")
         
-        self.assertEqual(res.json()["count"], self.total_count - self.registerd_count)
+        self.assertEqual(res.json()["count"], self.total_count)
 
-        res_ids = list(map(lambda x: x["id"], res.json()["results"]))
+        res_filtered_ids = list(
+            map(
+                lambda x: x["id"], 
+                filter(
+                    lambda x: not x["is_registered_today"], 
+                    res.json()["results"],
+                ),
+            ),
+        )
 
         while res.json()["next"] is not None:
             res = self.client.get(res.json()["next"], HTTP_AUTHORIZATION=f"Bearer {self.token}")
-            res_ids += list(map(lambda x: x["id"], res.json()["results"]))
+            
+            res_filtered_ids += list(
+                map(
+                    lambda x: x["id"], 
+                    filter(
+                        lambda x: not x["is_registered_today"], 
+                        res.json()["results"],
+                    ),
+                ),
+            )
 
-        expected_ids = [s.pk for s in self.students if s.pk % 3 != 2]
+        expected_filtered_ids = [s.pk for s in self.students if s.pk % 3 != 2]
 
-        self.assertListEqual(res_ids, expected_ids)
+        self.assertEqual(self.total_count - self.registerd_count, len(res_filtered_ids))
+
+        self.assertListEqual(res_filtered_ids, expected_filtered_ids)
 
 
     def test_list_via_category_model(self):
