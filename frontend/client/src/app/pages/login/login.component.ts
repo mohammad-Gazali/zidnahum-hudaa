@@ -29,10 +29,6 @@ export class LoginComponent {
   private destroyRef = inject(DestroyRef);
   public loading = inject(LayoutService).loading;
 
-  constructor() {
-    this.destroyRef.onDestroy(() => this.loading.set(false))
-  }
-
   public form = this.fb.group({
     username: this.fb.control('', [Validators.required]),
     password: this.fb.control('', [Validators.required]),

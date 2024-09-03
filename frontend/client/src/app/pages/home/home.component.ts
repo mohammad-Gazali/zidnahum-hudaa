@@ -40,10 +40,6 @@ export class HomeComponent {
   private dialog = inject(MatDialog);
   public loading = inject(LayoutService).loading;
 
-  constructor() {
-    this.destroyRef.onDestroy(() => this.loading.set(false))
-  }
-
   public response = this.list.lastResponse;
   public searchForm = this.list.searchForm;
   public submitted = computed(() => this.response() !== undefined);

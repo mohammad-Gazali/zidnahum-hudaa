@@ -4,4 +4,5 @@ export enum Group {
   Points,
   Hadeeth,
   Reports,
+  AddStudents,
 }

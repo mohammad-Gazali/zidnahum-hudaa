@@ -42,10 +42,6 @@ export class AddMemorizeNoteDialogComponent {
   private destroyRef = inject(DestroyRef);
   private dialogRef = inject(MatDialogRef);
 
-  constructor() {
-    this.destroyRef.onDestroy(() => this.loading.set(false))
-  }
-
   public loading = signal(false);
   public form = this.fb.group({
     note: this.fb.control('', [Validators.required]),

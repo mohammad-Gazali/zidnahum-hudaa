@@ -23,10 +23,6 @@ export class StudentNotesComponent {
   private loading = inject(LayoutService).loading;
   public student = inject(StudentComponent).student;
 
-  constructor() {
-    this.destroyRef.onDestroy(() => this.loading.set(false))
-  }
-
   removeNote(id: number) {
     this.confirmation.confirm({
       message: 'هل أنت متأكد من حذف هذه الملاحظة ؟',
