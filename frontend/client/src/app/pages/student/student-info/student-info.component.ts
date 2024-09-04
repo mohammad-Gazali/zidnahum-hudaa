@@ -21,6 +21,6 @@ import { StudentComponent } from '../student.component';
   ],
 })
 export class StudentInfoComponent {
-  public student = inject(StudentComponent).student;
-  public currentUser = inject(AuthService).currentUser;
+  protected student = inject(StudentComponent).student;
+  protected currentUser = inject(AuthService).currentUser;
 }

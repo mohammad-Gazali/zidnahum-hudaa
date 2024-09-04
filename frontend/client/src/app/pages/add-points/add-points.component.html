@@ -1,1 +1,106 @@
-<p>add-points works!</p>
+<form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
+  <div class="title bg-surface-container-highest">
+    تسجيل نقاط
+  </div>
+  <mat-form-field>
+    <input [formControl]="searchForm.controls.search" matInput placeholder="اكتب اسم الطالب أو معرفه" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select
+      [formControl]="searchForm.controls.masjed"
+    >
+      @for (option of masjedOptions; track option) {
+        <mat-option [value]="option">
+          مسجد {{ option | masjed }}
+        </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <button mat-flat-button>
+    بحث
+    <mat-icon>search</mat-icon>
+  </button>
+</form>
+<div class="cards-container">
+  @for (student of studentsResponse(); track student.id) {
+    <mat-card>
+      <mat-card-content>
+        <span>
+          {{ student.name }}
+        </span>
+        <button
+          mat-flat-button
+          class="secondary"
+          (click)="selectStudent(student)"
+        >
+          اختيار
+        </button>
+      </mat-card-content>
+    </mat-card>
+  } @empty {
+    @if (searched()) {
+      <mat-card class="empty-card">
+        <mat-card-content>
+          لا يوجد طلاب بهذه التفاصيل
+        </mat-card-content>
+      </mat-card>
+    }
+  }
+</div>
+
+@if (selectedStudents().length !== 0) {
+  <mat-divider />
+  <mat-card>
+    <mat-card-content>
+      <mat-chip-set>
+        @for (student of selectedStudents(); track student.id) {
+          <mat-chip (removed)="removeStudent(student)">
+            {{ student.name }}
+            <mat-icon matChipRemove>close</mat-icon>
+          </mat-chip>
+        }
+      </mat-chip-set>
+      <form class="points-form" [formGroup]="pointsForm" (ngSubmit)="submitPoints()">
+        <mat-radio-group [formControl]="pointsForm.controls.type">
+          <mat-radio-button value="add">إضافة</mat-radio-button>
+          <mat-radio-button value="remove">خصم</mat-radio-button>
+        </mat-radio-group>
+        <mat-form-field>
+          <mat-label>القيمة</mat-label>
+          <input matInput type="number" [formControl]="pointsForm.controls.value" />
+          <mat-error>هذا الحقل مطلوب</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>السبب</mat-label>
+          <mat-select [formControl]="pointsForm.controls.cause">
+            @if (pointsForm.controls.type.value === 'add') {
+              @for (cause of addingCauses(); track cause.id) {
+                <mat-option [value]="cause.id">
+                  {{ cause.name }}
+                </mat-option>
+              }
+            } @else {
+              @for (cause of deletingCauses(); track cause.id) {
+                <mat-option [value]="cause.id">
+                  {{ cause.name }}
+                </mat-option>
+              }
+            }
+          </mat-select>
+          <mat-error>هذا الحقل مطلوب</mat-error>
+        </mat-form-field>
+        @if (pointsForm.controls.type.value === 'add') {
+          <button mat-flat-button>
+            إضافة
+            <mat-icon iconPositionEnd>add</mat-icon>
+          </button>
+        } @else {
+          <button class="error" mat-flat-button>
+            خصم
+            <mat-icon iconPositionEnd>remove</mat-icon>
+          </button>
+        }
+      </form>
+    </mat-card-content>
+  </mat-card>
+}

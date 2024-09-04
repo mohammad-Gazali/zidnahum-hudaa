@@ -33,14 +33,28 @@ class StudentListView(ListAPIView):
 
     def get_queryset(self):
         query = self.request.GET.get("query")
+        masjed = self.request.GET.get("masjed")
+
+        masjed_kwargs = {"masjed": int(masjed)} if masjed else {}
 
         if query is None:
             raise ValidationError("query param is required")
 
         if self.request.user.is_authenticated:
-            return Student.search_student(query).order_by("id")
+            return (
+                Student
+                .search_student(query)
+                .filter(**masjed_kwargs)
+                .order_by("id")
+            )
         else:
-            return Student.search_student(query).exclude(pk__in=ControlSettings.get_hidden_ids()).order_by("id")
+            return (
+                Student
+                .search_student(query)
+                .exclude(pk__in=ControlSettings.get_hidden_ids())
+                .filter(**masjed_kwargs)
+                .order_by("id")
+            )
 
 
 class StudentWithComingRegistrationListView(ListAPIView):

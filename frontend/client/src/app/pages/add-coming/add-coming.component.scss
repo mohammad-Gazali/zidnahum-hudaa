@@ -1,22 +1,33 @@
+.title {
+  text-align: center;
+  border-radius: 999px;
+  padding: 1rem 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  width: fit-content;
+  margin: 0 auto 2rem;
+}
+
 form {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 1rem;
   max-width: 31rem;
   margin: 0 auto;
-  --mdc-outlined-text-field-container-shape: 2rem;
 
-  .title {
-    text-align: center;
-    border-radius: 999px;
-    padding: 1rem 1.5rem;
-    font-size: 1.25rem;
-    font-weight: 500;
-    width: fit-content;
-    margin: 0 auto 2rem;
+  mat-form-field:first-child {
+    grid-column: 1 / -1;
   }
 
   button {
+    grid-column: 1 / -1;
     margin-top: 1rem;
+  }
+
+  @media (max-width: 500px) {
+    & {
+      grid-template-columns: 1fr;
+    }
   }
 }
 

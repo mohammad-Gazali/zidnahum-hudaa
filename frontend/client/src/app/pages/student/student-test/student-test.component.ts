@@ -12,9 +12,9 @@ import { StudentComponent } from '../student.component';
   styleUrl: './student-test.component.scss'
 })
 export class StudentTestComponent {
-  public student = inject(StudentComponent).student;
+  protected student = inject(StudentComponent).student;
 
-  public testArray = signal<MemoItemType[][][]>([]);
+  protected testArray = signal<MemoItemType[][][]>([]);
 
   MemoItemType = MemoItemType;
 

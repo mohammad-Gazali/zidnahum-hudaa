@@ -1,3 +1,6 @@
+<div class="title bg-primary-fixed-dim">
+  تسجيل التسميع
+</div>
 <mat-form-field class="search-field">
   <input [formControl]="search" (keyup)="$event.key === 'Enter' && submit()" matInput placeholder="اكتب اسم الطالب أو معرفه" />
   <button (click)="$event.stopPropagation(); submit()" mat-flat-button matSuffix>

@@ -49,7 +49,7 @@ export class AddMemoComponent {
     });
   }
 
-  protected search = this.fb.control<string>('');
+  protected search = this.fb.control('');
   protected selectedStudent = signal<StudentList | null>(null);
   protected search$ = new Subject<string>();
 

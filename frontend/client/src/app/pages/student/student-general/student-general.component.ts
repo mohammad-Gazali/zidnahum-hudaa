@@ -11,5 +11,5 @@ import { StudentComponent } from '../student.component';
   styleUrl: './student-general.component.scss'
 })
 export class StudentGeneralComponent {
-  public student = inject(StudentComponent).student;
+  protected student = inject(StudentComponent).student;
 }

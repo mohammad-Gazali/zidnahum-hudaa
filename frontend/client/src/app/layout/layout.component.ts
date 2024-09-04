@@ -42,21 +42,21 @@ import { AuthService, CurrentUser, LayoutRoute, LayoutService } from '@shared';
   providers: [LayoutService],
 })
 export class LayoutComponent {
-  public auth = inject(AuthService);
-  public layout = inject(LayoutService);
-  public router = inject(Router);
-  public location = inject(Location);
+  protected auth = inject(AuthService);
+  protected layout = inject(LayoutService);
+  protected router = inject(Router);
+  protected location = inject(Location);
 
-  public currentUser = this.auth.currentUser;
+  protected currentUser = this.auth.currentUser;
 
-  public routes = computed<LayoutRoute[]>(() => {
+  protected routes = computed<LayoutRoute[]>(() => {
     return this.layout.routes.filter(this.handleRoute(this.currentUser())).map(r => ({
       ...r,
       routes: r.routes?.filter(this.handleRoute(this.currentUser())),
     }));
   });
 
-  public logout() {
+  protected logout() {
     this.auth.logout();
   }
 

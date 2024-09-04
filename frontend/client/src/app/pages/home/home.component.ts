@@ -38,12 +38,12 @@ export class HomeComponent {
   private list = inject(HomeStudentListService);
   private auth = inject(AuthService);
   private dialog = inject(MatDialog);
-  public loading = inject(LayoutService).loading;
+  protected loading = inject(LayoutService).loading;
 
-  public response = this.list.lastResponse;
-  public searchForm = this.list.searchForm;
-  public submitted = computed(() => this.response() !== undefined);
-  public hasMemoGroup = computed(() => {
+  protected response = this.list.lastResponse;
+  protected searchForm = this.list.searchForm;
+  protected submitted = computed(() => this.response() !== undefined);
+  protected hasMemoGroup = computed(() => {
     const user = this.auth.currentUser();
     if (!user) return false;
     if (user.isAdmin) return true;

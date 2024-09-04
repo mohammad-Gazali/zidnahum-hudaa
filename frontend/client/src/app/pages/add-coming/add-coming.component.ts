@@ -48,14 +48,14 @@ export class AddComingComponent {
   private list = inject(AddComingStudentListService);
   private snackbar = inject(SnackbarService);
   private masjed = inject(MasjedService);
-  public loading = inject(LayoutService).loading;
+  protected loading = inject(LayoutService).loading;
 
-  public response = this.list.lastResponse;
-  public searchForm = this.list.searchForm;
-  public submitted = computed(() => this.response() !== undefined);
-  public loadingIds = signal<number[]>([]);
-  public masjedOptions = this.masjed.masjedOptions;
-  public categories = toSignal(
+  protected response = this.list.lastResponse;
+  protected searchForm = this.list.searchForm;
+  protected submitted = computed(() => this.response() !== undefined);
+  protected loadingIds = signal<number[]>([]);
+  protected masjedOptions = this.masjed.masjedOptions;
+  protected categories = toSignal(
     this.comings.comingsCategoryList().pipe(
       tap((res) => {
         this.searchForm.controls.categoryId.setValue(res[0].id);

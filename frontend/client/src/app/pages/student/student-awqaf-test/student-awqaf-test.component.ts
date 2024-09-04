@@ -14,9 +14,9 @@ import { StudentComponent } from '../student.component';
 })
 export class StudentAwqafTestComponent {
   private awqaf = inject(AwqafService);
-  public student = inject(StudentComponent).student;
+  protected student = inject(StudentComponent).student;
 
-  public awqafTestNoQ = toSignal(this.awqaf.awqafTestNoQList());
+  protected awqafTestNoQ = toSignal(this.awqaf.awqafTestNoQList());
 
   MemoItemType = MemoItemType;
 

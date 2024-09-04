@@ -32,7 +32,7 @@ export class MemoFormComponent {
   private fb = inject(NonNullableFormBuilder);
   private snackbar = inject(SnackbarService);
 
-  public onSubmit = output<MemoSubmit>();
+  protected onSubmit = output<MemoSubmit>();
 
   protected fromToError = signal(false);
 

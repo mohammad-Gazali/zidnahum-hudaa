@@ -27,9 +27,9 @@ export class LoginComponent {
   private snackbar = inject(SnackbarService);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
-  public loading = inject(LayoutService).loading;
+  protected loading = inject(LayoutService).loading;
 
-  public form = this.fb.group({
+  protected form = this.fb.group({
     username: this.fb.control('', [Validators.required]),
     password: this.fb.control('', [Validators.required]),
   });

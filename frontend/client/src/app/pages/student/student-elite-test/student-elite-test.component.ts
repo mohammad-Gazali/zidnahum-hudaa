@@ -12,7 +12,7 @@ import { StudentComponent } from '../student.component';
   styleUrl: './student-elite-test.component.scss'
 })
 export class StudentEliteTestComponent {
-  public student = inject(StudentComponent).student;
+  protected student = inject(StudentComponent).student;
 
   MemoItemType = MemoItemType;
 }

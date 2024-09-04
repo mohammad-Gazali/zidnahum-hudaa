@@ -42,12 +42,12 @@ export class AddMemorizeNoteDialogComponent {
   private destroyRef = inject(DestroyRef);
   private dialogRef = inject(MatDialogRef);
 
-  public loading = signal(false);
-  public form = this.fb.group({
+  protected loading = signal(false);
+  protected form = this.fb.group({
     note: this.fb.control('', [Validators.required]),
   })
 
-  public submit() {
+  protected submit() {
     if (this.form.invalid || this.loading()) return;
 
     this.dialogRef.disableClose = true;

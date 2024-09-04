@@ -55,6 +55,7 @@ class StudentsService extends __BaseService {
     let __body: any = null;
     if (params.query != null) __params = __params.set('query', params.query.toString());
     if (params.page != null) __params = __params.set('page', params.page.toString());
+    if (params.masjed) __params = __params.set('masjed', params.masjed.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/students/`,
@@ -562,6 +563,11 @@ module StudentsService {
      * param for filtering result via student name or student id
      */
     query?: string;
+
+    /**
+     * param for filtering result via masjed
+     */
+    masjed?: 1 | 2 | 3;
 
     /**
      * A page number within the paginated result set.

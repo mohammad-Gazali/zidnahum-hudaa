@@ -1,7 +1,7 @@
+<div class="title bg-secondary-fixed">
+  تسجيل الحضور
+</div>
 <form class="secondary" [formGroup]="searchForm" (ngSubmit)="submit()">
-  <div class="title bg-secondary-fixed">
-    تسجيل الحضور
-  </div>
   <mat-form-field>
     <input
       matInput
@@ -11,7 +11,6 @@
   </mat-form-field>
   <mat-form-field>
     <mat-select
-      placeholder=""
       [formControl]="searchForm.controls.masjed"
     >
       @for (option of masjedOptions; track option) {

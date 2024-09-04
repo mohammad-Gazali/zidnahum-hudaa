@@ -21,7 +21,7 @@ export class StudentNotesComponent {
   private confirmation = inject(ConfirmationService);
   private snackbar = inject(SnackbarService);
   private loading = inject(LayoutService).loading;
-  public student = inject(StudentComponent).student;
+  protected student = inject(StudentComponent).student;
 
   removeNote(id: number) {
     this.confirmation.confirm({
