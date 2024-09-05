@@ -112,9 +112,9 @@ export class AddComingComponent {
     }).pipe(
       takeUntilDestroyed(this.destroyRef),
     ).subscribe({
-      error: (err) => {
+      error: ({ error }) => {
         this.loadingIds.update(pre => pre.filter(id => id !== studentId));
-        this.snackbar.error((err && err.detail) ?? err);
+        this.snackbar.error((error && error.detail) ?? error);
       },
       next: () => {
         this.loadingIds.update(pre => pre.filter(id => id !== studentId));

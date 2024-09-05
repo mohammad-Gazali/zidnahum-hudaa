@@ -65,6 +65,8 @@ export class LayoutComponent {
       if (route.nonAuthOnly) return !user;
       if (route.authOnly) return !!user;
       if (user?.isAdmin) return true;
+      // because we checked the admin in the previous line
+      if (route.adminOnly) return false;
 
       return !route.groups || !!route.groups?.some(g => user?.groups.indexOf(g) !== -1);
     };

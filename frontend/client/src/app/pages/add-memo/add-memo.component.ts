@@ -123,8 +123,9 @@ export class AddMemoComponent {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
-        error: () => {
+        error: ({ error }) => {
           this.loading.set(false);
+          this.snackbar.error((error && error.detail) ?? error);
         },
         next: (res) => {
           this.loading.set(false);
@@ -169,8 +170,9 @@ export class AddMemoComponent {
       .pipe(
         takeUntilDestroyed(this.destroyRef),
       ).subscribe({
-      error: () => {
+      error: ({ error }) => {
         this.loading.set(false);
+        this.snackbar.error((error && error.detail) ?? error);
       },
       next: (res) => {
         this.loading.set(false);

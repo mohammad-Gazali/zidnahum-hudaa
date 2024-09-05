@@ -1,5 +1,5 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Injectable, inject, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { map, shareReplay } from 'rxjs';
 import { Group } from '@shared';
 
@@ -55,15 +55,40 @@ export class LayoutService {
       icon: 'file_copy',
     },
     {
+      link: '/reports',
+      name: 'التقارير',
+      icon: 'assessment',
+      groups: [Group.Reports]
+    },
+    // TODO: admin route
+    {
       link: '/admin',
       name: 'لوحة التحكم',
       icon: 'settings',
+      adminOnly: true,
     },
     {
-      link: '/activities',
+      link: '',
       name: 'نشاطاتي',
       icon: 'widgets',
       authOnly: true,
+      routes: [
+        {
+          link: '/log-memo',
+          icon: '',
+          name: 'سجل التسميع'
+        },
+        {
+          link: '/log-coming',
+          icon: '',
+          name: 'سجل الحضور'
+        },
+        {
+          link: '/log-points',
+          icon: '',
+          name: 'سجل إضافة وخصم النقاط'
+        },
+      ],
     },
     {
       link: '',
@@ -89,6 +114,18 @@ export class LayoutService {
           icon: 'add_circle_outline',
           groups: [Group.Points],
         },
+        {
+          link: '/add-hadeeth',
+          name: 'إضافة حديث',
+          icon: 'playlist_add',
+          groups: [Group.Hadeeth],
+        },
+        {
+          link: '/add-student',
+          name: 'إضافة طالب',
+          icon: 'person_add_alt_1',
+          groups: [Group.AddStudents],
+        },
       ],
     },
     {
@@ -108,6 +145,7 @@ export interface LayoutRoute {
   icon: string;
   nonAuthOnly?: boolean;
   authOnly?: boolean;
+  adminOnly?: boolean;
   routes?: LayoutRoute[];
   groups?: Group[];
 }

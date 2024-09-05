@@ -22,8 +22,12 @@ form {
 
 .cards-container {
   display: grid;
-  margin-top: 1rem;
+  margin: 1rem 0 2rem;
   gap: 1rem;
+
+  &:empty {
+    margin: 1rem 0 0;
+  }
 
   mat-card-content {
     display: flex;

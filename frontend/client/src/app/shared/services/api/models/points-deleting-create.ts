@@ -1,6 +1,6 @@
 /* tslint:disable */
 export interface PointsDeletingCreate {
-  cause?: null | number;
-  student: number;
+  cause: number;
+  students: number[];
   value: number;
 }

@@ -32,10 +32,13 @@ class PointsAddingListCreateView(ListCreateAPIView):
         return PointsAdding.objects.filter(master=self.request.user).order_by("-created_at")
     
     def perform_create(self, serializer: PointsAddingCreateSerializer):
-        PointsAdding.objects.create(
-            master=self.request.user,
-            **serializer.validated_data,
-        )
+        for student_id in serializer.validated_data['students']:
+            PointsAdding.objects.create(
+                master=self.request.user,
+                value=serializer.validated_data['value'],
+                cause=serializer.validated_data['cause'],
+                student_id=student_id,
+            )
 
 
 class PointsDeletingListCreateView(ListCreateAPIView):
@@ -51,10 +54,13 @@ class PointsDeletingListCreateView(ListCreateAPIView):
         return PointsDeleting.objects.filter(master=self.request.user).order_by("-created_at")
     
     def perform_create(self, serializer: PointsDeletingCreateSerializer):
-        PointsDeleting.objects.create(
-            master=self.request.user,
-            **serializer.validated_data,
-        )
+        for student_id in serializer.validated_data['students']:
+            PointsDeleting.objects.create(
+                master=self.request.user,
+                value=serializer.validated_data['value'],
+                cause=serializer.validated_data['cause'],
+                student_id=student_id,
+            )
 
 
 class PointsAddingDeleteView(DestroyAPIView):

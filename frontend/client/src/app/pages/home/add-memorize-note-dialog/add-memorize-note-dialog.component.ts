@@ -59,9 +59,9 @@ export class AddMemorizeNoteDialogComponent {
     })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        error: (err) => {
+        error: ({ error }) => {
           this.loading.set(false);
-          this.snackbar.error((err && err.detail) ?? err);
+          this.snackbar.error((error && error.detail) ?? error);
         },
         next: () => {
           this.loading.set(false);

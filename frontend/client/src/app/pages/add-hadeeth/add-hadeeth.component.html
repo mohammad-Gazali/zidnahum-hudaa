@@ -1,0 +1,79 @@
+<div class="title bg-primary-fixed-dim">
+  تسجيل حديث
+</div>
+<mat-form-field class="search-field">
+  <input [formControl]="search" (keyup)="$event.key === 'Enter' && submitSearch()" matInput placeholder="اكتب اسم الطالب أو معرفه" />
+  <button (click)="$event.stopPropagation(); submitSearch()" mat-flat-button matSuffix>
+    بحث
+    <mat-icon>search</mat-icon>
+  </button>
+</mat-form-field>
+<div class="cards-container">
+  @if (selectedStudent() === null && students(); as students) {
+    @for (student of students; track student.id) {
+      <mat-card>
+        <mat-card-content>
+          <span>
+            {{ student.name }}
+          </span>
+          <button
+            (click)="selectedStudent.set(student)"
+            mat-flat-button
+            class="secondary"
+          >
+            اختيار
+          </button>
+        </mat-card-content>
+      </mat-card>
+    } @empty {
+      @if (searched()) {
+        <mat-card class="empty-card">
+          <mat-card-content>
+            لا يوجد طلاب بهذه التفاصيل
+          </mat-card-content>
+        </mat-card>
+      }
+    }
+  }
+</div>
+@if (selectedStudent(); as selectedStudent) {
+  <mat-card class="selected-student-card">
+    <mat-card-content>
+      <span class="student-name">
+        الطالب:
+        {{ ' ' }}{{ selectedStudent.name }}
+      </span>
+      <form [formGroup]="form" (ngSubmit)="submitAddHadeeth()">
+        <mat-radio-group [formControl]="form.controls.type">
+          <mat-radio-button value="alarbaein-alnawawia">
+            الأربعين النووية
+          </mat-radio-button>
+          <mat-radio-button value="riad-alsaalihin">
+            رياض الصالحين
+          </mat-radio-button>
+          <mat-radio-button value="allah-names">
+            أسماء الله الحسنى
+          </mat-radio-button>
+        </mat-radio-group>
+        <mat-form-field
+        [class.hidden]="form.controls.type.value === 'allah-names'"
+        >
+          <mat-label>رقم آخر حديث تم تسميعه</mat-label>
+          <input
+            matInput
+            [formControl]="form.controls.hadeethNumber"
+            type="number"
+            min="1"
+            [max]="form.controls.type.value === 'alarbaein-alnawawia' ? 50 : null"
+          />
+          <mat-error>هذا الحقل مطلوب</mat-error>
+        </mat-form-field>
+        <button mat-flat-button>
+          تسجيل
+          <mat-icon>add</mat-icon>
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+}
+

@@ -15,15 +15,19 @@ class PointsDeletingCauseSerializer(serializers.ModelSerializer):
 
 
 class PointsAddingCreateSerializer(serializers.ModelSerializer):
+    students = serializers.ListField(child=serializers.IntegerField(), allow_empty=False)
+
     class Meta:
         model = PointsAdding
-        fields = ["student", "value", "cause"]
+        fields = ["students", "value", "cause"]
 
 
 class PointsDeletingCreateSerializer(serializers.ModelSerializer):
+    students = serializers.ListField(child=serializers.IntegerField(), allow_empty=False)
+
     class Meta:
         model = PointsDeleting
-        fields = ["student", "value", "cause"]
+        fields = ["students", "value", "cause"]
 
 
 class PointsAddingListSerializer(serializers.ModelSerializer):

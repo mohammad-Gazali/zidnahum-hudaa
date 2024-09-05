@@ -1,6 +1,6 @@
 /* tslint:disable */
 export interface PointsAddingCreate {
   cause: number;
-  student: number;
+  students: number[];
   value: number;
 }

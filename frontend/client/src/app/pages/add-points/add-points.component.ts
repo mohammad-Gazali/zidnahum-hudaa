@@ -116,19 +116,18 @@ export class AddPointsComponent {
 
   submitPoints() {
     if (this.pointsForm.invalid) return;
+    if (this.loading()) return;
 
     const value = this.pointsForm.getRawValue();
 
     const observable = value.type === 'add' ?
       this.points.pointsAddingCreate({
-        // TODO: number to number[] (backend)
-        student: this.selectedStudents().map(s => s.id) as any,
+        students: this.selectedStudents().map(s => s.id),
         cause: value.cause!,
         value: value.value!,
       }) :
       this.points.pointsDeletingCreate({
-        // TODO: number to number[] (backend)
-        student: this.selectedStudents().map(s => s.id) as any,
+        students: this.selectedStudents().map(s => s.id),
         cause: value.cause!,
         value: value.value!,
       })
@@ -138,15 +137,15 @@ export class AddPointsComponent {
     observable.pipe(
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
-      error: (err) => {
+      error: ({ error }) => {
         this.loading.set(false);
-        this.snackbar.error((err && err.detail) ?? err);
+        this.snackbar.error((error && error.detail) ?? error);
       },
       next: () => {
         this.loading.set(false);
         this.selectedStudents.set([]);
         this.searched.set(false);
-        this.snackbar.success(value.type === 'add' ? 'تمت الإضافة بنجاح' : 'تمت الخصم بنجاح')
+        this.snackbar.success(value.type === 'add' ? 'تمت الإضافة بنجاح' : 'تم الخصم بنجاح')
       }
     })
   }
