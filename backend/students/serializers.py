@@ -37,6 +37,17 @@ class StudentListSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "category", "group", "mother_name", "birthdate", "parts_received", "masjed"]
 
 
+class StudentCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        exclude = [
+            "id", "registered_at", "q_memorizing", "q_test", "q_elite_test", "q_awqaf_test",
+            "q_awqaf_test_looking", "q_awqaf_test_explaining",
+            "alarbaein_alnawawia_new", "alarbaein_alnawawia_old",
+            "riad_alsaalihin_new", "riad_alsaalihin_old",
+            "allah_names_new", "allah_names_old"
+        ]
+
 class StudentListWithComingRegistrationSerializer(serializers.ModelSerializer):
     category = StudentCategorySerializer()
     group = StudentGroupSerializer()

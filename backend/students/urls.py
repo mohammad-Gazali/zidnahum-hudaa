@@ -1,12 +1,13 @@
 from django.urls import path
-from students.views.students_list_and_details_views import StudentListView, StudentWithComingRegistrationListView, StudentDetailsView
+from students.views.students_list_and_details_and_create_views import StudentCreateListView, StudentWithComingRegistrationListView, StudentDetailsView
 from students.views.students_update_views import StudentUpdateQMemoView, StudentUpdateQTestView, StudentUpdateAlarbaeinAlnawawiaView, StudentUpdateRiadAlsaalihinView, StudentUpdateAllahNamesView, StudentUpdatePartsReceivedView
 from students.views.memorize_messages_views import MemorizeMessageListView, MemorizeMessageDeleteView
 from students.views.memorize_notes_views import MemorizeNotesCreateView, MemorizeNotesDeleteView
+from students.views.extra_views import StudentCategoryListView, StudentGroupListView
 
 urlpatterns = [
     # students list and details urls
-    path("", StudentListView.as_view(), name="students_list_view"),
+    path("", StudentCreateListView.as_view(), name="students_list_view"),
     path("with-coming-registration/<int:coming_category_id>", StudentWithComingRegistrationListView.as_view(), name="students_with_coming_registeration_list_view"),
     path("<int:pk>", StudentDetailsView.as_view(), name="students_details_view"),
 
@@ -25,4 +26,8 @@ urlpatterns = [
     # memorize notes urls
     path("memorize-notes", MemorizeNotesCreateView.as_view(), name="students_notes_create_view"),
     path("memorize-notes/<int:pk>", MemorizeNotesDeleteView.as_view(), name="students_notes_delete_view"),
+
+    # extra urls
+    path("category", StudentCategoryListView.as_view(), name="students_extra_category_list_view"),
+    path("group", StudentGroupListView.as_view(), name="students_extra_group_list_view"),
 ]

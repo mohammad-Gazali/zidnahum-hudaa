@@ -17,11 +17,14 @@ import { StudentUpdateQTest } from '../models/student-update-qtest';
 import { StudentUpdateRiadAlsaalihin } from '../models/student-update-riad-alsaalihin';
 import { StudentDetails } from '../models/student-details';
 import { StudentWithComingRegistrationList } from '../models/student-with-coming-registration-list';
+import { StudentCreate } from '../models/student-create';
+import { StudentCategory } from '../models/student-category';
+import { StudentGroup } from '../models/student-group';
 @Injectable({
   providedIn: 'root',
 })
 class StudentsService extends __BaseService {
-  static readonly studentsListPath = '/students/';
+  static readonly studentsCreateListPath = '/students/';
   static readonly studentsWithComingRegistrationListPath = '/students/with-coming-registration/{coming_category_id}';
   static readonly studentsMemorizeMessageListPath = '/students/memorize-message';
   static readonly studentsMemorizeMessageDeletePath = '/students/memorize-message/{id}';
@@ -34,6 +37,8 @@ class StudentsService extends __BaseService {
   static readonly studentsUpdateQtestUpdatePath = '/students/update/qtest/{id}';
   static readonly studentsUpdateRiadAlsaalihinUpdatePath = '/students/update/riad-alsaalihin/{id}';
   static readonly studentsReadPath = '/students/{id}';
+  static readonly studentsCategory = '/students/category';
+  static readonly studentsGroup = '/students/group';
 
   constructor(
     config: __Configuration,
@@ -83,6 +88,41 @@ class StudentsService extends __BaseService {
   studentsList(params: StudentsService.StudentsListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<StudentList>}> {
     return this.studentsListResponse(params).pipe(
       __map(_r => _r.body as {count: number, next?: null | string, previous?: null | string, results: Array<StudentList>})
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  studentsCreateResponse(data: StudentCreate): __Observable<__StrictHttpResponse<StudentCreate>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/students/`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<StudentCreate>;
+      })
+    );
+  }
+
+  /**
+   * @param data undefined
+   */
+  studentsCreate(data: StudentCreate): __Observable<StudentCreate> {
+    return this.studentsCreateResponse(data).pipe(
+      __map(_r => _r.body as StudentCreate)
     );
   }
 
@@ -548,6 +588,60 @@ class StudentsService extends __BaseService {
   studentsRead(id: string): __Observable<StudentDetails> {
     return this.studentsReadResponse(id).pipe(
       __map(_r => _r.body as StudentDetails)
+    );
+  }
+  studentsCategoryListResponse(): __Observable<__StrictHttpResponse<Array<StudentCategory>>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/students/category`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Array<StudentCategory>>;
+      })
+    );
+  }
+  studentsCategoryList(): __Observable<Array<StudentCategory>> {
+    return this.studentsCategoryListResponse().pipe(
+      __map(_r => _r.body as Array<StudentCategory>)
+    );
+  }
+  studentsGroupListResponse(): __Observable<__StrictHttpResponse<Array<StudentGroup>>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/students/group`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Array<StudentGroup>>;
+      })
+    );
+  }
+  studentsGroupList(): __Observable<Array<StudentGroup>> {
+    return this.studentsGroupListResponse().pipe(
+      __map(_r => _r.body as Array<StudentGroup>)
     );
   }
 }

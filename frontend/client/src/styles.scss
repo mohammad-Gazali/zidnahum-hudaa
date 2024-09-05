@@ -245,3 +245,8 @@ mat-sidenav {
 .hidden {
   display: none !important;
 }
+
+// fix the calendar height because we don't use Roboto font
+.mat-datepicker-content .mat-calendar {
+  height: 366px !important;
+}

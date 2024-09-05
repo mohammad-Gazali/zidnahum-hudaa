@@ -1,13 +1,13 @@
 from django.utils import timezone
 from django.db.models import Prefetch, Value, OuterRef, Exists
 from django.conf import settings
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveAPIView
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg.openapi import Parameter, IN_QUERY, TYPE_STRING
-from students.serializers import StudentListSerializer, StudentListWithComingRegistrationSerializer, StudentDetailsSerializer
+from students.serializers import StudentListSerializer, StudentCreateSerializer, StudentListWithComingRegistrationSerializer, StudentDetailsSerializer
 from students.models import Student, MemorizeMessage
 from students.utils import get_last_sat_date_range_for_previous_week, get_last_sat_date_range, get_first_month_half_range, get_second_month_half_range
 from students.permissions import IsComingGroup
@@ -17,12 +17,17 @@ from awqaf.models import AwqafNoQStudentRelation
 
 query = Parameter("query", IN_QUERY, type=TYPE_STRING, description="param for filtering result via student name or student id")
 
-class StudentListView(ListAPIView):
-    serializer_class = StudentListSerializer
-
+# TODO: test create student
+class StudentCreateListView(ListCreateAPIView):
     @swagger_auto_schema(manual_parameters=[query])
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
+
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return StudentCreateSerializer
+        else:
+            return StudentListSerializer
 
     def handle_exception(self, exc):
 

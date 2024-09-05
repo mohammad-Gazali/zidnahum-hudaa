@@ -1,0 +1,21 @@
+.title {
+  text-align: center;
+  border-radius: 999px;
+  padding: 1rem 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  width: fit-content;
+  margin: 0 auto 2rem;
+}
+
+form {
+  max-width: 1000px;
+  margin: 0 auto;
+
+  > .fields-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+}

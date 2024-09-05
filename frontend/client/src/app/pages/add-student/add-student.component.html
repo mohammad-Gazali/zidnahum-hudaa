@@ -1,1 +1,94 @@
-<p>add-student works!</p>
+<div class="title bg-secondary-fixed">
+  إضافة طالب
+</div>
+<form #ngForm="ngForm" [formGroup]="form" (ngSubmit)="submit(ngForm)">
+  <div class="fields-container">
+    <mat-form-field>
+      <mat-label>الاسم الثلاثي</mat-label>
+      <input matInput [formControl]="form.controls.name" maxlength="80" />
+      <mat-error>هذا الحقل مطلوب</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>اسم الأم</mat-label>
+      <input matInput [formControl]="form.controls.mother_name" maxlength="30" />
+      <mat-error>هذا الحقل مطلوب</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>تاريخ الميلاد</mat-label>
+      <input matInput [formControl]="form.controls.birthdate" [matDatepicker]="picker" />
+      <mat-datepicker-toggle matIconSuffix [for]="picker" />
+      <mat-datepicker #picker />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>المسجد</mat-label>
+      <mat-select [formControl]="form.controls.masjed">
+        @for (option of masjedOptions; track option) {
+          <mat-option [value]="option">
+            {{ option | masjed }}
+          </mat-option>
+        }
+      </mat-select>
+      <mat-error>هذا الحقل مطلوب</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>العنوان تفصيلاً</mat-label>
+      <input matInput [formControl]="form.controls.address" maxlength="80" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>الهاتف الأرضي</mat-label>
+      <input matInput [formControl]="form.controls.static_phone" maxlength="10" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>الجوال</mat-label>
+      <input matInput [formControl]="form.controls.cell_phone" maxlength="25" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>جوال الأب</mat-label>
+      <input matInput [formControl]="form.controls.father_phone" maxlength="25" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>جوال الأم</mat-label>
+      <input matInput [formControl]="form.controls.mother_phone" maxlength="25" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>عمل الأب</mat-label>
+      <input matInput [formControl]="form.controls.father_work" maxlength="80" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>ملاحظات</mat-label>
+      <input matInput [formControl]="form.controls.notes" maxlength="60" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>أحضره</mat-label>
+      <input matInput [formControl]="form.controls.bring_him" maxlength="80" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>الأجزاء المستلمة</mat-label>
+      <input matInput [formControl]="form.controls.parts_received" maxlength="50" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>الفئة</mat-label>
+      <mat-select [formControl]="form.controls.category">
+        @for (category of categories(); track category.id) {
+          <mat-option [value]="category.id">
+            {{ category.name }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>المجموعة</mat-label>
+      <mat-select [formControl]="form.controls.group">
+        @for (group of groups(); track group.id) {
+          <mat-option [value]="group.id">
+            {{ group.name }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <button mat-flat-button>
+    إضافة
+    <mat-icon iconPositionEnd>add</mat-icon>
+  </button>
+</form>

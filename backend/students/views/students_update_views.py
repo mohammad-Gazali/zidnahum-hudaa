@@ -159,7 +159,7 @@ class StudentUpdateAlarbaeinAlnawawiaView(APIView):
                 return Response(status=HTTP_204_NO_CONTENT)
 
             else:
-                return Response({"detail": "invalid hadeeth number"}, HTTP_400_BAD_REQUEST)
+                return Response({"detail": "هذا الحديث مسمع مسبقاً"}, HTTP_400_BAD_REQUEST)
 
         return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
 
@@ -196,7 +196,7 @@ class StudentUpdateRiadAlsaalihinView(APIView):
                 return Response(status=HTTP_204_NO_CONTENT)
 
             else:
-                return Response({"detail": "invalid hadeeth number"}, HTTP_400_BAD_REQUEST)
+                return Response({"detail": "هذا الحديث مسمع مسبقاً"}, HTTP_400_BAD_REQUEST)
 
         return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
 
@@ -211,7 +211,7 @@ class StudentUpdateAllahNamesView(APIView):
         student: Student = get_object_or_404(Student, pk=pk)
 
         if student.allah_names_old or student.allah_names_new:
-            return Response({"detail": "student already has allah names memorized"}, HTTP_400_BAD_REQUEST)
+            return Response({"detail": "الطالب سمع أسماء الله الحسنى سابقاً"}, HTTP_400_BAD_REQUEST)
 
         student.allah_names_new = True
         student.save()

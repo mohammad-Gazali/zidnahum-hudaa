@@ -23,6 +23,7 @@ export { ReportsStudentResponse } from './models/reports-student-response';
 export { StudentCategory } from './models/student-category';
 export { StudentGroup } from './models/student-group';
 export { StudentList } from './models/student-list';
+export { StudentCreate } from './models/student-create';
 export { StudentWithComingRegistrationList } from './models/student-with-coming-registration-list';
 export { MemorizeMessage } from './models/memorize-message';
 export { MemorizeNotesCreate } from './models/memorize-notes-create';
