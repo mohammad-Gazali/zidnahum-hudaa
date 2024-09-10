@@ -7,4 +7,5 @@ export interface StudentList {
   mother_name?: null | string;
   name: string;
   registered_at?: string;
+  level: 1 | 2 | 3;
 }

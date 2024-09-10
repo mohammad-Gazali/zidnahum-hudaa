@@ -760,6 +760,7 @@ class StudentsService extends __BaseService {
     if (params.offset != null) __params = __params.set('offset', params.offset.toString());
     if (params.name != null) __params = __params.set('name', params.name.toString());
     if (params.masjed != null) __params = __params.set('masjed', params.masjed.toString());
+    if (params.level != null) __params = __params.set('level', params.level.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
     if (params.groupIsnull != null) __params = __params.set('group__isnull', params.groupIsnull.toString());
     if (params.group != null) __params = __params.set('group', params.group.toString());
@@ -798,6 +799,8 @@ class StudentsService extends __BaseService {
    * - `name`: param for filtering student via his name or his id
    *
    * - `masjed`: masjed
+   *
+   * - `level`: level
    *
    * - `limit`: Number of results to return per page.
    *
@@ -1140,6 +1143,11 @@ module StudentsService {
      * masjed
      */
     masjed?: '1' | '2' | '3';
+
+    /**
+     * level
+     */
+    level?: '1' | '2' | '3';
 
     /**
      * Number of results to return per page.

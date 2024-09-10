@@ -1,58 +1,60 @@
 <h2 mat-dialog-title>{{ 'filters' | translate }}</h2>
 <mat-dialog-content>
-    <form [formGroup]="form" class="filters-container">
-        @for (filter of data.filters; track filter.name) {
-            @if (filter.type === 'boolean') {
-                <mat-form-field>
-                    <mat-label>{{ filter.name | translate }}</mat-label>
-                    <mat-select [formControlName]="filter.name">
-                        <mat-option value="0">{{ 'All' | translate }}</mat-option>
-                        <mat-option value="1">{{ 'Yes' | translate }}</mat-option>
-                        <mat-option value="2">{{ 'No' | translate }}</mat-option>
-                    </mat-select>
-                </mat-form-field>
+  <form [formGroup]="form" class="filters-container">
+    @for (filter of data.filters; track filter.name) {
+      @if (filter.type === 'boolean') {
+        <mat-form-field>
+          <mat-label>{{ filter.name | translate }}</mat-label>
+          <mat-select [formControlName]="filter.name">
+            <mat-option value="0">{{ 'All' | translate }}</mat-option>
+            <mat-option value="1">{{ 'Yes' | translate }}</mat-option>
+            <mat-option value="2">{{ 'No' | translate }}</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-            } @else if (filter.type !== 'date' && filter.type !== 'datetime_date') {
-                <mat-form-field>
-                    <mat-label>{{ filter.name | translate }}</mat-label>
-                    <mat-select [formControlName]="filter.name">
-                        @if (filter.type === 'exact_null') {
-                            <mat-option value="-1">({{ 'empty value' | translate }})</mat-option>
-                        }
-                        @for (option of data.extraData[filter.name].data; track option.id) {
-                            <mat-option value="{{ option.id }}">{{ option.name }}</mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>
-            } @else {
-                <mat-radio-group [formControlName]="filter.name + '_type'" #dateType="matRadioGroup">
-                    <mat-radio-button value="single">{{ 'specific date' | translate }}</mat-radio-button>
-                    <mat-radio-button value="range">{{ 'date range' | translate }}</mat-radio-button>
-                </mat-radio-group>
-                <mat-form-field  [class.hidden]="dateType.value === 'range'">
-                    <mat-label>{{ filter.name | translate }}</mat-label>
-                    <input matInput [matDatepicker]="picker" [formControlName]="filter.name">
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-                <mat-form-field [class.hidden]="dateType.value !== 'range'">
-                    <mat-label>{{ filter.name | translate }}</mat-label>
-                    <mat-date-range-input [rangePicker]="rangePicker">
-                        <input [formControlName]="filter.name + '_gt'" matStartDate [placeholder]="'start date' | translate">
-                        <input [formControlName]="filter.name + '_lt'" matEndDate [placeholder]="'end date' | translate">
-                    </mat-date-range-input>
-                    <mat-date-range-picker #rangePicker></mat-date-range-picker>
-                    <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
-                </mat-form-field>
+      } @else if (filter.type !== 'date' && filter.type !== 'datetime_date') {
+        <mat-form-field>
+          <mat-label>{{ filter.name | translate }}</mat-label>
+          <mat-select [formControlName]="filter.name">
+            @if (filter.type === 'exact_null') {
+              <mat-option value="-1">({{ 'empty value' | translate }})</mat-option>
             }
-        }
-    </form>
+            @for (option of data.extraData[filter.name].data; track option.id) {
+              <mat-option value="{{ option.id }}">{{ option.name }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      } @else {
+        <div class="date-container">
+          <mat-radio-group [formControlName]="filter.name + '_type'" #dateType="matRadioGroup">
+            <mat-radio-button value="single">{{ 'specific date' | translate }}</mat-radio-button>
+            <mat-radio-button value="range">{{ 'date range' | translate }}</mat-radio-button>
+          </mat-radio-group>
+          <mat-form-field [class.hidden]="dateType.value === 'range'">
+            <mat-label>{{ filter.name | translate }}</mat-label>
+            <input matInput [matDatepicker]="picker" [formControlName]="filter.name">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"/>
+            <mat-datepicker #picker/>
+          </mat-form-field>
+          <mat-form-field [class.hidden]="dateType.value !== 'range'">
+            <mat-label>{{ filter.name | translate }}</mat-label>
+            <mat-date-range-input [rangePicker]="rangePicker">
+              <input [formControlName]="filter.name + '_gt'" matStartDate [placeholder]="'start date' | translate">
+              <input [formControlName]="filter.name + '_lt'" matEndDate [placeholder]="'end date' | translate">
+            </mat-date-range-input>
+            <mat-date-range-picker #rangePicker/>
+            <mat-datepicker-toggle matIconSuffix [for]="rangePicker"/>
+          </mat-form-field>
+        </div>
+      }
+    }
+  </form>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-flat-button (click)="ref.close()">
-        {{ 'cancel' | translate }}
-    </button>
-    <button mat-flat-button color="primary" (click)="submitFilters()">
-        {{ 'perform filters' | translate }}
-    </button>
+  <button (click)="ref.close()" mat-flat-button>
+    {{ 'cancel' | translate }}
+  </button>
+  <button (click)="submitFilters()" color="primary" mat-flat-button>
+    {{ 'perform filters' | translate }}
+  </button>
 </mat-dialog-actions>

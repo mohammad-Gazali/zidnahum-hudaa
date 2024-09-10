@@ -104,8 +104,8 @@ export class TableComponent<T extends { id: number }> implements OnInit {
   });
   public activeFilters = signal<Filter[]>([]);
   public totalCount = signal(0);
-  public isFileters = signal(false);
-  public containsChagensField = signal(false);
+  public isFilters = signal(false);
+  public containsChangesField = signal(false);
   public changesFieldHidden = signal(true);
   private pageSizeOptions = [20, 40, 100, 200];
 
@@ -147,16 +147,17 @@ export class TableComponent<T extends { id: number }> implements OnInit {
         }
 
         if (config.filterType !== undefined) {
-          this.isFileters.set(true);
+          this.isFilters.set(true);
         }
 
         if (config.display === 'changes') {
-          this.containsChagensField.set(true);
+          this.containsChangesField.set(true);
         }
       }
     );
 
     if (this.config.useStudentMasjedFilter) {
+      this.isFilters.set(true);
       this.masjed
         .getMasjeds()
         .pipe(takeUntilDestroyed(this.destroyRef))
@@ -304,7 +305,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
     const ref = this.dialog.open<TableFiltersDialogComponent, DialogData>(
       TableFiltersDialogComponent,
       {
-        width: '350px',
+        width: '600px',
         data: {
           extraData: this.extraData,
           filters: this.config.useStudentMasjedFilter

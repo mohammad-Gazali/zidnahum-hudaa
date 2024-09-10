@@ -32,6 +32,7 @@ export { MoneyDeletingCauseList } from './models/money-deleting-cause-list';
 export { MoneyDeletingCauseCreate } from './models/money-deleting-cause-create';
 export { MoneyDeletingCauseUpdate } from './models/money-deleting-cause-update';
 export { MoneyDeletingList } from './models/money-deleting-list';
+export { MoneyTotal } from './models/money-total';
 export { PointsAddingCauseList } from './models/points-adding-cause-list';
 export { PointsAddingCauseCreate } from './models/points-adding-cause-create';
 export { PointsAddingCauseUpdate } from './models/points-adding-cause-update';

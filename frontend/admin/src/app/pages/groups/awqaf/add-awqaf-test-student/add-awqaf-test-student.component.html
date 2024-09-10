@@ -9,7 +9,7 @@
             <button matChipRemove>
                 <mat-icon>close</mat-icon>
             </button>
-        </mat-chip-row>    
+        </mat-chip-row>
       }
   </div>
   <mat-radio-group (change)="radioChange($event)">
@@ -35,7 +35,7 @@
                 @for (control of quranForm.controls.parts.controls; track $index) {
                     <mat-card
                     matRipple
-                    [class.bg-primary]="control.value"
+                    [class.bg-primary-fixed-dim]="control.value"
                     (click)="control.setValue(!control.value)"
                     class="flex-card">
                         <input type="hidden" [formControl]="control">

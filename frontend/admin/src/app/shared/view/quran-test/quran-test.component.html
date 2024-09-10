@@ -14,8 +14,8 @@
                             <mat-card
                             matRipple
                             [matRippleDisabled]="!editMode()"
-                            [class.bg-primary]="control.value === MemoItemType.NEW"
-                            [class.bg-accent]="control.value === MemoItemType.OLD"
+                            [class.bg-primary-fixed-dim]="control.value === MemoItemType.NEW"
+                            [class.bg-tertiary-container]="control.value === MemoItemType.OLD"
                             [class.edit-mode]="editMode()"
                             (click)="changeValue(control)"
                             class="flex-card">

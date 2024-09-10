@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import {
   MatListItem,
@@ -8,7 +8,6 @@ import {
 } from '@angular/material/list';
 import { MatIcon } from '@angular/material/icon';
 import { GroupsService } from '../../services/groups.service';
-import { ThemeService } from '../../services/theme.service';
 import { MatDivider } from '@angular/material/divider';
 
 @Component({
@@ -29,5 +28,9 @@ import { MatDivider } from '@angular/material/divider';
 })
 export class SidenavComponent {
   public groupsService = inject(GroupsService);
-  public theme = inject(ThemeService);
+  public onItemClick = output();
+
+  close() {
+    this.onItemClick.emit();
+  }
 }

@@ -2,36 +2,36 @@
     @switch (type()) {
         @case (1) {
             @for (item of content(); track item) {
-                <mat-card class="bg-primary">
+                <mat-card class="bg-primary-fixed-dim">
                     {{ memorize.transform(item) }}
                 </mat-card>
             }
         }
         @case (2) {
             @for (item of content(); track item) {
-                <mat-card class="bg-primary">
+                <mat-card class="bg-primary-fixed-dim">
                     {{ test.transform(item) }}
                 </mat-card>
             }
         }
         @case (3) {
             @if (content()[1] + 1 === content()[2]) {
-                <mat-card class="bg-primary">
+                <mat-card class="bg-primary-fixed-dim">
                     الحديث {{ content()[0] + content()[2] }}
                 </mat-card>
             } @else {
-                <mat-card class="bg-primary">
+                <mat-card class="bg-primary-fixed-dim">
                     من الحديث {{ content()[0] + content()[1] + 1 }} إلى {{ content()[0] + content()[2] }}
                 </mat-card>
             }
         }
         @case (4) {
             @if (content()[1] + 1 === content()[2]) {
-                <mat-card class="bg-primary">
+                <mat-card class="bg-primary-fixed-dim">
                     الحديث {{ content()[0] + content()[2] }}
                 </mat-card>
             } @else {
-                <mat-card class="bg-primary">
+                <mat-card class="bg-primary-fixed-dim">
                     من الحديث {{ content()[0] + content()[1] + 1 }} إلى {{ content()[0] + content()[2] }}
                 </mat-card>
             }

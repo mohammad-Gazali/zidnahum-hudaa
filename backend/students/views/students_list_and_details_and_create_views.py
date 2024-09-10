@@ -19,6 +19,9 @@ query = Parameter("query", IN_QUERY, type=TYPE_STRING, description="param for fi
 
 # TODO: test create student
 class StudentCreateListView(ListCreateAPIView):
+    def get_permissions(self):
+        return [] if self.request.method == "POST" else []
+
     @swagger_auto_schema(manual_parameters=[query])
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)

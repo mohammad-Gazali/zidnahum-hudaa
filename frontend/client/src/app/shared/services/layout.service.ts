@@ -54,12 +54,6 @@ export class LayoutService {
       name: 'الملفات',
       icon: 'file_copy',
     },
-    {
-      link: '/reports',
-      name: 'التقارير',
-      icon: 'assessment',
-      groups: [Group.Reports]
-    },
     // TODO: admin route
     {
       link: '/admin',

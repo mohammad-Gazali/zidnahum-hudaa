@@ -61,13 +61,13 @@ class MemorizeMessageTestCase(TestCase):
 
         self.messages: List[MemorizeMessage] = []
         
-        self.messages.append(MemorizeMessage.objects.create(id=1, master=self.user1, student=self.student, changes=[1]))
+        self.messages.append(MemorizeMessage.objects.create(id=1, master=self.user1, student=self.student, changes=[1], student_level=self.student.level))
         sleep(0.1) # for making "sended_at" different in MemorizeMessasge instances, so the list view can return them by desc order relatively to "sended_at"
 
-        self.messages.append(MemorizeMessage.objects.create(id=2, master=self.user2, student=self.student, changes=[2]))
+        self.messages.append(MemorizeMessage.objects.create(id=2, master=self.user2, student=self.student, changes=[2], student_level=self.student.level))
         sleep(0.1) # for making "sended_at" different in MemorizeMessasge instances, so the list view can return them by desc order relatively to "sended_at"
 
-        self.messages.append(MemorizeMessage.objects.create(id=3, master=self.user1, student=self.student, changes=[3]))
+        self.messages.append(MemorizeMessage.objects.create(id=3, master=self.user1, student=self.student, changes=[3], student_level=self.student.level))
 
 
     def test_memorize_message_list_view(self):

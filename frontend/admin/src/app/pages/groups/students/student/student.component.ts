@@ -5,6 +5,7 @@ import { StudentList } from '../../../../services/api/admin/models';
 import { MasjedService } from '../../../../services/masjed.service';
 import { StudentsBase } from '../students.base';
 import { deleteModelAction } from '../../../../common/delete-model-action';
+import { LevelService } from '../../../../services/level.service';
 
 @Component({
   selector: 'app-student',
@@ -15,6 +16,7 @@ import { deleteModelAction } from '../../../../common/delete-model-action';
 })
 export class StudentComponent extends StudentsBase {
   private masjed = inject(MasjedService);
+  private level = inject(LevelService);
 
   public config: TableComponentConfig<StudentList> = {
     searchField: 'name',
@@ -41,6 +43,13 @@ export class StudentComponent extends StudentsBase {
         filterType: 'exact',
         getFieldValueFunc: () => {
           return this.masjed.getMasjeds();
+        }
+      },
+      level: {
+        display: 'relation',
+        filterType: 'exact',
+        getFieldValueFunc: () => {
+          return this.level.getLevels();
         }
       },
       category: {

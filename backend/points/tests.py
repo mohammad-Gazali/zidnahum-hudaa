@@ -142,7 +142,7 @@ class PointsAddingTestCase(TestCase):
         value = 139
 
         res = self.client.post(url, {
-            "student": self.student.pk,
+            "students": [self.student.pk],
             "cause": cause.pk,
             "value": value,
         }, HTTP_AUTHORIZATION=f"Bearer {self.non_valid_token}", content_type="application/json")
@@ -150,7 +150,7 @@ class PointsAddingTestCase(TestCase):
         self.assertEqual(res.status_code, HTTP_403_FORBIDDEN)
 
         res = self.client.post(url, {
-            "student": self.student.pk,
+            "students": [self.student.pk],
             "cause": cause.pk,
             "value": value,
         }, HTTP_AUTHORIZATION=f"Bearer {self.token2}", content_type="application/json")
@@ -321,7 +321,7 @@ class PointsDeletingTestCase(TestCase):
         value = 139
 
         res = self.client.post(url, {
-            "student": self.student.pk,
+            "students": [self.student.pk],
             "cause": cause.pk,
             "value": value,
         }, HTTP_AUTHORIZATION=f"Bearer {self.non_valid_token}", content_type="application/json")
@@ -329,7 +329,7 @@ class PointsDeletingTestCase(TestCase):
         self.assertEqual(res.status_code, HTTP_403_FORBIDDEN)
 
         res = self.client.post(url, {
-            "student": self.student.pk,
+            "students": [self.student.pk],
             "cause": cause.pk,
             "value": value,
         }, HTTP_AUTHORIZATION=f"Bearer {self.token2}", content_type="application/json")

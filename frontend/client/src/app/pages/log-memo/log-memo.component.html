@@ -1,1 +1,89 @@
-<p>activities-memo works!</p>
+<div class="title bg-surface-container-highest">
+  سجل التسميع
+</div>
+<div class="cards-container">
+  @for (message of messages(); track message.id) {
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>
+          {{ message.student }}
+        </mat-card-title>
+        <mat-card-subtitle class="text-outline">
+        <span dir="ltr">
+          {{ message.sended_at | date: 'yyyy-MM-dd hh:mm a' }}
+        </span>
+        </mat-card-subtitle>
+        <button (click)="delete(message.id)" class="error" mat-mini-fab>
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-chip>
+          {{ message.message_type | messageType }}
+        </mat-chip>
+        @if (message.is_doubled) {
+          <mat-chip class="highlighted-chip">
+            مضاعفة
+          </mat-chip>
+        }
+        @if (message.message_type !== messageType.AllahNames) {
+          <mat-divider/>
+        }
+        @switch (message.message_type) {
+          @case (messageType.Memo) {
+            <div class="inner-cards-container">
+              @for (item of message.changes; track item) {
+                <mat-card class="small-card bg-primary-fixed-dim">
+                  {{ item | memo }}
+                </mat-card>
+              }
+            </div>
+          }
+          @case (messageType.Test) {
+            <div class="inner-cards-container">
+              @for (item of message.changes; track item) {
+                <mat-card class="small-flex-card bg-primary-fixed-dim">
+                  {{ item | test }}
+                </mat-card>
+              }
+            </div>
+          }
+          @case (messageType.AlNawawia) {
+            <p>
+              @if (message.changes[1] + 1 === message.changes[2]) {
+                الحديث {{ message.changes[0] + message.changes[2] }}
+              } @else {
+                من الحديث {{ message.changes[0] + message.changes[1] + 1 }} إلى {{ message.changes[0] + message.changes[2] }}
+              }
+            </p>
+          }
+          @case (messageType.AlSaalihin) {
+            <p>
+              @if (message.changes[1] + 1 === message.changes[2]) {
+                الحديث {{ message.changes[0] + message.changes[2] }}
+              } @else {
+                من الحديث {{ message.changes[0] + message.changes[1] + 1 }} إلى {{ message.changes[0] + message.changes[2] }}
+              }
+            </p>
+          }
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+</div>
+@if (hasPrevious() || hasNext()) {
+  <div class="pagination-buttons secondary">
+    <button
+      (click)="previousPage()"
+      mat-flat-button
+      [disabled]="!hasPrevious() || loading()">
+      الصفحة السابقة
+    </button>
+    <button
+      (click)="nextPage()"
+      mat-flat-button
+      [disabled]="!hasNext() || loading()">
+      الصفحة التالية
+    </button>
+  </div>
+}

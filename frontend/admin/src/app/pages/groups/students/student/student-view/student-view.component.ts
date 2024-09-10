@@ -3,6 +3,7 @@ import { ViewComponent } from '../../../../../shared/view/view.component';
 import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
 import { StudentDetails, StudentUpdate } from '../../../../../services/api/admin/models';
 import { MasjedService } from '../../../../../services/masjed.service';
+import { LevelService } from '../../../../../services/level.service';
 import { Validators } from '@angular/forms';
 import { StudentsBase } from '../../students.base';
 
@@ -15,6 +16,7 @@ import { StudentsBase } from '../../students.base';
 })
 export class StudentViewComponent extends StudentsBase {
   private masjed = inject(MasjedService);
+  private level = inject(LevelService);
 
   public config: ViewComponentConfig<StudentDetails, StudentUpdate> = {
     fieldsInfo: {
@@ -94,10 +96,17 @@ export class StudentViewComponent extends StudentsBase {
       riad_alsaalihin_old: {
         type: 'number',
       },
+      level: {
+        type: 'relation',
+        relationType: 'normal',
+        getFieldValueFunc: () => {
+          return this.level.getLevels();
+        },
+      },
     },
     groupName: 'students',
     itemNameAndRouteName: 'student',
-    viewFunc: (id) => {      
+    viewFunc: (id) => {
       return this.students.studentsStudentRead(id);
     },
     deleteFunc: (id) => {

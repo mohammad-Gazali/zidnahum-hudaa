@@ -1,0 +1,38 @@
+:host {
+  --mat-card-title-text-size: 1.125rem;
+  --mat-card-subtitle-text-size: 0.85rem;
+  --mdc-fab-small-container-elevation-shadow: unset;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+mat-card {
+  [mat-mini-fab] {
+    margin-right: auto;
+    box-shadow: none;
+  }
+
+  mat-card-content {
+    margin-top: 0.5rem;
+  }
+
+  .highlighted-chip {
+    margin-right: 1rem;
+  }
+}
+
+.pagination-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}

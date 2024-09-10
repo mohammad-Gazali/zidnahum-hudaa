@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" [class.mat-elevation-z3]="!loading()">
+<mat-toolbar [class.mat-elevation-z2]="!loading()">
   <button class="menu-button" (click)="clickMenu.emit()" mat-icon-button>
     <mat-icon>menu</mat-icon>
   </button>
@@ -6,31 +6,18 @@
     {{ title() | translate }}
   </a>
   <div class="spacer"></div>
-  <ul>
-    @if (isAuth()) {
-        @if (isSmall()) {
-            <li>
-              <button mat-icon-button (click)="logout()">
-                <mat-icon>logout</mat-icon>
-              </button>
-            </li>
-        } @else {
-            <li>
-              <button mat-button (click)="logout()">
-                {{ "logout" | translate }}
-              </button>
-            </li>
-        }
-    }
-    <li>
-      <button mat-icon-button (click)="toggleTheme()">
-        <mat-icon>{{
-          theme.isDarkMode() ? "wb_sunny" : "nights_stay"
-        }}</mat-icon>
+  @if (isAuth()) {
+    @if (isSmall()) {
+      <button mat-icon-button (click)="logout()">
+        <mat-icon>logout</mat-icon>
       </button>
-    </li>
-  </ul>
+    } @else {
+      <button mat-button (click)="logout()">
+        {{ "logout" | translate }}
+      </button>
+    }
+  }
 </mat-toolbar>
 @if (loading()) {
-  <mat-progress-bar mode="indeterminate" color="accent"></mat-progress-bar>
+  <mat-progress-bar mode="indeterminate" color="accent" />
 }

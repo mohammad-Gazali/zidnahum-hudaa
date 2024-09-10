@@ -53,7 +53,17 @@ html {
 }
 
 .error {
-  @include mat.button-color($client-theme, $color-variant: error)
+  @include mat.button-color($client-theme, $color-variant: error);
+
+  // this theme is for fab button for error variant
+  $_error-theme: mat.define-theme((
+    color: (
+      theme-type: light,
+      primary: mat.$red-palette,
+    )
+  ));
+
+  @include mat.fab-color($_error-theme, $color-variant: primary);
 }
 
 :root {
@@ -133,7 +143,17 @@ html {
   }
 
   .error {
-    @include mat.button-color($client-dark-theme, $color-variant: error)
+    @include mat.button-color($client-dark-theme, $color-variant: error);
+
+    // this theme is for fab button for error variant
+    $_error-theme: mat.define-theme((
+      color: (
+        theme-type: dark,
+        primary: mat.$red-palette,
+      )
+    ));
+
+    @include mat.fab-color($_error-theme, $color-variant: primary);
   }
 }
 
@@ -249,4 +269,14 @@ mat-sidenav {
 // fix the calendar height because we don't use Roboto font
 .mat-datepicker-content .mat-calendar {
   height: 366px !important;
+}
+
+.title {
+  text-align: center;
+  border-radius: 999px;
+  padding: 1rem 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  width: fit-content;
+  margin: 0 auto 2rem;
 }

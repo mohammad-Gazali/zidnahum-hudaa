@@ -14,7 +14,6 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { AccountsService } from '../../services/api/accounts/accounts.service';
-import { ThemeService } from '../../services/theme.service';
 import { LOADING } from '../../tokens/loading.token';
 
 @Component({
@@ -35,7 +34,6 @@ import { LOADING } from '../../tokens/loading.token';
 export class NavbarComponent {
   private accounts = inject(AccountsService);
   private router = inject(Router);
-  public theme = inject(ThemeService);
   public breakpointObserver = inject(BreakpointObserver);
   public loading = inject(LOADING);
 
@@ -66,9 +64,5 @@ export class NavbarComponent {
     localStorage.removeItem('refresh-token');
     this.accounts.details.set(null);
     this.router.navigateByUrl('login');
-  }
-
-  toggleTheme() {
-    this.theme.setDarkMode(!this.theme.isDarkMode());
   }
 }

@@ -1,10 +1,29 @@
 .filters-container {
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+
+  > * {
+    height: fit-content;
+    margin-top: auto;
+  }
+
+  > *:last-child:first-child {
+    grid-column: span 2;
+  }
+}
+
+.date-container {
+  display: grid;
+  flex-direction: column;
+  order: 2;
+}
+
+mat-radio-group {
+  width: max-content;
 }
 
 mat-radio-button + mat-radio-button {
-    margin: 0 1rem;
+  margin: 0 1rem;
 }

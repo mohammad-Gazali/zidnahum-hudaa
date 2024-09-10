@@ -10,7 +10,12 @@ class MemorizeMessageListView(ListAPIView):
     serializer_class = MemorizeMessageSerializer
 
     def get_queryset(self):
-        return MemorizeMessage.objects.filter(master=self.request.user).order_by("-sended_at")
+        return (
+            MemorizeMessage.objects
+            .filter(master=self.request.user)
+            .select_related("student")
+            .order_by("-sended_at")
+        )
 
 
 class MemorizeMessageDeleteView(DestroyAPIView):

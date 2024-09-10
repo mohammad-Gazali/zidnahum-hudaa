@@ -111,6 +111,8 @@ class StudentUpdateRiadAlsaalihinSerializer(serializers.Serializer):
 
 
 class MemorizeMessageSerializer(serializers.ModelSerializer):
+    student = serializers.CharField(source="student.name")
+
     class Meta:
         model = MemorizeMessage
         fields = "__all__"

@@ -10,4 +10,3 @@ export * from './add-student/add-student.component';
 export * from './log-memo/log-memo.component';
 export * from './log-coming/log-coming.component';
 export * from './log-points/log-points.component';
-export * from './reports/reports.component';

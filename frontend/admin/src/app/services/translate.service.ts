@@ -97,6 +97,7 @@ export class TranslateService {
         this.translateMap.set('riad_alsaalihin_new', 'رياض الصالحين جديد');
         this.translateMap.set('allah_names_old', 'أسماء الله الحسنى قديم');
         this.translateMap.set('allah_names_new', 'أسماء الله الحسنى جديد');
+        this.translateMap.set('level', 'مستوى الطالب');
 
         // student category model
         this.translateMap.set('student-category', 'فئة الطالب');
@@ -160,7 +161,7 @@ export class TranslateService {
         this.translateMap.set('test', 'الاختبار');
         this.translateMap.set('is_old', 'سبر قديم');
 
-        // assets categroy model
+        // assets category model
         this.translateMap.set('assets-category', 'فئة الملفات');
 
         // assets file model
@@ -175,6 +176,7 @@ export class TranslateService {
         // money deleting
         this.translateMap.set('money-deleting', 'الغرامة المالية');
         this.translateMap.set('active_to_points', 'مخصومة من النقاط');
+        this.translateMap.set('sum', 'الكلي');
 
 
         // statistics

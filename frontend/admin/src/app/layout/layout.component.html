@@ -1,11 +1,11 @@
 <mat-sidenav-container>
-    <mat-sidenav (openedChange)="hanldeSidenavChange($event)" [mode]="mode()">
-        <app-sidenav></app-sidenav>
+    <mat-sidenav fixedInViewport (openedChange)="handleSidenavChange($event)" [mode]="mode()">
+        <app-sidenav (onItemClick)="handleSidenavItemClick()" />
     </mat-sidenav>
     <mat-sidenav-content>
-        <app-navbar (clickMenu)="sidenav()?.toggle()"></app-navbar>
+        <app-navbar (clickMenu)="sidenav().toggle()" />
         <main>
-            <ng-content></ng-content>
+            <ng-content />
         </main>
     </mat-sidenav-content>
 </mat-sidenav-container>

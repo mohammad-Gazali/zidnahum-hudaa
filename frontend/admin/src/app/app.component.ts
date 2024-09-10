@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
       },
       error: ({ status, error: { detail } }: { status: number; error: { detail: string } }) => {
         this.loading.set(false);
-        
+
         if (status === 401) {
           const refreshToken = localStorage.getItem('refresh-token');
 

@@ -34,6 +34,11 @@ class StudentMasjedChoice(models.IntegerChoices):
     QAZZAZ = 3, "القزاز"
     
 
+class StudentLevelChoice(models.IntegerChoices):
+    ONE = 1, "مستوى أول"
+    TWO = 2, "مستوى ثاني"
+    THREE = 3, "مستوى ثالث"
+
 class Student(models.Model):
     name = models.CharField(max_length=80, verbose_name="الاسم الثلاثي")
     mother_name = models.CharField(max_length=30, verbose_name="اسم الأم", null=True, blank=True)
@@ -67,6 +72,7 @@ class Student(models.Model):
     group = models.ForeignKey(StudentGroup, on_delete=models.SET_NULL, verbose_name="المجموعة", null=True, blank=True)
 
     masjed = models.IntegerField(verbose_name="المسجد", choices=StudentMasjedChoice.choices)
+    level = models.IntegerField(verbose_name="مستوى الطالب", choices=StudentLevelChoice.choices, default=StudentLevelChoice.ONE)
 
     def __str__(self) -> str:
         return self.name
@@ -140,9 +146,10 @@ class MessageTypeChoice(models.IntegerChoices):
 
 
 class MemorizeMessage(models.Model):
-    master = models.ForeignKey(AUTH_USER_MODEL, verbose_name="اسم الأستاذ", on_delete=models.SET_NULL, null=True)
-    student = models.ForeignKey(Student, on_delete=models.PROTECT, verbose_name="اسم الطالب")
+    master = models.ForeignKey(AUTH_USER_MODEL, verbose_name="الأستاذ", on_delete=models.SET_NULL, null=True)
+    student = models.ForeignKey(Student, on_delete=models.PROTECT, verbose_name="الطالب")
     sended_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الإرسال")
+    student_level = models.IntegerField(verbose_name="مستوى الطالب", choices=StudentLevelChoice.choices)
 
     # for type MEMO, TEST the changes is the "list" of changed indexes in the related field
     # for type ALNAWAWIA, ALSAALIHIN the changes is the "list" of three numbers where the first item is the old value of the related field and the second is the new value before edit and the third is the new value after edit

@@ -47,9 +47,14 @@ class StatisticsRequestSerializer(serializers.Serializer):
     active_students = serializers.BooleanField(default=False)
 
 class StatisticsResponseSerializer(serializers.Serializer):
-    memo = serializers.ListField(child = serializers.FloatField(), required=False)
-    test = serializers.ListField(child = serializers.FloatField(), required=False)
-    awqaf_test = serializers.ListField(child = serializers.FloatField(), required=False)
-    awqaf_test_looking = serializers.ListField(child = serializers.FloatField(), required=False)
-    awqaf_test_explaining = serializers.ListField(child = serializers.FloatField(), required=False)
-    active_students = serializers.ListField(child = serializers.FloatField(), required=False)
+    memo = serializers.ListField(child=serializers.FloatField(), required=False)
+    test = serializers.ListField(child=serializers.FloatField(), required=False)
+    awqaf_test = serializers.ListField(child=serializers.FloatField(), required=False)
+    awqaf_test_looking = serializers.ListField(child=serializers.FloatField(), required=False)
+    awqaf_test_explaining = serializers.ListField(child=serializers.FloatField(), required=False)
+    active_students = serializers.ListField(child=serializers.FloatField(), required=False)
+
+class TotalMoneyListSerializer(serializers.Serializer):
+    id = serializers.IntegerField(source="student__id")
+    name = serializers.CharField(source="student__name")
+    sum = serializers.IntegerField()

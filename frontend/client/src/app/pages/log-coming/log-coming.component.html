@@ -1,1 +1,73 @@
-<p>activities-coming works!</p>
+<div class="title bg-surface-container-highest">
+  سجل الحضور
+</div>
+<form [formGroup]="searchForm" (ngSubmit)="search()">
+  <mat-form-field>
+    <mat-label>اسم الطالب أو معرفه</mat-label>
+    <input matInput [formControl]="searchForm.controls.studentName" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>فترة تسجيل الحضور</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+      <input matStartDate>
+      <input matEndDate>
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="picker" />
+    <mat-date-range-picker touchUi #picker />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>نوع الحضور</mat-label>
+    <mat-select [formControl]="searchForm.controls.category">
+      @for (category of categories(); track category.id) {
+        <mat-option [value]="category.id">
+          {{ category.name }}
+        </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</form>
+<div class="cards-container">
+  @for (message of messages(); track message.id) {
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>
+          {{ message.student }}
+        </mat-card-title>
+        <mat-card-subtitle class="text-outline">
+        <span dir="ltr">
+          {{ message.registered_at | date: 'yyyy-MM-dd hh:mm a' }}
+        </span>
+        </mat-card-subtitle>
+        <button (click)="delete(message.id)" class="error" mat-mini-fab>
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-chip>
+          {{ categoriesMap()?.get(message.category) }}
+        </mat-chip>
+        @if (message.is_doubled) {
+          <mat-chip class="highlighted-chip">
+            مضاعفة
+          </mat-chip>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+</div>
+@if (hasPrevious() || hasNext()) {
+  <div class="pagination-buttons secondary">
+    <button
+      (click)="previousPage()"
+      mat-flat-button
+      [disabled]="!hasPrevious() || loading()">
+      الصفحة السابقة
+    </button>
+    <button
+      (click)="nextPage()"
+      mat-flat-button
+      [disabled]="!hasNext() || loading()">
+      الصفحة التالية
+    </button>
+  </div>
+}

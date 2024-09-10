@@ -244,6 +244,7 @@ class StudentListAndDetailsTestCase(TestCase):
                     master=self.user,
                     student=student,
                     changes=[1],
+                    student_level=student.level,
                 )
             )
 
@@ -252,6 +253,7 @@ class StudentListAndDetailsTestCase(TestCase):
                 master=self.user,
                 student=student,
                 changes=[1],
+                student_level=student.level,
             )
             message.sended_at = timezone.now() - timezone.timedelta(days=7)
             message.save()
@@ -293,6 +295,7 @@ class StudentListAndDetailsTestCase(TestCase):
                 master=self.user,
                 student=student,
                 changes=[1],
+                student_level=student.level,
             )
 
             message.sended_at = timezone.datetime(year=current_year, month=current_month, day=10, tzinfo=pytz.UTC)
@@ -305,6 +308,7 @@ class StudentListAndDetailsTestCase(TestCase):
                 master=self.user,
                 student=student,
                 changes=[1],
+                student_level=student.level,
             )
             if timezone.now().day <= 15:
                 previous_month = current_month - 1 if current_month != 1 else 12

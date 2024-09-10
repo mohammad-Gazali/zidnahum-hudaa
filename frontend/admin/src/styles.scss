@@ -1,75 +1,33 @@
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
 @use "@angular/material" as mat;
-// Plus imports for other components in your app.
+@use "./theme.scss" as theme;
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
 @include mat.core();
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-$admin-primary: mat.define-palette(mat.$teal-palette);
-$admin-accent: mat.define-palette(mat.$orange-palette, 300, 100, 500);
+$admin-theme: theme.$light-theme;
 
-// The warn palette is optional (defaults to red).
-$admin-warn: mat.define-palette(mat.$red-palette);
-
-// font family
-$admin-typography-config: mat.define-typography-config(
-  $font-family: "Noto Kufi Arabic",
-);
-
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
-$admin-theme: mat.define-light-theme(
-  (
-    color: (
-      primary: $admin-primary,
-      accent: $admin-accent,
-      warn: $admin-warn,
-    ),
-    typography: $admin-typography-config,
-  )
-);
-
-$admin-dark-theme: mat.define-dark-theme(
-  (
-    color: (
-      primary: $admin-primary,
-      accent: $admin-accent,
-      warn: $admin-warn,
-    ),
-  )
-);
-
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include mat.all-component-themes($admin-theme);
-
-.dark {
-  color-scheme: dark;
-  @include mat.all-component-colors($admin-dark-theme);
-  --mat-sidenav-scrim-color: #000000aa;
+html {
+  @include mat.all-component-themes($admin-theme);
+  @include mat.color-variants-backwards-compatibility($admin-theme);
 }
 
 :root {
-  --admin-success-color: #2e7d32;
-  --admin-error-color: #d32f2f;
+  $_success_error: mat.define-theme((
+    color: (
+      primary: mat.$green-palette,
+      tertiary: mat.$red-palette,
+    )
+  ));
 
-  --admin-success-text-color: #fff;
-  --admin-error-text-color: #fff;
-}
+  --admin-success-color: #{mat.get-theme-color($_success_error, primary-container)};
+  --admin-success-text-color: #{mat.get-theme-color($_success_error, on-primary-container)};
 
-.dark {
-  --admin-success-color: #66bb6a;
-  --admin-error-color: #f44336;
+  --admin-error-color: #{mat.get-theme-color($_success_error, tertiary-container)};
+  --admin-error-text-color: #{mat.get-theme-color($_success_error, on-tertiary-container)};
 
-  --admin-success-text-color: #000000de;
-  --admin-error-text-color: #fff;
+  --mat-dialog-with-actions-content-padding: 20px 24px 16px;
+
+  --mat-toolbar-container-background-color: #{mat.get-theme-color($admin-theme, secondary-container)};
+  --mat-toolbar-container-text-color: #{mat.get-theme-color($admin-theme, on-secondary-container)};
 }
 
 * {
@@ -98,21 +56,17 @@ a {
 }
 
 .primary {
-  color: mat.get-color-from-palette($admin-primary) !important;
+  color: mat.get-theme-color($admin-theme, primary) !important;
 }
 
-.bg-primary {
-  background-color: mat.get-color-from-palette($admin-primary) !important;
-  color: white !important;
+.bg-primary-fixed-dim {
+  background-color: mat.get-theme-color($admin-theme, primary-fixed-dim) !important;
+  color: mat.get-theme-color($admin-theme, on-primary-fixed) !important;
 }
 
-.accent {
-  color: mat.get-color-from-palette($admin-accent) !important;
-}
-
-.bg-accent {
-  background-color: mat.get-color-from-palette($admin-accent) !important;
-  color: black !important;
+.bg-tertiary-container {
+  background-color: mat.get-theme-color($admin-theme, tertiary-container) !important;
+  color: mat.get-theme-color($admin-theme, on-tertiary-container) !important;
 }
 
 .mdc-button__label {
@@ -182,4 +136,9 @@ router-outlet + * {
   &::-webkit-scrollbar-corner {
     display: none;
   }
+}
+
+// fix the calendar height because we don't use Roboto font
+.mat-datepicker-content .mat-calendar {
+  height: 366px !important;
 }

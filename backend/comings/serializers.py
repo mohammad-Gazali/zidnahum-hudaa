@@ -15,6 +15,8 @@ class ComingCreateSerializer(serializers.ModelSerializer):
 
 
 class ComingListSerializer(serializers.ModelSerializer):
+    student = serializers.CharField(source="student.name")
+    
     class Meta:
         model = Coming
         exclude = ["master"]

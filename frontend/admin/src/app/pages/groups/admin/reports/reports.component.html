@@ -20,10 +20,10 @@
                             <button matChipRemove>
                                 <mat-icon>close</mat-icon>
                             </button>
-                        </mat-chip-row>    
+                        </mat-chip-row>
                     </div>
                 }
-        
+
             } @case ('category') {
                 @if (categories(); as categories) {
                     <mat-form-field>
@@ -38,7 +38,7 @@
                         <mat-error>{{ 'this field is required' | translate }}</mat-error>
                     </mat-form-field>
                 }
-        
+
             } @case ('group') {
                 @if (groups(); as groups) {
                     <mat-form-field>
@@ -53,7 +53,7 @@
                         <mat-error>{{ 'this field is required' | translate }}</mat-error>
                     </mat-form-field>
                 }
-        
+
             }
         }
         @if (type.value !== 'student') {
@@ -133,7 +133,7 @@
             </li>
         </ul>
     </div>
-    <div class="mat-elevation-z8">
+    <div class="mat-elevation-z2">
         <div class="responsive-container">
             <table class="mat-mdc-table mdc-data-table__table">
                 <thead role="rowgroup">
@@ -152,8 +152,8 @@
                             <td class="mat-mdc-cell mdc-data-table__cell">{{ message.id }}</td>
                             <td class="mat-mdc-cell mdc-data-table__cell">{{ masterMap().get(message.master) }}</td>
                             <td [hidden]="changesColumnHidden()" class="mat-mdc-cell mdc-data-table__cell">
-                                <app-changes-field 
-                                [content]="message.changes" 
+                                <app-changes-field
+                                [content]="message.changes"
                                 [type]="message.message_type"
                                 ></app-changes-field>
                             </td>
@@ -164,7 +164,7 @@
                                     <mat-icon color="primary">check_circle_outline</mat-icon>
                                 } @else {
                                     <mat-icon color="warn">not_interested</mat-icon>
-                                }    
+                                }
                             </td>
                         </tr>
                     } @empty {
@@ -229,7 +229,7 @@
             </li>
         </ul>
     </div>
-    <div class="mat-elevation-z8">
+    <div class="mat-elevation-z2">
         <div class="responsive-container">
             <table class="mat-mdc-table mdc-data-table__table">
                 <thead role="rowgroup">
@@ -330,7 +330,7 @@
                 </li>
             </ul>
         </div>
-        <div class="mat-elevation-z8">
+        <div class="mat-elevation-z2">
             <div class="responsive-container">
                 <table class="mat-mdc-table mdc-data-table__table">
                     <thead role="rowgroup">

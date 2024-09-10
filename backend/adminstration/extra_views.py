@@ -1,18 +1,27 @@
 from django.shortcuts import get_object_or_404
 from django.db import transaction
+from django.db.models import Sum
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
+from rest_framework.filters import OrderingFilter
+from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.exceptions import ValidationError
 from drf_yasg.utils import swagger_auto_schema
-from adminstration.extra_serializers import AddAwqafTestNoQRequestSerailizer, AddAwqafTestQRequestSerializer, AddMoneyDeletingNormalRequestSerailizer, AddMoneyDeletingCategoryRequestSerailizer, ControlSettingsSerializer, StatisticsRequestSerializer, StatisticsResponseSerializer
+from drf_yasg.openapi import Parameter, IN_QUERY, TYPE_STRING
+from adminstration.extra_serializers import AddAwqafTestNoQRequestSerailizer, AddAwqafTestQRequestSerializer, AddMoneyDeletingNormalRequestSerailizer, AddMoneyDeletingCategoryRequestSerailizer, ControlSettingsSerializer, StatisticsRequestSerializer, StatisticsResponseSerializer, TotalMoneyListSerializer
 from adminstration.extra_utils import get_students_memo, get_students_test, get_students_awqaf_test, get_students_awqaf_test_looking, get_students_awqaf_test_explaining, get_active_students
 from adminstration.models import ControlSettings
 from awqaf.models import AwqafNoQStudentRelation
 from students.models import Student
 from students.constants import NEW, OLD
 from money.models import MoneyDeleting
+
+# this is a query param for any model has student field and need to filter by it
+param_student_name = Parameter("student__name", IN_QUERY, type=TYPE_STRING, description="param for filtering result via student name or student id")
 
 class AddAwqafNoQTestCreateView(CreateAPIView):
     permission_classes = [IsAdminUser]
@@ -114,6 +123,45 @@ class ControlSettingsReadUpdateView(APIView):
             return Response(status=HTTP_204_NO_CONTENT)
 
         return Response({ "detail": serializer.errors }, HTTP_400_BAD_REQUEST)
+
+
+class TotalMoneyListView(ListAPIView):
+    permission_classes = [IsAdminUser]
+    pagination_class = LimitOffsetPagination
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    serializer_class = TotalMoneyListSerializer
+    ordering_fields = "__all__"
+
+    def handle_exception(self, exc):
+        if isinstance(exc, ValidationError):
+            return Response({ "detail": exc.detail }, status=HTTP_400_BAD_REQUEST)
+
+        return super().handle_exception(exc)
+
+    def get_queryset(self):
+        name = self.request.GET.get("student__name")
+        masjed = self.request.GET.get("student__masjed")
+
+        query_kwargs = {"student__name__iregex": Student.search_student_regex(name)} if name else {}
+        masjed_kwargs = {"student__masjed": int(masjed)} if masjed else {}
+
+
+        return (
+            MoneyDeleting.objects
+                .filter(active_to_points=True)
+                .filter(**query_kwargs)
+                .filter(**masjed_kwargs)
+                .select_related("student")
+                .values("student")
+                .annotate(sum=Sum("value"))
+                .values("student__id", "student__name", "sum")
+                .order_by("student__id")
+        )
+    
+    @swagger_auto_schema(manual_parameters=[param_student_name])
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
 
 #! important TODO: test
 class StatisticsView(APIView):

@@ -32,7 +32,7 @@ export class LayoutComponent implements AfterViewInit {
   public open = signal(true);
   public mode = signal<"over" | "side">("side");
 
-  public sidenav = viewChild(MatSidenav);
+  public sidenav = viewChild.required(MatSidenav);
 
   constructor() {
     this.breakpointObserver
@@ -57,12 +57,16 @@ export class LayoutComponent implements AfterViewInit {
 
     if (sidenav) {
       sidenav.opened = sidenavState === 'open';
-  
+
       this.cdr.detectChanges();
     }
   }
 
-  hanldeSidenavChange(opened: boolean) {
+  handleSidenavChange(opened: boolean) {
     localStorage.setItem('sidenav', opened ? 'open' : 'close');
+  }
+
+  handleSidenavItemClick() {
+    if (this.mode() === 'over') this.sidenav().close();
   }
 }

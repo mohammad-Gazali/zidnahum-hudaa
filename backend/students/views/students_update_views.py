@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
 from drf_yasg.utils import  swagger_auto_schema
 from drf_yasg import openapi
-from students.models import Student, MemorizeMessage, MessageTypeChoice
+from students.models import Student, MemorizeMessage, MessageTypeChoice, StudentLevelChoice
 from students.serializers import StudentUpdateQMemoSerializer, StudentUpdateQTestSerializer, StudentUpdateAlarbaeinAlnawawiaSerializer, StudentUpdateRiadAlsaalihinSerializer, StudentUpdatePartsReceivedSerializer
 from students.constants import NON, NEW
 from students.permissions import IsMemoGroup, IsHadeethGroup
@@ -61,6 +61,7 @@ class StudentUpdateQMemoView(APIView):
                     changes=added_memo,
                     message_type=MessageTypeChoice.MEMO,
                     is_doubled=ControlSettings.get_double_points(),
+                    student_level=student.level,
                 )
 
             return Response({
@@ -118,6 +119,7 @@ class StudentUpdateQTestView(APIView):
                     changes=added_test,
                     message_type=MessageTypeChoice.TEST,
                     is_doubled=ControlSettings.get_double_points(),
+                    student_level=student.level,
                 )
 
             return Response({
@@ -151,6 +153,7 @@ class StudentUpdateAlarbaeinAlnawawiaView(APIView):
                     changes=[student.alarbaein_alnawawia_old, student.alarbaein_alnawawia_new, new_value],
                     message_type=MessageTypeChoice.ALNAWAWIA,
                     is_doubled=ControlSettings.get_double_points(),
+                    student_level=StudentLevelChoice.ONE,
                 )
 
                 student.alarbaein_alnawawia_new = new_value
@@ -188,6 +191,7 @@ class StudentUpdateRiadAlsaalihinView(APIView):
                     changes=[student.riad_alsaalihin_old, student.riad_alsaalihin_new, new_value],
                     message_type=MessageTypeChoice.ALSAALIHIN,
                     is_doubled=ControlSettings.get_double_points(),
+                    student_level=StudentLevelChoice.ONE,
                 )
 
                 student.riad_alsaalihin_new = new_value
@@ -222,6 +226,7 @@ class StudentUpdateAllahNamesView(APIView):
             changes=[],
             message_type=MessageTypeChoice.ALLAH_NAMES,
             is_doubled=ControlSettings.get_double_points(),
+            student_level=StudentLevelChoice.ONE,
         )
 
         return Response(status=HTTP_204_NO_CONTENT)

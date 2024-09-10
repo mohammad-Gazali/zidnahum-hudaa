@@ -26,7 +26,12 @@ class ComingListCreateView(ListCreateAPIView):
             return ComingListSerializer
 
     def get_queryset(self):
-        return Coming.objects.filter(master=self.request.user).order_by("-registered_at")
+        return (
+            Coming.objects
+            .filter(master=self.request.user)
+            .select_related("student")
+            .order_by("-registered_at")
+        )
 
     def handle_exception(self, exc):
 

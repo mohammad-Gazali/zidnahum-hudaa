@@ -1,5 +1,6 @@
 .menu-button {
-    margin-left: 0.5rem;
+  color: inherit;
+  margin-left: 0.5rem;
 }
 
 .toolbar-brand {
@@ -8,10 +9,4 @@
 
 .spacer {
     flex-grow: 1;
-}
-
-ul {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
 }

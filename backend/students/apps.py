@@ -18,5 +18,5 @@ class StudentsConfig(AppConfig):
         Group.objects.get_or_create(id=2, name=constants.COMING_GROUP)
         Group.objects.get_or_create(id=3, name=constants.POINTS_GROUP)
         Group.objects.get_or_create(id=4, name=constants.HADEETH_GROUP)
-        Group.objects.get_or_create(id=5, name=constants.REPORTS_GROUP)
-        Group.objects.get_or_create(id=6, name=constants.ADD_STUDENTS_GROUP)
+        Group.objects.get_or_create(id=5, name=constants.ADD_STUDENTS_GROUP)
+        Group.objects.get_or_create(id=6, name=constants.REPORTS_GROUP)

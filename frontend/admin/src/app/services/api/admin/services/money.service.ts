@@ -1,16 +1,17 @@
 /* tslint:disable */
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { BaseService as __BaseService } from '../base-service';
 import { ApiConfiguration as __Configuration } from '../api-configuration';
 import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-response';
 import { Observable as __Observable } from 'rxjs';
-import { map as __map, filter as __filter } from 'rxjs/operators';
+import { filter as __filter, map as __map } from 'rxjs/operators';
 
 import { MoneyDeletingCauseList } from '../models/money-deleting-cause-list';
 import { MoneyDeletingCauseCreate } from '../models/money-deleting-cause-create';
 import { MoneyDeletingCauseUpdate } from '../models/money-deleting-cause-update';
 import { MoneyDeletingList } from '../models/money-deleting-list';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -55,6 +56,7 @@ class MoneyService extends __BaseService {
       })
     );
   }
+
   /**
    * @param ordering Which field to use when ordering the results.
    */
@@ -89,6 +91,7 @@ class MoneyService extends __BaseService {
       })
     );
   }
+
   /**
    * @param data undefined
    */
@@ -123,6 +126,7 @@ class MoneyService extends __BaseService {
       })
     );
   }
+
   /**
    * @param id undefined
    */
@@ -162,6 +166,7 @@ class MoneyService extends __BaseService {
       })
     );
   }
+
   /**
    * @param params The `MoneyService.MoneyDeletingCauseUpdateParams` containing the following parameters:
    *
@@ -200,6 +205,7 @@ class MoneyService extends __BaseService {
       })
     );
   }
+
   /**
    * @param id undefined
    */
@@ -232,7 +238,12 @@ class MoneyService extends __BaseService {
    *
    * - `active_to_points`: active_to_points
    */
-  moneyDeletingListResponse(params: MoneyService.MoneyDeletingListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<MoneyDeletingList>}>> {
+  moneyDeletingListResponse(params: MoneyService.MoneyDeletingListParams): __Observable<__StrictHttpResponse<{
+    count: number,
+    next?: null | string,
+    previous?: null | string,
+    results: Array<MoneyDeletingList>
+  }>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -259,10 +270,16 @@ class MoneyService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<MoneyDeletingList>}>;
+        return _r as __StrictHttpResponse<{
+          count: number,
+          next?: null | string,
+          previous?: null | string,
+          results: Array<MoneyDeletingList>
+        }>;
       })
     );
   }
+
   /**
    * @param params The `MoneyService.MoneyDeletingListParams` containing the following parameters:
    *
@@ -286,9 +303,19 @@ class MoneyService extends __BaseService {
    *
    * - `active_to_points`: active_to_points
    */
-  moneyDeletingList(params: MoneyService.MoneyDeletingListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<MoneyDeletingList>}> {
+  moneyDeletingList(params: MoneyService.MoneyDeletingListParams): __Observable<{
+    count: number,
+    next?: null | string,
+    previous?: null | string,
+    results: Array<MoneyDeletingList>
+  }> {
     return this.moneyDeletingListResponse(params).pipe(
-      __map(_r => _r.body as {count: number, next?: null | string, previous?: null | string, results: Array<MoneyDeletingList>})
+      __map(_r => _r.body as {
+        count: number,
+        next?: null | string,
+        previous?: null | string,
+        results: Array<MoneyDeletingList>
+      })
     );
   }
 
@@ -317,6 +344,7 @@ class MoneyService extends __BaseService {
       })
     );
   }
+
   /**
    * @param id undefined
    */
@@ -394,4 +422,4 @@ module MoneyService {
   }
 }
 
-export { MoneyService }
+export { MoneyService };
