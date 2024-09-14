@@ -42,7 +42,6 @@ class StudentsService extends __BaseService {
   static readonly studentsStudentListPath = '/students/student/';
   static readonly studentsStudentCreatePath = '/students/student/';
   static readonly studentsStudentReadPath = '/students/student/{id}/';
-  static readonly studentsStudentUpdatePath = '/students/student/{id}/';
   static readonly studentsStudentDeletePath = '/students/student/{id}/';
 
   constructor(
@@ -892,49 +891,6 @@ class StudentsService extends __BaseService {
   }
 
   /**
-   * @param params The `StudentsService.StudentsStudentUpdateParams` containing the following parameters:
-   *
-   * - `id`:
-   *
-   * - `data`:
-   */
-  studentsStudentUpdateResponse(params: StudentsService.StudentsStudentUpdateParams): __Observable<__StrictHttpResponse<StudentUpdate>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-
-    __body = params.data;
-    let req = new HttpRequest<any>(
-      'PUT',
-      this.rootUrl + `/students/student/${encodeURIComponent(String(params.id))}/`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<StudentUpdate>;
-      })
-    );
-  }
-  /**
-   * @param params The `StudentsService.StudentsStudentUpdateParams` containing the following parameters:
-   *
-   * - `id`:
-   *
-   * - `data`:
-   */
-  studentsStudentUpdate(params: StudentsService.StudentsStudentUpdateParams): __Observable<StudentUpdate> {
-    return this.studentsStudentUpdateResponse(params).pipe(
-      __map(_r => _r.body as StudentUpdate)
-    );
-  }
-
-  /**
    * @param id undefined
    */
   studentsStudentDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
@@ -1183,14 +1139,6 @@ module StudentsService {
      * category
      */
     category?: string;
-  }
-
-  /**
-   * Parameters for studentsStudentUpdate
-   */
-  export interface StudentsStudentUpdateParams {
-    id: string;
-    data: StudentUpdate;
   }
 }
 

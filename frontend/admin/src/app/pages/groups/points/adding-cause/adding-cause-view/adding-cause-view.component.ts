@@ -23,7 +23,11 @@ export class AddingCauseViewComponent extends PointsBase {
       name: {
         type: 'string',
         validators: [Validators.required],
-      }  
+      },
+      maximum_limit: {
+        type: 'number',
+        validators: [Validators.required],
+      },
     }
   };
 }

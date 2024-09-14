@@ -8,7 +8,7 @@ migrations:
 	@python ./backend/manage.py makemigrations
 
 test:
-	@python ./backend/manage.py test ./backend
+	@python -W ignore::RuntimeWarning ./backend/manage.py test ./backend
 
 shell:
 	@python ./backend/manage.py shell

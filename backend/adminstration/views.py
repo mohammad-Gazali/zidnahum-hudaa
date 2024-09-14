@@ -18,7 +18,7 @@ AdminUserViewSet = create_model_view_set(
     listing_serializer=AdminListUserSerializer,
     creating_serializer=AdminCreateUserSerializer,
     no_pagination=True,
-    superuser=True,
+    superuser="non_list_only",
 )
 AdminGroupViewSet = create_model_view_set(Group, fields=["permissions"], exclude_fields=True, no_pagination=True, superuser=True)
 
@@ -116,9 +116,9 @@ AdminCreateStudentSerializer = create_serializer(Student, serializer_fields=[
     extra_ref="create"
 )
 AdminListStudentSerializer = create_serializer(Student, serializer_fields=["id", "name", "mother_name", "masjed", "level", "category", "group", "registered_at"], extra_ref="list")
-AdminUpdateStudentSerializer = create_serializer(Student, serializer_fields=["id", "registered_at"], exclude_fields=True, extra_ref="update")
 AdminStudentViewSet = create_model_view_set(
     Student,
+    methods=["get", "post", "delete"],
     filter_fields={
         "masjed": ["exact"],
         "category": ["exact", "isnull"],
@@ -127,7 +127,6 @@ AdminStudentViewSet = create_model_view_set(
         "level": ["exact"],
     },
     include_student_name_filter=True,
-    updating_serializer=AdminUpdateStudentSerializer,
     creating_serializer=AdminCreateStudentSerializer,
     listing_serializer=AdminListStudentSerializer,
 )

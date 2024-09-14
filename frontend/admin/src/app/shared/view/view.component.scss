@@ -1,70 +1,74 @@
 .mode-action-button {
-    position: fixed;
-    bottom: 1rem;
-    left: 1rem;
-    z-index: 10;
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 10;
 }
 
 .fields-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  --mat-form-field-container-height: 50px;
+  --mat-form-field-container-vertical-padding: 12px;
+  --mat-form-field-container-text-size: 14px;
+  --mdc-outlined-text-field-label-text-size: var(--mat-form-field-container-text-size);
+  --mat-select-trigger-text-size: var(--mat-form-field-container-text-size);
+  --mat-option-label-text-size: var(--mat-form-field-container-text-size);
 
-    .field-row {
-        font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 
-        .row-title {
-            width: 200px;
-            margin-left: 10px;
-            display: inline-block;
-            font-weight: bold;
-            font-size: 12px;
-        }
+  .field-row {
+    font-size: 14px;
 
-        mat-form-field {
-            font-size: 12px !important;
-        }
+    .row-title {
+      width: 200px;
+      margin-left: 10px;
+      display: inline-block;
+      font-weight: bold;
+      font-size: 12px;
     }
+  }
 
+  mat-divider,
+  mat-expansion-panel {
+    --mat-expansion-container-background-color: var(--mat-app-background-color);
+    --mat-expansion-container-text-color: var(--mat-app-text-color);
+    max-width: 80vw;
+  }
+
+  a {
+    font-weight: bold;
+
+    &:hover {
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+    }
+  }
+
+  .buttons-container {
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem 0;
+
+    button {
+      width: fit-content;
+    }
+  }
+
+  @media (max-width: 500px) {
     mat-divider,
     mat-expansion-panel {
-        --mat-expansion-container-background-color: var(--mat-app-background-color);
-        --mat-expansion-container-text-color: var(--mat-app-text-color);
-        max-width: 80vw;
+      max-width: 90vw;
     }
 
-    a {
-        font-weight: bold;
+    .field-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
 
-        &:hover {
-            text-decoration: underline;
-            text-decoration-thickness: 2px;
-        }
+      & :nth-child(2) {
+        width: fit-content;
+      }
     }
-
-    .buttons-container {
-        display: flex;
-        gap: 1rem;
-        margin: 1.5rem 0;
-        button {
-            width: fit-content;
-        }
-    }
-
-    @media (max-width: 500px) {
-        mat-divider,
-        mat-expansion-panel {
-            max-width: 90vw;
-        }
-
-        .field-row {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-
-            & :nth-child(2) {
-                width: fit-content;
-            }
-        }
-    }
+  }
 }

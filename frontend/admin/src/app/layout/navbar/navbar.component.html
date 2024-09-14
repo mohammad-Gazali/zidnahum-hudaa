@@ -1,7 +1,9 @@
 <mat-toolbar [class.mat-elevation-z2]="!loading()">
-  <button class="menu-button" (click)="clickMenu.emit()" mat-icon-button>
-    <mat-icon>menu</mat-icon>
-  </button>
+  @if (userDetails()) {
+    <button class="menu-button" (click)="clickMenu.emit()" mat-icon-button>
+      <mat-icon>menu</mat-icon>
+    </button>
+  }
   <a [routerLink]="isAuth() ? '/' : null" class="toolbar-brand">
     {{ title() | translate }}
   </a>

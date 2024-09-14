@@ -38,6 +38,7 @@ export class NavbarComponent {
   public loading = inject(LOADING);
 
   public clickMenu = output();
+  public userDetails = this.accounts.details;
 
   public title = computed(() => {
     if (this.isSmall()) {

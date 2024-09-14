@@ -8,6 +8,7 @@ export class GroupsService {
     {
       name: 'المصادقة والتفويض',
       icon: 'vpn_key',
+      superAdmin: true,
       items: [
         { name: 'المستخدمون', link: '/auth/user', icon: 'person' },
         { name: 'المجموعات', link: '/auth/group', icon: 'group' },
@@ -49,6 +50,7 @@ export class GroupsService {
     {
       name: 'الغرامات المالية',
       icon: 'payments',
+      superAdmin: true,
       items: [
         { name: 'أسباب الغرامة', link: '/money/money-deleting-cause', icon: 'paid' },
         { name: 'الغرامات', link: '/money/money-deleting', icon: 'payments' },
@@ -62,8 +64,8 @@ export class GroupsService {
       items: [
         { name: 'أسباب الإضافة', link: '/points/adding-cause', icon: 'add_task' },
         { name: 'الإضافات', link: '/points/adding', icon: 'add_circle_outline' },
-        { name: 'أسباب الخصم', link: '/points/deleting-cause', icon: 'remove_done' },
-        { name: 'الخصومات', link: '/points/deleting', icon: 'remove_circle_outline' },
+        { name: 'أسباب الخصم', link: '/points/deleting-cause', icon: 'remove_done', superAdmin: true },
+        { name: 'الخصومات', link: '/points/deleting', icon: 'remove_circle_outline', superAdmin: true },
       ],
     },
     {
@@ -81,9 +83,9 @@ export class GroupsService {
       name: 'الإدارة',
       icon: 'settings',
       items: [
-        { name: 'إعدادات الموقع', link: '/admin/settings', icon: 'settings' },
+        { name: 'إعدادات الموقع', link: '/admin/settings', icon: 'settings', superAdmin: true },
         { name: 'التقارير', link: '/admin/reports', icon: 'assessment' },
-        { name: 'الإحصائيات', link: '/admin/statistics', icon: 'query_stats' },
+        { name: 'الإحصائيات', link: '/admin/statistics', icon: 'query_stats', superAdmin: true },
       ],
     },
   ];
@@ -92,9 +94,11 @@ export class GroupsService {
 export interface Group {
   name: string;
   icon: string;
+  superAdmin?: boolean;
   items: {
     name: string;
     link: string;
     icon: string;
+    superAdmin?: boolean;
   }[];
 }

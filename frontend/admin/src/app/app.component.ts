@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
       if (e.ctrlKey && (e.key === 'f' || e.key === 'ب')) {
         e.preventDefault();
         const el = document.querySelector('mat-form-field input');
-        (el as HTMLInputElement).focus();
+        (el as HTMLInputElement)?.focus();
       }
     })
   }

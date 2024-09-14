@@ -1,16 +1,11 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  inject,
-  signal,
-  viewChild,
-} from '@angular/core';
+import { Component, effect, inject, signal, viewChild, } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { AccountsService } from '../services/api/accounts/accounts.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @Component({
   selector: 'app-layout',
@@ -25,12 +20,12 @@ import { NavbarComponent } from './navbar/navbar.component';
     MatSidenav,
   ],
 })
-export class LayoutComponent implements AfterViewInit {
+export class LayoutComponent {
   public breakpointObserver = inject(BreakpointObserver);
-  private cdr = inject(ChangeDetectorRef);
+  private userDetails = inject(AccountsService).details;
 
   public open = signal(true);
-  public mode = signal<"over" | "side">("side");
+  public mode = signal<'over' | 'side'>('side');
 
   public sidenav = viewChild.required(MatSidenav);
 
@@ -44,22 +39,25 @@ export class LayoutComponent implements AfterViewInit {
       .pipe(takeUntilDestroyed())
       .subscribe((result) => {
         if (result.matches) {
-          this.mode.set("over");
+          this.mode.set('over');
         } else {
-          this.mode.set("side");
+          this.mode.set('side');
         }
       });
-  }
 
-  ngAfterViewInit(): void {
-    const sidenav = this.sidenav();
-    const sidenavState = localStorage.getItem('sidenav') ?? 'close';
+    effect(() => {
+      const details = this.userDetails();
 
-    if (sidenav) {
-      sidenav.opened = sidenavState === 'open';
+      if (!details) {
+        this.sidenav().close();
 
-      this.cdr.detectChanges();
-    }
+      } else {
+        const sidenav = this.sidenav();
+        const sidenavState = localStorage.getItem('sidenav') ?? 'close';
+
+        sidenav.opened = sidenavState === 'open';
+      }
+    });
   }
 
   handleSidenavChange(opened: boolean) {

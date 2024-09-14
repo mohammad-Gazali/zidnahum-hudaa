@@ -8,7 +8,7 @@
     @for (field of fields(); track field.name) {
         @if (field.type !== 'ignore') {
             <div class="field-row">
-                <div 
+                <div
                 class="row-title"
                 [class.hidden]="field.type === 'q_memorize' || field.type === 'q_test' || field.type === 'q_test_awqaf' || field.type === 'q_elite_test'">
                     <span>
@@ -107,7 +107,7 @@
                                     {{ extraData()[field.name].map.get(item) ?? '-' }}
                                 </a>
                                 <span [class.hidden]="editMode()">@if (!$last) {&nbsp;,&nbsp;}</span>
-                            } @empty { 
+                            } @empty {
                                 <span [class.hidden]="editMode()">-</span>
                             }
                         } @else {
@@ -121,7 +121,7 @@
                                 @for (item of field.value; track item) {
                                     {{ extraData()[field.name].map.get(item) ?? '-' }}
                                     <span [class.hidden]="editMode()">@if (!$last) {&nbsp;,&nbsp;}</span>
-                                } @empty { 
+                                } @empty {
                                     <span [class.hidden]="editMode()">-</span>
                                 }
                             </span>
@@ -148,22 +148,22 @@
                 } @else if (field.type === 'q_memorize') {
                     <mat-expansion-panel>
                         <mat-expansion-panel-header>{{ field.name | translate }}</mat-expansion-panel-header>
-                        <app-quran-memorize [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="editMode()"></app-quran-memorize>
+                        <app-quran-memorize [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="isSuperUser() ? editMode(): false" />
                     </mat-expansion-panel>
                 } @else if (field.type === 'q_test') {
                     <mat-expansion-panel>
                         <mat-expansion-panel-header>{{ field.name | translate }}</mat-expansion-panel-header>
-                        <app-quran-test [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="editMode()"></app-quran-test>
+                        <app-quran-test [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="isSuperUser() ? editMode(): false" />
                     </mat-expansion-panel>
                 } @else if (field.type === 'q_elite_test') {
                     <mat-expansion-panel>
                         <mat-expansion-panel-header>{{ field.name | translate }}</mat-expansion-panel-header>
-                        <app-quran-elite-test [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="editMode()"></app-quran-elite-test>
+                        <app-quran-elite-test [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="isSuperUser() ? editMode(): false" />
                     </mat-expansion-panel>
                 } @else if (field.type === 'q_test_awqaf') {
                     <mat-expansion-panel>
                         <mat-expansion-panel-header>{{ field.name | translate }}</mat-expansion-panel-header>
-                        <app-quran-awqaf-test [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="editMode()"></app-quran-awqaf-test>
+                        <app-quran-awqaf-test [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="isSuperUser() ? editMode(): false" />
                     </mat-expansion-panel>
                 } @else if (field.type === 'link') {
                     <a class="primary" [routerLink]="field.url">

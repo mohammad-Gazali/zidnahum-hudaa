@@ -1,5 +1,5 @@
 import { Component, inject, output } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
   MatListItem,
   MatListItemIcon,
@@ -9,6 +9,7 @@ import {
 import { MatIcon } from '@angular/material/icon';
 import { GroupsService } from '../../services/groups.service';
 import { MatDivider } from '@angular/material/divider';
+import { AccountsService } from '../../services/api/accounts/accounts.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -29,6 +30,7 @@ import { MatDivider } from '@angular/material/divider';
 export class SidenavComponent {
   public groupsService = inject(GroupsService);
   public onItemClick = output();
+  public userDetails = inject(AccountsService).details
 
   close() {
     this.onItemClick.emit();

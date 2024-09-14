@@ -4,7 +4,7 @@ import {
   OnInit,
   inject,
   input,
-  signal,
+  signal, computed,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -12,7 +12,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -41,6 +41,7 @@ import {
 } from './view.component.interface';
 import { ChangesFieldComponent } from '../changes-field/changes-field.component';
 import { LOADING } from '../../tokens/loading.token';
+import { AccountsService } from '../../services/api/accounts/accounts.service';
 
 @Component({
   selector: 'app-view',
@@ -69,6 +70,13 @@ import { LOADING } from '../../tokens/loading.token';
       provide: MAT_DATE_LOCALE,
       useValue: 'ar',
     },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {
+        appearance: 'outline',
+        subscriptSizing: 'dynamic',
+      },
+    },
     provideNativeDateAdapter(),
   ],
   templateUrl: './view.component.html',
@@ -81,11 +89,13 @@ export class ViewComponent<T, U> implements OnInit {
   private fb = inject(NonNullableFormBuilder);
   private dialog = inject(MatDialog);
   private destroyRef = inject(DestroyRef);
+  private accounts = inject(AccountsService);
   public date = inject(DateService);
   public loading = inject(LOADING);
 
   public fields = signal<Field[]>([]);
   public editMode = signal(false);
+  public isSuperUser = computed(() => !!this.accounts.details()?.is_superuser)
   public extraData = signal<ExtraData>({});
   public form = this.fb.group({});
   public viewId!: string;

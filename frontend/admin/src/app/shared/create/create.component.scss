@@ -1,4 +1,11 @@
 .fields-container {
+    --mat-form-field-container-height: 50px;
+    --mat-form-field-container-vertical-padding: 12px;
+    --mat-form-field-container-text-size: 14px;
+    --mdc-outlined-text-field-label-text-size: var(--mat-form-field-container-text-size);
+    --mat-select-trigger-text-size: var(--mat-form-field-container-text-size);
+    --mat-option-label-text-size: var(--mat-form-field-container-text-size);
+
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -12,10 +19,6 @@
             display: inline-block;
             font-weight: bold;
             font-size: 12px;
-        }
-
-        mat-form-field {
-            font-size: 12px !important;
         }
     }
 

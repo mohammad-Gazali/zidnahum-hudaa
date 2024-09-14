@@ -26,7 +26,10 @@ export class AddingCauseComponent extends PointsBase {
     columns: {
       name: {
         display: 'normal',
-      }
+      },
+      maximum_limit: {
+        display: 'normal',
+      },
     },
   }
 }

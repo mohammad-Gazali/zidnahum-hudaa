@@ -28,6 +28,7 @@ export class StudentCreateComponent extends StudentsBase {
       },
       mother_name: {
         type: 'string',
+        validators: [Validators.required],
       },
       birthdate: {
         type: 'date',

@@ -15,6 +15,7 @@ import { ControlSettings } from '../models/control-settings';
 import { StatisticsResponse } from '../models/statistics-response';
 import { StatisticsRequest } from '../models/statistics-request';
 import { MoneyTotal } from '../models/money-total';
+import { StudentUpdate } from '../models/student-update';
 
 @Injectable({
   providedIn: 'root',
@@ -354,6 +355,49 @@ class ExtraService extends __BaseService {
       })
     );
   }
+
+  /**
+   * @param params The `StudentsService.StudentsStudentUpdateParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `data`:
+   */
+  extraStudentUpdateResponse(params: ExtraService.StudentsStudentUpdateParams): __Observable<__StrictHttpResponse<StudentUpdate>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    __body = params.data;
+    let req = new HttpRequest<any>(
+      'PUT',
+      this.rootUrl + `/extra/student-update/${encodeURIComponent(String(params.id))}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<StudentUpdate>;
+      })
+    );
+  }
+  /**
+   * @param params The `ExtraService.StudentsStudentUpdateParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `data`:
+   */
+  extraStudentUpdate(params: ExtraService.StudentsStudentUpdateParams): __Observable<StudentUpdate> {
+    return this.extraStudentUpdateResponse(params).pipe(
+      __map(_r => _r.body as StudentUpdate)
+    );
+  }
 }
 
 module ExtraService {
@@ -382,6 +426,15 @@ module ExtraService {
      * Which field to use when ordering the results.
      */
     ordering?: string;
+  }
+
+
+  /**
+   * Parameters for studentsStudentUpdate
+   */
+  export interface StudentsStudentUpdateParams {
+    id: string;
+    data: StudentUpdate;
   }
 }
 

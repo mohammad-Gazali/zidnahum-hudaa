@@ -132,6 +132,7 @@ export class TranslateService {
         this.translateMap.set('student_name', 'اسم الطالب');
         this.translateMap.set('value', 'القيمة');
         this.translateMap.set('cause', 'السبب');
+        this.translateMap.set('maximum_limit', 'الحد الأقصى للإضافة');
 
         // points deleting model
         this.translateMap.set('deleting', 'الخصم');

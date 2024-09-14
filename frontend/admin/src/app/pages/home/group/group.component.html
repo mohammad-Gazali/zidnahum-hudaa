@@ -1,18 +1,30 @@
-<mat-card>
-    <mat-card-header>
+@if (userDetails(); as details) {
+  @if (
+    (group().superAdmin && details.is_superuser && details.is_staff) ||
+    !group().superAdmin
+  ) {
+    <mat-card>
+      <mat-card-header>
         <mat-card-title>
-            <mat-icon>{{ group().icon }}</mat-icon>
-            {{ group().name }}
+          <mat-icon>{{ group().icon }}</mat-icon>
+          {{ group().name }}
         </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
+      </mat-card-header>
+      <mat-card-content>
         <mat-divider></mat-divider>
         <ul>
-            @for (item of group().items; track item.name) {
-                <li>
-                    <a [routerLink]="item.link">{{ item.name }}</a>
-                </li>
+          @for (item of group().items; track item.name) {
+            @if (
+              (item.superAdmin && details.is_superuser && details.is_staff) ||
+              !item.superAdmin
+            ) {
+              <li>
+                <a [routerLink]="item.link">{{ item.name }}</a>
+              </li>
             }
+          }
         </ul>
-    </mat-card-content>
-</mat-card>
+      </mat-card-content>
+    </mat-card>
+  }
+}

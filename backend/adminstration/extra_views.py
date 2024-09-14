@@ -1,9 +1,10 @@
 from django.shortcuts import get_object_or_404
 from django.db import transaction
 from django.db.models import Sum
+from django.core.exceptions import ValidationError as DjangoValidationError
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
@@ -12,7 +13,7 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.exceptions import ValidationError
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg.openapi import Parameter, IN_QUERY, TYPE_STRING
-from adminstration.extra_serializers import AddAwqafTestNoQRequestSerailizer, AddAwqafTestQRequestSerializer, AddMoneyDeletingNormalRequestSerailizer, AddMoneyDeletingCategoryRequestSerailizer, ControlSettingsSerializer, StatisticsRequestSerializer, StatisticsResponseSerializer, TotalMoneyListSerializer
+from adminstration.extra_serializers import StudentUpdateSuperAdminSerializer, StudentUpdateSerializer, AddAwqafTestNoQRequestSerailizer, AddAwqafTestQRequestSerializer, AddMoneyDeletingNormalRequestSerailizer, AddMoneyDeletingCategoryRequestSerailizer, ControlSettingsSerializer, StatisticsRequestSerializer, StatisticsResponseSerializer, TotalMoneyListSerializer
 from adminstration.extra_utils import get_students_memo, get_students_test, get_students_awqaf_test, get_students_awqaf_test_looking, get_students_awqaf_test_explaining, get_active_students
 from adminstration.models import ControlSettings
 from adminstration.permissions import IsSuperUser
@@ -23,6 +24,25 @@ from money.models import MoneyDeleting
 
 # this is a query param for any model has student field and need to filter by it
 param_student_name = Parameter("student__name", IN_QUERY, type=TYPE_STRING, description="param for filtering result via student name or student id")
+
+class StudentUpdateView(UpdateAPIView):
+    permission_classes = [IsAdminUser]
+    queryset = Student.objects.all()
+
+    def handle_exception(self, exc):
+        
+        if isinstance(exc, ValidationError):
+            return Response({ "detail": exc.detail }, status=HTTP_400_BAD_REQUEST)
+        
+        if isinstance(exc, DjangoValidationError):
+            if len(exc.messages):
+                return Response({ "detail": exc.messages[0] }, status=HTTP_400_BAD_REQUEST)
+
+        return super().handle_exception(exc)
+
+    def get_serializer_class(self):
+        return StudentUpdateSuperAdminSerializer if self.request.user.is_superuser else StudentUpdateSerializer
+
 
 class AddAwqafNoQTestCreateView(CreateAPIView):
     permission_classes = [IsAdminUser]

@@ -1,6 +1,21 @@
 from rest_framework import serializers
 from adminstration.models import ControlSettings
-from students.models import StudentMasjedChoice
+from students.models import Student, StudentMasjedChoice
+
+class StudentUpdateSuperAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        exclude = ["id", "registered_at"]
+
+    
+class StudentUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        exclude = [
+            "id", "registered_at", "q_memorizing", "q_test",
+            "q_elite_test", "q_awqaf_test", "q_awqaf_test_looking", 
+            "q_awqaf_test_explaining",
+        ]
 
 class AddAwqafTestNoQRequestSerailizer(serializers.Serializer):
     students = serializers.ListField(child=serializers.IntegerField(), allow_empty=False)

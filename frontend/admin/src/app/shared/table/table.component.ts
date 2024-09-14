@@ -342,7 +342,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
   }
 
   fetchData(resetPagination = true, resetSort = true) {
-    if (this.loading()) return;
+    // if (this.loading()) return;
 
     const options = this.activeFiltersToOptions();
 
@@ -479,7 +479,8 @@ export class TableComponent<T extends { id: number }> implements OnInit {
         )
         .subscribe(() => {
           this.snackbar.success('تم الإجراء بنجاح');
-          this.fetchData();
+          this.loading.set(false);
+          setTimeout(() => this.fetchData(), 1);
         });
     }
   }

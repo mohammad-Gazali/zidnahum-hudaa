@@ -107,7 +107,7 @@ def create_model_view_set(
     details_serializer: Type[ModelSerializer] = None,
     no_pagination: bool = False,
     multipart: bool = False,
-    superuser: bool = False,
+    superuser: bool | Literal["non_list_only"] = False,
 ) -> Type[BaseViewSet]:
     """
     a helper function for creating view sets without declaring an
@@ -139,6 +139,18 @@ def create_model_view_set(
         permission_classes = [IsSuperUser if superuser else IsAdminUser]
         http_method_names = methods or ["get", "post", "put", "delete"]
         filterset_fields = filter_fields
+
+        def get_permissions(self):
+            if superuser == "non_list_only":
+                if self.request.method == "GET":
+                    return [IsAdminUser()]
+                else:
+                    return [IsSuperUser()]
+
+            if superuser: 
+                return [IsSuperUser()]
+            else:
+                return [IsAdminUser()]
 
         def handle_exception(self, exc):
             if isinstance(exc, ProtectedError):

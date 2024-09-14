@@ -6,6 +6,7 @@ import { MasjedService } from '../../../../../services/masjed.service';
 import { LevelService } from '../../../../../services/level.service';
 import { Validators } from '@angular/forms';
 import { StudentsBase } from '../../students.base';
+import { ExtraService } from '../../../../../services/api/admin/services';
 
 @Component({
   selector: 'app-student-view',
@@ -17,10 +18,15 @@ import { StudentsBase } from '../../students.base';
 export class StudentViewComponent extends StudentsBase {
   private masjed = inject(MasjedService);
   private level = inject(LevelService);
+  private extra = inject(ExtraService);
 
   public config: ViewComponentConfig<StudentDetails, StudentUpdate> = {
     fieldsInfo: {
       name: {
+        type: 'string',
+        validators: [Validators.required],
+      },
+      mother_name: {
         type: 'string',
         validators: [Validators.required],
       },
@@ -113,7 +119,7 @@ export class StudentViewComponent extends StudentsBase {
       return this.students.studentsStudentDelete(id)
     },
     updateFunc: (id, data) => {
-      return this.students.studentsStudentUpdate({
+      return this.extra.extraStudentUpdate({
         id,
         data,
       })

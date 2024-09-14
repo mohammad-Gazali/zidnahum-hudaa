@@ -117,7 +117,7 @@ class Student(models.Model):
     def save(self, *args, **kwargs):
         if self.pk is None and Student.objects.filter(name=self.name, mother_name=None).exists():
             raise ValidationError("يوجد طالب مسبقاً بهذا الاسم من غير اسم أم محدد")
-        elif self.pk is None and Student.objects.filter(name=self.name, mother_name=self.mother_name).exists():
+        elif Student.objects.filter(name=self.name, mother_name=self.mother_name).exists():
             raise ValidationError("يوجد طالب مسبقاً بذات الاسم واسم الأم")
 
         self.full_clean()
