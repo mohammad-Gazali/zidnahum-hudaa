@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from reports.serializers import (
-    ReportMemorizeMessageSerializer, 
-    ReportsStudentResponseSerializer, 
+    ReportMemorizeMessageSerializer,
     ReportsStudentCategoryOrGroupStudentSerializer, 
     ReportsStudentCategoryOrGroupResponseSerializer,
 )
@@ -23,14 +22,12 @@ def get_student_report(student: Student, start_date, end_date):
 
     messages_data = ReportMemorizeMessageSerializer(messages, many=True)
 
-    report_serializer = ReportsStudentResponseSerializer({ 
+    return { 
         'messages': messages_data.data,
         'sum_memo': sum_memo,
         'sum_test': sum_test,
         'sum_all': sum_memo + sum_test,
-    })
-
-    return report_serializer.data
+    }
 
 
 def get_category_or_group_report(category_or_group: StudentCategory | StudentGroup, masjed, start_date, end_date):
