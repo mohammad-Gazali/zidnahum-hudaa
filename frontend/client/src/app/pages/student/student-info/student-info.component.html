@@ -25,4 +25,8 @@
         <mat-label>الأجزاء المستلمة</mat-label>
         <input matInput [value]="student.parts_received || '-'" readonly>
     </mat-form-field>
+    <mat-form-field>
+      <mat-label>مستوى التجويد</mat-label>
+      <input matInput [value]="student.level | level" readonly>
+    </mat-form-field>
 }

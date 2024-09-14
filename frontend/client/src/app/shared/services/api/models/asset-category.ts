@@ -2,6 +2,6 @@
 import { AssetFile } from './asset-file';
 export interface AssetCategory {
   files: Array<AssetFile>;
-  id?: number;
+  id: number;
   name: string;
 }

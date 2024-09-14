@@ -8,4 +8,5 @@ export interface MemorizeMessageList {
   sended_at?: string;
   student: number;
   student_name: string;
+  student_level: 1 | 2 | 3;
 }

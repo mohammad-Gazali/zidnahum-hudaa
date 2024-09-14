@@ -19,6 +19,7 @@ export class TranslateService {
         this.translateMap.set('there is no data', 'لا يوجد بيانات');
         this.translateMap.set('file link', 'رابط الملف');
         this.translateMap.set('clear result', 'إزالة النتائج');
+        this.translateMap.set('refresh', 'تحديث');
 
         // ====== global forms ======
         this.translateMap.set('update', 'تعديل');
@@ -97,7 +98,7 @@ export class TranslateService {
         this.translateMap.set('riad_alsaalihin_new', 'رياض الصالحين جديد');
         this.translateMap.set('allah_names_old', 'أسماء الله الحسنى قديم');
         this.translateMap.set('allah_names_new', 'أسماء الله الحسنى جديد');
-        this.translateMap.set('level', 'مستوى الطالب');
+        this.translateMap.set('level', 'مستوى التجويد');
 
         // student category model
         this.translateMap.set('student-category', 'فئة الطالب');
@@ -147,6 +148,7 @@ export class TranslateService {
         this.translateMap.set('memorize-message', 'رسالة التسميع');
         this.translateMap.set('message_type', 'نوع الرسالة');
         this.translateMap.set('changes', 'محتوى الرسالة');
+        this.translateMap.set('student_level', 'مستوى التجويد');
 
         // memorize notes model
         this.translateMap.set('memorize-notes', 'ملاحظة التسميع');

@@ -18,8 +18,9 @@ AdminUserViewSet = create_model_view_set(
     listing_serializer=AdminListUserSerializer,
     creating_serializer=AdminCreateUserSerializer,
     no_pagination=True,
+    superuser=True,
 )
-AdminGroupViewSet = create_model_view_set(Group, fields=["permissions"], exclude_fields=True, no_pagination=True)
+AdminGroupViewSet = create_model_view_set(Group, fields=["permissions"], exclude_fields=True, no_pagination=True, superuser=True)
 
 # awqaf view sets
 AdminAwqafTestNoQViewSet = create_model_view_set(AwqafTestNoQ, no_pagination=True)
@@ -56,7 +57,7 @@ AdminAssetsCategoryViewSet = create_model_view_set(AssetsCategory, no_pagination
 AdminAssetFileViewSet = create_model_view_set(AssetFile, methods=["get", "post", "delete"], filter_fields=["category"], multipart=True)
 
 # money view sets
-AdminMoneyDeletingCauseViewSet = create_model_view_set(MoneyDeletingCause, no_pagination=True)
+AdminMoneyDeletingCauseViewSet = create_model_view_set(MoneyDeletingCause, no_pagination=True, superuser=True)
 AdminMoneyDeletingViewSet = create_model_view_set(
     MoneyDeleting,
     methods=["get"],
@@ -68,6 +69,7 @@ AdminMoneyDeletingViewSet = create_model_view_set(
         "created_at": ["date", "gt", "lt"],
     },
     include_student_name_filter=True,
+    superuser=True
 )
 
 # points view sets
@@ -84,7 +86,7 @@ AdminPointsAddingViewSet = create_model_view_set(
     },
     include_student_name_filter=True,
 )
-AdminPointsDeletingCauseViewSet = create_model_view_set(PointsDeletingCause, no_pagination=True)
+AdminPointsDeletingCauseViewSet = create_model_view_set(PointsDeletingCause, no_pagination=True, superuser=True)
 AdminPointsDeletingViewSet = create_model_view_set(
     PointsDeleting,
     methods=["get", "delete"],
@@ -96,6 +98,7 @@ AdminPointsDeletingViewSet = create_model_view_set(
         "student__masjed": ["exact"],
     },
     include_student_name_filter=True,
+    superuser=True,
 )
 
 # students view sets
@@ -131,7 +134,7 @@ AdminStudentViewSet = create_model_view_set(
 
 AdminMemorizeMessageViewSet = create_model_view_set(
     MemorizeMessage,
-    fields=["id", "master", "student", "student_name", "sended_at", "changes", "message_type", "is_doubled"],
+    fields=["id", "master", "student", "student_name", "sended_at", "changes", "message_type", "is_doubled", "student_level"],
     methods=["get", "delete"],
     filter_fields={
         "master": ["exact", "isnull"],
@@ -139,6 +142,7 @@ AdminMemorizeMessageViewSet = create_model_view_set(
         "is_doubled": ["exact"],
         "sended_at": ["date", "gt", "lt"],
         "student__masjed": ["exact"],
+        "student_level": ["exact"],
     },
     include_student_name_filter=True,
 )

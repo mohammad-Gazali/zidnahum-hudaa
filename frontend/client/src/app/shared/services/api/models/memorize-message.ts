@@ -7,4 +7,5 @@ export interface MemorizeMessage {
   message_type: 1 | 2 | 3 | 4 | 5;
   sended_at: string;
   student: string;
+  student_level: 1 | 2 | 3;
 }

@@ -4,19 +4,18 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.conf import settings
 from django.utils import timezone
-from rest_framework.status import HTTP_200_OK, HTTP_403_FORBIDDEN
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN
 from students.models import Student, StudentMasjedChoice, StudentCategory, StudentGroup, MemorizeMessage
-from students.constants import COMING_GROUP
+from students.constants import COMING_GROUP, ADD_STUDENTS_GROUP
 from comings.models import Coming, ComingCategory
 from adminstration.models import ControlSettings
 from awqaf.models import AwqafTestNoQ, AwqafNoQStudentRelation
 from typing import List
 from random import randint
 from time import sleep
-import pytz
 
 
-class StudentListAndDetailsTestCase(TestCase):
+class StudentListAndDetailsAndCreateTestCase(TestCase):
     def setUp(self):
         User = get_user_model()
 
@@ -78,6 +77,7 @@ class StudentListAndDetailsTestCase(TestCase):
             new_student = Student.objects.create(
                 id=i,
                 name=f"test name {i}",
+                mother_name=f"test mother name {i}",
                 masjed=StudentMasjedChoice.HASANIN,
             )
 
@@ -107,7 +107,7 @@ class StudentListAndDetailsTestCase(TestCase):
 
 
     def test_list_students_view_non_auth(self):
-        url = reverse("students_list_view") + "?query=test"
+        url = reverse("students_create_list_view") + "?query=test"
 
         res = self.client.get(url)
 
@@ -127,7 +127,7 @@ class StudentListAndDetailsTestCase(TestCase):
 
 
     def test_list_students_view_auth(self):
-        url = reverse("students_list_view") + "?query=test"
+        url = reverse("students_create_list_view") + "?query=test"
 
         res = self.client.get(url, HTTP_AUTHORIZATION=f"Bearer {self.token}")
 
@@ -220,6 +220,7 @@ class StudentListAndDetailsTestCase(TestCase):
     def test_student_details_for_nested_relations(self):
         student = Student.objects.create(
             name="testy testy",
+            mother_name="test",
             masjed=StudentMasjedChoice.HASANIN,
         )
 
@@ -255,7 +256,7 @@ class StudentListAndDetailsTestCase(TestCase):
                 changes=[1],
                 student_level=student.level,
             )
-            message.sended_at = timezone.now() - timezone.timedelta(days=7)
+            message.sended_at = timezone.localtime() - timezone.timedelta(days=7)
             message.save()
 
             previous_week_messages.append(message)
@@ -271,7 +272,7 @@ class StudentListAndDetailsTestCase(TestCase):
         res_awqaf_relations_ids = set(map(lambda r: r["id"], res.json()["awqaf_relations"]))
 
         self.assertSetEqual(res_awqaf_relations_ids, set(awqaf_relations_ids))
-
+        
         expected_current_week_messages_ids = set(map(lambda m: m.pk, current_week_messages))
         res_current_week_messages_ids = set(map(lambda m: m["id"], res.json()["current_week_messages"]))
 
@@ -287,8 +288,7 @@ class StudentListAndDetailsTestCase(TestCase):
         first_half_month_messages: List[MemorizeMessage] = []
         second_half_month_messages: List[MemorizeMessage] = []
 
-        current_year = timezone.now().year
-        current_month = timezone.now().month
+        now = timezone.localtime()
 
         for _ in range(3):
             message = MemorizeMessage.objects.create(
@@ -298,7 +298,7 @@ class StudentListAndDetailsTestCase(TestCase):
                 student_level=student.level,
             )
 
-            message.sended_at = timezone.datetime(year=current_year, month=current_month, day=10, tzinfo=pytz.UTC)
+            message.sended_at = timezone.make_aware(timezone.datetime(year=now.year, month=now.month, day=10), now.tzinfo)
             message.save()
 
             first_half_month_messages.append(message)
@@ -310,12 +310,12 @@ class StudentListAndDetailsTestCase(TestCase):
                 changes=[1],
                 student_level=student.level,
             )
-            if timezone.now().day <= 15:
-                previous_month = current_month - 1 if current_month != 1 else 12
-                year_for_previous_month = current_year if previous_month != 12 else current_year - 1
-                message.sended_at = timezone.datetime(year=year_for_previous_month, month=previous_month, day=20, tzinfo=pytz.UTC)
+            if now.day <= 15:
+                previous_month = now.month - 1 if now.month != 1 else 12
+                year_for_previous_month = now.year if previous_month != 12 else now.year - 1
+                message.sended_at = timezone.make_aware(timezone.datetime(year=year_for_previous_month, month=previous_month, day=20), now.tzinfo)
             else:
-                message.sended_at = timezone.datetime(year=current_year, month=current_month, day=20, tzinfo=pytz.UTC)
+                message.sended_at = timezone.make_aware(timezone.datetime(year=now.year, month=now.month, day=20), now.tzinfo)
 
             message.save()
 
@@ -335,3 +335,40 @@ class StudentListAndDetailsTestCase(TestCase):
 
         self.assertSetEqual(expected_first_half_month_messages_ids, res_first_half_month_messages_ids)
         self.assertSetEqual(expected_second_half_month_messages_ids, res_second_half_month_messages_ids)
+
+    def test_student_create(self):
+        url = reverse("students_create_list_view")
+
+        res = self.client.post(url, {
+            "name": "test create",
+            "mother_name": "testify",
+            "masjed": StudentMasjedChoice.HASANIN,
+        }, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
+
+        self.assertEqual(res.status_code, HTTP_403_FORBIDDEN)
+
+        self.user.groups.add(Group.objects.get(name=ADD_STUDENTS_GROUP))
+
+        res = self.client.post(url, {
+            "name": "test create",
+            "mother_name": "testify",
+            "masjed": StudentMasjedChoice.HASANIN,
+        }, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
+
+        self.assertEqual(res.status_code, HTTP_201_CREATED, res.json())
+
+        res = self.client.post(url, {
+            "name": "test create",
+            "mother_name": "testify",
+            "masjed": StudentMasjedChoice.HASANIN,
+        }, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
+
+        self.assertEqual(res.status_code, HTTP_400_BAD_REQUEST)
+
+        res = self.client.post(url, {
+            "name": self.students[0].name,
+            "mother_name": "test mother name",
+            "masjed": StudentMasjedChoice.HASANIN,
+        }, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
+
+        self.assertEqual(res.status_code, HTTP_201_CREATED)

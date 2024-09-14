@@ -12,7 +12,7 @@
 
         mat-card {
             --_size: 2.5rem;
-        
+
             min-width: var(--_size);
             min-height: var(--_size);
         }
@@ -32,9 +32,15 @@ mat-divider {
     margin-top: 1rem;
 }
 
-.group mat-card {
+.group {
+  mat-card {
     padding: 0.5rem;
     text-align: center;
+  }
+
+  mat-card + mat-card {
+    margin-top: 0.5rem;
+  }
 }
 
 p {

@@ -1,7 +1,6 @@
 from django.utils import timezone
 from students.constants import LAST_PART_POINT_MAP, LAST_PART_MAP
 from math import ceil
-import pytz
 
 
 # json utils
@@ -21,11 +20,7 @@ def json_default_value_30():
 
 # time utils
 def get_last_sat_date_range():
-    year = timezone.now().year
-    month = timezone.now().month
-    day = timezone.now().day
-
-    today = timezone.datetime(year=year, month=month, day=day, tzinfo=pytz.UTC)
+    today = timezone.localtime().date()
 
     # When day is saturday
     if today.weekday() == 5:
@@ -46,33 +41,31 @@ def get_last_sat_date_range_for_previous_week():
 
 
 def get_first_month_half_range():
-    year = timezone.now().year
-    month = timezone.now().month
+    now = timezone.localtime()
 
     return [
-        timezone.datetime(year=year, month=month, day=1, tzinfo=pytz.UTC),
-        timezone.datetime(year=year, month=month, day=16, tzinfo=pytz.UTC),
+        timezone.make_aware(timezone.datetime(year=now.year, month=now.month, day=1), now.tzinfo),
+        timezone.make_aware(timezone.datetime(year=now.year, month=now.month, day=16), now.tzinfo),
     ]
 
 
 def get_second_month_half_range():
-    year = timezone.now().year
-    month = timezone.now().month
+    now = timezone.localtime()
 
-    previous_month = month - 1 if month - 1 >= 1 else 12
-    next_month = month + 1 if month + 1 <= 12 else 1
-    year_for_previous_month = year if previous_month != 12 else year - 1
-    year_for_next_month = year if next_month != 1 else year + 1
+    previous_month = now.month - 1 if now.month - 1 >= 1 else 12
+    next_month = now.month + 1 if now.month + 1 <= 12 else 1
+    year_for_previous_month = now.year if previous_month != 12 else now.year - 1
+    year_for_next_month = now.year if next_month != 1 else now.year + 1
 
-    if timezone.now().day <= 15:
+    if now.day <= 15:
         return [
-            timezone.datetime(year=year_for_previous_month, month=previous_month, day=16, tzinfo=pytz.UTC),
-            timezone.datetime(year=year, month=month, day=1, tzinfo=pytz.UTC),
+            timezone.make_aware(timezone.datetime(year=year_for_previous_month, month=previous_month, day=16), now.tzinfo),
+            timezone.make_aware(timezone.datetime(year=now.year, month=now.month, day=1), now.tzinfo),
         ]
     
     return [
-        timezone.datetime(year=year, month=month, day=16, tzinfo=pytz.UTC),
-        timezone.datetime(year=year_for_next_month, month=next_month, day=1, tzinfo=pytz.UTC),
+        timezone.make_aware(timezone.datetime(year=now.year, month=now.month, day=16), now.tzinfo),
+        timezone.make_aware(timezone.datetime(year=year_for_next_month, month=next_month, day=1), now.tzinfo),
     ]
 
 

@@ -65,6 +65,7 @@ class StudentUpdateTestCase(TestCase):
                 Student.objects.create(
                     id=i,
                     name=f"test {i}",
+                    mother_name=f"mother name test {i}",
                     masjed=StudentMasjedChoice.HASANIN,
                 )
             )

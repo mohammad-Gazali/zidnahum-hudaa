@@ -2,31 +2,41 @@ from django.db.models import Model
 from django.http import QueryDict
 from django.contrib.auth import get_user_model
 from django.db.models.deletion import ProtectedError
+from django.core.exceptions import ValidationError as DjangoValidationError
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.serializers import ModelSerializer, IntegerField, CharField
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.status import HTTP_200_OK, HTTP_403_FORBIDDEN
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
+from rest_framework.exceptions import ValidationError
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg.openapi import Parameter, IN_QUERY, TYPE_STRING
+from adminstration.permissions import IsSuperUser
 from students.models import Student
 from typing import Type, List, Dict, Literal, Any
 
 
 class BaseViewSet(ModelViewSet):
     """
-    A base class that inherit from `ModelViewSet`, and also has
-    permission_classes set to `[IsAdminUser]`, and applying 
+    A base class that inherit from `ModelViewSet` applying 
     django filter package filters and ordering filter
     """
-    permission_classes = [IsAdminUser]
     pagination_class = LimitOffsetPagination
+    max_limit = 20
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     ordering_fields = "__all__"
+
+    def handle_exception(self, exc):
+        if isinstance(exc, ValidationError):
+            return Response({ "detail": exc.detail }, status=HTTP_400_BAD_REQUEST)
+        elif isinstance(exc, DjangoValidationError):
+            if len(exc.messages):
+                return Response({ "detail": exc.messages[0] }, status=HTTP_400_BAD_REQUEST)
+        return super().handle_exception(exc)
 
 # this is a query param for name for Student model
 param_name = Parameter("name", IN_QUERY, type=TYPE_STRING, description="param for filtering student via his name or his id")
@@ -97,6 +107,7 @@ def create_model_view_set(
     details_serializer: Type[ModelSerializer] = None,
     no_pagination: bool = False,
     multipart: bool = False,
+    superuser: bool = False,
 ) -> Type[BaseViewSet]:
     """
     a helper function for creating view sets without declaring an
@@ -125,6 +136,7 @@ def create_model_view_set(
     """
 
     class Result(BaseViewSet):
+        permission_classes = [IsSuperUser if superuser else IsAdminUser]
         http_method_names = methods or ["get", "post", "put", "delete"]
         filterset_fields = filter_fields
 

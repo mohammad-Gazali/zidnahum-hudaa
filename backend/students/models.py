@@ -41,7 +41,7 @@ class StudentLevelChoice(models.IntegerChoices):
 
 class Student(models.Model):
     name = models.CharField(max_length=80, verbose_name="الاسم الثلاثي")
-    mother_name = models.CharField(max_length=30, verbose_name="اسم الأم", null=True, blank=True)
+    mother_name = models.CharField(max_length=30, verbose_name="اسم الأم", null=True)
     birthdate = models.DateField(verbose_name="تاريخ الميلاد", null=True, blank=True)
     address = models.CharField(max_length=80, verbose_name="العنوان تفصيلاً", null=True, blank=True)
     static_phone = models.CharField(max_length=10, verbose_name="الهاتف الأرضي", null=True, blank=True)
@@ -115,6 +115,11 @@ class Student(models.Model):
 
 
     def save(self, *args, **kwargs):
+        if self.pk is None and Student.objects.filter(name=self.name, mother_name=None).exists():
+            raise ValidationError("يوجد طالب مسبقاً بهذا الاسم من غير اسم أم محدد")
+        elif self.pk is None and Student.objects.filter(name=self.name, mother_name=self.mother_name).exists():
+            raise ValidationError("يوجد طالب مسبقاً بذات الاسم واسم الأم")
+
         self.full_clean()
         super().save(*args, **kwargs)
 

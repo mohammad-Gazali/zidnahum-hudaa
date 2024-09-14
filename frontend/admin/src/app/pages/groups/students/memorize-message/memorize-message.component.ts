@@ -7,6 +7,7 @@ import { MemorizeMessageList } from '../../../../services/api/admin/models';
 import { AuthService } from '../../../../services/api/admin/services';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 import { MemorizeMessageTypeService } from '../../../../services/memorize-message-type.service';
+import { LevelService } from '../../../../services/level.service';
 
 
 @Component({
@@ -19,6 +20,7 @@ import { MemorizeMessageTypeService } from '../../../../services/memorize-messag
 export class MemorizeMessageComponent extends StudentsBase {
   private types = inject(MemorizeMessageTypeService);
   private auth = inject(AuthService);
+  private level = inject(LevelService);
 
   public config: TableComponentConfig<MemorizeMessageList> = {
     hasPagination: true,
@@ -69,6 +71,11 @@ export class MemorizeMessageComponent extends StudentsBase {
         display: 'normal',
         dateFormat: 'yyyy/MM/dd hh:mm a',
         filterType: 'datetime_date'
+      },
+      student_level: {
+        display: 'relation',
+        filterType: 'exact',
+        getFieldValueFunc: () => this.level.getLevels(),
       },
     },
   };

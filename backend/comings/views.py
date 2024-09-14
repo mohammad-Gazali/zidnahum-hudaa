@@ -41,7 +41,7 @@ class ComingListCreateView(ListCreateAPIView):
         return super().handle_exception(exc)
 
     def perform_create(self, serializer: ComingCreateSerializer):
-        if Coming.objects.filter(**serializer.validated_data, registered_at__date=timezone.now().date()):
+        if Coming.objects.filter(**serializer.validated_data, registered_at__date=timezone.localtime().date()):
             raise ValidationError("you can't register a coming in for the same student and category in the same day")
 
         Coming.objects.create(

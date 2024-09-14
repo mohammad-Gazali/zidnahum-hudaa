@@ -15,6 +15,7 @@ from drf_yasg.openapi import Parameter, IN_QUERY, TYPE_STRING
 from adminstration.extra_serializers import AddAwqafTestNoQRequestSerailizer, AddAwqafTestQRequestSerializer, AddMoneyDeletingNormalRequestSerailizer, AddMoneyDeletingCategoryRequestSerailizer, ControlSettingsSerializer, StatisticsRequestSerializer, StatisticsResponseSerializer, TotalMoneyListSerializer
 from adminstration.extra_utils import get_students_memo, get_students_test, get_students_awqaf_test, get_students_awqaf_test_looking, get_students_awqaf_test_explaining, get_active_students
 from adminstration.models import ControlSettings
+from adminstration.permissions import IsSuperUser
 from awqaf.models import AwqafNoQStudentRelation
 from students.models import Student
 from students.constants import NEW, OLD
@@ -65,7 +66,7 @@ class AddAwqafQTestCreateView(CreateAPIView):
 
 
 class AddMoneyDeletingNormalCreateView(CreateAPIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsSuperUser]
     serializer_class = AddMoneyDeletingNormalRequestSerailizer
 
     def perform_create(self, serializer):
@@ -78,7 +79,7 @@ class AddMoneyDeletingNormalCreateView(CreateAPIView):
 
 
 class AddMoneyDeletingCategoryCreateView(CreateAPIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsSuperUser]
     serializer_class = AddMoneyDeletingCategoryRequestSerailizer
 
     def perform_create(self, serializer):
@@ -95,7 +96,7 @@ class AddMoneyDeletingCategoryCreateView(CreateAPIView):
 
 
 class ControlSettingsReadUpdateView(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsSuperUser]
     http_method_names = ["get", "put"]
 
     @swagger_auto_schema(responses={
@@ -126,7 +127,7 @@ class ControlSettingsReadUpdateView(APIView):
 
 
 class TotalMoneyListView(ListAPIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsSuperUser]
     pagination_class = LimitOffsetPagination
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     serializer_class = TotalMoneyListSerializer
@@ -165,7 +166,7 @@ class TotalMoneyListView(ListAPIView):
 
 #! important TODO: test
 class StatisticsView(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsSuperUser]
     http_method_names = ["post"]
 
     @swagger_auto_schema(request_body=StatisticsRequestSerializer, responses={

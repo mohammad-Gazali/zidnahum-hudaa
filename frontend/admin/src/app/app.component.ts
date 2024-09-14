@@ -19,6 +19,16 @@ export class AppComponent implements OnInit {
 
   public loading = this.accounts.loading;
 
+  constructor() {
+    document.documentElement.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && (e.key === 'f' || e.key === 'ب')) {
+        e.preventDefault();
+        const el = document.querySelector('mat-form-field input');
+        (el as HTMLInputElement).focus();
+      }
+    })
+  }
+
   ngOnInit(): void {
     this.init();
   }

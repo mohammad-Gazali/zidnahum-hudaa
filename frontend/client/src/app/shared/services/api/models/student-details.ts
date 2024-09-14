@@ -43,4 +43,5 @@ export interface StudentDetails {
   riad_alsaalihin_old: number;
   second_half_month_messages: Array<MemorizeMessageForStudent>;
   static_phone?: null | string;
+  level: 1 | 2 | 3;
 }

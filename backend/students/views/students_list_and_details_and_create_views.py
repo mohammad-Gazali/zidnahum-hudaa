@@ -1,5 +1,6 @@
 from django.utils import timezone
 from django.db.models import Prefetch, Value, OuterRef, Exists
+from django.core.exceptions import ValidationError as DjangoValidationError
 from django.conf import settings
 from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveAPIView
 from rest_framework.exceptions import ValidationError
@@ -10,17 +11,16 @@ from drf_yasg.openapi import Parameter, IN_QUERY, TYPE_STRING
 from students.serializers import StudentListSerializer, StudentCreateSerializer, StudentListWithComingRegistrationSerializer, StudentDetailsSerializer
 from students.models import Student, MemorizeMessage
 from students.utils import get_last_sat_date_range_for_previous_week, get_last_sat_date_range, get_first_month_half_range, get_second_month_half_range
-from students.permissions import IsComingGroup
+from students.permissions import IsComingGroup, IsAddStudentsGroup
 from comings.models import Coming
 from adminstration.models import ControlSettings
 from awqaf.models import AwqafNoQStudentRelation
 
 query = Parameter("query", IN_QUERY, type=TYPE_STRING, description="param for filtering result via student name or student id")
 
-# TODO: test create student
 class StudentCreateListView(ListCreateAPIView):
     def get_permissions(self):
-        return [] if self.request.method == "POST" else []
+        return [IsAddStudentsGroup()] if self.request.method == "POST" else []
 
     @swagger_auto_schema(manual_parameters=[query])
     def get(self, request, *args, **kwargs):
@@ -36,6 +36,10 @@ class StudentCreateListView(ListCreateAPIView):
 
         if isinstance(exc, ValidationError):
             return Response({ "detail": exc.detail }, status=HTTP_400_BAD_REQUEST)
+        
+        if isinstance(exc, DjangoValidationError):
+            if len(exc.messages):
+                return Response({ "detail": exc.messages[0] }, status=HTTP_400_BAD_REQUEST)
 
         return super().handle_exception(exc)
 
@@ -91,7 +95,7 @@ class StudentWithComingRegistrationListView(ListAPIView):
         registered_today_ids = (
             Coming.objects
             .filter(
-                registered_at__date=timezone.now().date(), 
+                registered_at__date=timezone.localtime().date(), 
                 category_id=category_id
             )
             .values('student_id')
@@ -164,12 +168,12 @@ class StudentDetailsView(RetrieveAPIView):
             return (
                 Student.objects.all()
                 .prefetch_related(*prefetches)
-                .annotate(current_date=Value(timezone.now().date()))
+                .annotate(current_date=Value(timezone.localtime().date()))
             )
 
         return (
             Student.objects
             .exclude(pk__in=ControlSettings.get_hidden_ids())
             .prefetch_related(*prefetches)
-            .annotate(current_date=Value(timezone.now().date()))
+            .annotate(current_date=Value(timezone.localtime().date()))
         )

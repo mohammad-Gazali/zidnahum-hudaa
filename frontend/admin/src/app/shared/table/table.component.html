@@ -11,6 +11,10 @@
         </form>
       }
       <div class="buttons-container">
+        <button mat-flat-button (click)="fetchData(false, false)">
+          {{ 'refresh' | translate }}
+          <mat-icon>save</mat-icon>
+        </button>
         @if (config.createUrl !== undefined) {
           <button [disabled]="loading()" mat-flat-button color="primary" [routerLink]="config.createUrl">
             {{ 'create' | translate }}

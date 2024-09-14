@@ -7,12 +7,13 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST, HTTP_403_FORBIDDEN
 from drf_yasg.utils import swagger_auto_schema
 from adminstration.actions_serializers import IdsActionSerializer
+from adminstration.permissions import IsSuperUser
 from typing import Type
 
 
-def create_delete_model_action_view(model: Type[Model]) -> Type[APIView]:
+def create_delete_model_action_view(model: Type[Model], superuser: bool = True) -> Type[APIView]:
     class Result(APIView):
-        permission_classes = [IsAdminUser]
+        permission_classes = [IsSuperUser if superuser else IsAdminUser]
         http_method_names = ["delete"]
 
         def handle_exception(self, exc):

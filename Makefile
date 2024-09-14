@@ -9,3 +9,6 @@ migrations:
 
 test:
 	@python ./backend/manage.py test ./backend
+
+shell:
+	@python ./backend/manage.py shell

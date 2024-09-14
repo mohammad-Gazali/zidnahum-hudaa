@@ -436,6 +436,8 @@ class StudentsService extends __BaseService {
    * - `limit`: Number of results to return per page.
    *
    * - `is_doubled`: is_doubled
+   *
+   * - `student_level`: student level
    */
   studentsMemorizeMessageListResponse(params: StudentsService.StudentsMemorizeMessageListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<MemorizeMessageList>}>> {
     let __params = this.newParams();
@@ -453,6 +455,7 @@ class StudentsService extends __BaseService {
     if (params.master != null) __params = __params.set('master', params.master.toString());
     if (params.limit != null) __params = __params.set('limit', params.limit.toString());
     if (params.isDoubled != null) __params = __params.set('is_doubled', params.isDoubled.toString());
+    if (params.studentLevel != null) __params = __params.set('student_level', params.studentLevel.toString());
     let req = new HttpRequest<any>(
       'GET',
       this.rootUrl + `/students/memorize-message/`,
@@ -496,6 +499,8 @@ class StudentsService extends __BaseService {
    * - `limit`: Number of results to return per page.
    *
    * - `is_doubled`: is_doubled
+   *
+   * - `student_level`: student level
    */
   studentsMemorizeMessageList(params: StudentsService.StudentsMemorizeMessageListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<MemorizeMessageList>}> {
     return this.studentsMemorizeMessageListResponse(params).pipe(
@@ -1046,6 +1051,11 @@ module StudentsService {
      * is_doubled
      */
     isDoubled?: string;
+
+    /**
+     * student level
+     */
+    studentLevel?: '1' | '2' | '3';
   }
 
   /**

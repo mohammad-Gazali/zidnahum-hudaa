@@ -342,6 +342,8 @@ export class TableComponent<T extends { id: number }> implements OnInit {
   }
 
   fetchData(resetPagination = true, resetSort = true) {
+    if (this.loading()) return;
+
     const options = this.activeFiltersToOptions();
 
     if (!resetSort && this.sort().direction !== '') {

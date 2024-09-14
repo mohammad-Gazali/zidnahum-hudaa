@@ -6,6 +6,7 @@ import { map } from 'rxjs';
 import { StudentsBase } from '../../students.base';
 import { AuthService } from '../../../../../services/api/admin/services';
 import { MemorizeMessageTypeService } from '../../../../../services/memorize-message-type.service';
+import { LevelService } from '../../../../../services/level.service';
 
 @Component({
   selector: 'app-memorize-message-view',
@@ -17,6 +18,7 @@ import { MemorizeMessageTypeService } from '../../../../../services/memorize-mes
 export class MemorizeMessageViewComponent extends StudentsBase {
   private auth = inject(AuthService);
   private types = inject(MemorizeMessageTypeService);
+  private level = inject(LevelService);
 
   public config: ViewComponentConfig<MemorizeMessageList> = {
     groupName: 'students',
@@ -57,6 +59,11 @@ export class MemorizeMessageViewComponent extends StudentsBase {
       },
       sended_at: {
         type: 'datetime',
+      },
+      student_level: {
+        type: 'relation',
+        relationType: 'normal',
+        getFieldValueFunc: () => this.level.getLevels(),
       },
     },
   };

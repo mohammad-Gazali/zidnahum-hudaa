@@ -1,10 +1,12 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.core.exceptions import ValidationError
 from django.conf.global_settings import AUTH_USER_MODEL
 
 
 class PointsAddingCause(models.Model):
     name = models.CharField(max_length=40, verbose_name="الاسم")
+    maximum_limit = models.IntegerField(verbose_name="حد الإضافة الأعلى")
 
     def __str__(self):
         return self.name
@@ -23,6 +25,15 @@ class PointsAdding(models.Model):
 
     def __str__(self):
         return f"إضافة نقاط {self.id}"
+
+    def clean(self):
+            if self.cause.maximum_limit < self.value:
+                raise ValidationError("تم تجاوز الحد المسموح به في إضافة النقاط")
+
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "إضافة نقاط"

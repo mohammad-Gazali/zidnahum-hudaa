@@ -1,25 +1,20 @@
 from datetime import timedelta
 from pathlib import Path
-import dotenv
-import os
-
+from . import env
 
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# reading .env files
-dotenv.read_dotenv(BASE_DIR / ".env", True)
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = env.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG") == "True"
+DEBUG = env.DEBUG
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    os.getenv("ALLOWED_HOST"),
+    env.ALLOWED_HOST,
 ]
 
 
@@ -171,11 +166,11 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://127.0.0.1:4200",
     "http://127.0.0.1:5173",
-    f"https://{os.getenv('ALLOWED_HOST')}",
-    f"http://{os.getenv('ALLOWED_HOST')}",
+    f"https://{env.ALLOWED_HOST}",
+    f"http://{env.ALLOWED_HOST}",
 ]
 
 
 
 # constants
-Q_COMING_CATEGORY_ID = os.getenv("Q_COMING_CATEGORY_ID")
+Q_COMING_CATEGORY_ID = env.Q_COMING_CATEGORY_ID

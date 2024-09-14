@@ -8,6 +8,7 @@ from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
 from drf_yasg.utils import swagger_auto_schema
 from adminstration.actions_serializers import UserUpdatePasswordSerializer, ActionBooleanUpdateSerializer
 from adminstration.actions_utils import create_delete_model_action_view
+from adminstration.permissions import IsSuperUser
 from awqaf.models import AwqafTestNoQ, AwqafNoQStudentRelation
 from comings.models import ComingCategory, Coming
 from globals.models import AssetsCategory, AssetFile
@@ -17,7 +18,7 @@ from students.models import StudentCategory, StudentGroup, Student, MemorizeMess
 
 
 class AdminUserPasswordUpdateView(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsSuperUser]
     http_method_names = ["put"]
     
     @swagger_auto_schema(
@@ -38,7 +39,7 @@ class AdminUserPasswordUpdateView(APIView):
 
 
 class AdminUserUpdateActiveView(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsSuperUser]
     http_method_names = ["put"]
 
     @swagger_auto_schema(request_body=ActionBooleanUpdateSerializer)
@@ -59,7 +60,7 @@ class AdminUserUpdateActiveView(APIView):
 
 
 class AdminMoneyDeletingUpdateActiveView(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsSuperUser]
     http_method_names = ["put"]
 
     @swagger_auto_schema(request_body=ActionBooleanUpdateSerializer)
@@ -80,8 +81,8 @@ class AdminMoneyDeletingUpdateActiveView(APIView):
 
 
 # ======= delete actions =======
-AdminUserDeleteAction = create_delete_model_action_view(get_user_model())
-AdminGroupDeleteAction = create_delete_model_action_view(Group)
+AdminUserDeleteAction = create_delete_model_action_view(get_user_model(), superuser=True)
+AdminGroupDeleteAction = create_delete_model_action_view(Group, superuser=True)
 
 AdminAwqafTestNoQDeleteAction = create_delete_model_action_view(AwqafTestNoQ)
 AdminAwqafNoQStudentRelationDeleteAction = create_delete_model_action_view(AwqafNoQStudentRelation)
@@ -92,12 +93,12 @@ AdminComingDeleteAction = create_delete_model_action_view(Coming)
 AdminAssetsCategoryDeleteAction = create_delete_model_action_view(AssetsCategory)
 AdminAssetFileDeleteAction = create_delete_model_action_view(AssetFile)
 
-AdminMoneyDeletingCauseDeleteAction = create_delete_model_action_view(MoneyDeletingCause)
+AdminMoneyDeletingCauseDeleteAction = create_delete_model_action_view(MoneyDeletingCause, superuser=True)
 
 AdminPointsAddingCauseDeleteAction = create_delete_model_action_view(PointsAddingCause)
 AdminPointsAddingDeleteAction = create_delete_model_action_view(PointsAdding)
-AdminPointsDeletingCauseDeleteAction = create_delete_model_action_view(PointsDeletingCause)
-AdminPointsDeletingDeleteAction = create_delete_model_action_view(PointsDeleting)
+AdminPointsDeletingCauseDeleteAction = create_delete_model_action_view(PointsDeletingCause, superuser=True)
+AdminPointsDeletingDeleteAction = create_delete_model_action_view(PointsDeleting, superuser=True)
 
 AdminStudentCategoryDeleteAction = create_delete_model_action_view(StudentCategory)
 AdminStudentGroupDeleteAction = create_delete_model_action_view(StudentGroup)

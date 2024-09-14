@@ -40,6 +40,7 @@ class MemorizeNotesTestCase(TestCase):
 
         self.student = Student.objects.create(
             name="test",
+            mother_name="test",
             masjed=StudentMasjedChoice.HASANIN,
         )
 

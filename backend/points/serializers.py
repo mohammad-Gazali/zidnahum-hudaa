@@ -8,12 +8,6 @@ class PointsAddingCauseSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class PointsDeletingCauseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PointsDeletingCause
-        fields = "__all__"
-
-
 class PointsAddingCreateSerializer(serializers.ModelSerializer):
     students = serializers.ListField(child=serializers.IntegerField(), allow_empty=False)
 
@@ -22,21 +16,7 @@ class PointsAddingCreateSerializer(serializers.ModelSerializer):
         fields = ["students", "value", "cause"]
 
 
-class PointsDeletingCreateSerializer(serializers.ModelSerializer):
-    students = serializers.ListField(child=serializers.IntegerField(), allow_empty=False)
-
-    class Meta:
-        model = PointsDeleting
-        fields = ["students", "value", "cause"]
-
-
 class PointsAddingListSerializer(serializers.ModelSerializer):
     class Meta:
         model = PointsAdding
-        fields = "__all__"
-
-
-class PointsDeletingListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PointsDeleting
         fields = "__all__"

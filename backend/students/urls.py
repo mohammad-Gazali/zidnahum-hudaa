@@ -7,7 +7,7 @@ from students.views.extra_views import StudentCategoryListView, StudentGroupList
 
 urlpatterns = [
     # students list and details urls
-    path("", StudentCreateListView.as_view(), name="students_list_view"),
+    path("", StudentCreateListView.as_view(), name="students_create_list_view"),
     path("with-coming-registration/<int:coming_category_id>", StudentWithComingRegistrationListView.as_view(), name="students_with_coming_registeration_list_view"),
     path("<int:pk>", StudentDetailsView.as_view(), name="students_details_view"),
 
