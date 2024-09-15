@@ -5,13 +5,12 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AccountsService } from '../services/api/accounts/accounts.service';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
   templateUrl: './layout.component.html',
-  styleUrl: `./layout.component.scss`,
+  styleUrl: './layout.component.scss',
   imports: [
     NavbarComponent,
     SidenavComponent,
