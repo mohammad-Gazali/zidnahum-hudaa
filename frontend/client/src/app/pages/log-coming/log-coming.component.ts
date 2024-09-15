@@ -5,21 +5,22 @@ import {
   ComingsService,
   ConfirmationService,
   LayoutService,
-  MasjedPipe, MasjedService,
+  MasjedPipe,
+  MasjedService,
   SnackbarService,
 } from '@shared';
-import { BehaviorSubject, combineLatest, map, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, map, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { DatePipe } from '@angular/common';
-import { MatButton, MatMiniFabButton } from '@angular/material/button';
+import { DatePipe, formatDate } from '@angular/common';
+import { MatButton, MatIconButton, MatMiniFabButton } from '@angular/material/button';
 import { MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
 import { MatChip } from '@angular/material/chips';
 import { MatIcon } from '@angular/material/icon';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { MatError, MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
+import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { MatInput } from '@angular/material/input';
 
 @Component({
@@ -45,10 +46,21 @@ import { MatInput } from '@angular/material/input';
     MatDatepickerModule,
     ReactiveFormsModule,
     MasjedPipe,
-    MatError,
+    MatIconButton,
   ],
   providers: [
     provideNativeDateAdapter(),
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: 'ar',
+    },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {
+        appearance: 'outline',
+        subscriptSizing: 'dynamic'
+      },
+    }
   ],
   templateUrl: './log-coming.component.html',
   styleUrl: './log-coming.component.scss'
@@ -64,7 +76,7 @@ export class LogComingComponent {
 
   protected masjedOptions = this.masjed.masjedOptions;
   protected searchForm = this.fb.group({
-    studentName: this.fb.control(''),
+    studentName: this.fb.control(undefined),
     startDate: this.fb.control<Date | undefined>(undefined),
     endDate: this.fb.control<Date | undefined>(undefined),
     category: this.fb.control<number | undefined>(undefined),
@@ -72,14 +84,29 @@ export class LogComingComponent {
   });
 
   private page$ = new BehaviorSubject(1);
-  private search$ = new BehaviorSubject<SearchFormValue>({});
+  private search$ = new BehaviorSubject<SearchFormValue>({
+    studentName: undefined,
+    startDate: undefined,
+    endDate: undefined,
+    category: undefined,
+    masjed: undefined,
+  });
   private messages$ = combineLatest([
-    this.search$,
+    this.search$.pipe(
+      distinctUntilChanged((pre, curr) => JSON.stringify(pre) === JSON.stringify(curr)),
+    ),
     this.page$,
   ]).pipe(
     tap(() => this.loading.set(true)),
     switchMap(([searchValue, page]) => {
-      return this.comings.comingsList(page);
+      return this.comings.comingsList({
+        page,
+        registeredAtGt: searchValue.startDate ? formatDate(searchValue.startDate, 'yyyy-MM-dd', 'en-Us') : undefined,
+        registeredAtLt: searchValue.endDate ? formatDate(searchValue.endDate, 'yyyy-MM-dd', 'en-Us') : undefined,
+        category: searchValue.category?.toString(),
+        studentMasjed: searchValue.masjed?.toString() as any,
+        studentName: searchValue.studentName,
+      });
     }),
     tap(res => {
       this.hasPrevious.set(Boolean(res.previous));
@@ -138,8 +165,7 @@ export class LogComingComponent {
   }
 
   search() {
-    const value = this.searchForm.value;
-    if (!value.endDate && !value.startDate && !value.studentName && !value.category) return;
+    this.search$.next(this.searchForm.value);
   }
 }
 
@@ -148,4 +174,5 @@ interface SearchFormValue {
   startDate?: Date;
   endDate?: Date;
   category?: number;
+  masjed?: 1 | 2 | 3;
 }

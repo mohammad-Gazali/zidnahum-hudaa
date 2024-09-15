@@ -24,6 +24,11 @@
         </mat-option>
       }
     </mat-select>
+    @if (!!searchForm.controls.category.value) {
+      <button (click)="searchForm.controls.category.setValue(undefined)" mat-icon-button matIconSuffix>
+        <mat-icon>close</mat-icon>
+      </button>
+    }
   </mat-form-field>
   <mat-form-field>
     <mat-label>المسجد</mat-label>
@@ -34,8 +39,16 @@
         </mat-option>
       }
     </mat-select>
-    <mat-error>هذا الحقل مطلوب</mat-error>
+    @if (!!searchForm.controls.masjed.value) {
+      <button (click)="searchForm.controls.masjed.setValue(undefined)" mat-icon-button matIconSuffix>
+        <mat-icon>close</mat-icon>
+      </button>
+    }
   </mat-form-field>
+  <button mat-flat-button>
+    بحث
+    <mat-icon>search</mat-icon>
+  </button>
 </form>
 <div class="cards-container">
   @for (message of messages(); track message.id) {
@@ -62,6 +75,8 @@
         </mat-chip>
       </mat-card-content>
     </mat-card>
+  } @empty {
+    <p class="not-found">لا يوجد طلاب بهذه التفاصيل</p>
   }
 </div>
 @if (hasPrevious() || hasNext()) {
