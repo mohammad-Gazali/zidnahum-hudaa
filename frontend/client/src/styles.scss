@@ -105,7 +105,6 @@ html {
   --client-error-color: #{mat.get-theme-color($_success_error_dark, tertiary-container)};
   --client-error-text-color: #{mat.get-theme-color($_success_error_dark, on-tertiary-container)};
 
-
   .bg-surface {
     background-color: mat.get-theme-color($client-dark-theme, surface-container) !important;
   }

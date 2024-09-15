@@ -19,6 +19,6 @@ export class AppComponent {
         const el = document.querySelector('mat-form-field input');
         (el as HTMLInputElement)?.focus();
       }
-    })
+    });
   }
 }

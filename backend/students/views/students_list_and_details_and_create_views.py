@@ -127,7 +127,7 @@ class StudentDetailsView(RetrieveAPIView):
 
         last_comings_prefetch = Prefetch(
             "coming_set",
-            queryset=Coming.objects.filter(category_id=settings.Q_COMING_CATEGORY_ID).order_by("-registered_at")[:10],
+            queryset=Coming.objects.filter(category_id=settings.Q_COMING_CATEGORY_ID).order_by("-registered_at")[:4],
             to_attr="last_comings",
         )
 

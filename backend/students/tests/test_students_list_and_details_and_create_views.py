@@ -267,7 +267,7 @@ class StudentListAndDetailsAndCreateTestCase(TestCase):
 
         self.assertEqual(res.status_code, HTTP_200_OK, res.json())
 
-        self.assertEqual(len(res.json()["last_comings"]), 10)
+        self.assertEqual(len(res.json()["last_comings"]), 4)
 
         res_awqaf_relations_ids = set(map(lambda r: r["id"], res.json()["awqaf_relations"]))
 

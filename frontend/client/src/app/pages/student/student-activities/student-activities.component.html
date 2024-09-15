@@ -1,1 +1,34 @@
-<p>TODO</p>
+@if (student(); as student) {
+  <h5>آخر عدة تسجيلات حضور للطالب في الدورة</h5>
+  <div class="last-comings text-secondary">
+    @for (coming of student.last_comings; track coming.id) {
+      <mat-card appearance="outlined">
+        {{ coming.registered_at | date: "yyyy/MM/dd" }}
+      </mat-card>
+    } @empty {
+      <p class="not-found">لا يوجد</p>
+    }
+  </div>
+  <mat-divider />
+  <div class="flex-row">
+    <div>
+      <h5 class="bg-secondary-fixed">تسميعات الأسبوع السابق</h5>
+      <app-student-activities-messages-container [messages]="student.previous_week_messages" />
+    </div>
+    <div>
+      <h5 class="bg-secondary-fixed">تسميعات الأسبوع الحالي</h5>
+      <app-student-activities-messages-container [messages]="student.current_week_messages" />
+    </div>
+  </div>
+  <mat-divider />
+  <div class="flex-row" [class.reverse]="swapHalves()">
+    <div>
+      <h5 class="bg-secondary-fixed">{{ firstHalf() }}</h5>
+      <app-student-activities-messages-container [messages]="student.first_half_month_messages" />
+    </div>
+    <div>
+      <h5 class="bg-secondary-fixed">{{ secondHalf() }}</h5>
+      <app-student-activities-messages-container [messages]="student.second_half_month_messages" />
+    </div>
+  </div>
+}
