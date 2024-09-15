@@ -1,14 +1,14 @@
 @for (category of categories(); track category.id) {
-  <div>
+  <mat-card appearance="outlined">
     <p class="title bg-secondary-fixed">
       {{ category.name }}
     </p>
-    <div>
+    <mat-card-content>
       @for (file of category.files; track file.id) {
         <a [href]="file.file" [download]="file.name" target="_blank" mat-flat-button>
           {{ file.name }}
         </a>
       }
-    </div>
-  </div>
+    </mat-card-content>
+  </mat-card>
 }

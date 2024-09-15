@@ -4,13 +4,17 @@
 
 main {
   position: relative;
-  padding: 2rem 1rem;
+  padding: 2rem 1rem 4rem;
   flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: var(--mat-toolbar-height);
-  margin-bottom: var(--mat-toolbar-height);
+}
+
+footer {
+  height: var(--mat-toolbar-height);
+  border-top: 1px solid;
 }
 
 mat-sidenav {
@@ -80,7 +84,8 @@ ul {
   width: 3.125rem;
 }
 
-mat-list-item {
+mat-list-item,
+[mat-list-item] {
   margin: 0.5rem 0;
 
   a, span {

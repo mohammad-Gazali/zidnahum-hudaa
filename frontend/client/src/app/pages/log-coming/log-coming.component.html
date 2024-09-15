@@ -9,8 +9,8 @@
   <mat-form-field>
     <mat-label>فترة تسجيل الحضور</mat-label>
     <mat-date-range-input [rangePicker]="picker">
-      <input matStartDate>
-      <input matEndDate>
+      <input [formControl]="searchForm.controls.startDate" matStartDate>
+      <input [formControl]="searchForm.controls.endDate" matEndDate>
     </mat-date-range-input>
     <mat-datepicker-toggle matIconSuffix [for]="picker" />
     <mat-date-range-picker touchUi #picker />
@@ -24,6 +24,17 @@
         </mat-option>
       }
     </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>المسجد</mat-label>
+    <mat-select [formControl]="searchForm.controls.masjed">
+      @for (option of masjedOptions; track option) {
+        <mat-option [value]="option">
+          {{ option | masjed }}
+        </mat-option>
+      }
+    </mat-select>
+    <mat-error>هذا الحقل مطلوب</mat-error>
   </mat-form-field>
 </form>
 <div class="cards-container">
@@ -46,11 +57,9 @@
         <mat-chip>
           {{ categoriesMap()?.get(message.category) }}
         </mat-chip>
-        @if (message.is_doubled) {
-          <mat-chip class="highlighted-chip">
-            مضاعفة
-          </mat-chip>
-        }
+        <mat-chip>
+          {{ message.masjed | masjed }}
+        </mat-chip>
       </mat-card-content>
     </mat-card>
   }

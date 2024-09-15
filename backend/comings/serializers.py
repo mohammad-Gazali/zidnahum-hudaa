@@ -16,10 +16,11 @@ class ComingCreateSerializer(serializers.ModelSerializer):
 
 class ComingListSerializer(serializers.ModelSerializer):
     student = serializers.CharField(source="student.name")
+    masjed = serializers.IntegerField(source="student.masjed")
     
     class Meta:
         model = Coming
-        exclude = ["master"]
+        exclude = ["master", "is_doubled"]
 
 
 class ComingListForStudentSerializer(serializers.ModelSerializer):

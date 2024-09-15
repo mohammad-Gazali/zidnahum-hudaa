@@ -1,13 +1,16 @@
 import { Component, inject } from '@angular/core';
 import { AssetCategory, GlobalsService } from '@shared';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { MatAnchor, MatButton } from '@angular/material/button';
+import { MatAnchor } from '@angular/material/button';
+import { MatCard, MatCardContent } from '@angular/material/card';
 
 @Component({
   selector: 'app-files',
   standalone: true,
   imports: [
-    MatAnchor
+    MatAnchor,
+    MatCard,
+    MatCardContent
   ],
   templateUrl: './files.component.html',
   styleUrl: './files.component.scss'

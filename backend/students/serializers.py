@@ -112,7 +112,8 @@ class StudentUpdateRiadAlsaalihinSerializer(serializers.Serializer):
 
 class MemorizeMessageSerializer(serializers.ModelSerializer):
     student = serializers.CharField(source="student.name")
+    masjed = serializers.IntegerField(source="student.masjed")
 
     class Meta:
         model = MemorizeMessage
-        fields = "__all__"
+        exclude = ["master", "is_doubled"]

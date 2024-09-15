@@ -4,8 +4,7 @@ import { HttpClient, HttpRequest, HttpResponse, HttpHeaders } from '@angular/com
 import { BaseService as __BaseService } from '../base-service';
 import { ApiConfiguration as __Configuration } from '../api-configuration';
 import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-response';
-import { Observable as __Observable } from 'rxjs';
-import { map as __map, filter as __filter } from 'rxjs/operators';
+import { Observable as __Observable, map as __map, filter as __filter } from 'rxjs';
 
 import { StudentList } from '../models/student-list';
 import { MemorizeMessage } from '../models/memorize-message';

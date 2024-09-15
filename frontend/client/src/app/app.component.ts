@@ -11,4 +11,14 @@ import { LayoutComponent } from './layout/layout.component';
       <router-outlet />
     </app-layout>`,
 })
-export class AppComponent {}
+export class AppComponent {
+  constructor() {
+    document.documentElement.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && (e.key === 'f' || e.key === 'ب')) {
+        e.preventDefault();
+        const el = document.querySelector('mat-form-field input');
+        (el as HTMLInputElement)?.focus();
+      }
+    })
+  }
+}

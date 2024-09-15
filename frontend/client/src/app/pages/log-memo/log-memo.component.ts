@@ -1,7 +1,7 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import {
   ConfirmationService,
-  LayoutService,
+  LayoutService, MasjedPipe,
   MemoPipe,
   MemorizeMessage,
   MessageType,
@@ -45,6 +45,7 @@ import { MatIcon } from '@angular/material/icon';
     TestPipe,
     MatMiniFabButton,
     MatButton,
+    MasjedPipe,
   ],
   templateUrl: './log-memo.component.html',
   styleUrl: './log-memo.component.scss'

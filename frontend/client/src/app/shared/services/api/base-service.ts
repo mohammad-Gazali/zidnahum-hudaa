@@ -39,7 +39,7 @@ export class BaseService {
 
   /**
    * Returns the root url for API operations. If not set directly in this
-   * service, will fallback to ApiConfiguration.rootUrl.
+   * service, will fall back to ApiConfiguration.rootUrl.
    */
   get rootUrl(): string {
     return this._rootUrl || this.config.rootUrl;

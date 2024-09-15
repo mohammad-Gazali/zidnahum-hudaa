@@ -2,7 +2,7 @@
 export interface ComingList {
   category: number;
   id: number;
-  is_doubled: boolean;
+  masjed: 1 | 2 | 3;
   registered_at: string;
   student: string;
 }

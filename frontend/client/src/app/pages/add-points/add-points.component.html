@@ -61,45 +61,32 @@
         }
       </mat-chip-set>
       <form class="points-form" [formGroup]="pointsForm" (ngSubmit)="submitPoints()">
-        <mat-radio-group [formControl]="pointsForm.controls.type">
-          <mat-radio-button value="add">إضافة</mat-radio-button>
-          <mat-radio-button value="remove">خصم</mat-radio-button>
-        </mat-radio-group>
-        <mat-form-field>
-          <mat-label>القيمة</mat-label>
-          <input matInput type="number" [formControl]="pointsForm.controls.value" />
-          <mat-error>هذا الحقل مطلوب</mat-error>
-        </mat-form-field>
         <mat-form-field>
           <mat-label>السبب</mat-label>
           <mat-select [formControl]="pointsForm.controls.cause">
-            @if (pointsForm.controls.type.value === 'add') {
-              @for (cause of addingCauses(); track cause.id) {
-                <mat-option [value]="cause.id">
-                  {{ cause.name }}
-                </mat-option>
-              }
-            } @else {
-              @for (cause of deletingCauses(); track cause.id) {
-                <mat-option [value]="cause.id">
-                  {{ cause.name }}
-                </mat-option>
-              }
+            @for (cause of addingCauses(); track cause.id) {
+              <mat-option [value]="cause.id">
+                {{ cause.name }}
+              </mat-option>
             }
           </mat-select>
           <mat-error>هذا الحقل مطلوب</mat-error>
         </mat-form-field>
-        @if (pointsForm.controls.type.value === 'add') {
-          <button mat-flat-button>
-            إضافة
-            <mat-icon iconPositionEnd>add</mat-icon>
-          </button>
-        } @else {
-          <button class="error" mat-flat-button>
-            خصم
-            <mat-icon iconPositionEnd>remove</mat-icon>
-          </button>
-        }
+        <mat-form-field>
+          <mat-label>القيمة</mat-label>
+          <input matInput type="number" [formControl]="pointsForm.controls.value" />
+          <mat-error>
+            @if (pointsForm.controls.value.hasError('maximum-limit')) {
+              {{ pointsForm.controls.value.errors!['maximum-limit'] }}
+            } @else {
+              هذا الحقل مطلوب
+            }
+          </mat-error>
+        </mat-form-field>
+        <button mat-flat-button>
+          إضافة
+          <mat-icon iconPositionEnd>add</mat-icon>
+        </button>
       </form>
     </mat-card-content>
   </mat-card>

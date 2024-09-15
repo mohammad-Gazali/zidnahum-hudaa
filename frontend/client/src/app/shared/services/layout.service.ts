@@ -54,13 +54,6 @@ export class LayoutService {
       name: 'الملفات',
       icon: 'file_copy',
     },
-    // TODO: admin route
-    {
-      link: '/admin',
-      name: 'لوحة التحكم',
-      icon: 'settings',
-      adminOnly: true,
-    },
     {
       link: '',
       name: 'نشاطاتي',
@@ -69,18 +62,18 @@ export class LayoutService {
       routes: [
         {
           link: '/log-memo',
-          icon: '',
+          icon: 'book',
           name: 'سجل التسميع'
         },
         {
           link: '/log-coming',
-          icon: '',
+          icon: 'checklist',
           name: 'سجل الحضور'
         },
         {
           link: '/log-points',
-          icon: '',
-          name: 'سجل إضافة وخصم النقاط'
+          icon: 'stars',
+          name: 'سجل النقاط'
         },
       ],
     },
@@ -139,7 +132,6 @@ export interface LayoutRoute {
   icon: string;
   nonAuthOnly?: boolean;
   authOnly?: boolean;
-  adminOnly?: boolean;
   routes?: LayoutRoute[];
   groups?: Group[];
 }

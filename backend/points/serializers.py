@@ -17,6 +17,9 @@ class PointsAddingCreateSerializer(serializers.ModelSerializer):
 
 
 class PointsAddingListSerializer(serializers.ModelSerializer):
+    student = serializers.CharField(source="student.name")
+    masjed = serializers.IntegerField(source="student.masjed")
+
     class Meta:
         model = PointsAdding
-        fields = "__all__"
+        exclude = ["master"]

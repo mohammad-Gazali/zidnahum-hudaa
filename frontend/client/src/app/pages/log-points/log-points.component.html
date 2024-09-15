@@ -1,1 +1,51 @@
-<p>activities-points works!</p>
+<div class="title bg-surface-container-highest">
+  سجل النقاط
+</div>
+<div class="cards-container">
+  @for (message of messages(); track message.id) {
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>
+          {{ message.student }}
+        </mat-card-title>
+        <mat-card-subtitle class="text-outline">
+        <span dir="ltr">
+          {{ message.created_at | date: 'yyyy-MM-dd hh:mm a' }}
+        </span>
+        </mat-card-subtitle>
+        <button (click)="delete(message.id)" class="error" mat-mini-fab>
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-chip>
+          {{ causesMap()?.get(message.cause) }}
+        </mat-chip>
+        <mat-chip>
+          {{ message.masjed | masjed }}
+        </mat-chip>
+        <mat-divider />
+        <div class="added-points">
+          النقاط:
+          <span class="text-secondary">{{ message.value }}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>
+@if (hasPrevious() || hasNext()) {
+  <div class="pagination-buttons secondary">
+    <button
+      (click)="previousPage()"
+      mat-flat-button
+      [disabled]="!hasPrevious() || loading()">
+      الصفحة السابقة
+    </button>
+    <button
+      (click)="nextPage()"
+      mat-flat-button
+      [disabled]="!hasNext() || loading()">
+      الصفحة التالية
+    </button>
+  </div>
+}

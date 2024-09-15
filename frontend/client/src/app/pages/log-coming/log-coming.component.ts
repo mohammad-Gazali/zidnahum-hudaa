@@ -5,6 +5,7 @@ import {
   ComingsService,
   ConfirmationService,
   LayoutService,
+  MasjedPipe, MasjedService,
   SnackbarService,
 } from '@shared';
 import { BehaviorSubject, combineLatest, map, switchMap, tap } from 'rxjs';
@@ -15,7 +16,7 @@ import { MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle }
 import { MatChip } from '@angular/material/chips';
 import { MatIcon } from '@angular/material/icon';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { MatError, MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
@@ -43,6 +44,8 @@ import { MatInput } from '@angular/material/input';
     MatOption,
     MatDatepickerModule,
     ReactiveFormsModule,
+    MasjedPipe,
+    MatError,
   ],
   providers: [
     provideNativeDateAdapter(),
@@ -56,13 +59,16 @@ export class LogComingComponent {
   private destroyRef = inject(DestroyRef);
   private snackbar = inject(SnackbarService);
   private fb = inject(NonNullableFormBuilder);
+  private masjed = inject(MasjedService);
   protected loading = inject(LayoutService).loading;
 
+  protected masjedOptions = this.masjed.masjedOptions;
   protected searchForm = this.fb.group({
     studentName: this.fb.control(''),
     startDate: this.fb.control<Date | undefined>(undefined),
     endDate: this.fb.control<Date | undefined>(undefined),
     category: this.fb.control<number | undefined>(undefined),
+    masjed: this.fb.control<1 | 2 | 3 | undefined>(undefined),
   });
 
   private page$ = new BehaviorSubject(1);
@@ -93,11 +99,11 @@ export class LogComingComponent {
   protected categories = toSignal<ComingCategory[]>(this.categories$, { initialValue: [] as any });
   protected categoriesMap = toSignal<Map<number, string>>(
     this.categories$.pipe(
-        map(res => new Map(
-          res.map(category => [category.id, category.name]),
-        )),
-      ),
-  )
+      map(res => new Map(
+        res.map(category => [category.id, category.name]),
+      )),
+    ),
+  );
 
   nextPage() {
     if (!this.hasNext()) return;
@@ -109,20 +115,20 @@ export class LogComingComponent {
     this.page$.next(this.page$.value - 1);
   }
 
-  delete(studentId: number) {
+  delete(id: number) {
     this.confirmation.confirm({
       message: 'هل أنت متأكد من حذف الحضور للطالب ؟',
       onConfirm: () => {
-        this.loadingIds.update(pre => [...pre, studentId]);
-        this.comings.comingsDelete(studentId).pipe(
+        this.loadingIds.update(pre => [...pre, id]);
+        this.comings.comingsDelete(id).pipe(
           takeUntilDestroyed(this.destroyRef),
         ).subscribe({
           error: ({ error }) => {
-            this.loadingIds.update(pre => pre.filter(id => id !== studentId));
+            this.loadingIds.update(pre => pre.filter(_id => _id !== id));
             this.snackbar.error((error && error.detail) ?? error);
           },
           next: () => {
-            this.loadingIds.update(pre => pre.filter(id => id !== studentId));
+            this.loadingIds.update(pre => pre.filter(_id => _id !== id));
             this.snackbar.success('تم حذف الحضور بنجاح');
             this.search$.next(this.search$.value);
           },

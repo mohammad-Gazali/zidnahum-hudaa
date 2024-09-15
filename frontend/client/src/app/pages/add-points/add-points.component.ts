@@ -5,8 +5,9 @@ import {
   LayoutService,
   MasjedPipe,
   MasjedService,
-  PointsAddingCause, PointsDeletingCause,
-  PointsService, SnackbarService,
+  PointsAddingCause,
+  PointsService,
+  SnackbarService,
   StudentList,
   StudentsService
 } from '@shared';
@@ -18,8 +19,8 @@ import { MatOption } from '@angular/material/autocomplete';
 import { MatSelect } from '@angular/material/select';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatChip, MatChipRemove, MatChipSet } from '@angular/material/chips';
-import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { MatDivider } from '@angular/material/divider';
+import { filter, map, shareReplay, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-add-points',
@@ -41,8 +42,6 @@ import { MatDivider } from '@angular/material/divider';
     MatChip,
     MatChipRemove,
     MatChipSet,
-    MatRadioGroup,
-    MatRadioButton,
     MatDivider,
   ],
   templateUrl: './add-points.component.html',
@@ -65,17 +64,15 @@ export class AddPointsComponent {
     search: this.fb.control(''),
     masjed: this.fb.control<1 | 2 | 3>(1),
   });
-  protected pointsForm = this.fb.group({
-    type: this.fb.control<'add' | 'remove'>('add'),
-    value: this.fb.control<number | undefined>(undefined, [Validators.required]),
-    cause: this.fb.control<number | undefined>(undefined, [Validators.required]),
-  });
+
   protected addingCauses = toSignal<PointsAddingCause[]>(this.points.pointsAddingCauseList(), {
     initialValue: [] as any,
   })
-  protected deletingCauses = toSignal<PointsDeletingCause[]>(this.points.pointsDeletingCauseList(), {
-    initialValue: [] as any,
-  })
+
+  protected pointsForm = this.fb.group({
+    value: this.fb.control<number | undefined>(undefined, [Validators.required]),
+    cause: this.fb.control<number | undefined>(undefined, [Validators.required]),
+  });
 
   submitSearch() {
     if (this.searchForm.invalid) return;
@@ -120,21 +117,21 @@ export class AddPointsComponent {
 
     const value = this.pointsForm.getRawValue();
 
-    const observable = value.type === 'add' ?
-      this.points.pointsAddingCreate({
-        students: this.selectedStudents().map(s => s.id),
-        cause: value.cause!,
-        value: value.value!,
-      }) :
-      this.points.pointsDeletingCreate({
-        students: this.selectedStudents().map(s => s.id),
-        cause: value.cause!,
-        value: value.value!,
-      })
+    // validate maximum limit
+    const cause = this.addingCauses()?.find(c => c.id === value.cause)
+
+    if (cause && value.value && cause.maximum_limit < value.value) {
+      this.snackbar.error(`الحد الأقصى لعدد النقاط المسموح إضافته لـ: ${cause.name} هو ${cause.maximum_limit}`);
+      return;
+    }
 
     this.loading.set(true);
 
-    observable.pipe(
+    this.points.pointsAddingCreate({
+      students: this.selectedStudents().map(s => s.id),
+      cause: value.cause!,
+      value: value.value!,
+    }).pipe(
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
       error: ({ error }) => {
@@ -145,7 +142,7 @@ export class AddPointsComponent {
         this.loading.set(false);
         this.selectedStudents.set([]);
         this.searched.set(false);
-        this.snackbar.success(value.type === 'add' ? 'تمت الإضافة بنجاح' : 'تم الخصم بنجاح')
+        this.snackbar.success('تمت الإضافة بنجاح')
       }
     })
   }

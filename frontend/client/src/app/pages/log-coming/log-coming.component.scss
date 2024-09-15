@@ -2,6 +2,8 @@
   --mat-card-title-text-size: 1.125rem;
   --mat-card-subtitle-text-size: 0.85rem;
   --mdc-fab-small-container-elevation-shadow: unset;
+
+  max-width: 1000px;
 }
 
 .cards-container {
@@ -24,7 +26,7 @@ mat-card {
     margin-top: 0.5rem;
   }
 
-  .highlighted-chip {
+  mat-chip + mat-chip {
     margin-right: 1rem;
   }
 }

@@ -11,6 +11,12 @@
       </button>
     </div>
     <mat-nav-list>
+      @if (currentUser()?.isAdmin) {
+        <a href="/admin" target="_blank" mat-list-item>
+          <span>لوحة التحكم</span>
+          <mat-icon matListItemIcon>settings</mat-icon>
+        </a>
+      }
       @for (route of routes(); track route.name) {
         @if (route.routes) {
           <mat-expansion-panel>
@@ -73,6 +79,12 @@
         </button>
       } @else {
         <ul>
+          @if (currentUser()?.isAdmin) {
+            <a mat-flat-button href="/admin" target="_blank">
+              <mat-icon iconPositionEnd>settings</mat-icon>
+              لوحة التحكم
+            </a>
+          }
           @for (route of routes(); track route.name) {
             @if (route.routes) {
               <li>
@@ -121,5 +133,8 @@
     <main>
       <ng-content />
     </main>
+    <footer class="text-outline">
+      TODO
+    </footer>
   </mat-sidenav-content>
 </mat-sidenav-container>

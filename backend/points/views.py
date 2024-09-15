@@ -31,7 +31,12 @@ class PointsAddingListCreateView(ListCreateAPIView):
         return super().handle_exception(exc)
 
     def get_queryset(self):
-        return PointsAdding.objects.filter(master=self.request.user).order_by("-created_at")
+        return (
+            PointsAdding.objects
+            .filter(master=self.request.user)
+            .select_related("student")
+            .order_by("-created_at")
+        )
     
     def perform_create(self, serializer: PointsAddingCreateSerializer):
         for student_id in serializer.validated_data['students']:

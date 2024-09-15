@@ -7,7 +7,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatListItem, MatListItemIcon, MatListItemTitle, MatNavList } from '@angular/material/list';
 import { MatDivider } from '@angular/material/divider';
-import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatAnchor, MatButton, MatIconButton } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { AuthService, CurrentUser, LayoutRoute, LayoutService } from '@shared';
@@ -38,6 +38,7 @@ import { AuthService, CurrentUser, LayoutRoute, LayoutService } from '@shared';
     MatExpansionPanel,
     MatExpansionPanelHeader,
     MatExpansionPanelTitle,
+    MatAnchor,
   ],
   providers: [LayoutService],
 })
@@ -65,8 +66,6 @@ export class LayoutComponent {
       if (route.nonAuthOnly) return !user;
       if (route.authOnly) return !!user;
       if (user?.isAdmin) return true;
-      // because we checked the admin in the previous line
-      if (route.adminOnly) return false;
 
       return !route.groups || !!route.groups?.some(g => user?.groups.indexOf(g) !== -1);
     };
