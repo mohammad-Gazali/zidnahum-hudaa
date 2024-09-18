@@ -1,21 +1,23 @@
 from django.utils import timezone
 from students.constants import LAST_PART_POINT_MAP, LAST_PART_MAP
+from students.constants import NON, NEW
+from typing import List
+from copy import copy
 from math import ceil
 
 
 # json utils
 def json_default_value_618():
-    return [0] * 618
-
+    return [NON] * 618
 
 def json_default_value_240():
-    return [0] * 240
+    return [NON] * 240
 
 def json_default_value_60():
-    return [0] * 60
+    return [NON] * 60
 
 def json_default_value_30():
-    return [0] * 30
+    return [NON] * 30
 
 
 # time utils
@@ -111,3 +113,66 @@ def _convert_test_item(item: int):
     partNumber = ceil(orderNumber / 4)
 
     return f'الربع {partOrderNumber} من الحزب {partNumber}'
+
+
+# adding memorize protections
+def check_for_qtest(student, changes: List[int]) -> str | None:
+    return _check_for_qtest_by_previously_qmemo(student, changes) or _check_for_qtest_by_only_one_active_section(student, changes)
+
+def _check_for_qtest_by_previously_qmemo(student, changes: List[int]) -> str | None:
+    valid_qmemo = []
+
+    student_memorize = student.q_memorizing
+
+    for i in range(30):
+        if i == 0:
+            s = student_memorize[:21]
+        elif i != 29:
+            s = student_memorize[i * 20 + 1 : i * 20 + 21]
+        else:
+            s = student_memorize[581:]
+        
+        valid_qmemo.append(all(map(lambda item: item != NON, s)))
+
+    for item in changes:
+        section_index = item // 8
+
+        if not valid_qmemo[section_index]:
+            return 'يجب أن يتم تسميع كامل الجزء قبل سبر أي ربع منه'
+
+
+def _check_for_qtest_by_only_one_active_section(student, changes: List[int]) -> str | None:
+    COMPLETED = 'completed'
+    ACTIVE = 'active'
+    UNTOUCHED = 'untouched'
+
+    student_qtest_status = []
+
+    item_exists = lambda item: item != NON
+
+    student_qtest = copy(student.q_test)
+
+    for i in range(30):
+        boolean_list = list(map(item_exists, student_qtest[8 * i : 8 * (i + 1)]))
+
+        if all(boolean_list):
+            student_qtest_status.append(COMPLETED)
+        elif any(boolean_list):
+            student_qtest_status.append(ACTIVE)
+        else:
+            student_qtest_status.append(UNTOUCHED)
+
+    for item in changes:
+        has_active = any(map(lambda status: status == ACTIVE, student_qtest_status))
+
+        section_index = item // 8
+
+        student_qtest[item] = NEW
+        if student_qtest_status[section_index] == UNTOUCHED and has_active:
+            return 'لا يمكن سبر أي ربع من جزء ما لم يتم إكمال سبر الأجزاء الأخرى'
+
+        elif student_qtest_status[section_index] == UNTOUCHED:
+            student_qtest_status[section_index] = ACTIVE
+            
+        elif student_qtest_status[section_index] == ACTIVE and all(map(item_exists, student_qtest[8 * section_index : 8 * (section_index + 1)])):
+            student_qtest_status[section_index] = COMPLETED

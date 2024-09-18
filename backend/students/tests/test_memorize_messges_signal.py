@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT
-from students.models import Student, StudentMasjedChoice, MemorizeMessage
+from students.models import Student, StudentMasjedChoice, MemorizeMessage, MessageTypeChoice
 from students.constants import NEW, NON, MEMO_GROUP, HADEETH_GROUP
 from adminstration.models import ControlSettings
 
@@ -64,7 +64,7 @@ class MemorizeMessageSignal(TestCase):
 
         # sending updates for creating messages and update student fields
         url1 = reverse("students_update_qmemo_view", args=[self.student_pk])
-        url2 = reverse("students_update_qtest_view", args=[self.student_pk])
+        # we won't use view for updating qtest because of protections
         url3 = reverse("students_update_alarbaein_alnawawia_view", args=[self.student_pk])
         url4 = reverse("students_update_riad_alsaalihin_view", args=[self.student_pk])
         url5 = reverse("students_update_allah_names_view", args=[self.student_pk])
@@ -75,13 +75,14 @@ class MemorizeMessageSignal(TestCase):
         self.value4 = self.existing_riad_alsaalihin + 30
 
         res1 = self.client.put(url1, {"q_memo": self.value1}, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
-        res2 = self.client.put(url2, {"q_test": self.value2}, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
         res3 = self.client.put(url3, {"value": self.value3}, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
         res4 = self.client.put(url4, {"value": self.value4}, HTTP_AUTHORIZATION=f"Bearer {self.token}", content_type="application/json")
         res5 = self.client.put(url5, HTTP_AUTHORIZATION=f"Bearer {self.token}")
 
+        # adding qtest manually
+        self._adding_qtest_manually()
+
         self.assertEqual(res1.status_code, HTTP_200_OK)
-        self.assertEqual(res2.status_code, HTTP_200_OK)
         self.assertEqual(res3.status_code, HTTP_204_NO_CONTENT)
         self.assertEqual(res4.status_code, HTTP_204_NO_CONTENT)
         self.assertEqual(res5.status_code, HTTP_204_NO_CONTENT)
@@ -128,3 +129,24 @@ class MemorizeMessageSignal(TestCase):
         self.assertEqual(student_after_delete.alarbaein_alnawawia_new, self.existing_alarbaein_alnawawia)
         self.assertEqual(student_after_delete.riad_alsaalihin_new, self.existing_riad_alsaalihin)
         self.assertFalse(student_after_delete.allah_names_new)
+
+    def _adding_qtest_manually(self):
+        student = Student.objects.get(pk=self.student_pk)
+        added_test = []
+
+        for item in self.value2:
+            if student.q_test[item] == NON:
+                added_test.append(item)
+                student.q_test[item] = NEW
+
+        student.save()
+
+        if added_test:
+            MemorizeMessage.objects.create(
+                master=self.user,
+                student=student,
+                changes=added_test,
+                message_type=MessageTypeChoice.TEST,
+                is_doubled=ControlSettings.get_double_points(),
+                student_level=student.level,
+            )

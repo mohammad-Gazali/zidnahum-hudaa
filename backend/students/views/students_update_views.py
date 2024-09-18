@@ -1,19 +1,35 @@
 from django.db import transaction
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
+from rest_framework.exceptions import ValidationError
 from drf_yasg.utils import  swagger_auto_schema
 from drf_yasg import openapi
 from students.models import Student, MemorizeMessage, MessageTypeChoice, StudentLevelChoice
 from students.serializers import StudentUpdateQMemoSerializer, StudentUpdateQTestSerializer, StudentUpdateAlarbaeinAlnawawiaSerializer, StudentUpdateRiadAlsaalihinSerializer, StudentUpdatePartsReceivedSerializer
 from students.constants import NON, NEW
 from students.permissions import IsMemoGroup, IsHadeethGroup
+from students.utils import check_for_qtest
 from adminstration.models import ControlSettings
 from typing import List
 
 
-class StudentUpdateQMemoView(APIView):
+class HandledExceptionAPIView(APIView):
+    def handle_exception(self, exc):
+
+        if isinstance(exc, ValidationError):
+            return Response({ "detail": exc.detail }, status=HTTP_400_BAD_REQUEST)
+        
+        if isinstance(exc, DjangoValidationError):
+            if len(exc.messages):
+                return Response({ "detail": exc.messages[0] }, status=HTTP_400_BAD_REQUEST)
+
+        return super().handle_exception(exc)
+
+
+class StudentUpdateQMemoView(HandledExceptionAPIView):
     permission_classes = [IsMemoGroup]
     http_method_names = ["put"]
 
@@ -71,7 +87,7 @@ class StudentUpdateQMemoView(APIView):
         return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
 
 
-class StudentUpdateQTestView(APIView):
+class StudentUpdateQTestView(HandledExceptionAPIView):
     permission_classes = [IsMemoGroup]
     http_method_names = ["put"]
 
@@ -108,7 +124,12 @@ class StudentUpdateQTestView(APIView):
                     repeated_test.append(item)
                 else:
                     added_test.append(item)
-                    student.q_test[item] = NEW
+
+            if result := check_for_qtest(student, added_test):
+                return Response({ "detail": result }, HTTP_400_BAD_REQUEST)
+            
+            for item in added_test:
+                student.q_test[item] = NEW
 
             student.save()
 
@@ -129,7 +150,7 @@ class StudentUpdateQTestView(APIView):
         return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
 
 
-class StudentUpdateAlarbaeinAlnawawiaView(APIView):
+class StudentUpdateAlarbaeinAlnawawiaView(HandledExceptionAPIView):
     permission_classes = [IsHadeethGroup]
     http_method_names = ["put"]
 
@@ -167,7 +188,7 @@ class StudentUpdateAlarbaeinAlnawawiaView(APIView):
         return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
 
 
-class StudentUpdateRiadAlsaalihinView(APIView):
+class StudentUpdateRiadAlsaalihinView(HandledExceptionAPIView):
     permission_classes = [IsHadeethGroup]
     http_method_names = ["put"]
 
@@ -205,7 +226,7 @@ class StudentUpdateRiadAlsaalihinView(APIView):
         return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
 
 
-class StudentUpdateAllahNamesView(APIView):
+class StudentUpdateAllahNamesView(HandledExceptionAPIView):
     permission_classes = [IsHadeethGroup]
     http_method_names = ["put"]
 
@@ -232,7 +253,7 @@ class StudentUpdateAllahNamesView(APIView):
         return Response(status=HTTP_204_NO_CONTENT)
 
 
-class StudentUpdatePartsReceivedView(APIView):
+class StudentUpdatePartsReceivedView(HandledExceptionAPIView):
     permission_classes = [IsMemoGroup]
     http_method_names = ["put"]
 

@@ -184,7 +184,6 @@ class TotalMoneyListView(ListAPIView):
         return super().list(request, *args, **kwargs)
 
 
-#! important TODO: test
 class StatisticsView(APIView):
     permission_classes = [IsSuperUser]
     http_method_names = ["post"]
