@@ -10,10 +10,16 @@
   <div class="spacer"></div>
   @if (isAuth()) {
     @if (isSmall()) {
+      <a mat-icon-button href="/" target="_blank">
+        <mat-icon>language</mat-icon>
+      </a>
       <button mat-icon-button (click)="logout()">
         <mat-icon>logout</mat-icon>
       </button>
     } @else {
+      <a mat-button href="/" target="_blank">
+        العودة للموقع
+      </a>
       <button mat-button (click)="logout()">
         {{ "logout" | translate }}
       </button>

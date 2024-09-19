@@ -21,7 +21,6 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -38,6 +37,7 @@ INSTALLED_APPS = [
     "points.apps.PointsConfig",
     "students.apps.StudentsConfig",
     "reports.apps.ReportsConfig",
+    "commands.apps.CommandsConfig",
 
     # installed apps
     "rest_framework",
@@ -66,16 +66,7 @@ ROOT_URLCONF = "backend.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
-            ],
-        },
+        "DIRS": [BASE_DIR / "templates"],
     },
 ]
 
@@ -84,8 +75,6 @@ WSGI_APPLICATION = "backend.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
-# if "test" in sys.argv:
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -128,7 +117,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = []
+STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR.parent / "staticfiles"
 
 MEDIA_URL = "/media/"
@@ -157,15 +146,13 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
 }
 
-# here 5173 is the default port of vite app in development mode
+# here 4200 is the default port of angular app in development mode
 # and 8000 port is for django app in development mode
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://localhost:4200",
-    "http://localhost:5173",
     "http://127.0.0.1:8000",
     "http://127.0.0.1:4200",
-    "http://127.0.0.1:5173",
     f"https://{env.ALLOWED_HOST}",
     f"http://{env.ALLOWED_HOST}",
 ]

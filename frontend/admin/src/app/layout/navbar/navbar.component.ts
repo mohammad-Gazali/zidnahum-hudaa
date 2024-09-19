@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatToolbar } from '@angular/material/toolbar';
-import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatAnchor, MatButton, MatIconAnchor, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -27,6 +27,8 @@ import { LOADING } from '../../tokens/loading.token';
     MatProgressBar,
     TranslatePipe,
     RouterLink,
+    MatIconAnchor,
+    MatAnchor,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',

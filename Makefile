@@ -12,3 +12,7 @@ test:
 
 shell:
 	@python ./backend/manage.py shell
+
+build:
+	@python ./backend/manage.py build
+	@python ./backend/manage.py collectstatic

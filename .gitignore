@@ -4,6 +4,9 @@ env.py
 node_modules
 __pycache__
 media
+staticfiles
+static
+templates
 db.sqlite3
 temp
 TODO.txt
