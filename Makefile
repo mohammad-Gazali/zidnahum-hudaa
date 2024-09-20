@@ -15,4 +15,4 @@ shell:
 
 build:
 	@python ./backend/manage.py build
-	@python ./backend/manage.py collectstatic
+	@python ./backend/manage.py collectstatic --no-input
