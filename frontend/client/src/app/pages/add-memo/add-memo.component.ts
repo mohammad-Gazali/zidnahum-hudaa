@@ -12,6 +12,7 @@ import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { MemoFormComponent, MemoSubmit } from './memo-form/memo-form.component';
 import { TestFormComponent, TestSubmit } from './test-form/test-form.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-memo',
@@ -40,6 +41,7 @@ export class AddMemoComponent {
   private destroyRef = inject(DestroyRef);
   private loading = inject(LayoutService).loading;
   private snackbar = inject(SnackbarService);
+  private matSnackbar = inject(MatSnackBar);
   private memo = inject(MemoService);
   private test = inject(TestService);
 
@@ -130,7 +132,7 @@ export class AddMemoComponent {
         next: (res) => {
           this.loading.set(false);
           if (res.repeated_memo.length !== 0) {
-            this.snackbar.open(' تم التسجيل التسميع بنجاح, ولكن يوجد تكرار بـ:' + res.repeated_memo.map((item: number) => this.memo.transform(item)).join(', '));
+            this.matSnackbar.open(' تم التسجيل التسميع بنجاح, ولكن يوجد تكرار بـ:' + res.repeated_memo.map((item: number) => this.memo.transform(item)).join(', '), 'إغلاق');
           } else {
             this.snackbar.success('تم تسجيل التسميع بنجاح');
           }
@@ -177,7 +179,7 @@ export class AddMemoComponent {
       next: (res) => {
         this.loading.set(false);
         if (res.repeated_test.length !== 0) {
-          this.snackbar.open(' تم التسجيل التسميع بنجاح, ولكن يوجد تكرار بـ:' + res.repeated_test.map((item: number) => this.test.transform(item)).join(', '));
+          this.matSnackbar.open(' تم التسجيل التسميع بنجاح, ولكن يوجد تكرار بـ:' + res.repeated_test.map((item: number) => this.test.transform(item)).join(', '), 'إغلاق');
         } else {
           this.snackbar.success('تم تسجيل التسميع بنجاح');
         }
