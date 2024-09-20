@@ -1,3 +1,3 @@
 export const environment = {
-    baseApiUrl: '/api/v1',
+    baseApiUrl: 'https://www.msjed.net',
 };
