@@ -63,8 +63,8 @@ export class NavbarComponent {
   }
 
   logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('refresh-token');
+    localStorage.removeItem('zidnahum-token');
+    localStorage.removeItem('zidnahum-refresh-token');
     this.accounts.details.set(null);
     this.router.navigateByUrl('login');
   }

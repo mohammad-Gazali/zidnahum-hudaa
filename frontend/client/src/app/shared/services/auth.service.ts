@@ -13,8 +13,8 @@ export class AuthService {
   private snackbar = inject(SnackbarService);
 
   private _currentUser = signal<CurrentUser | null | undefined>(undefined);
-  private _token = localStorage.getItem('token');
-  private _refreshToken = localStorage.getItem('refresh-token');
+  private _token = localStorage.getItem('zidnahum-token');
+  private _refreshToken = localStorage.getItem('zidnahum-refresh-token');
 
   public readonly currentUser = this._currentUser.asReadonly();
 
@@ -29,20 +29,20 @@ export class AuthService {
   set token(newVal) {
     if (newVal === null) {
       this._token = null;
-      localStorage.removeItem('token');
+      localStorage.removeItem('zidnahum-token');
     } else {
       this._token = newVal;
-      localStorage.setItem('token', newVal);
+      localStorage.setItem('zidnahum-token', newVal);
     }
   }
 
   set refreshToken(newVal) {
     if (newVal === null) {
       this._refreshToken = null;
-      localStorage.removeItem('refresh-token');
+      localStorage.removeItem('zidnahum-refresh-token');
     } else {
       this._refreshToken = newVal;
-      localStorage.setItem('refresh-token', newVal);
+      localStorage.setItem('zidnahum-refresh-token', newVal);
     }
   }
 

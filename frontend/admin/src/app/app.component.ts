@@ -47,7 +47,7 @@ export class AppComponent implements OnInit {
         this.loading.set(false);
 
         if (status === 401) {
-          const refreshToken = localStorage.getItem('refresh-token');
+          const refreshToken = localStorage.getItem('zidnahum-refresh-token');
 
           if (refreshToken === null || !withRefresh) {
             this.router.navigateByUrl('login');
@@ -58,14 +58,14 @@ export class AppComponent implements OnInit {
             refresh: refreshToken,
           }).subscribe({
             next: (res) => {
-              localStorage.setItem('token', res.access);
-              localStorage.setItem('refresh-token', res.refresh);
+              localStorage.setItem('zidnahum-token', res.access);
+              localStorage.setItem('zidnahum-refresh-token', res.refresh);
 
               this.init(false);
             },
             error: () => {
-              localStorage.removeItem('token');
-              localStorage.removeItem('refresh-token');
+              localStorage.removeItem('zidnahum-token');
+              localStorage.removeItem('zidnahum-refresh-token');
               this.router.navigateByUrl('login');
             }
           })

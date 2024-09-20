@@ -1,7 +1,7 @@
 import { HttpInterceptorFn } from "@angular/common/http";
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("zidnahum-token");
 
     if (token === null) return next(req);
     

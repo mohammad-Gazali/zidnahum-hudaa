@@ -52,7 +52,7 @@ export class LayoutComponent {
 
       } else {
         const sidenav = this.sidenav();
-        const sidenavState = localStorage.getItem('sidenav') ?? 'close';
+        const sidenavState = localStorage.getItem('zidnahum-sidenav') ?? 'close';
 
         sidenav.opened = sidenavState === 'open';
       }
@@ -60,7 +60,7 @@ export class LayoutComponent {
   }
 
   handleSidenavChange(opened: boolean) {
-    localStorage.setItem('sidenav', opened ? 'open' : 'close');
+    localStorage.setItem('zidnahum-sidenav', opened ? 'open' : 'close');
   }
 
   handleSidenavItemClick() {

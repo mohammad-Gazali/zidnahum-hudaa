@@ -58,8 +58,8 @@ export class LoginComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (res) => {
-          localStorage.setItem('token', res.access);
-          localStorage.setItem('refresh-token', res.refresh);
+          localStorage.setItem('zidnahum-token', res.access);
+          localStorage.setItem('zidnahum-refresh-token', res.refresh);
 
           this.accounts
             .userDetails()

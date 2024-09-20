@@ -15,7 +15,7 @@ export class LayoutService {
   private darkMode = signal(false);
 
   constructor() {
-    const theme = localStorage.getItem('theme') ?? 'light';
+    const theme = localStorage.getItem('zidnahum-theme') ?? 'light';
     if (theme === 'dark') {
       this.darkMode.set(true);
     } else {
@@ -36,10 +36,10 @@ export class LayoutService {
 
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
+      localStorage.setItem('zidnahum-theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
+      localStorage.setItem('zidnahum-theme', 'light');
     }
   }
 
