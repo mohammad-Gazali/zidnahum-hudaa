@@ -14,7 +14,7 @@ class Command(BaseCommand):
         os.makedirs(Path.cwd() / "backend" / "static")
 
         os.chdir(Path.cwd() / "frontend" / "admin")
-        os.system("ng build")
+        os.system("ng build --base-href /admin")
 
         os.chdir(Path("..") / "client")
         os.system("ng build")

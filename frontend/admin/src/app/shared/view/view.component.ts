@@ -5,6 +5,7 @@ import {
   inject,
   input,
   signal, computed,
+  OnDestroy,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -82,7 +83,7 @@ import { AccountsService } from '../../services/api/accounts/accounts.service';
   templateUrl: './view.component.html',
   styleUrl: './view.component.scss',
 })
-export class ViewComponent<T, U> implements OnInit {
+export class ViewComponent<T, U> implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private snackbar = inject(SnackbarService);
@@ -101,6 +102,21 @@ export class ViewComponent<T, U> implements OnInit {
   public viewId!: string;
 
   public config = input.required<ViewComponentConfig<T, U>>();
+
+  private listener = (e: KeyboardEvent) => {
+    if (e.ctrlKey && (e.key === 'e' || e.key === 'ث')) {
+      e.preventDefault();
+      this.toggleMode();
+    }
+  }
+
+  constructor() {
+    document.documentElement.addEventListener('keydown', this.listener)
+  }
+
+  ngOnDestroy(): void {
+    document.documentElement.removeEventListener('keydown', this.listener)
+  }
 
   ngOnInit(): void {
     this.loading.set(true);

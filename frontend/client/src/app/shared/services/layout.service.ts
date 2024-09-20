@@ -63,17 +63,20 @@ export class LayoutService {
         {
           link: '/log-memo',
           icon: 'book',
-          name: 'سجل التسميع'
+          name: 'سجل التسميع',
+          groups: [Group.Memo],
         },
         {
           link: '/log-coming',
           icon: 'checklist',
-          name: 'سجل الحضور'
+          name: 'سجل الحضور',
+          groups: [Group.Coming],
         },
         {
           link: '/log-points',
           icon: 'stars',
-          name: 'سجل النقاط'
+          name: 'سجل النقاط',
+          groups: [Group.Points],
         },
       ],
     },
