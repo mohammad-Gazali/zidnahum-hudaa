@@ -1,5 +1,5 @@
 import { Component, inject, output } from '@angular/core';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormGroupDirective, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
@@ -35,10 +35,11 @@ export class TestFormComponent {
     extra: this.fb.control<1 | 2 | 3 | 4>(1, [Validators.required]),
   });
 
-  submit() {
+  submit(ngForm: FormGroupDirective) {
     if (this.form.invalid) return;
 
     this.onSubmit.emit(this.form.getRawValue() as TestSubmit);
+    ngForm.resetForm();
   }
 }
 

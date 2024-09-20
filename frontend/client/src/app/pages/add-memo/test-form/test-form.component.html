@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="submit()">
+<form #ngForm="ngForm" [formGroup]="form" (ngSubmit)="submit(ngForm)">
   <mat-radio-group [formControl]="form.controls.type">
     <mat-radio-button value="quarter">ربع حزب</mat-radio-button>
     <mat-radio-button value="half">نصف حزب</mat-radio-button>

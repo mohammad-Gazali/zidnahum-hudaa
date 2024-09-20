@@ -1,6 +1,6 @@
 import { Component, inject, output, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormGroupDirective, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
@@ -59,7 +59,7 @@ export class MemoFormComponent {
       });
   }
 
-  protected submit() {
+  protected submit(ngForm: FormGroupDirective) {
     if (this.form.invalid) return;
 
     const formValue = this.form.getRawValue();
@@ -82,6 +82,7 @@ export class MemoFormComponent {
       ...formValue,
       exact,
     });
+    ngForm.resetForm()
   }
 }
 

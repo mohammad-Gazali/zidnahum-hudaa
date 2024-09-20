@@ -19,7 +19,7 @@
     </div>
     <div class="card-container">
       @for (student of response.results; track student.id) {
-        <mat-card>
+        <mat-card appearance="outlined">
           <p class="student-name">{{ student.name }}</p>
           <ul class="bg-surface info-list">
             <li>
