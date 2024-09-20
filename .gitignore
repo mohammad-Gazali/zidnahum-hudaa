@@ -8,5 +8,6 @@ staticfiles
 static
 templates
 db.sqlite3
+database
 temp
 TODO.txt
