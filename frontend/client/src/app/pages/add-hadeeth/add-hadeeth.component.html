@@ -43,7 +43,7 @@
         الطالب:
         {{ ' ' }}{{ selectedStudent.name }}
       </span>
-      <form [formGroup]="form" (ngSubmit)="submitAddHadeeth()">
+      <form #ngForm="ngForm" [formGroup]="form" (ngSubmit)="submitAddHadeeth(ngForm)">
         <mat-radio-group [formControl]="form.controls.type">
           <mat-radio-button value="alarbaein-alnawawia">
             الأربعين النووية

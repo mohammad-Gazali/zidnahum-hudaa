@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormGroupDirective, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
   LayoutService,
@@ -111,7 +111,7 @@ export class AddPointsComponent {
     this.selectedStudents.update(pre => pre.filter(s => s.id !== student.id));
   }
 
-  submitPoints() {
+  submitPoints(ngForm: FormGroupDirective) {
     if (this.pointsForm.invalid) return;
     if (this.loading()) return;
 
@@ -135,10 +135,12 @@ export class AddPointsComponent {
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
       error: ({ error }) => {
+        ngForm.resetForm();
         this.loading.set(false);
         this.snackbar.error((error && error.detail) ?? error);
       },
       next: () => {
+        ngForm.resetForm();
         this.loading.set(false);
         this.selectedStudents.set([]);
         this.searched.set(false);

@@ -60,7 +60,7 @@
           </mat-chip>
         }
       </mat-chip-set>
-      <form class="points-form" [formGroup]="pointsForm" (ngSubmit)="submitPoints()">
+      <form #ngForm="ngForm" class="points-form" [formGroup]="pointsForm" (ngSubmit)="submitPoints(ngForm)">
         <mat-form-field>
           <mat-label>السبب</mat-label>
           <mat-select [formControl]="pointsForm.controls.cause">

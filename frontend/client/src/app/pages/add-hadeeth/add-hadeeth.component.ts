@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormGroupDirective, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatError, MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
@@ -108,7 +108,7 @@ export class AddHadeethComponent {
     this.search$.next(this.search.value);
   }
 
-  submitAddHadeeth() {
+  submitAddHadeeth(ngForm: FormGroupDirective) {
     if (this.form.invalid) return;
     if (this.loading()) return;
 
@@ -141,10 +141,12 @@ export class AddHadeethComponent {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         error: ({ error }) => {
+          ngForm.resetForm();
           this.loading.set(false);
           this.snackbar.error((error && error.detail) ?? error);
         },
         next: () => {
+          ngForm.resetForm();
           this.loading.set(false);
           this.snackbar.success(type === 'allah-names' ? 'تم تسجيل أسماء الله الحسنى بنجاح' : 'تم تسجيل الأحاديث بنجاح');
         }
