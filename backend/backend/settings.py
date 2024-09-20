@@ -14,8 +14,7 @@ DEBUG = env.DEBUG
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    env.ALLOWED_HOST,
-]
+] + env.ALLOWED_HOSTS
 
 
 # Application definition
