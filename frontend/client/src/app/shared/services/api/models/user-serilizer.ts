@@ -12,6 +12,12 @@ export interface UserSerilizer {
    * يقضي بأن هذا المستخدم يمتلك كافة الصلاحيات دون الحاجة لمنحها له تصريحاً.
    */
   is_superuser?: boolean;
+
+  /**
+   * يقضي بأن هذا المستخدم يمتلك كافة الصلاحيات دون الحاجة لمنحها له تصريحاً.
+   */
+  is_staff?: boolean;
+
   last_name?: string;
 
   /**

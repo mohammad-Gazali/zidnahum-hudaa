@@ -12,6 +12,12 @@
   > *:last-child:first-child {
     grid-column: span 2;
   }
+
+  @media (max-width: 600px) {
+    & {
+      grid-template-columns: 1fr;
+    }
+  }
 }
 
 .date-container {

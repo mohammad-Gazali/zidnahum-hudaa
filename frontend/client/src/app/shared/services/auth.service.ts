@@ -90,7 +90,7 @@ export class AuthService {
           username: res.username,
           firstName: res.first_name ?? '',
           lastName: res.last_name ?? '',
-          isAdmin: res.is_superuser ?? false,
+          isAdmin: Boolean(res.is_superuser || res.is_staff),
           groups: res.groups ?? [],
         });
       });
