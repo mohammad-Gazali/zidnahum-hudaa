@@ -47,11 +47,13 @@
               <span class="value" dir="rtl">{{ (student.birthdate | date: 'yyyy-MM-dd') || '-' }}</span>
             </li>
             <mat-divider />
-            <li>
-              <span class="label">اسم الأم: </span>
-              <span class="value">{{ student.mother_name ?? '-' }}</span>
-            </li>
-            <mat-divider />
+            @if (currentUser()) {
+              <li>
+                <span class="label">اسم الأم: </span>
+                <span class="value">{{ student.mother_name ?? '-' }}</span>
+              </li>
+              <mat-divider />
+            }
             <li>
               <span class="label">الأجزاء المستلمة: </span>
               <span class="value">{{ student.parts_received || '-' }}</span>

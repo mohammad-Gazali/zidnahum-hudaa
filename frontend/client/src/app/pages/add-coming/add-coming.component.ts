@@ -96,6 +96,7 @@ export class AddComingComponent {
         },
         next: (res) => {
           this.loading.set(false);
+          this.searchForm.controls.search.setValue('');
           this.response.set(res);
         },
       });

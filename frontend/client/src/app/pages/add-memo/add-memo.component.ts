@@ -73,6 +73,7 @@ export class AddMemoComponent {
       tap(students => {
         this.loading.set(false);
         this.selectedStudent.set(null);
+        this.search.setValue('');
 
         if (students.length === 1) {
           this.selectedStudent.set(students[0]);

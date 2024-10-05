@@ -92,6 +92,7 @@ export class AddPointsComponent {
       next: (res) => {
         this.loading.set(false);
         this.searched.set(true);
+        this.searchForm.controls.search.setValue('');
         this.studentsResponse.set(res.results);
       }
     })

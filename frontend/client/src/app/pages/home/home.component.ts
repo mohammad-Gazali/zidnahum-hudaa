@@ -39,6 +39,7 @@ export class HomeComponent {
   private auth = inject(AuthService);
   private dialog = inject(MatDialog);
   protected loading = inject(LayoutService).loading;
+  protected currentUser = inject(AuthService).currentUser;
 
   protected response = this.list.lastResponse;
   protected searchForm = this.list.searchForm;
