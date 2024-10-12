@@ -58,6 +58,7 @@ export class LayoutService {
       link: '/reports',
       name: 'التقارير',
       icon: 'assessment',
+      authOnly: true,
       groups: [Group.Reports],
     },
     {

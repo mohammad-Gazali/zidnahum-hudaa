@@ -4,6 +4,7 @@ import { EMPTY, catchError, tap } from 'rxjs';
 import { AccountsService } from './api/services';
 import { SnackbarService } from './snackbar.service';
 import { Group } from '@shared';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ import { Group } from '@shared';
 export class AuthService {
   private accounts = inject(AccountsService);
   private snackbar = inject(SnackbarService);
+  private router = inject(Router);
 
   private _currentUser = signal<CurrentUser | null | undefined>(undefined);
   private _token = localStorage.getItem('zidnahum-token');
@@ -118,6 +120,7 @@ export class AuthService {
     this.token = null;
     this.refreshToken = null;
     this._currentUser.set(null);
+    this.router.navigateByUrl('/');
   }
 }
 
