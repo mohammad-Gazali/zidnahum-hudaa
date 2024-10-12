@@ -5,12 +5,11 @@ import { BaseService as __BaseService } from '../base-service';
 import { ApiConfiguration as __Configuration } from '../api-configuration';
 import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-response';
 import { Observable as __Observable, map as __map, filter as __filter } from 'rxjs';
-
-import { ReportsCategoryOrGroupSpecificResponse } from '../models/reports-category-or-group-specific-response';
 import { ReportsRequestWithMasjed } from '../models/reports-request-with-masjed';
 import { ReportsStudentCategoryOrGroupResponse } from '../models/reports-student-category-or-group-response';
 import { ReportsStudentResponse } from '../models/reports-student-response';
 import { ReportsRequest } from '../models/reports-request';
+import { ReportsCategorySpecificResponse, ReportsGroupSpecificResponse, ReportsStudentCategoryOrGroupStudent } from '../models';
 @Injectable({
   providedIn: 'root',
 })
@@ -35,7 +34,7 @@ class ReportsService extends __BaseService {
    *
    * - `excel`: param for determining if the response is excel file or not
    */
-  reportsCategoryAllCreateResponse(params: ReportsService.ReportsCategoryAllCreateParams): __Observable<__StrictHttpResponse<Array<ReportsCategoryOrGroupSpecificResponse>>> {
+  reportsCategoryAllCreateResponse(params: ReportsService.ReportsCategoryAllCreateParams): __Observable<__StrictHttpResponse<Array<ReportsCategorySpecificResponse>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -54,7 +53,7 @@ class ReportsService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<ReportsCategoryOrGroupSpecificResponse>>;
+        return _r as __StrictHttpResponse<Array<ReportsCategorySpecificResponse>>;
       })
     );
   }
@@ -65,9 +64,9 @@ class ReportsService extends __BaseService {
    *
    * - `excel`: param for determining if the response is excel file or not
    */
-  reportsCategoryAllCreate(params: ReportsService.ReportsCategoryAllCreateParams): __Observable<Array<ReportsCategoryOrGroupSpecificResponse>> {
+  reportsCategoryAllCreate(params: ReportsService.ReportsCategoryAllCreateParams): __Observable<Array<ReportsCategorySpecificResponse>> {
     return this.reportsCategoryAllCreateResponse(params).pipe(
-      __map(_r => _r.body as Array<ReportsCategoryOrGroupSpecificResponse>)
+      __map(_r => _r.body as Array<ReportsCategorySpecificResponse>)
     );
   }
 
@@ -126,7 +125,7 @@ class ReportsService extends __BaseService {
    *
    * - `excel`: param for determining if the response is excel file or not
    */
-  reportsGroupAllCreateResponse(params: ReportsService.ReportsGroupAllCreateParams): __Observable<__StrictHttpResponse<Array<ReportsCategoryOrGroupSpecificResponse>>> {
+  reportsGroupAllCreateResponse(params: ReportsService.ReportsGroupAllCreateParams): __Observable<__StrictHttpResponse<Array<ReportsGroupSpecificResponse>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
@@ -145,7 +144,7 @@ class ReportsService extends __BaseService {
     return this.http.request<any>(req).pipe(
       __filter(_r => _r instanceof HttpResponse),
       __map((_r) => {
-        return _r as __StrictHttpResponse<Array<ReportsCategoryOrGroupSpecificResponse>>;
+        return _r as __StrictHttpResponse<Array<ReportsGroupSpecificResponse>>;
       })
     );
   }
@@ -156,9 +155,9 @@ class ReportsService extends __BaseService {
    *
    * - `excel`: param for determining if the response is excel file or not
    */
-  reportsGroupAllCreate(params: ReportsService.ReportsGroupAllCreateParams): __Observable<Array<ReportsCategoryOrGroupSpecificResponse>> {
+  reportsGroupAllCreate(params: ReportsService.ReportsGroupAllCreateParams): __Observable<Array<ReportsGroupSpecificResponse>> {
     return this.reportsGroupAllCreateResponse(params).pipe(
-      __map(_r => _r.body as Array<ReportsCategoryOrGroupSpecificResponse>)
+      __map(_r => _r.body as Array<ReportsGroupSpecificResponse>)
     );
   }
 
@@ -257,6 +256,36 @@ class ReportsService extends __BaseService {
       __map(_r => _r.body as ReportsStudentResponse)
     );
   }
+
+  reportsStudentsAllCreateResponse(params: ReportsService.ReportsStudentsAllCreateParams): __Observable<__StrictHttpResponse<ReportsStudentCategoryOrGroupStudent[]>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = params.data;
+    if (params.excel != null) __params = __params.set('excel', params.excel.toString());
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/reports/student/all`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Array<ReportsStudentCategoryOrGroupStudent>>;
+      })
+    );
+  }
+
+  reportsStudentsAllCreate(params: ReportsService.ReportsStudentsAllCreateParams): __Observable<ReportsStudentCategoryOrGroupStudent[]> {
+    return this.reportsStudentsAllCreateResponse(params).pipe(
+      __map(_r => _r.body as ReportsStudentCategoryOrGroupStudent[])
+    );
+  }
 }
 
 module ReportsService {
@@ -317,6 +346,18 @@ module ReportsService {
   export interface ReportsStudentCreateParams {
     id: string;
     data: ReportsRequest;
+
+    /**
+     * param for determining if the response is excel file or not
+     */
+    excel?: boolean;
+  }
+
+  /**
+   * Parameters for reportsStudentsAllCreate
+   */
+  export interface ReportsStudentsAllCreateParams {
+    data: ReportsRequestWithMasjed;
 
     /**
      * param for determining if the response is excel file or not

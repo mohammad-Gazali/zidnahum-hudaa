@@ -1,6 +1,6 @@
 /* tslint:disable */
 import { ReportsStudentCategoryOrGroupStudent } from './reports-student-category-or-group-student';
-export interface ReportsCategoryOrGroupSpecificResponse {
+export interface ReportsCategorySpecificResponse {
   category_id: number;
   category_name: string;
   students: Array<ReportsStudentCategoryOrGroupStudent>;

@@ -14,6 +14,7 @@ import {
   LogMemoComponent,
   LogComingComponent,
   LogPointsComponent,
+  ReportsComponent,
 } from './pages';
 
 export const routes: Routes = [
@@ -83,4 +84,10 @@ export const routes: Routes = [
     canActivate: [groupGuard],
     data: [Group.Points],
   },
+  {
+    path: 'reports',
+    component: ReportsComponent,
+    canActivate: [groupGuard],
+    data: [Group.Reports],
+  }
 ];

@@ -55,6 +55,12 @@ export class LayoutService {
       icon: 'file_copy',
     },
     {
+      link: '/reports',
+      name: 'التقارير',
+      icon: 'assessment',
+      groups: [Group.Reports],
+    },
+    {
       link: '',
       name: 'نشاطاتي',
       icon: 'widgets',
