@@ -1,5 +1,5 @@
-import { Component, input } from '@angular/core';
-import { MemoPipe, MemorizeMessageForStudent, MessageType, TestPipe } from '@shared';
+import { Component, computed, inject, input } from '@angular/core';
+import { MemoPipe, MemorizeMessageForStudent, MessageType, PagesSumService, TestPipe } from '@shared';
 import { MatCard } from '@angular/material/card';
 
 @Component({
@@ -14,6 +14,9 @@ import { MatCard } from '@angular/material/card';
   styleUrl: './student-activities-messages-container.component.scss'
 })
 export class StudentActivitiesMessagesContainerComponent {
+  private sumPages = inject(PagesSumService);
   public messages = input.required<MemorizeMessageForStudent[]>();
+
   protected messageType = MessageType;
+  protected sumValue = computed(() => this.sumPages.getMessagesPagesSum(this.messages()));
 }

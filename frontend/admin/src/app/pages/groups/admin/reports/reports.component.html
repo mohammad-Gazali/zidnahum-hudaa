@@ -1,6 +1,7 @@
-<mat-card [class.hidden]="studentResponse() || categoryOrGroupResponse() || allResponse()">
+<mat-card [class.hidden]="studentResponse() || allStudentsResponse() || categoryOrGroupResponse() || allResponse()">
     <mat-radio-group [formControl]="type">
         <mat-radio-button value="student">طالب</mat-radio-button>
+        <mat-radio-button value="all-students">كل الطلاب</mat-radio-button>
         <mat-radio-button value="category">فئة</mat-radio-button>
         <mat-radio-button value="group">مجموعة</mat-radio-button>
         <mat-radio-button value="all-categories">كل الفئات</mat-radio-button>
@@ -181,7 +182,67 @@
         </div>
     </div>
 }
-
+@if (allStudentsResponse(); as response) {
+    <div class="btns-container">
+        <button mat-flat-button color="accent" (click)="submit(true)">
+            التصدير إلى إكسل
+        </button>
+    </div>
+    <div class="info-container">
+        <ul class="extra-info">
+            <li>
+                <span class="label">تقرير</span>
+                <span class="value">كل الطلاب</span>
+            </li>
+            <li>
+                <span class="label">المسجد</span>
+                <span class="value">{{ masjed.getMasjed(form.value.masjed ?? 1) }}</span>
+            </li>
+            <li>
+                <span class="label">تاريخ البداية</span>
+                <span class="value">{{ form.value.start_date| date: 'yyyy/MM/dd' }}</span>
+            </li>
+            <li>
+                <span class="label">تاريخ النهاية</span>
+                <span class="value">{{ form.value.end_date | date: 'yyyy/MM/dd' }}</span>
+            </li>
+        </ul>
+    </div>
+    <div class="mat-elevation-z2">
+        <div class="responsive-container">
+            <table class="mat-mdc-table mdc-data-table__table">
+                <thead role="rowgroup">
+                    <tr class="mat-mdc-header-row">
+                        <th class="mat-mdc-header-cell mdc-data-table__header-cell">معرف الطالب</th>
+                        <th class="mat-mdc-header-cell mdc-data-table__header-cell">اسم الطالب</th>
+                        <th class="mat-mdc-header-cell mdc-data-table__header-cell">صفحات التسميع</th>
+                        <th class="mat-mdc-header-cell mdc-data-table__header-cell">صفحات السبر</th>
+                        <th class="mat-mdc-header-cell mdc-data-table__header-cell">كلي الصفحات</th>
+                    </tr>
+                </thead>
+                <tbody class="mdc-data-table__content" role="rowgroup">
+                    @for (student of response; track student.student_id) {
+                        <tr class="mat-mdc-row">
+                            <td class="mat-mdc-cell mdc-data-table__cell">{{ student.student_id }}</td>
+                            <td class="mat-mdc-cell mdc-data-table__cell">{{ student.student_name }}</td>
+                            <td class="mat-mdc-cell mdc-data-table__cell">{{ student.sum_memo }}</td>
+                            <td class="mat-mdc-cell mdc-data-table__cell">{{ student.sum_test }}</td>
+                            <td class="mat-mdc-cell mdc-data-table__cell">{{ student.sum_all }}</td>
+                        </tr>
+                    } @empty {
+                        <tr class="mat-mdc-row">
+                            <td class="mat-mdc-cell no-data-row" [attr.colspan]="6">
+                                <div>
+                                  {{ 'there is no data' | translate }}
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
 @if (categoryOrGroupResponse(); as response) {
     <div class="btns-container">
         <button mat-flat-button color="accent" (click)="submit(true)">

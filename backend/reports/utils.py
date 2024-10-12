@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.db.models import Prefetch, Count
 from reports.serializers import (
     ReportMemorizeMessageSerializer,
     ReportsStudentCategoryOrGroupStudentSerializer, 
@@ -11,6 +12,7 @@ from openpyxl import Workbook
 from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl.styles import Alignment, Font
 from io import BytesIO
+import math
 
 def get_student_report(student: Student, start_date, end_date):
     messages = student.memorizemessage_set.filter(
@@ -29,6 +31,43 @@ def get_student_report(student: Student, start_date, end_date):
         'sum_all': sum_memo + sum_test,
     }
 
+
+def get_all_students_report(masjed, start_date, end_date):
+    students = (
+        Student.objects
+        .filter(masjed=masjed)
+        .prefetch_related(
+            Prefetch(
+                lookup="memorizemessage_set",
+                queryset=MemorizeMessage.objects.filter(
+                    sended_at__date__range=[start_date, end_date],
+                    message_type__in=[MessageTypeChoice.MEMO, MessageTypeChoice.TEST],
+                ),
+                to_attr="messages"
+            )
+        )
+        .annotate(message_count=Count('memorizemessage'))
+        .exclude(message_count=0)
+    )
+
+    students_result = []
+
+    for student in students:
+        messages = student.messages
+
+        sum_memo, sum_test = _get_sums_student_report(messages)
+
+        students_result.append(ReportsStudentCategoryOrGroupStudentSerializer({
+            'student_id': student.pk,
+            'student_name': student.name,
+            'sum_memo': sum_memo,
+            'sum_test': sum_test,
+            'sum_all': sum_memo + sum_test,
+        }).data)
+
+    students_result.sort(key=lambda x: x['sum_all'], reverse=True)
+
+    return students_result
 
 def get_category_or_group_report(category_or_group: StudentCategory | StudentGroup, masjed, start_date, end_date):
     total_memo = 0
@@ -77,7 +116,7 @@ def _get_sums_student_report(messages: Iterable[MemorizeMessage]):
         elif message.message_type == MessageTypeChoice.TEST:
             sum_test += get_num_pages_test(message.changes)
 
-    return sum_memo, sum_test
+    return math.ceil(sum_memo), math.ceil(sum_test)
 
 
 def excel_student_report(data, student_name: str, start_date: str, end_date: str):
@@ -165,6 +204,90 @@ def excel_student_report(data, student_name: str, start_date: str, end_date: str
 
     return buffer.getvalue()
 
+def excel_all_students_report(data, start_date: str, end_date: str, masjed: int):
+    workbook = Workbook()
+
+    sheet: Worksheet = workbook.active
+
+    sheet.title = 'التقرير'
+
+    alignment = Alignment(horizontal='center', vertical='center') 
+    header_font = Font(bold=True)
+
+    cell = sheet.cell(1, 1, 'تقرير')
+    cell.alignment = alignment
+    cell.font = header_font
+    sheet.cell(1, 2, 'كل الطلاب').alignment = alignment
+
+    cell = sheet.cell(2, 1, 'المسجد')
+    cell.alignment = alignment
+    cell.font = header_font
+    if masjed == StudentMasjedChoice.HASANIN:
+        sheet.cell(2, 2, 'الحسنين').alignment = alignment
+    elif masjed == StudentMasjedChoice.SALAM:
+        sheet.cell(2, 2, 'السلام').alignment = alignment
+    else:
+        sheet.cell(2, 2, 'القزاز').alignment = alignment
+
+
+    cell = sheet.cell(3, 1, 'تاريخ البداية')
+    cell.alignment = alignment
+    cell.font = header_font
+    sheet.cell(3, 2, start_date).alignment = alignment
+
+    cell = sheet.cell(4, 1, 'تاريخ النهاية')
+    cell.alignment = alignment
+    cell.font = header_font
+    sheet.cell(4, 2, end_date).alignment = alignment
+
+    details_cell_start = 6
+
+    cell = sheet.cell(details_cell_start, 1, 'معرف الطالب')
+    cell.alignment = alignment
+    cell.font = header_font
+
+    cell = sheet.cell(details_cell_start, 2, 'اسم الطالب')
+    cell.alignment = alignment
+    cell.font = header_font
+
+    cell = sheet.cell(details_cell_start, 3, 'صفحات التسميع')
+    cell.alignment = alignment
+    cell.font = header_font
+
+    cell = sheet.cell(details_cell_start, 4, 'صفحات السبر')
+    cell.alignment = alignment
+    cell.font = header_font
+
+    cell = sheet.cell(details_cell_start, 5, 'كلي الصفحات')
+    cell.alignment = alignment
+    cell.font = header_font
+
+    for row, student in enumerate(data, details_cell_start + 1):
+        student_id = student['student_id']
+        student_name = student['student_name']
+        sum_memo = student['sum_memo']
+        sum_test = student['sum_test']
+        sum_all = student['sum_all']
+
+        sheet.column_dimensions['A'].width = 20
+        sheet.column_dimensions['B'].width = 24
+        sheet.column_dimensions['C'].width = 12
+        sheet.column_dimensions['D'].width = 12
+        sheet.column_dimensions['E'].width = 12
+
+        sheet.cell(row, 1, student_id).alignment = alignment
+        sheet.cell(row, 2, student_name).alignment = alignment
+        sheet.cell(row, 3, sum_memo).alignment = alignment
+        sheet.cell(row, 4, sum_test).alignment = alignment
+        sheet.cell(row, 5, sum_all).alignment = alignment
+
+    buffer = BytesIO()
+
+    workbook.save(buffer)
+
+    buffer.seek(0)
+
+    return buffer.getvalue()
 
 def excel_category_or_group_report(data, category_or_group_name: str, masjed: int, start_date: str, end_date: str, is_category: bool):
     workbook = Workbook()

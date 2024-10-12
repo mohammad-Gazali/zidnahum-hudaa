@@ -96,4 +96,8 @@ export class StatisticsComponent {
       value: value as number[],
     }));
   }
+
+  protected ciel(num: number): number {
+    return Math.ceil(num)
+  }
 }

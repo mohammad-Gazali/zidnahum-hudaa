@@ -8,6 +8,7 @@ import {
   ReportsRequestWithMasjed,  
   ReportsAllGroupsResponseItem,
   ReportsAllCategoriesResponseItem,
+  ReportsStudentCategoryOrGroupStudent,
 } from './reports.type';
 
 @Injectable({
@@ -28,6 +29,21 @@ export class ReportsService {
     return this.http.post(`${this.rootUrl}/student/${id}?excel=True`, data, {
         responseType: 'blob'
     });
+  }
+
+  public createAllStudentsReport(data: ReportsRequestWithMasjed) {
+    return this.http.post<ReportsStudentCategoryOrGroupStudent[]>(
+      `${this.rootUrl}/student/all`, 
+      data,
+    );
+  }
+
+  public createAllStudentsReportExcel(data: ReportsRequestWithMasjed) {
+    return this.http.post(
+      `${this.rootUrl}/student/all?excel=True`, data, {
+        responseType: 'blob',
+      }
+    );
   }
 
   public createCategoryReport(id: number, data: ReportsRequestWithMasjed) {

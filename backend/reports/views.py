@@ -5,8 +5,8 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.permissions import IsAdminUser
 from drf_yasg.utils import swagger_auto_schema
-from reports.serializers import ReportsRequestSerializer, ReportsRequestWithMasjedSerializer, ReportsStudentResponseSerializer, ReportsStudentCategoryOrGroupResponseSerializer, ReportsCategoryOrGroupSpecificResponseSerializer, ReportsPointsRequestSerializer, ReportsPointsResponseSerializer
-from reports.utils import get_student_report, get_category_or_group_report, excel_student_report, excel_category_or_group_report, excel_all_categories_or_groups_report
+from reports.serializers import ReportsRequestSerializer, ReportsRequestWithMasjedSerializer, ReportsStudentResponseSerializer, ReportsStudentCategoryOrGroupResponseSerializer, ReportsCategoryOrGroupSpecificResponseSerializer, ReportsPointsRequestSerializer, ReportsPointsResponseSerializer, ReportsStudentCategoryOrGroupStudentSerializer
+from reports.utils import get_student_report, get_all_students_report, get_category_or_group_report, excel_student_report, excel_all_students_report, excel_category_or_group_report, excel_all_categories_or_groups_report
 from students.models import Student, StudentCategory, StudentGroup
 from students.permissions import IsReportsGroup
 from drf_yasg.openapi import Parameter, IN_QUERY, TYPE_BOOLEAN
@@ -56,6 +56,52 @@ class ReportsStudentView(APIView):
 
             return Response(report_data, HTTP_200_OK)
 
+        return Response({ "detail": serializer.errors }, HTTP_400_BAD_REQUEST)
+
+
+class ReportsAllStudentsView(APIView):
+    permission_classes = [IsReportsGroup]
+    http_method_names = ["post"]
+
+    @swagger_auto_schema(
+        manual_parameters=[excel_param],
+        request_body=ReportsRequestWithMasjedSerializer,
+        responses={
+            HTTP_200_OK: ReportsStudentCategoryOrGroupStudentSerializer(many=True)
+        }
+    )
+    def post(self, *args, **kwargs):
+        serializer = ReportsRequestWithMasjedSerializer(data=self.request.data)
+        excel = self.request.GET.get('excel', '').lower() == 'true'
+        
+        if serializer.is_valid():
+            start_date = serializer.validated_data['start_date']
+            end_date = serializer.validated_data['end_date']
+            masjed = serializer.validated_data['masjed']
+
+            report_data = get_all_students_report(masjed, start_date, end_date)
+
+            if excel:
+                file_bytes = excel_all_students_report(
+                    data=report_data, 
+                    start_date=start_date.strftime('%Y-%m-%d'), 
+                    end_date=end_date.strftime('%Y-%m-%d'),
+                    masjed=masjed
+                )
+                response = HttpResponse(
+                    file_bytes,
+                    content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8',
+                    status=HTTP_200_OK,
+                )
+
+                response['Content-Disposition'] = 'attachment; filename="report.xlsx"'
+
+                return response
+                
+
+            return Response(report_data, HTTP_200_OK)
+            
+        
         return Response({ "detail": serializer.errors }, HTTP_400_BAD_REQUEST)
 
 

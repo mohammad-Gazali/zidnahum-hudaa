@@ -43,3 +43,9 @@
 } @empty {
   <p class="not-found">لا يوجد</p>
 }
+@if (messages().length > 0) {
+  <div class="sum-container">
+    <span>مجموع الصفحات: </span>
+    <span class="text-secondary">{{ sumValue() }}</span>
+  </div>
+}

@@ -24,6 +24,7 @@ import {
 import { ReportsService } from '../../../../services/api/reports/reports.service';
 import {
   ReportsStudentCategoryOrGroupResponse,
+  ReportsStudentCategoryOrGroupStudent,
   ReportsStudentResponse,
 } from '../../../../services/api/reports/reports.type';
 import { SearchStudent } from '../../../../shared/student-search/search-student.interface';
@@ -145,8 +146,9 @@ export class ReportsComponent {
   public categoryOrGroupResponse =
     signal<ReportsStudentCategoryOrGroupResponse | null>(null);
   public allResponse = signal<ReportsAllResponseItem[] | null>(null);
+  public allStudentsResponse = signal<ReportsStudentCategoryOrGroupStudent[] | null>(null)
   public type = this.fb.control<
-    'student' | 'category' | 'group' | 'all-categories' | 'all-groups'
+    'student' | 'all-students' | 'category' | 'group' | 'all-categories' | 'all-groups'
   >('student');
   public changesColumnHidden = signal(true);
 
@@ -175,6 +177,7 @@ export class ReportsComponent {
           break;
         case 'all-categories':
         case 'all-groups':
+        case 'all-students':
           this.form.controls.masjed.addValidators([Validators.required]);
           this.form.controls.category.clearValidators();
           this.form.controls.group.clearValidators();
@@ -203,6 +206,33 @@ export class ReportsComponent {
           finalize(() => this.loading.set(false))
         )
         .subscribe((res) => this.studentResponse.set(res));
+    }
+  }
+
+  private allStudentsSubmit(excel?: boolean): void {
+    const data = {
+      ...this.getDurationData(),
+      masjed: this.form.value.masjed!,
+    };
+
+    if (excel) {
+      this.reports
+        .createAllStudentsReportExcel(data)
+        .pipe(
+          takeUntilDestroyed(this.destroyRef),
+          finalize(() => this.loading.set(false))
+        )
+        .subscribe((res) => this.downloadBlob(res));
+    } else {
+      this.reports
+        .createAllStudentsReport(data)
+        .pipe(
+          takeUntilDestroyed(this.destroyRef),
+          finalize(() => this.loading.set(false))
+        )
+        .subscribe((res) => {
+          this.allStudentsResponse.set(res);
+        });
     }
   }
 
@@ -336,6 +366,8 @@ export class ReportsComponent {
 
     if (this.type.value === 'student') {
       this.studentSubmit(excel);
+    } else if (this.type.value === 'all-students') {
+      this.allStudentsSubmit(excel);
     } else if (this.type.value === 'category') {
       this.categorySubmit(excel);
     } else if (this.type.value === 'group') {

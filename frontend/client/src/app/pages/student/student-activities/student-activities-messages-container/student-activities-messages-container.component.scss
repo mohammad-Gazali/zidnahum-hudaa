@@ -27,3 +27,12 @@
   padding: 0 0.5rem;
 }
 
+.sum-container {
+  text-align: center;
+  font-weight: bold;
+  width: 100%;
+  
+  > :first-child {
+    font-size: 0.875rem;
+  }
+}
