@@ -5,7 +5,7 @@
     </p>
     <mat-card-content>
       @for (file of category.files; track file.id) {
-        <a [href]="file.file" [download]="file.name" target="_blank" mat-flat-button>
+        <a [href]="file.file" [download]="file.name + '.pdf'" target="_blank" mat-flat-button>
           {{ file.name }}
         </a>
       }
