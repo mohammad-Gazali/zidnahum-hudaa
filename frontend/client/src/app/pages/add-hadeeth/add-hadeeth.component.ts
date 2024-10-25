@@ -5,7 +5,7 @@ import { MatError, MatFormField, MatLabel, MatSuffix } from '@angular/material/f
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { ActivatedRoute } from '@angular/router';
-import { LayoutService, SnackbarService, StudentList, StudentsService } from '@shared';
+import { LayoutService, MobileUtilsService, SnackbarService, StudentList, StudentsService } from '@shared';
 import { catchError, distinctUntilChanged, EMPTY, filter, map, merge, Observable, Subject, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatCard, MatCardContent } from '@angular/material/card';
@@ -38,6 +38,7 @@ export class AddHadeethComponent {
   private destroyRef = inject(DestroyRef);
   private loading = inject(LayoutService).loading;
   private snackbar = inject(SnackbarService);
+  private mobileUtils = inject(MobileUtilsService);
 
   constructor() {
     this.destroyRef.onDestroy(() => {
@@ -85,6 +86,8 @@ export class AddHadeethComponent {
       tap(students => {
         this.loading.set(false);
         this.selectedStudent.set(null);
+        this.mobileUtils.hideMobileKeyboard();
+        this.search.setValue('');
 
         if (students.length === 1) {
           this.selectedStudent.set(students[0]);

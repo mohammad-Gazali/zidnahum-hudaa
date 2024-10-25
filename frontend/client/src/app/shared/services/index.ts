@@ -8,3 +8,4 @@ export * from './test.service';
 export * from './confirmation.service';
 export * from './masjed.service';
 export * from './pages-sum.service';
+export * from './mobile-utils.service';

@@ -1,6 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { AsyncPipe, Location } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatIcon } from '@angular/material/icon';
@@ -11,12 +11,13 @@ import { MatAnchor, MatButton, MatIconButton } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
 import { AuthService, CurrentUser, LayoutRoute, LayoutService } from '@shared';
+import { HomeStudentListService } from '../pages/home/home-student-list.service';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
   templateUrl: './layout.component.html',
-  styleUrl: `./layout.component.scss`,
+  styleUrl: './layout.component.scss',
   imports: [
     MatSidenavContainer,
     MatSidenavContent,
@@ -43,10 +44,10 @@ import { AuthService, CurrentUser, LayoutRoute, LayoutService } from '@shared';
   providers: [LayoutService],
 })
 export class LayoutComponent {
+  private studentsList = inject(HomeStudentListService);
   protected auth = inject(AuthService);
   protected layout = inject(LayoutService);
   protected router = inject(Router);
-  protected location = inject(Location);
 
   protected currentUser = this.auth.currentUser;
 
@@ -69,5 +70,10 @@ export class LayoutComponent {
 
       return !route.groups || !!route.groups?.some(g => user?.groups.indexOf(g) !== -1);
     };
+  }
+
+  protected clickLogo() {
+    this.router.navigateByUrl('/');
+    this.studentsList.lastResponse.set(undefined);
   }
 }

@@ -5,6 +5,7 @@ import {
   LayoutService,
   MasjedPipe,
   MasjedService,
+  MobileUtilsService,
   PointsAddingCause,
   PointsService,
   SnackbarService,
@@ -54,6 +55,7 @@ export class AddPointsComponent {
   private masjed = inject(MasjedService);
   private points = inject(PointsService);
   private snackbar = inject(SnackbarService);
+  private mobileUtils = inject(MobileUtilsService);
   private loading = inject(LayoutService).loading;
 
   protected studentsResponse = signal<StudentList[]>([]);
@@ -92,6 +94,7 @@ export class AddPointsComponent {
       next: (res) => {
         this.loading.set(false);
         this.searched.set(true);
+        this.mobileUtils.hideMobileKeyboard();
         this.searchForm.controls.search.setValue('');
         this.studentsResponse.set(res.results);
       }

@@ -62,7 +62,7 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar class="bg-surface mat-elevation-z8">
-      <img (click)="router.url !== '/' && location.back()" class="logo" [src]="layout.isDarkMode() ? 'assets/logo-dark.svg' : 'assets/logo.svg'" alt="logo">
+      <img (click)="clickLogo()" class="logo" [src]="layout.isDarkMode() ? 'assets/logo-dark.svg' : 'assets/logo.svg'" alt="logo">
       @if (currentUser(); as user) {
         <p class="user">أهلاً {{ user.firstName }}</p>
       }

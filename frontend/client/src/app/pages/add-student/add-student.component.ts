@@ -3,6 +3,7 @@ import {
   LayoutService,
   MasjedPipe,
   MasjedService,
+  MobileUtilsService,
   SnackbarService,
   StudentCategory,
   StudentGroup,
@@ -55,6 +56,7 @@ export class AddStudentComponent {
   private snackbar = inject(SnackbarService);
   private masjed = inject(MasjedService);
   private loading = inject(LayoutService).loading;
+  private mobileUtils = inject(MobileUtilsService);
 
   protected masjedOptions = this.masjed.masjedOptions;
   protected categories = toSignal<StudentCategory[]>(this.students.studentsCategoryList(), {
@@ -103,6 +105,7 @@ export class AddStudentComponent {
         next: () => {
           this.loading.set(false);
           this.snackbar.success('تمت إضافة الطالب بنجاح');
+          this.mobileUtils.hideMobileKeyboard();
           ngForm.resetForm();
         }
       });

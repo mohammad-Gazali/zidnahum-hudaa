@@ -6,7 +6,7 @@ import { MatButton } from '@angular/material/button';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { LayoutService, MemoService, SnackbarService, StudentList, StudentsService, TestService } from '@shared';
+import { LayoutService, MemoService, MobileUtilsService, SnackbarService, StudentList, StudentsService, TestService } from '@shared';
 import { catchError, distinctUntilChanged, EMPTY, filter, map, merge, Subject, switchMap, tap } from 'rxjs';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
@@ -44,6 +44,7 @@ export class AddMemoComponent {
   private matSnackbar = inject(MatSnackBar);
   private memo = inject(MemoService);
   private test = inject(TestService);
+  private mobileUtils = inject(MobileUtilsService);
 
   constructor() {
     this.destroyRef.onDestroy(() => {
@@ -74,6 +75,7 @@ export class AddMemoComponent {
         this.loading.set(false);
         this.selectedStudent.set(null);
         this.search.setValue('');
+        this.mobileUtils.hideMobileKeyboard();
 
         if (students.length === 1) {
           this.selectedStudent.set(students[0]);

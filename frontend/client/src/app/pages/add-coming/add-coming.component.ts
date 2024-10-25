@@ -9,6 +9,7 @@ import {
   LayoutService,
   MasjedPipe,
   MasjedService,
+  MobileUtilsService,
   SnackbarService,
   StudentsService
 } from '@shared';
@@ -48,6 +49,7 @@ export class AddComingComponent {
   private list = inject(AddComingStudentListService);
   private snackbar = inject(SnackbarService);
   private masjed = inject(MasjedService);
+  private mobileUtils = inject(MobileUtilsService);
   protected loading = inject(LayoutService).loading;
 
   protected response = this.list.lastResponse;
@@ -97,6 +99,7 @@ export class AddComingComponent {
         next: (res) => {
           this.loading.set(false);
           this.searchForm.controls.search.setValue('');
+          this.mobileUtils.hideMobileKeyboard();
           this.response.set(res);
         },
       });

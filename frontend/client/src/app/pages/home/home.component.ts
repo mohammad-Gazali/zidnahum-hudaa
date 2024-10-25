@@ -9,7 +9,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatCard } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
-import { AuthService, Group, LayoutService, MasjedPipe, StudentsService } from '@shared';
+import { AuthService, Group, LayoutService, MasjedPipe, MobileUtilsService, StudentsService } from '@shared';
 import { HomeStudentListService } from './home-student-list.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddMemorizeNoteDialogComponent } from './add-memorize-note-dialog/add-memorize-note-dialog.component';
@@ -38,6 +38,7 @@ export class HomeComponent {
   private list = inject(HomeStudentListService);
   private auth = inject(AuthService);
   private dialog = inject(MatDialog);
+  private mobileUtils = inject(MobileUtilsService);
   protected loading = inject(LayoutService).loading;
   protected currentUser = inject(AuthService).currentUser;
 
@@ -78,6 +79,7 @@ export class HomeComponent {
         error: () => this.loading.set(false),
         next: (res) => {
           this.loading.set(false);
+          this.mobileUtils.hideMobileKeyboard();
           this.response.set(res);
         },
       });
