@@ -385,8 +385,8 @@ export class ReportsComponent {
 
   private getDurationData() {
     return {
-      start_date: this.form.value.start_date as any,
-      end_date: this.form.value.end_date as any,
+      start_date: this.dateToISO(this.form.value.start_date!),
+      end_date: this.dateToISO(this.form.value.end_date!),
     };
   }
 
@@ -397,7 +397,11 @@ export class ReportsComponent {
     downloadLink.download = 'report.xlsx';
     document.body.append(downloadLink);
     downloadLink.click();
-    // downloadLink.remove();
+  }
+
+  private dateToISO(value: Date) {
+    const timezoneOffset = value.getTimezoneOffset() * 60000;
+    return new Date(value.getTime() - timezoneOffset).toISOString();  
   }
 }
 

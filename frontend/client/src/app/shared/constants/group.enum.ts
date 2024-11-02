@@ -3,6 +3,6 @@ export enum Group {
   Coming,
   Points,
   Hadeeth,
-  Reports,
   AddStudents,
+  Reports,
 }

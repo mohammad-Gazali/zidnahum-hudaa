@@ -15,7 +15,7 @@ import {
   provideNativeDateAdapter,
 } from '@angular/material/core';
 import { finalize } from 'rxjs';
-import { ReportsService, SnackbarService, MasjedService, LayoutService, MasjedPipe, ReportsStudentCategoryOrGroupStudent, ReportsStudentCategoryOrGroupResponse } from '@shared';
+import { ReportsService, MasjedService, LayoutService, MasjedPipe, ReportsStudentCategoryOrGroupStudent, ReportsStudentCategoryOrGroupResponse } from '@shared';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
@@ -54,7 +54,6 @@ import { MatCard } from '@angular/material/card';
 export class ReportsComponent {
   private fb = inject(NonNullableFormBuilder);
   private reports = inject(ReportsService);
-  private snackbar = inject(SnackbarService);
   private destroyRef = inject(DestroyRef);
   public masjed = inject(MasjedService);
   public loading = inject(LayoutService).loading;
@@ -206,8 +205,8 @@ export class ReportsComponent {
 
   private getDurationData() {
     return {
-      start_date: this.form.value.start_date as any,
-      end_date: this.form.value.end_date as any,
+      start_date: this.dateToISO(this.form.value.start_date!),
+      end_date: this.dateToISO(this.form.value.end_date!),
     };
   }
 
@@ -218,6 +217,11 @@ export class ReportsComponent {
     downloadLink.download = 'report.xlsx';
     document.body.append(downloadLink);
     downloadLink.click();
+  }
+
+  private dateToISO(value: Date) {
+    const timezoneOffset = value.getTimezoneOffset() * 60000;
+    return new Date(value.getTime() - timezoneOffset).toISOString();  
   }
 }
 
