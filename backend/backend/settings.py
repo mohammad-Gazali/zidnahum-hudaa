@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "students.apps.StudentsConfig",
     "reports.apps.ReportsConfig",
     "commands.apps.CommandsConfig",
+    "quizz.apps.QuizzConfig",
 
     # installed apps
     "rest_framework",
