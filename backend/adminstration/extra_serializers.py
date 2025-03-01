@@ -73,3 +73,7 @@ class TotalMoneyListSerializer(serializers.Serializer):
     id = serializers.IntegerField(source="student__id")
     name = serializers.CharField(source="student__name")
     sum = serializers.IntegerField()
+
+class AddEliteTestSerializer(serializers.Serializer):
+    student = serializers.IntegerField()
+    parts = serializers.ListField(child=serializers.IntegerField(min_value=0, max_value=59))

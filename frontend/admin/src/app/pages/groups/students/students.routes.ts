@@ -4,6 +4,7 @@ import { routes as categoriesRoutes } from './category/category.routes';
 import { routes as groupsRoutes } from './group/group.routes';
 import { routes as memorizeMessageRoutes } from './memorize-message/memorize-message.routes';
 import { routes as memorizeNotesRoutes } from './memorize-notes/memorize-notes.routes';
+import { AddEliteTestComponent } from './add-elite-test/add-elite-test.component';
 
 export const routes: Routes = [
   // students routes
@@ -35,4 +36,10 @@ export const routes: Routes = [
     path: 'memorize-notes',
     children: memorizeNotesRoutes,
   },
+
+  // add elite test to student
+  {
+    path: 'add-elite-test',
+    component: AddEliteTestComponent,
+  }
 ];

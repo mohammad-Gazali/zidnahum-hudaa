@@ -7,20 +7,21 @@ from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
 from rest_framework.filters import OrderingFilter
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.exceptions import ValidationError
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg.openapi import Parameter, IN_QUERY, TYPE_STRING
-from adminstration.extra_serializers import StudentUpdateSuperAdminSerializer, StudentUpdateSerializer, AddAwqafTestNoQRequestSerailizer, AddAwqafTestQRequestSerializer, AddMoneyDeletingNormalRequestSerailizer, AddMoneyDeletingCategoryRequestSerailizer, ControlSettingsSerializer, StatisticsRequestSerializer, StatisticsResponseSerializer, TotalMoneyListSerializer
+from adminstration.extra_serializers import StudentUpdateSuperAdminSerializer, StudentUpdateSerializer, AddAwqafTestNoQRequestSerailizer, AddAwqafTestQRequestSerializer, AddMoneyDeletingNormalRequestSerailizer, AddMoneyDeletingCategoryRequestSerailizer, ControlSettingsSerializer, StatisticsRequestSerializer, StatisticsResponseSerializer, TotalMoneyListSerializer, AddEliteTestSerializer
 from adminstration.extra_utils import get_students_memo, get_students_test, get_students_awqaf_test, get_students_awqaf_test_looking, get_students_awqaf_test_explaining, get_active_students
 from adminstration.models import ControlSettings
 from adminstration.permissions import IsSuperUser
 from awqaf.models import AwqafNoQStudentRelation
-from students.models import Student
-from students.constants import NEW, OLD
+from students.models import Student, MemorizeMessage, MessageTypeChoice
+from students.constants import NON, NEW, OLD
 from money.models import MoneyDeleting
+from typing import List
 
 # this is a query param for any model has student field and need to filter by it
 param_student_name = Parameter("student__name", IN_QUERY, type=TYPE_STRING, description="param for filtering result via student name or student id")
@@ -232,5 +233,47 @@ class StatisticsView(APIView):
                 result_dict['active_students'] = get_active_students(start_date, end_date)
 
             return Response(result_dict, HTTP_200_OK)
+
+        return Response({ "detail": serializer.errors }, HTTP_400_BAD_REQUEST)
+
+
+class AddEliteTestCreateView(APIView):
+    permission_classes = [IsAdminUser]
+    http_method_names = ["post"]
+
+    @swagger_auto_schema(request_body=AddEliteTestSerializer)
+    def post(self, *args, **kwargs):
+        serializer = AddEliteTestSerializer(data=self.request.data)
+
+        if serializer.is_valid():
+            student = get_object_or_404(Student, pk=serializer.validated_data["student"])
+
+            new_q_elite_test_parts: List[int] = list(set(serializer.validated_data["parts"]))
+            repeated_parts = []
+            added_parts = []
+
+            new_q_elite_test_parts.sort()
+
+            for item in new_q_elite_test_parts:
+                if student.q_elite_test[item] != NON:
+                    repeated_parts.append(item)
+                else:
+                    added_parts.append(item)
+                    student.q_elite_test[item] = NEW
+
+            student.save()
+
+            MemorizeMessage.objects.create(
+                master=self.request.user,
+                student=student,
+                changes=added_parts,
+                message_type=MessageTypeChoice.ELITE_TEST,
+                is_doubled=ControlSettings.get_double_points(),
+                student_level=student.level,
+            )
+
+            return Response({
+                "repeated_parts": repeated_parts,
+            }, HTTP_201_CREATED)
 
         return Response({ "detail": serializer.errors }, HTTP_400_BAD_REQUEST)

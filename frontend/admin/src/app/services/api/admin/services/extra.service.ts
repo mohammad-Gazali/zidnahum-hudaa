@@ -29,6 +29,7 @@ class ExtraService extends __BaseService {
   static readonly extraControlSettingsUpdatePath = '/extra/control-settings';
   static readonly extraStatisticsCreatePath = '/extra/statistics';
   static readonly extraMoneyTotalListPath = '/extra/total-money';
+  static readonly extraAddEliteTest = '/extra/add-elite-test';
 
   constructor(
     config: __Configuration,
@@ -398,6 +399,33 @@ class ExtraService extends __BaseService {
       __map(_r => _r.body as StudentUpdate)
     );
   }
+
+  extraAddEliteTestResponse(params: ExtraService.AddEliteTestParams): __Observable<__StrictHttpResponse<ExtraService.AddEliteTestResult>> {
+    let __headers = new HttpHeaders();
+    let __body = params;
+
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/extra/add-elite-test`,
+      __body,
+      {
+        headers: __headers,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<ExtraService.AddEliteTestResult>;
+      })
+    );
+  }
+
+  extraAddEliteTest(params: ExtraService.AddEliteTestParams): __Observable<ExtraService.AddEliteTestResult> {
+    return this.extraAddEliteTestResponse(params).pipe(
+      __map(_r => _r.body as ExtraService.AddEliteTestResult)
+    );
+  }
 }
 
 module ExtraService {
@@ -435,6 +463,18 @@ module ExtraService {
   export interface StudentsStudentUpdateParams {
     id: string;
     data: StudentUpdate;
+  }
+
+  /**
+   * Parameters for adding elite test
+   */
+  export interface AddEliteTestParams {
+    student: number;
+    parts: number[];
+  }
+
+  export interface AddEliteTestResult {
+    repeated_parts: number[];
   }
 }
 

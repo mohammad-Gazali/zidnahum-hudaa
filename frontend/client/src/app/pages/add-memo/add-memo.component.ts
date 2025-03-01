@@ -135,7 +135,7 @@ export class AddMemoComponent {
         next: (res) => {
           this.loading.set(false);
           if (res.repeated_memo.length !== 0) {
-            this.matSnackbar.open(' تم التسجيل التسميع بنجاح, ولكن يوجد تكرار بـ:' + res.repeated_memo.map((item: number) => this.memo.transform(item)).join(', '), 'إغلاق');
+            this.matSnackbar.open(' تم تسجيل التسميع بنجاح, ولكن يوجد تكرار بـ:' + res.repeated_memo.map((item: number) => this.memo.transform(item)).join(', '), 'إغلاق');
           } else {
             this.snackbar.success('تم تسجيل التسميع بنجاح');
           }
@@ -182,7 +182,7 @@ export class AddMemoComponent {
       next: (res) => {
         this.loading.set(false);
         if (res.repeated_test.length !== 0) {
-          this.matSnackbar.open(' تم التسجيل التسميع بنجاح, ولكن يوجد تكرار بـ:' + res.repeated_test.map((item: number) => this.test.transform(item)).join(', '), 'إغلاق');
+          this.matSnackbar.open(' تم تسجيل التسميع بنجاح, ولكن يوجد تكرار بـ:' + res.repeated_test.map((item: number) => this.test.transform(item)).join(', '), 'إغلاق');
         } else {
           this.snackbar.success('تم تسجيل التسميع بنجاح');
         }

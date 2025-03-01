@@ -77,6 +77,7 @@ export class GroupsService {
         { name: 'مجموعات الطلاب', link: '/students/student-group', icon: 'groups' },
         { name: 'رسائل التسميع', link: '/students/memorize-message', icon: 'email' },
         { name: 'ملاحظات التسميع', link: '/students/memorize-notes', icon: 'notes' },
+        { name: 'إضافة سبر أحزاب للطلاب', link: '/students/add-elite-test', icon: 'star' },
       ],
     },
     {

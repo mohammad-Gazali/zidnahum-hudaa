@@ -31,7 +31,7 @@
     }
 
     .responsive-container {
-        max-height: 380px;
+        max-height: calc(100vh - var(--mat-toolbar-standard-height) - 16rem);
         max-width: calc(100vw - 32px);
         width: 100%;
         overflow-y: scroll;

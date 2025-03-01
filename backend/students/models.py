@@ -150,6 +150,7 @@ class MessageTypeChoice(models.IntegerChoices):
     ALNAWAWIA = 3, "أربعين نووية"
     ALSAALIHIN = 4, "رياض الصالحين"
     ALLAH_NAMES = 5, "أسماء الله الحسنى"
+    ELITE_TEST = 6, "سبر الأحزاب"
 
 
 class MemorizeMessage(models.Model):
@@ -158,7 +159,7 @@ class MemorizeMessage(models.Model):
     sended_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الإرسال")
     student_level = models.IntegerField(verbose_name="مستوى الطالب", choices=StudentLevelChoice.choices)
 
-    # for type MEMO, TEST the changes is the "list" of changed indexes in the related field
+    # for type MEMO, TEST, ELITE_TEST the changes is the "list" of changed indexes in the related field
     # for type ALNAWAWIA, ALSAALIHIN the changes is the "list" of three numbers where the first item is the old value of the related field and the second is the new value before edit and the third is the new value after edit
     # for type ALLAH_NAMES the changes is empty list
     changes = models.JSONField(default=list, verbose_name="التعديلات")

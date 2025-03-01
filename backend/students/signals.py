@@ -29,3 +29,8 @@ def pre_delete_message(sender, instance: MemorizeMessage, **kwargs):
     elif instance.message_type == MessageTypeChoice.ALLAH_NAMES:
         student.allah_names_new = False
         student.save()
+
+    elif instance.message_type == MessageTypeChoice.ELITE_TEST:
+        for item in instance.changes:
+            student.q_elite_test[item] = NON
+        student.save()

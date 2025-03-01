@@ -1,0 +1,35 @@
+<mat-card>
+  <app-student-search
+    [removeResultOnChoose]="true"
+    (studentChoose)="selectedStudent.set($event)"
+  />
+  @if (selectedStudent(); as student) {
+  <mat-chip (removed)="selectedStudent.set(null)">
+    {{ student.name }}
+    <button matChipRemove>
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-chip>
+  }
+  <form #ngForm="ngForm" [formGroup]="form" (ngSubmit)="submit(ngForm)">
+    <div>
+      <p>الأحزاب</p>
+      <div class="parts-cards-container" formArrayName="parts">
+        @for (control of form.controls.parts.controls; track $index) {
+        <mat-card
+          matRipple
+          [class.bg-primary-fixed-dim]="control.value"
+          (click)="control.setValue(!control.value)"
+          class="flex-card"
+        >
+          <input type="hidden" [formControl]="control" />
+          {{ $index + 1 }}
+        </mat-card>
+        }
+      </div>
+      <button color="primary" mat-flat-button>
+        إضافة
+      </button>
+    </div>
+  </form>
+</mat-card>

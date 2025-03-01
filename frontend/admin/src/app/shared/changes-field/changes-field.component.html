@@ -39,6 +39,13 @@
         @case (5) {
             -
         }
+        @case (6) {
+            @for (item of content(); track item) {
+                <mat-card class="bg-primary-fixed-dim">
+                    {{ eliteTest.transform(item) }}
+                </mat-card>
+            }
+        }
         @default {
             Unhandled Type
         }

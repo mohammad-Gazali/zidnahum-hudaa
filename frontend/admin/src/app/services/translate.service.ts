@@ -88,7 +88,7 @@ export class TranslateService {
         this.translateMap.set('parts_received', 'الأجزاء المستلمة');
         this.translateMap.set('q_memorizing', 'حفظ القرآن');
         this.translateMap.set('q_test', 'السبر في المسجد');
-        this.translateMap.set('q_elite_test', 'السبر النوعي في المسجد');
+        this.translateMap.set('q_elite_test', 'السبر الأحزاب في المسجد');
         this.translateMap.set('q_awqaf_test', 'سبر القرآن في الأوقاف غيباً');
         this.translateMap.set('q_awqaf_test_looking', 'سبر القرآن في الأوقاف نظراً');
         this.translateMap.set('q_awqaf_test_explaining', 'سبر القرآن في الأوقاف تفسيراً');
