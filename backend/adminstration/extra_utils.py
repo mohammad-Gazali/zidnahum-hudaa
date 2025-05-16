@@ -1,5 +1,6 @@
 from students.models import MemorizeMessage, MessageTypeChoice, StudentMasjedChoice, Student
 from students.constants import NEW
+from comings.models import Coming
 from reports import utils
 
 def get_students_memo(start_date, end_date):
@@ -63,12 +64,16 @@ def get_students_awqaf_test_explaining():
 def get_active_students(start_date, end_date):
     result = [0] * len(StudentMasjedChoice)
 
-    students = Student.objects.prefetch_related("coming_set").exclude(coming__isnull=True)
-
-    students = _get_students_from_coming_dates(students, start_date, end_date)
+    comings = _get_coming_from_dates(start_date, end_date).select_related("student")
 
     for value in StudentMasjedChoice.values:
-        result[value - 1] = students.filter(masjed=value).count()
+        result[value - 1] = (
+            comings
+                .filter(student__masjed=value)
+                .values("student")
+                .distinct()
+                .count()
+        )
 
     return result
 
@@ -77,17 +82,18 @@ def _get_messages_from_dates(messages, start_date, end_date):
     if start_date is not None and end_date is not None:
         return messages.filter(sended_at__date__range=[start_date, end_date])
     elif start_date is not None:
-        return messages.filter(sended_at__date__gt=start_date)
+        return messages.filter(sended_at__date__gte=start_date)
     elif end_date is not None:
-        return messages.filter(sended_at__date__lt=end_date)
+        return messages.filter(sended_at__date__lte=end_date)
     return messages
 
 
-def _get_students_from_coming_dates(students, start_date, end_date):
+def _get_coming_from_dates(start_date, end_date):
     if start_date is not None and end_date is not None:
-        return students.filter(coming__registered_at__date__range=[start_date, end_date])
+        return Coming.objects.filter(registered_at__date__range=[start_date, end_date])
     elif start_date is not None:
-        return students.filter(coming__registered_at__date__gt=start_date)
+        return Coming.objects.filter(registered_at__date__gte=start_date)
     elif end_date is not None:
-        return students.filter(coming__registered_at__date__lt=end_date)
-    return students
+        return Coming.objects.filter(registered_at__date__lte=end_date)
+
+    return Coming.objects.all()

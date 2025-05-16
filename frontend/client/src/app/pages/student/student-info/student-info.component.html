@@ -26,7 +26,21 @@
         <input matInput [value]="student.parts_received || '-'" readonly>
     </mat-form-field>
     <mat-form-field>
-      <mat-label>مستوى التجويد</mat-label>
-      <input matInput [value]="student.level | level" readonly>
+        <mat-label>مستوى التجويد</mat-label>
+        <input matInput [value]="student.level | level" readonly>
     </mat-form-field>
+    @if (currentUser()) {
+        <mat-form-field>
+            <mat-label>الجوال</mat-label>
+            <input matInput [value]="student.cell_phone ?? '-'" readonly>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>جوال الأب</mat-label>
+            <input matInput [value]="student.father_phone ?? '-'" readonly>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>جوال الأم</mat-label>
+            <input matInput [value]="student.mother_phone ?? '-'" readonly>
+        </mat-form-field>
+    }
 }

@@ -81,6 +81,7 @@ export class HomeComponent {
           this.loading.set(false);
           this.mobileUtils.hideMobileKeyboard();
           this.response.set(res);
+          this.searchForm.controls.search.setValue('');
         },
       });
   }

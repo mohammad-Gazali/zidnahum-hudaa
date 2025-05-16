@@ -21,7 +21,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatCard } from '@angular/material/card';
 
 @Component({
   selector: 'app-reports',
@@ -37,7 +36,6 @@ import { MatCard } from '@angular/material/card';
     MatButtonModule,
     MatTableModule,
     MatDividerModule,
-    MatCard,
     DatePipe,
     MasjedPipe
 ],
