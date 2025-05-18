@@ -35,3 +35,4 @@ export { AwqafRelation } from './models/awqaf-relation';
 export { ComingListForStudent } from './models/coming-list-for-student';
 export { MemorizeMessageForStudent } from './models/memorize-message-for-student';
 export { StudentDetails } from './models/student-details';
+export { News } from './models/news';

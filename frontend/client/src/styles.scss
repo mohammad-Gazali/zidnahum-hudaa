@@ -17,21 +17,33 @@ html {
 }
 
 .bg-surface {
-  background-color: mat.get-theme-color($client-theme, surface-container) !important;
+  background-color: mat.get-theme-color(
+    $client-theme,
+    surface-container
+  ) !important;
 }
 
 .bg-primary-fixed-dim {
-  background-color: mat.get-theme-color($client-theme, primary-fixed-dim) !important;
+  background-color: mat.get-theme-color(
+    $client-theme,
+    primary-fixed-dim
+  ) !important;
   color: mat.get-theme-color($client-theme, on-primary-fixed) !important;
 }
 
 .bg-secondary-fixed {
-  background-color: mat.get-theme-color($client-theme, secondary-fixed) !important;
+  background-color: mat.get-theme-color(
+    $client-theme,
+    secondary-fixed
+  ) !important;
   color: mat.get-theme-color($client-theme, on-secondary-fixed) !important;
 }
 
 .bg-surface-container-highest {
-  background-color: mat.get-theme-color($client-theme, surface-container-highest) !important;
+  background-color: mat.get-theme-color(
+    $client-theme,
+    surface-container-highest
+  ) !important;
 }
 
 .text-primary {
@@ -56,29 +68,45 @@ html {
   @include mat.button-color($client-theme, $color-variant: error);
 
   // this theme is for fab button for error variant
-  $_error-theme: mat.define-theme((
-    color: (
-      theme-type: light,
-      primary: mat.$red-palette,
+  $_error-theme: mat.define-theme(
+    (
+      color: (
+        theme-type: light,
+        primary: mat.$red-palette,
+      ),
     )
-  ));
+  );
 
   @include mat.fab-color($_error-theme, $color-variant: primary);
 }
 
 :root {
-  $_success_error: mat.define-theme((
-    color: (
-      primary: mat.$green-palette,
-      tertiary: mat.$red-palette,
+  $_success_error: mat.define-theme(
+    (
+      color: (
+        primary: mat.$green-palette,
+        tertiary: mat.$red-palette,
+      ),
     )
-  ));
+  );
 
-  --client-success-color: #{mat.get-theme-color($_success_error, primary-container)};
-  --client-success-text-color: #{mat.get-theme-color($_success_error, on-primary-container)};
+  --client-success-color: #{mat.get-theme-color(
+      $_success_error,
+      primary-container
+    )};
+  --client-success-text-color: #{mat.get-theme-color(
+      $_success_error,
+      on-primary-container
+    )};
 
-  --client-error-color: #{mat.get-theme-color($_success_error, tertiary-container)};
-  --client-error-text-color: #{mat.get-theme-color($_success_error, on-tertiary-container)};
+  --client-error-color: #{mat.get-theme-color(
+      $_success_error,
+      tertiary-container
+    )};
+  --client-error-text-color: #{mat.get-theme-color(
+      $_success_error,
+      on-tertiary-container
+    )};
 
   --mat-dialog-with-actions-content-padding: 20px 24px 16px;
 }
@@ -91,36 +119,65 @@ html {
 
   --mat-sidenav-scrim-color: #000000aa;
 
-  $_success_error_dark: mat.define-theme((
-    color: (
-      primary: mat.$green-palette,
-      tertiary: mat.$red-palette,
-      theme-type: dark,
+  $_success_error_dark: mat.define-theme(
+    (
+      color: (
+        primary: mat.$green-palette,
+        tertiary: mat.$red-palette,
+        theme-type: dark,
+      ),
     )
-  ));
+  );
 
-  --client-success-color: #{mat.get-theme-color($_success_error_dark, primary-container)};
-  --client-success-text-color: #{mat.get-theme-color($_success_error_dark, on-primary-container)};
+  --client-success-color: #{mat.get-theme-color(
+      $_success_error_dark,
+      primary-container
+    )};
+  --client-success-text-color: #{mat.get-theme-color(
+      $_success_error_dark,
+      on-primary-container
+    )};
 
-  --client-error-color: #{mat.get-theme-color($_success_error_dark, tertiary-container)};
-  --client-error-text-color: #{mat.get-theme-color($_success_error_dark, on-tertiary-container)};
+  --client-error-color: #{mat.get-theme-color(
+      $_success_error_dark,
+      tertiary-container
+    )};
+  --client-error-text-color: #{mat.get-theme-color(
+      $_success_error_dark,
+      on-tertiary-container
+    )};
 
   .bg-surface {
-    background-color: mat.get-theme-color($client-dark-theme, surface-container) !important;
+    background-color: mat.get-theme-color(
+      $client-dark-theme,
+      surface-container
+    ) !important;
   }
 
   .bg-primary-fixed-dim {
-    background-color: mat.get-theme-color($client-dark-theme, primary-fixed-dim) !important;
+    background-color: mat.get-theme-color(
+      $client-dark-theme,
+      primary-fixed-dim
+    ) !important;
     color: mat.get-theme-color($client-dark-theme, on-primary-fixed) !important;
   }
 
   .bg-secondary-fixed {
-    background-color: mat.get-theme-color($client-dark-theme, secondary-fixed) !important;
-    color: mat.get-theme-color($client-dark-theme, on-secondary-fixed) !important;
+    background-color: mat.get-theme-color(
+      $client-dark-theme,
+      secondary-fixed
+    ) !important;
+    color: mat.get-theme-color(
+      $client-dark-theme,
+      on-secondary-fixed
+    ) !important;
   }
 
   .bg-surface-container-highest {
-    background-color: mat.get-theme-color($client-dark-theme, surface-container-highest) !important;
+    background-color: mat.get-theme-color(
+      $client-dark-theme,
+      surface-container-highest
+    ) !important;
   }
 
   .text-primary {
@@ -137,7 +194,10 @@ html {
 
   .secondary {
     @include mat.button-color($client-dark-theme, $color-variant: secondary);
-    @include mat.form-field-color($client-dark-theme, $color-variant: secondary);
+    @include mat.form-field-color(
+      $client-dark-theme,
+      $color-variant: secondary
+    );
     @include mat.select-color($client-dark-theme, $color-variant: secondary);
   }
 
@@ -145,12 +205,14 @@ html {
     @include mat.button-color($client-dark-theme, $color-variant: error);
 
     // this theme is for fab button for error variant
-    $_error-theme: mat.define-theme((
-      color: (
-        theme-type: dark,
-        primary: mat.$red-palette,
+    $_error-theme: mat.define-theme(
+      (
+        color: (
+          theme-type: dark,
+          primary: mat.$red-palette,
+        ),
       )
-    ));
+    );
 
     @include mat.fab-color($_error-theme, $color-variant: primary);
   }

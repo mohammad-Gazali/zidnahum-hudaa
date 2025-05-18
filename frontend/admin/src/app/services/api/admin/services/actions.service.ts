@@ -756,6 +756,39 @@ class ActionsService extends __BaseService {
       __map(_r => _r.body as UserUpdatePassword)
     );
   }
+  /**
+   * @param data undefined
+   */
+  actionsNewsDeleteDeleteResponse(data: IdsAction): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = data;
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/actions/news/delete`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param data undefined
+   */
+  actionsNewsDeleteDelete(data: IdsAction): __Observable<null> {
+    return this.actionsNewsDeleteDeleteResponse(data).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
 }
 
 module ActionsService {

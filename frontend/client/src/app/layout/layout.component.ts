@@ -1,15 +1,14 @@
-import { Component, computed, inject } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
+import { Component, computed, inject } from '@angular/core';
+import { MatAnchor, MatButton, MatIconButton } from '@angular/material/button';
+import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { MatIcon } from '@angular/material/icon';
+import { MatListItem, MatListItemIcon, MatListItemTitle, MatNavList } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { MatToolbar } from '@angular/material/toolbar';
-import { MatIcon } from '@angular/material/icon';
-import { MatProgressBar } from '@angular/material/progress-bar';
-import { MatListItem, MatListItemIcon, MatListItemTitle, MatNavList } from '@angular/material/list';
-import { MatDivider } from '@angular/material/divider';
-import { MatAnchor, MatButton, MatIconButton } from '@angular/material/button';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService, CurrentUser, LayoutRoute, LayoutService } from '@shared';
 import { HomeStudentListService } from '../pages/home/home-student-list.service';
 
@@ -31,7 +30,6 @@ import { HomeStudentListService } from '../pages/home/home-student-list.service'
     MatListItem,
     MatListItemTitle,
     MatListItemIcon,
-    MatDivider,
     MatMenuModule,
     AsyncPipe,
     RouterLink,

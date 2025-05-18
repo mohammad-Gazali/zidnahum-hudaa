@@ -1,0 +1,25 @@
+<mat-card>
+  <div mat-card-image>
+    <img
+      (click)="open()"
+      [src]="news().low_quality_image"
+      [alt]="news().title"
+    />
+  </div>
+  <a
+    [href]="news().main_image"
+    data-fslightbox="gallery"
+    style="display: none"
+    aria-hidden="true"
+    >
+    {{ news().title }}
+  </a>
+  <mat-card-header>
+    <mat-card-title>
+      {{ news().title }}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    {{ news().description }}
+  </mat-card-content>
+</mat-card>

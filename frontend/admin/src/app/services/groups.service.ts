@@ -45,6 +45,7 @@ export class GroupsService {
       items: [
         { name: 'فئات الملفات', link: '/globals/assets-category', icon: 'extension' },
         { name: 'الملفات', link: '/globals/assets-file', icon: 'insert_drive_file' },
+        { name: 'الإعلانات', link: '/globals/news', icon: 'notifications' }
       ],
     },
     {

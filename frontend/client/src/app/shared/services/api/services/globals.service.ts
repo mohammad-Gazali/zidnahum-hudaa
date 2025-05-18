@@ -7,6 +7,7 @@ import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-respo
 import { Observable as __Observable, map as __map, filter as __filter } from 'rxjs';
 
 import { AssetCategory } from '../models/asset-category';
+import { News } from '../models/news';
 @Injectable({
   providedIn: 'root',
 })
@@ -39,9 +40,36 @@ class GlobalsService extends __BaseService {
         return _r as __StrictHttpResponse<Array<AssetCategory>>;
       })
     );
-  }  globalsAssetList(): __Observable<Array<AssetCategory>> {
+  }
+  globalsAssetList(): __Observable<Array<AssetCategory>> {
     return this.globalsAssetListResponse().pipe(
       __map(_r => _r.body as Array<AssetCategory>)
+    );
+  }
+  globalsNewsResponse(): __Observable<__StrictHttpResponse<Array<News>>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/globals/news`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<Array<News>>;
+      })
+    );
+  }
+  globalsNews(): __Observable<Array<News>> {
+    return this.globalsNewsResponse().pipe(
+      __map(_r => _r.body as Array<News>)
     );
   }
 }

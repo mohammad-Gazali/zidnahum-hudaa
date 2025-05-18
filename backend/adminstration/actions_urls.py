@@ -18,6 +18,7 @@ urlpatterns = [
     
     path("assets-category/delete", actions_views.AdminAssetsCategoryDeleteAction.as_view(), name="adminstration_action_delete_assets_category"),
     path("asset-file/delete", actions_views.AdminAssetFileDeleteAction.as_view(), name="adminstration_action_delete_asset_file"),
+    path("news/delete", actions_views.AdminNewsDeleteAction.as_view(), name="adminstration_action_delete_news"),
     
     path("money-deleting-cause/delete", actions_views.AdminMoneyDeletingCauseDeleteAction.as_view(), name="adminstration_action_delete_money_deleting_cause"),
 

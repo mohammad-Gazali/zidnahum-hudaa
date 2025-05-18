@@ -45,9 +45,9 @@ export class LayoutService {
 
   public routes: LayoutRoute[] = [
     {
-      link: '/',
-      name: 'الصفحة الرئيسية',
-      icon: 'home',
+      link: '/news',
+      name: 'الإعلانات',
+      icon: 'notifications',
     },
     {
       link: '/files',

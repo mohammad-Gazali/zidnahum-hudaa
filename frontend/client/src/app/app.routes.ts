@@ -11,6 +11,7 @@ import {
   AddHadeethComponent,
   AddStudentComponent,
   FilesComponent,
+  NewsComponent,
   LogMemoComponent,
   LogComingComponent,
   LogPointsComponent,
@@ -34,6 +35,10 @@ export const routes: Routes = [
   {
     path: 'files',
     component: FilesComponent,
+  },
+  {
+    path: 'news',
+    component: NewsComponent,
   },
   {
     path: 'add-memo',

@@ -11,7 +11,7 @@ from adminstration.actions_utils import create_delete_model_action_view
 from adminstration.permissions import IsSuperUser
 from awqaf.models import AwqafTestNoQ, AwqafNoQStudentRelation
 from comings.models import ComingCategory, Coming
-from globals.models import AssetsCategory, AssetFile
+from globals.models import AssetsCategory, AssetFile, News
 from money.models import MoneyDeletingCause, MoneyDeleting
 from points.models import PointsAddingCause, PointsAdding, PointsDeletingCause, PointsDeleting
 from students.models import StudentCategory, StudentGroup, Student, MemorizeMessage, MemorizeNotes
@@ -92,6 +92,7 @@ AdminComingDeleteAction = create_delete_model_action_view(Coming)
 
 AdminAssetsCategoryDeleteAction = create_delete_model_action_view(AssetsCategory)
 AdminAssetFileDeleteAction = create_delete_model_action_view(AssetFile)
+AdminNewsDeleteAction = create_delete_model_action_view(News)
 
 AdminMoneyDeletingCauseDeleteAction = create_delete_model_action_view(MoneyDeletingCause, superuser=True)
 

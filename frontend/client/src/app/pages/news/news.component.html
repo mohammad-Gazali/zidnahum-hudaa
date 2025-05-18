@@ -1,0 +1,24 @@
+<mat-tab-group>
+  <mat-tab label="الحسنين">
+    <div class="news-container">
+      @for (news of hassaneinNews(); track $index) {
+        <app-news-card [news]="news" />
+      } @empty {
+        <p class="no-news">
+          لا يوجد إعلانات
+        </p>
+      }
+    </div>
+  </mat-tab>
+  <mat-tab label="القزاز">
+    <div class="news-container">
+      @for (news of qazzazNews(); track news.id) {
+        <app-news-card [news]="news" />
+      } @empty {
+        <p class="no-news">
+          لا يوجد إعلانات
+        </p>
+      }
+    </div>
+  </mat-tab>
+</mat-tab-group>

@@ -171,6 +171,12 @@ export class TranslateService {
         this.translateMap.set('assets-file', 'الملف');
         this.translateMap.set('file', 'الملف');
 
+        // news model
+        this.translateMap.set('title', 'العنوان');
+        this.translateMap.set('description', 'الوصف');
+        this.translateMap.set('main_image', 'الصورة الرئيسية');
+        this.translateMap.set('low_quality_image', 'الصورة منخفضة الدقة');
+
         // money deleting cause model
         this.translateMap.set('money-deleting-cause', 'سبب الغرامة المالية');
         this.translateMap.set('active-to-points-true', 'خصم من النقاط');

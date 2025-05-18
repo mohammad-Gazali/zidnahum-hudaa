@@ -12,6 +12,9 @@ import { AssetFileCreate } from '../models/asset-file-create';
 import { AssetsCategoryList } from '../models/assets-category-list';
 import { AssetsCategoryCreate } from '../models/assets-category-create';
 import { AssetsCategoryUpdate } from '../models/assets-category-update';
+import { NewsList } from '../models/news-list';
+import { NewsCreate } from '../models/news-create';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -25,6 +28,10 @@ class GlobalsService extends __BaseService {
   static readonly globalsAssetsCategoryReadPath = '/globals/assets-category/{id}/';
   static readonly globalsAssetsCategoryUpdatePath = '/globals/assets-category/{id}/';
   static readonly globalsAssetsCategoryDeletePath = '/globals/assets-category/{id}/';
+  static readonly globalsNewsListPath = '/globals/news/';
+  static readonly globalsNewsCreatePath = '/globals/news/';
+  static readonly globalsNewsReadPath = '/globals/news/{id}/';
+  static readonly globalsNewsDeletePath = '/globals/news/{id}/';
 
   constructor(
     config: __Configuration,
@@ -382,6 +389,179 @@ class GlobalsService extends __BaseService {
       __map(_r => _r.body as null)
     );
   }
+
+  /**
+   * @param params The `GlobalsService.GlobalsAssetFileListParams` containing the following parameters:
+   *
+   * - `ordering`: Which field to use when ordering the results.
+   *
+   * - `offset`: The initial index from which to return the results.
+   *
+   * - `limit`: Number of results to return per page.
+   *
+   * - `masjed`: masjed
+   */
+  globalsNewsListResponse(params: GlobalsService.GlobalsNewsListParams): __Observable<__StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<NewsList>}>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    if (params.ordering != null) __params = __params.set('ordering', params.ordering.toString());
+    if (params.offset != null) __params = __params.set('offset', params.offset.toString());
+    if (params.limit != null) __params = __params.set('limit', params.limit.toString());
+    if (params.masjed != null) __params = __params.set('masjed', params.masjed.toString());
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/globals/news/`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<{count: number, next?: null | string, previous?: null | string, results: Array<NewsList>}>;
+      })
+    );
+  }
+  /**
+   * @param params The `GlobalsService.GlobalsNewsListParams` containing the following parameters:
+   *
+   * - `ordering`: Which field to use when ordering the results.
+   *
+   * - `offset`: The initial index from which to return the results.
+   *
+   * - `limit`: Number of results to return per page.
+   *
+   * - `category`: category
+   */
+  globalsNewsList(params: GlobalsService.GlobalsNewsListParams): __Observable<{count: number, next?: null | string, previous?: null | string, results: Array<NewsList>}> {
+    return this.globalsNewsListResponse(params).pipe(
+      __map(_r => _r.body as {count: number, next?: null | string, previous?: null | string, results: Array<NewsList>})
+    );
+  }
+
+  /**
+   * @param params The `GlobalsService.GlobalsNewsCreateParams` containing the following parameters:
+   *
+   * - `name`:
+   *
+   * - `file`:
+   *
+   * - `category`:
+   */
+  globalsNewsCreateResponse(params: GlobalsService.GlobalsNewsCreateParams): __Observable<__StrictHttpResponse<NewsCreate>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    let __formData = new FormData();
+    __body = __formData;
+    if (params.title != null) { __formData.append('title', params.title as string | Blob);}
+    if (params.description != null) { __formData.append('description', params.description as string | Blob);}
+    if (params.low_quality_image != null) { __formData.append('low_quality_image', params.low_quality_image as string | Blob);}
+    if (params.main_image != null) { __formData.append('main_image', params.main_image as string | Blob);}
+    if (params.masjed != null) { __formData.append('masjed', JSON.stringify(params.masjed));}
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/globals/news/`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<NewsCreate>;
+      })
+    );
+  }
+  /**
+   * @param params The `GlobalsService.GlobalsNewsCreateParams` containing the following parameters:
+   *
+   * - `name`:
+   *
+   * - `file`:
+   *
+   * - `category`:
+   */
+  globalsNewsCreate(params: GlobalsService.GlobalsNewsCreateParams): __Observable<NewsCreate> {
+    return this.globalsNewsCreateResponse(params).pipe(
+      __map(_r => _r.body as NewsCreate)
+    );
+  }
+
+  /**
+   * @param id undefined
+   */
+  globalsNewsReadResponse(id: string): __Observable<__StrictHttpResponse<NewsList>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'GET',
+      this.rootUrl + `/globals/news/${encodeURIComponent(String(id))}/`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<NewsList>;
+      })
+    );
+  }
+  /**
+   * @param id undefined
+   */
+  globalsNewsRead(id: string): __Observable<NewsList> {
+    return this.globalsNewsReadResponse(id).pipe(
+      __map(_r => _r.body as NewsList)
+    );
+  }
+
+  /**
+   * @param id undefined
+   */
+  globalsNewsDeleteResponse(id: string): __Observable<__StrictHttpResponse<null>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    let req = new HttpRequest<any>(
+      'DELETE',
+      this.rootUrl + `/globals/news/${encodeURIComponent(String(id))}/`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<null>;
+      })
+    );
+  }
+  /**
+   * @param id undefined
+   */
+  globalsNewsDelete(id: string): __Observable<null> {
+    return this.globalsNewsDeleteResponse(id).pipe(
+      __map(_r => _r.body as null)
+    );
+  }
 }
 
 module GlobalsService {
@@ -427,6 +607,36 @@ module GlobalsService {
   export interface GlobalsAssetsCategoryUpdateParams {
     id: string;
     data: AssetsCategoryUpdate;
+  }
+
+  export interface GlobalsNewsListParams {
+    /**
+     * Which field to use when ordering the results.
+     */
+    ordering?: string;
+
+    /**
+     * The initial index from which to return the results.
+     */
+    offset?: number;
+
+    /**
+     * Number of results to return per page.
+     */
+    limit?: number;
+
+    /**
+     * category
+     */
+    masjed?: 1 | 2 | 3; 
+  }
+
+  export interface GlobalsNewsCreateParams {
+    title: string;
+    description?: string;
+    low_quality_image: Blob;
+    main_image: Blob;
+    masjed: 1 | 2 | 3;
   }
 }
 

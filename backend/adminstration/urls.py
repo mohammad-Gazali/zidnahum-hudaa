@@ -18,6 +18,7 @@ router.register("comings/coming", views.AdminComingViewSet, basename="admin_comi
 # globals view sets
 router.register("globals/assets-category", views.AdminAssetsCategoryViewSet, basename="admin_assets_category")
 router.register("globals/asset-file", views.AdminAssetFileViewSet, basename="admin_asset_file")
+router.register("globals/news", views.AdminNewsViewSet, basename="admin_news")
 
 # money view sets
 router.register("money/deleting-cause", views.AdminMoneyDeletingCauseViewSet, basename="admin_money_deleting_cause")

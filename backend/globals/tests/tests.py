@@ -33,7 +33,7 @@ class GlobalsAppTestCase(TestCase):
                     )
                 )
 
-        url = reverse("globals_list_view")
+        url = reverse("globals_asset_list_view")
 
         res = self.client.get(url)
 

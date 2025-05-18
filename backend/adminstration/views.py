@@ -3,7 +3,7 @@ from django.contrib.auth.models import Group
 from adminstration.utils import create_model_view_set, create_serializer
 from awqaf.models import AwqafTestNoQ, AwqafNoQStudentRelation
 from comings.models import ComingCategory, Coming
-from globals.models import AssetsCategory, AssetFile
+from globals.models import AssetsCategory, AssetFile, News
 from money.models import MoneyDeletingCause, MoneyDeleting
 from points.models import PointsAddingCause, PointsAdding, PointsDeletingCause, PointsDeleting
 from students.models import StudentCategory, StudentGroup, Student, MemorizeMessage, MemorizeNotes
@@ -55,6 +55,7 @@ AdminComingViewSet = create_model_view_set(
 # globals view sets
 AdminAssetsCategoryViewSet = create_model_view_set(AssetsCategory, no_pagination=True)
 AdminAssetFileViewSet = create_model_view_set(AssetFile, methods=["get", "post", "delete"], filter_fields=["category"], multipart=True)
+AdminNewsViewSet = create_model_view_set(News, methods=["get", "post", "delete"], filter_fields=["masjed"], multipart=True)
 
 # money view sets
 AdminMoneyDeletingCauseViewSet = create_model_view_set(MoneyDeletingCause, no_pagination=True, superuser=True)
