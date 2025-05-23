@@ -17,6 +17,7 @@ import { News } from "@shared";
 })
 export class NewsCardComponent {
   public news = input.required<News>();
+  public index = input.required<number>();
 
   open() {
     // comes from global import of fslightbox
@@ -24,6 +25,6 @@ export class NewsCardComponent {
     // @ts-ignore
     refreshFsLightbox()
     // @ts-ignore
-    fsLightbox.open()
+    fsLightbox.open(this.index())
   }
 }

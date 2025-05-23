@@ -1,7 +1,8 @@
 <mat-card>
-  <div mat-card-image>
+  <div (click)="open()" class="card-image-container">
+    <div class="image-opacity"></div>
     <img
-      (click)="open()"
+      mat-card-image
       [src]="news().low_quality_image"
       [alt]="news().title"
     />

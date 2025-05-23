@@ -2,20 +2,27 @@ mat-card {
   overflow: hidden;
 }
 
-[mat-card-image] {
-  background-color: black;
-  height: 300px;
+.card-image-container {
+  position: relative;
+  cursor: pointer;
 
-  img {
-    cursor: pointer;
-    position: relative;
+  .image-opacity {
+    background-color: black;
+    opacity: 0;
+    height: 100%;
     width: 100%;
-    height: 300px;
-    object-fit: cover;
+    position: absolute;
+    z-index: 2;
   }
 
-  &:hover img {
-    opacity: 0.7;
-    transition: opacity 200ms;
+  [mat-card-image] {
+    width: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+
+  &:hover .image-opacity {
+    opacity: 0.3;
+    transition: opacity 300ms;
   }
 }

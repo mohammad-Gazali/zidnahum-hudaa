@@ -2,7 +2,7 @@
   <mat-tab label="الحسنين">
     <div class="news-container">
       @for (news of hassaneinNews(); track $index) {
-        <app-news-card [news]="news" />
+        <app-news-card [index]="$index" [news]="news" />
       } @empty {
         <p class="no-news">
           لا يوجد إعلانات
@@ -13,7 +13,7 @@
   <mat-tab label="القزاز">
     <div class="news-container">
       @for (news of qazzazNews(); track news.id) {
-        <app-news-card [news]="news" />
+        <app-news-card [index]="$index" [news]="news" />
       } @empty {
         <p class="no-news">
           لا يوجد إعلانات

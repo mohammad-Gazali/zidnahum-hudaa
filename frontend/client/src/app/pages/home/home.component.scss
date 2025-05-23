@@ -82,3 +82,13 @@ form {
   text-align: center;
   font-size: 1.6rem;
 }
+
+.news-link {
+  --mdc-filled-button-container-height: 3rem;
+  --mdc-filled-button-container-shape: 0.5rem;
+
+  display: block;
+  margin: 2rem auto;
+  width: 100%;
+  max-width: 31rem;
+}

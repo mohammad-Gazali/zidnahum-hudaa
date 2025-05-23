@@ -12,5 +12,5 @@ class AssetListView(ListAPIView):
 # TODO: test in a TestCase
 class NewsListView(ListAPIView):
     serializer_class = NewsSerializer
-    queryset = News.objects.all()
+    queryset = News.objects.order_by("-id")
     pagination_class = None
