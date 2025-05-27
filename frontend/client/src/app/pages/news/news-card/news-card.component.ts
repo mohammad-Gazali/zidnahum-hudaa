@@ -1,6 +1,7 @@
-import { Component, input } from "@angular/core";
+import { Component, inject, input } from "@angular/core";
 import { MatCard, MatCardContent, MatCardHeader, MatCardImage, MatCardTitle } from "@angular/material/card";
 import { News } from "@shared";
+import { LightboxService } from "./lightbox/lightbox.service";
 
 @Component({
   selector: 'app-news-card',
@@ -16,15 +17,17 @@ import { News } from "@shared";
   styleUrl: './news-card.component.scss',
 })
 export class NewsCardComponent {
+  private lightbox = inject(LightboxService);
+
   public news = input.required<News>();
   public index = input.required<number>();
 
   open() {
-    // comes from global import of fslightbox
-    //
-    // @ts-ignore
-    refreshFsLightbox()
-    // @ts-ignore
-    fsLightbox.open(this.index())
+    const news = this.news();
+
+    this.lightbox.open({
+      alt: news.title,
+      src: news.main_image,
+    })
   }
 }

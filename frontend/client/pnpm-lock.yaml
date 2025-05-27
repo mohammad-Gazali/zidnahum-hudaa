@@ -38,9 +38,6 @@ importers:
       '@angular/router':
         specifier: ^18.2.3
         version: 18.2.3(@angular/common@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.14.6))(rxjs@7.8.1))(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.14.6))(@angular/platform-browser@18.2.3(@angular/animations@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.14.6)))(@angular/common@18.2.3(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.14.6))(rxjs@7.8.1))(@angular/core@18.2.3(rxjs@7.8.1)(zone.js@0.14.6)))(rxjs@7.8.1)
-      fslightbox:
-        specifier: ^3.6.0
-        version: 3.6.0
       rxjs:
         specifier: ~7.8.1
         version: 7.8.1
@@ -2629,9 +2626,6 @@ packages:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
-
-  fslightbox@3.6.0:
-    resolution: {integrity: sha512-ZQFlDDy0BLTbcoKss9KIcNv5g2IJ8vxFzuSIqRZe0iL7cYq9yyPXpnRYey/+jznN0DN3KanYQb+G+ncH7qz3XA==}
 
   function-bind@1.1.2:
     resolution: {integrity: sha512-7XHNxH7qX9xG5mIwxkhumTox/MIRNcOgDrxWsMt2pAr23WHp6MrRlN7FBSFpCpr+oVO0F744iUgR82nJMfG2SA==}
@@ -7399,8 +7393,6 @@ snapshots:
 
   fsevents@2.3.3:
     optional: true
-
-  fslightbox@3.6.0: {}
 
   function-bind@1.1.2: {}
 

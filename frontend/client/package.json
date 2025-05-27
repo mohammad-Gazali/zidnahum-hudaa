@@ -21,7 +21,6 @@
     "@angular/platform-browser": "^18.2.3",
     "@angular/platform-browser-dynamic": "^18.2.3",
     "@angular/router": "^18.2.3",
-    "fslightbox": "^3.6.0",
     "rxjs": "~7.8.1",
     "tslib": "^2.7.0"
   },
