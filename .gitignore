@@ -10,4 +10,5 @@ templates
 db.sqlite3
 database
 temp
+*.xlsx
 TODO.txt

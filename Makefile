@@ -13,6 +13,9 @@ test:
 shell:
 	@python ./backend/manage.py shell
 
+points:
+	@python ./backend/manage.py points
+
 build:
 	@python ./backend/manage.py build
 	@python ./backend/manage.py collectstatic --no-input
