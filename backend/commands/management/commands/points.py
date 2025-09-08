@@ -7,7 +7,7 @@ from students.models import Student, StudentLevelChoice, MemorizeMessage, Messag
 from students.utils import get_num_pages_memo, get_num_pages_test
 from students.constants import NEW
 from comings.models import Coming
-from points.models import PointsAdding
+from points.models import PointsAdding, PointsDeleting
 from money.models import MoneyDeleting
 from awqaf.models import AwqafNoQStudentRelation
 from adminstration.models import ControlSettings
@@ -61,6 +61,7 @@ class Command(BaseCommand):
                 .select_related("category")
                 .prefetch_related("memorizemessage_set")
                 .prefetch_related("pointsadding_set")
+                .prefetch_related("pointsdeleting_set")
                 .prefetch_related(
                     Prefetch(
                         lookup="coming_set",
@@ -84,6 +85,8 @@ class Command(BaseCommand):
 
             adding_points = sum(calc_adding_points(adding) for adding in student.pointsadding_set.all())
 
+            deleting_points = sum(calc_deleting_points(deleting) for deleting in student.pointsdeleting_set.all())
+
             awqaf_test_points = len(list(filter(lambda x: x == NEW, student.q_awqaf_test))) * AWQAF_PART_POINTS
             awqaf_looking_test_points = len(list(filter(lambda x: x == NEW, student.q_awqaf_test_looking))) * AWQAF_LOOKING_PART_POINTS
             awqaf_explaining_test_points = len(list(filter(lambda x: x == NEW, student.q_awqaf_test_explaining))) * AWQAF_EXPLAINING_PART_POINTS
@@ -102,7 +105,8 @@ class Command(BaseCommand):
                 memo_points +
                 awqaf_no_q_points +
                 hadeeth_points -
-                money_deleted_points
+                money_deleted_points -
+                deleting_points
             )
 
             rings_points = sum(calc_adding_points(adding) for adding in student.pointsadding_set.filter(cause_id=RING_CAUSE_ID))
@@ -179,6 +183,9 @@ def calc_awqaf_no_q_points(relation: AwqafNoQStudentRelation):
 
 def calc_adding_points(adding: PointsAdding):
     return adding.value
+
+def calc_deleting_points(deleting: PointsDeleting):
+    return deleting.value
 
 def calc_money_deleting(deleting: MoneyDeleting):
     return deleting.value if deleting.active_to_points else 0
