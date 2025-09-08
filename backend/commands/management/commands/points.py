@@ -19,14 +19,16 @@ AWQAF_PART_POINTS = 50
 AWQAF_LOOKING_PART_POINTS = 13
 AWQAF_EXPLAINING_PART_POINTS = 25
 HADEETH_POINTS = 3
-ALLAH_NAMES_POINTS = 50
+ALLAH_NAMES_POINTS = 15
 ELITE_PART_POINTS = 50
+POINT_VALUE = ControlSettings.get_point_value()
+SKIP_EMPTY_STUDENTS = False
+RING_CAUSE_ID = 14
 LEVEL_POINT_MAP = {
     StudentLevelChoice.ONE: 5,
     StudentLevelChoice.TWO: 7,
     StudentLevelChoice.THREE: 10,
 }
-
 
 class Command(BaseCommand):
     help = "Export students points info"
@@ -44,17 +46,13 @@ class Command(BaseCommand):
             'المسجد',
             'الفئة',
             'مستوى التجويد',
-            'أحضره',
             'الغرامات بالليرة',
             'الغرامات بالنقطة',
+            'نقاط المستوى الثالث',
             'نقاط الحلقات',
             'نقاط التسميع',
             'كلي النقاط',
         ])
-
-        POINT_VALUE = ControlSettings.get_point_value()
-        SKIP_EMPTY_STUDENTS = True
-        RING_CAUSE_ID = 14
         
         students = (
             Student.objects
@@ -111,6 +109,8 @@ class Command(BaseCommand):
 
             rings_points = sum(calc_adding_points(adding) for adding in student.pointsadding_set.filter(cause_id=RING_CAUSE_ID))
 
+            student_third_level_difference = calc_third_level_difference_points(student)
+
             if SKIP_EMPTY_STUDENTS and total_points == 0 and money_deleted == 0:
                 continue
 
@@ -121,9 +121,9 @@ class Command(BaseCommand):
                 student.get_masjed_display(),
                 str(student.category) if student.category else "-",
                 student.get_level_display(),
-                student.bring_him,
                 int(money_deleted),
                 int(money_deleted_points),
+                int(student_third_level_difference),
                 ceil(rings_points),
                 ceil(memo_points),
                 ceil(total_points),
@@ -189,6 +189,21 @@ def calc_deleting_points(deleting: PointsDeleting):
 
 def calc_money_deleting(deleting: MoneyDeleting):
     return deleting.value if deleting.active_to_points else 0
+
+def calc_third_level_difference_points(student: Student):
+    DIFFERENCE = LEVEL_POINT_MAP[StudentLevelChoice.THREE] - LEVEL_POINT_MAP[StudentLevelChoice.TWO]
+
+    memo_points = sum(
+        get_num_pages_memo(message.changes) * (message.is_doubled + 1) for message in student.memorizemessage_set.filter(message_type=MessageTypeChoice.MEMO, student_level=StudentLevelChoice.THREE)
+    ) * DIFFERENCE
+
+    test_points = sum(
+        get_num_pages_test(message.changes) * (message.is_doubled + 1) for message in student.memorizemessage_set.filter(message_type=MessageTypeChoice.TEST, student_level=StudentLevelChoice.THREE)
+    ) * DIFFERENCE
+
+    return memo_points + test_points
+
+
 
 def _calc_message_points(message: MemorizeMessage, q_memo: List[int], q_test: List[int], q_elite_test: List[int]):
     changes = [*message.changes]
