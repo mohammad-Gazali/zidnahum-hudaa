@@ -16,6 +16,9 @@ shell:
 points:
 	@python ./backend/manage.py points
 
+reset-data:
+	@python ./backend/manage.py reset-data
+
 build:
 	@python ./backend/manage.py build
 	@python ./backend/manage.py collectstatic --no-input
