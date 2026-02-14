@@ -1,5 +1,6 @@
 .vscode
 venv
+.venv
 env.py
 node_modules
 __pycache__

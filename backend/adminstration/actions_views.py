@@ -1,91 +1,107 @@
-from django.shortcuts import get_object_or_404
+from awqaf.models import AwqafNoQStudentRelation, AwqafTestNoQ
+from comings.models import Coming, ComingCategory
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAdminUser
+from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema
+from globals.models import AssetFile, AssetsCategory, News
+from money.models import MoneyDeleting, MoneyDeletingCause
+from points.models import (
+  PointsAdding,
+  PointsAddingCause,
+  PointsDeleting,
+  PointsDeletingCause,
+)
 from rest_framework.response import Response
 from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
-from drf_yasg.utils import swagger_auto_schema
-from adminstration.actions_serializers import UserUpdatePasswordSerializer, ActionBooleanUpdateSerializer
+from rest_framework.views import APIView
+from students.models import (
+  MemorizeMessage,
+  MemorizeNotes,
+  Student,
+  StudentCategory,
+  StudentGroup,
+)
+
+from adminstration.actions_serializers import (
+  ActionBooleanUpdateSerializer,
+  UserUpdatePasswordSerializer,
+)
 from adminstration.actions_utils import create_delete_model_action_view
 from adminstration.permissions import IsSuperUser
-from awqaf.models import AwqafTestNoQ, AwqafNoQStudentRelation
-from comings.models import ComingCategory, Coming
-from globals.models import AssetsCategory, AssetFile, News
-from money.models import MoneyDeletingCause, MoneyDeleting
-from points.models import PointsAddingCause, PointsAdding, PointsDeletingCause, PointsDeleting
-from students.models import StudentCategory, StudentGroup, Student, MemorizeMessage, MemorizeNotes
 
 
 class AdminUserPasswordUpdateView(APIView):
-    permission_classes = [IsSuperUser]
-    http_method_names = ["put"]
-    
-    @swagger_auto_schema(
-        request_body=UserUpdatePasswordSerializer,
-    )
-    def put(self, *args, **kwargs):
-        serializer = UserUpdatePasswordSerializer(data=self.request.data)
+  permission_classes = [IsSuperUser]
+  http_method_names = ["put"]
 
-        if serializer.is_valid():
-            user = get_object_or_404(get_user_model(), pk=serializer.validated_data["user"])
+  @extend_schema(request=UserUpdatePasswordSerializer)
+  def put(self, *args, **kwargs):
+    serializer = UserUpdatePasswordSerializer(data=self.request.data)
 
-            user.set_password(serializer.validated_data["new_password"])
-            user.save()
+    if serializer.is_valid():
+      user = get_object_or_404(get_user_model(), pk=serializer.validated_data["user"])
 
-            return Response(status=HTTP_204_NO_CONTENT)
+      user.set_password(serializer.validated_data["new_password"])
+      user.save()
 
-        return Response({ "detail": serializer.errors }, status=HTTP_400_BAD_REQUEST)
+      return Response(status=HTTP_204_NO_CONTENT)
+
+    return Response({"detail": serializer.errors}, status=HTTP_400_BAD_REQUEST)
 
 
 class AdminUserUpdateActiveView(APIView):
-    permission_classes = [IsSuperUser]
-    http_method_names = ["put"]
+  permission_classes = [IsSuperUser]
+  http_method_names = ["put"]
 
-    @swagger_auto_schema(request_body=ActionBooleanUpdateSerializer)
-    def put(self, *args, **kwargs):
-        serializer = ActionBooleanUpdateSerializer(data=self.request.data)
+  @extend_schema(request=ActionBooleanUpdateSerializer)
+  def put(self, *args, **kwargs):
+    serializer = ActionBooleanUpdateSerializer(data=self.request.data)
 
-        if serializer.is_valid():
-            ids = serializer.validated_data['ids']
-            value = serializer.validated_data['value']
+    if serializer.is_valid():
+      ids = serializer.validated_data["ids"]
+      value = serializer.validated_data["value"]
 
-            for user in get_user_model().objects.filter(pk__in=ids, is_superuser=False):
-                user.is_active = value
-                user.save()
+      for user in get_user_model().objects.filter(pk__in=ids, is_superuser=False):
+        user.is_active = value
+        user.save()
 
-            return Response(status=HTTP_204_NO_CONTENT)
+      return Response(status=HTTP_204_NO_CONTENT)
 
-        return Response({ "detail": serializer.errors }, status=HTTP_400_BAD_REQUEST)
+    return Response({"detail": serializer.errors}, status=HTTP_400_BAD_REQUEST)
 
 
 class AdminMoneyDeletingUpdateActiveView(APIView):
-    permission_classes = [IsSuperUser]
-    http_method_names = ["put"]
+  permission_classes = [IsSuperUser]
+  http_method_names = ["put"]
 
-    @swagger_auto_schema(request_body=ActionBooleanUpdateSerializer)
-    def put(self, *args, **kwargs):
-        serializer = ActionBooleanUpdateSerializer(data=self.request.data)
+  @extend_schema(request=ActionBooleanUpdateSerializer)
+  def put(self, *args, **kwargs):
+    serializer = ActionBooleanUpdateSerializer(data=self.request.data)
 
-        if serializer.is_valid():
-            ids = serializer.validated_data['ids']
-            value = serializer.validated_data['value']
+    if serializer.is_valid():
+      ids = serializer.validated_data["ids"]
+      value = serializer.validated_data["value"]
 
-            for deleting in MoneyDeleting.objects.filter(pk__in=ids):
-                deleting.active_to_points = value
-                deleting.save()
+      for deleting in MoneyDeleting.objects.filter(pk__in=ids):
+        deleting.active_to_points = value
+        deleting.save()
 
-            return Response(status=HTTP_204_NO_CONTENT)
+      return Response(status=HTTP_204_NO_CONTENT)
 
-        return Response({ "detail": serializer.errors }, status=HTTP_400_BAD_REQUEST)
+    return Response({"detail": serializer.errors}, status=HTTP_400_BAD_REQUEST)
 
 
 # ======= delete actions =======
-AdminUserDeleteAction = create_delete_model_action_view(get_user_model(), superuser=True)
+AdminUserDeleteAction = create_delete_model_action_view(
+  get_user_model(), superuser=True
+)
 AdminGroupDeleteAction = create_delete_model_action_view(Group, superuser=True)
 
 AdminAwqafTestNoQDeleteAction = create_delete_model_action_view(AwqafTestNoQ)
-AdminAwqafNoQStudentRelationDeleteAction = create_delete_model_action_view(AwqafNoQStudentRelation)
+AdminAwqafNoQStudentRelationDeleteAction = create_delete_model_action_view(
+  AwqafNoQStudentRelation
+)
 
 AdminComingCategoryDeleteAction = create_delete_model_action_view(ComingCategory)
 AdminComingDeleteAction = create_delete_model_action_view(Coming)
@@ -94,12 +110,18 @@ AdminAssetsCategoryDeleteAction = create_delete_model_action_view(AssetsCategory
 AdminAssetFileDeleteAction = create_delete_model_action_view(AssetFile)
 AdminNewsDeleteAction = create_delete_model_action_view(News)
 
-AdminMoneyDeletingCauseDeleteAction = create_delete_model_action_view(MoneyDeletingCause, superuser=True)
+AdminMoneyDeletingCauseDeleteAction = create_delete_model_action_view(
+  MoneyDeletingCause, superuser=True
+)
 
 AdminPointsAddingCauseDeleteAction = create_delete_model_action_view(PointsAddingCause)
 AdminPointsAddingDeleteAction = create_delete_model_action_view(PointsAdding)
-AdminPointsDeletingCauseDeleteAction = create_delete_model_action_view(PointsDeletingCause, superuser=True)
-AdminPointsDeletingDeleteAction = create_delete_model_action_view(PointsDeleting, superuser=True)
+AdminPointsDeletingCauseDeleteAction = create_delete_model_action_view(
+  PointsDeletingCause, superuser=True
+)
+AdminPointsDeletingDeleteAction = create_delete_model_action_view(
+  PointsDeleting, superuser=True
+)
 
 AdminStudentCategoryDeleteAction = create_delete_model_action_view(StudentCategory)
 AdminStudentGroupDeleteAction = create_delete_model_action_view(StudentGroup)
