@@ -166,6 +166,7 @@ SPECTACULAR_SETTINGS = {
   "TITLE": "Zidnahum Hudaa Project API",
   "VERSION": "1.0.0",
   "SERVE_INCLUDE_SCHEMA": False,
+  "SCHEMA_PATH_PREFIX": "/api/v1",
 }
 
 
