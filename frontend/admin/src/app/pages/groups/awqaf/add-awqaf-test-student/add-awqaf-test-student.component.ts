@@ -19,9 +19,7 @@ import {
   MatFormField,
   MatLabel,
   MatError,
-  MatHint,
 } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { MatRipple } from '@angular/material/core';
 import { finalize } from 'rxjs';
@@ -51,8 +49,6 @@ import { LOADING } from '../../../../tokens/loading.token';
         MatFormField,
         MatLabel,
         MatError,
-        MatHint,
-        MatInput,
         MatButton,
         MatRipple,
         ReactiveFormsModule,

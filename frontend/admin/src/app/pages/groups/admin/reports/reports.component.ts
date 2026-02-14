@@ -94,7 +94,7 @@ export class ReportsComponent {
     map.set(undefined, '-');
 
     this.masters()?.forEach((master) => {
-      map.set(master.id, master.first_name ?? '' + master.last_name ?? '');
+      map.set(master.id, (master.first_name ?? '') + (master.last_name ?? ''));
     });
 
     return map;
@@ -400,7 +400,7 @@ export class ReportsComponent {
 
   private dateToISO(value: Date) {
     const timezoneOffset = value.getTimezoneOffset() * 60000;
-    return new Date(value.getTime() - timezoneOffset).toISOString();  
+    return new Date(value.getTime() - timezoneOffset).toISOString();
   }
 }
 
