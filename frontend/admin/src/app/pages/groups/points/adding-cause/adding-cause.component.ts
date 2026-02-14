@@ -6,11 +6,10 @@ import { PointsAddingCauseList } from '../../../../services/api/admin/models';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-  selector: 'app-adding-cause',
-  standalone: true,
-  imports: [TableComponent],
-  templateUrl: './adding-cause.component.html',
-  styleUrl: './adding-cause.component.scss'
+    selector: 'app-adding-cause',
+    imports: [TableComponent],
+    templateUrl: './adding-cause.component.html',
+    styleUrl: './adding-cause.component.scss'
 })
 export class AddingCauseComponent extends PointsBase {
   public config: TableComponentConfig<PointsAddingCauseList> = {

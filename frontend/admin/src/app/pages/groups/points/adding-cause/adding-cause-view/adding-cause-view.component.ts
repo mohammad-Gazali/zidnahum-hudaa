@@ -6,11 +6,10 @@ import { PointsAddingCauseList, PointsAddingCauseUpdate } from '../../../../../s
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-adding-cause-view',
-  standalone: true,
-  imports: [ViewComponent],
-  templateUrl: './adding-cause-view.component.html',
-  styleUrl: './adding-cause-view.component.scss'
+    selector: 'app-adding-cause-view',
+    imports: [ViewComponent],
+    templateUrl: './adding-cause-view.component.html',
+    styleUrl: './adding-cause-view.component.scss'
 })
 export class AddingCauseViewComponent extends PointsBase {
   public config: ViewComponentConfig<PointsAddingCauseList, PointsAddingCauseUpdate> = {

@@ -6,11 +6,10 @@ import { CreateComponent } from '../../../../../shared/create/create.component';
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-deleting-cause-create',
-  standalone: true,
-  imports: [CreateComponent],
-  templateUrl: './deleting-cause-create.component.html',
-  styleUrl: './deleting-cause-create.component.scss'
+    selector: 'app-deleting-cause-create',
+    imports: [CreateComponent],
+    templateUrl: './deleting-cause-create.component.html',
+    styleUrl: './deleting-cause-create.component.scss'
 })
 export class DeletingCauseCreateComponent extends PointsBase {
   public config: CreateComponentConfig<PointsDeletingCauseCreate> = {

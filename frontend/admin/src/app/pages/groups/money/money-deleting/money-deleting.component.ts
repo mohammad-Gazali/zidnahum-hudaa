@@ -5,11 +5,10 @@ import { TableComponentConfig } from '../../../../shared/table/table.component.i
 import { MoneyDeletingList } from '../../../../services/api/admin/models';
 
 @Component({
-  selector: 'app-money-deleting',
-  standalone: true,
-  imports: [TableComponent],
-  templateUrl: './money-deleting.component.html',
-  styleUrl: './money-deleting.component.scss'
+    selector: 'app-money-deleting',
+    imports: [TableComponent],
+    templateUrl: './money-deleting.component.html',
+    styleUrl: './money-deleting.component.scss'
 })
 export class MoneyDeletingComponent extends MoneyBase {
   public config: TableComponentConfig<MoneyDeletingList> = {

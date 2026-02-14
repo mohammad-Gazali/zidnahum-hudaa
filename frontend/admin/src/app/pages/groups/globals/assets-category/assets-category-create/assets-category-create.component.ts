@@ -6,11 +6,10 @@ import { GlobalsBase } from '../../globals.base';
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-assets-category-create',
-  standalone: true,
-  imports: [CreateComponent],
-  templateUrl: './assets-category-create.component.html',
-  styleUrl: './assets-category-create.component.scss'
+    selector: 'app-assets-category-create',
+    imports: [CreateComponent],
+    templateUrl: './assets-category-create.component.html',
+    styleUrl: './assets-category-create.component.scss'
 })
 export class AssetsCategoryCreateComponent extends GlobalsBase {
   public config: CreateComponentConfig<AssetsCategoryCreate> = {

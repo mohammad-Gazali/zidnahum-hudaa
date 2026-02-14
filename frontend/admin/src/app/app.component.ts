@@ -6,11 +6,10 @@ import { AccountsService } from './services/api/accounts/accounts.service';
 import { SnackbarService } from './services/snackbar.service';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, LayoutComponent, MatProgressSpinner],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+    selector: 'app-root',
+    imports: [RouterOutlet, LayoutComponent, MatProgressSpinner],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
   private accounts = inject(AccountsService);

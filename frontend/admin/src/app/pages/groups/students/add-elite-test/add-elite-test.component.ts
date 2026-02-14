@@ -21,20 +21,19 @@ import { finalize } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-add-elite-test',
-  standalone: true,
-  imports: [
-    MatCard,
-    MatIcon,
-    MatChip,
-    MatChipRemove,
-    MatButton,
-    MatRipple,
-    StudentSearchComponent,
-    ReactiveFormsModule,
-  ],
-  templateUrl: './add-elite-test.component.html',
-  styleUrl: './add-elite-test.component.scss',
+    selector: 'app-add-elite-test',
+    imports: [
+        MatCard,
+        MatIcon,
+        MatChip,
+        MatChipRemove,
+        MatButton,
+        MatRipple,
+        StudentSearchComponent,
+        ReactiveFormsModule,
+    ],
+    templateUrl: './add-elite-test.component.html',
+    styleUrl: './add-elite-test.component.scss'
 })
 export class AddEliteTestComponent {
   private fb = inject(NonNullableFormBuilder);

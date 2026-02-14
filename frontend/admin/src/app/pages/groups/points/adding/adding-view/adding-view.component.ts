@@ -7,11 +7,10 @@ import { AuthService } from '../../../../../services/api/admin/services';
 import { map } from 'rxjs';
 
 @Component({
-  selector: 'app-adding-view',
-  standalone: true,
-  imports: [ViewComponent],
-  templateUrl: './adding-view.component.html',
-  styleUrl: './adding-view.component.scss'
+    selector: 'app-adding-view',
+    imports: [ViewComponent],
+    templateUrl: './adding-view.component.html',
+    styleUrl: './adding-view.component.scss'
 })
 export class AddingViewComponent extends PointsBase {
   private auth = inject(AuthService);

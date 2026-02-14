@@ -6,11 +6,10 @@ import { StudentsBase } from '../../students.base';
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-student-group-create',
-  standalone: true,
-  imports: [CreateComponent],
-  templateUrl: './group-create.component.html',
-  styleUrl: './group-create.component.scss'
+    selector: 'app-student-group-create',
+    imports: [CreateComponent],
+    templateUrl: './group-create.component.html',
+    styleUrl: './group-create.component.scss'
 })
 export class StudentGroupCreateComponent extends StudentsBase {
   public config: CreateComponentConfig<StudentGroupCreate> = {

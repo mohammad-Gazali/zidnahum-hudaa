@@ -6,11 +6,10 @@ import { MoneyDeletingCauseList, MoneyDeletingCauseUpdate } from '../../../../..
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-money-deleting-cause-view',
-  standalone: true,
-  imports: [ViewComponent],
-  templateUrl: './money-deleting-cause-view.component.html',
-  styleUrl: './money-deleting-cause-view.component.scss'
+    selector: 'app-money-deleting-cause-view',
+    imports: [ViewComponent],
+    templateUrl: './money-deleting-cause-view.component.html',
+    styleUrl: './money-deleting-cause-view.component.scss'
 })
 export class MoneyDeletingCauseViewComponent extends MoneyBase {
   public config: ViewComponentConfig<MoneyDeletingCauseList, MoneyDeletingCauseUpdate> = {

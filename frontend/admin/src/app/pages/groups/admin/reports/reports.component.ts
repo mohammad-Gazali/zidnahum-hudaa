@@ -41,34 +41,33 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatCard } from '@angular/material/card';
 
 @Component({
-  selector: 'app-reports',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatRadioModule,
-    MatChipsModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatButtonModule,
-    MatTableModule,
-    MatDividerModule,
-    MatCard,
-    StudentSearchComponent,
-    ChangesFieldComponent,
-    TranslatePipe,
-    DatePipe,
-  ],
-  providers: [
-    {
-      provide: MAT_DATE_LOCALE,
-      useValue: 'ar',
-    },
-    provideNativeDateAdapter(),
-  ],
-  templateUrl: './reports.component.html',
-  styleUrl: './reports.component.scss',
+    selector: 'app-reports',
+    imports: [
+        ReactiveFormsModule,
+        MatRadioModule,
+        MatChipsModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatButtonModule,
+        MatTableModule,
+        MatDividerModule,
+        MatCard,
+        StudentSearchComponent,
+        ChangesFieldComponent,
+        TranslatePipe,
+        DatePipe,
+    ],
+    providers: [
+        {
+            provide: MAT_DATE_LOCALE,
+            useValue: 'ar',
+        },
+        provideNativeDateAdapter(),
+    ],
+    templateUrl: './reports.component.html',
+    styleUrl: './reports.component.scss'
 })
 export class ReportsComponent {
   private fb = inject(NonNullableFormBuilder);

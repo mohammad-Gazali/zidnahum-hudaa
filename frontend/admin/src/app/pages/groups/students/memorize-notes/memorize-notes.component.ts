@@ -8,11 +8,10 @@ import { map } from 'rxjs';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-  selector: 'app-memorize-notes',
-  standalone: true,
-  imports: [TableComponent],
-  templateUrl: './memorize-notes.component.html',
-  styleUrl: './memorize-notes.component.scss',
+    selector: 'app-memorize-notes',
+    imports: [TableComponent],
+    templateUrl: './memorize-notes.component.html',
+    styleUrl: './memorize-notes.component.scss'
 })
 export class MemorizeNotesComponent extends StudentsBase {
   private auth = inject(AuthService);

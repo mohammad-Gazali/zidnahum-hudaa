@@ -6,11 +6,10 @@ import { ViewComponentConfig } from '../../../../../shared/view/view.component.i
 import { GlobalsBase } from '../../globals.base';
 
 @Component({
-  selector: 'app-news-view',
-  standalone: true,
-  imports: [ViewComponent],
-  templateUrl: './news-view.component.html',
-  styleUrl: './news-view.component.scss'
+    selector: 'app-news-view',
+    imports: [ViewComponent],
+    templateUrl: './news-view.component.html',
+    styleUrl: './news-view.component.scss'
 })
 export class NewsViewComponent extends GlobalsBase {
   private masjed = inject(MasjedService);

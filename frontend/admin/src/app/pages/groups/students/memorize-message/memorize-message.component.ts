@@ -11,11 +11,10 @@ import { LevelService } from '../../../../services/level.service';
 
 
 @Component({
-  selector: 'app-memorize-message',
-  standalone: true,
-  imports: [TableComponent],
-  templateUrl: './memorize-message.component.html',
-  styleUrl: './memorize-message.component.scss'
+    selector: 'app-memorize-message',
+    imports: [TableComponent],
+    templateUrl: './memorize-message.component.html',
+    styleUrl: './memorize-message.component.scss'
 })
 export class MemorizeMessageComponent extends StudentsBase {
   private types = inject(MemorizeMessageTypeService);

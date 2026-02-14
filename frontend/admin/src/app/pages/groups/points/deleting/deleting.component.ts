@@ -8,11 +8,10 @@ import { map } from 'rxjs';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-  selector: 'app-deleting',
-  standalone: true,
-  imports: [TableComponent],
-  templateUrl: './deleting.component.html',
-  styleUrl: './deleting.component.scss'
+    selector: 'app-deleting',
+    imports: [TableComponent],
+    templateUrl: './deleting.component.html',
+    styleUrl: './deleting.component.scss'
 })
 export class DeletingComponent extends PointsBase {
   private auth = inject(AuthService);

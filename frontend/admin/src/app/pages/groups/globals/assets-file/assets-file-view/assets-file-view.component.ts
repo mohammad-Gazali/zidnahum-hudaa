@@ -5,11 +5,10 @@ import { AssetFileList } from '../../../../../services/api/admin/models';
 import { GlobalsBase } from '../../globals.base';
 
 @Component({
-  selector: 'app-assets-file-view',
-  standalone: true,
-  imports: [ViewComponent],
-  templateUrl: './assets-file-view.component.html',
-  styleUrl: './assets-file-view.component.scss'
+    selector: 'app-assets-file-view',
+    imports: [ViewComponent],
+    templateUrl: './assets-file-view.component.html',
+    styleUrl: './assets-file-view.component.scss'
 })
 export class AssetsFileViewComponent extends GlobalsBase {
   public config: ViewComponentConfig<AssetFileList> = {

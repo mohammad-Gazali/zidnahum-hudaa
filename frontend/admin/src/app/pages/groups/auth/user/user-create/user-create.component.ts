@@ -6,11 +6,10 @@ import { AuthBase } from '../../auth.base';
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-user-create',
-  standalone: true,
-  imports: [CreateComponent],
-  templateUrl: './user-create.component.html',
-  styleUrl: './user-create.component.scss'
+    selector: 'app-user-create',
+    imports: [CreateComponent],
+    templateUrl: './user-create.component.html',
+    styleUrl: './user-create.component.scss'
 })
 export class UserCreateComponent extends AuthBase {
   public config: CreateComponentConfig<UserCreate> = {

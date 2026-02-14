@@ -12,12 +12,11 @@ import {
 } from '@angular/forms';
 
 @Component({
-  selector: 'app-quran-memorize',
-  standalone: true,
-  imports: [ReactiveFormsModule, MatCardModule, MatRippleModule],
-  templateUrl: './quran-memorize.component.html',
-  styleUrl: './quran-memorize.component.scss',
-  viewProviders:[{ provide: ControlContainer, useExisting: FormGroupDirective }]
+    selector: 'app-quran-memorize',
+    imports: [ReactiveFormsModule, MatCardModule, MatRippleModule],
+    templateUrl: './quran-memorize.component.html',
+    styleUrl: './quran-memorize.component.scss',
+    viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }]
 })
 export class QuranMemorizeComponent {
   public transform = inject(QuranMemorzieService).transform;

@@ -32,29 +32,28 @@ import {
 import { LOADING } from '../../tokens/loading.token';
 
 @Component({
-  selector: 'app-create',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDividerModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatSelectModule,
-    TranslatePipe,
-  ],
-  providers: [
-    {
-      provide: MAT_DATE_LOCALE,
-      useValue: 'ar',
-    },
-    provideNativeDateAdapter(),
-  ],
-  templateUrl: './create.component.html',
-  styleUrl: './create.component.scss',
+    selector: 'app-create',
+    imports: [
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatDividerModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatSelectModule,
+        TranslatePipe,
+    ],
+    providers: [
+        {
+            provide: MAT_DATE_LOCALE,
+            useValue: 'ar',
+        },
+        provideNativeDateAdapter(),
+    ],
+    templateUrl: './create.component.html',
+    styleUrl: './create.component.scss'
 })
 export class CreateComponent<T> implements OnInit {
   private fb = inject(NonNullableFormBuilder);

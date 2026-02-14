@@ -6,11 +6,10 @@ import { Validators } from '@angular/forms';
 import { AwqafBase } from '../../awqaf.base';
 
 @Component({
-  selector: 'app-no-q-test-create',
-  standalone: true,
-  imports: [CreateComponent],
-  templateUrl: './no-q-test-create.component.html',
-  styleUrl: './no-q-test-create.component.scss'
+    selector: 'app-no-q-test-create',
+    imports: [CreateComponent],
+    templateUrl: './no-q-test-create.component.html',
+    styleUrl: './no-q-test-create.component.scss'
 })
 export class NoQTestCreateComponent extends AwqafBase {
   public config: CreateComponentConfig<AwqafTestNoQCreate> = {

@@ -9,11 +9,10 @@ import { MemorizeMessageTypeService } from '../../../../../services/memorize-mes
 import { LevelService } from '../../../../../services/level.service';
 
 @Component({
-  selector: 'app-memorize-message-view',
-  standalone: true,
-  imports: [ViewComponent],
-  templateUrl: './memorize-message-view.component.html',
-  styleUrl: './memorize-message-view.component.scss'
+    selector: 'app-memorize-message-view',
+    imports: [ViewComponent],
+    templateUrl: './memorize-message-view.component.html',
+    styleUrl: './memorize-message-view.component.scss'
 })
 export class MemorizeMessageViewComponent extends StudentsBase {
   private auth = inject(AuthService);

@@ -6,11 +6,10 @@ import { AssetsCategoryList, AssetsCategoryUpdate } from '../../../../../service
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-assets-category-view',
-  standalone: true,
-  imports: [ViewComponent],
-  templateUrl: './assets-category-view.component.html',
-  styleUrl: './assets-category-view.component.scss'
+    selector: 'app-assets-category-view',
+    imports: [ViewComponent],
+    templateUrl: './assets-category-view.component.html',
+    styleUrl: './assets-category-view.component.scss'
 })
 export class AssetsCategoryViewComponent extends GlobalsBase {
   public config: ViewComponentConfig<AssetsCategoryList, AssetsCategoryUpdate> = {

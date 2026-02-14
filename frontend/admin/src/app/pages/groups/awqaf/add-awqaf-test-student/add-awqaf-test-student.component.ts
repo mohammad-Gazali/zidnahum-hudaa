@@ -38,30 +38,29 @@ import { QuranAwqafTestService } from '../../../../services/quran/quran-awqaf-te
 import { LOADING } from '../../../../tokens/loading.token';
 
 @Component({
-  selector: 'app-add-awqaf-test-student',
-  standalone: true,
-  imports: [
-    MatCard,
-    MatChipRow,
-    MatChipRemove,
-    MatIcon,
-    MatRadioGroup,
-    MatRadioButton,
-    MatSelect,
-    MatOption,
-    MatFormField,
-    MatLabel,
-    MatError,
-    MatHint,
-    MatInput,
-    MatButton,
-    MatRipple,
-    ReactiveFormsModule,
-    StudentSearchComponent,
-    TranslatePipe,
-  ],
-  templateUrl: './add-awqaf-test-student.component.html',
-  styleUrl: './add-awqaf-test-student.component.scss',
+    selector: 'app-add-awqaf-test-student',
+    imports: [
+        MatCard,
+        MatChipRow,
+        MatChipRemove,
+        MatIcon,
+        MatRadioGroup,
+        MatRadioButton,
+        MatSelect,
+        MatOption,
+        MatFormField,
+        MatLabel,
+        MatError,
+        MatHint,
+        MatInput,
+        MatButton,
+        MatRipple,
+        ReactiveFormsModule,
+        StudentSearchComponent,
+        TranslatePipe,
+    ],
+    templateUrl: './add-awqaf-test-student.component.html',
+    styleUrl: './add-awqaf-test-student.component.scss'
 })
 export class AddAwqafTestStudentComponent {
   private awqaf = inject(AwqafService);

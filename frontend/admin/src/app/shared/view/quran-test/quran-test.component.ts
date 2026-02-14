@@ -6,12 +6,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatRippleModule } from '@angular/material/core';
 
 @Component({
-  selector: 'app-quran-test',
-  standalone: true,
-  imports: [MatCardModule, MatRippleModule, ReactiveFormsModule],
-  templateUrl: './quran-test.component.html',
-  styleUrl: './quran-test.component.scss',
-  viewProviders:[{ provide: ControlContainer, useExisting: FormGroupDirective }]
+    selector: 'app-quran-test',
+    imports: [MatCardModule, MatRippleModule, ReactiveFormsModule],
+    templateUrl: './quran-test.component.html',
+    styleUrl: './quran-test.component.scss',
+    viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }]
 })
 export class QuranTestComponent {
   public test = inject(QuranTestService);

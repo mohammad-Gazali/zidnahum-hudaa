@@ -15,20 +15,19 @@ import { SnackbarService } from '../../../../../services/snackbar.service';
 import { LOADING } from '../../../../../tokens/loading.token';
 
 @Component({
-  selector: 'app-user-update-password',
-  standalone: true,
-  imports: [
-    MatFormField,
-    MatLabel,
-    MatError,
-    MatInput,
-    MatButton,
-    MatIcon,
-    ReactiveFormsModule,
-    TranslatePipe,
-  ],
-  templateUrl: './user-update-password.component.html',
-  styleUrl: './user-update-password.component.scss',
+    selector: 'app-user-update-password',
+    imports: [
+        MatFormField,
+        MatLabel,
+        MatError,
+        MatInput,
+        MatButton,
+        MatIcon,
+        ReactiveFormsModule,
+        TranslatePipe,
+    ],
+    templateUrl: './user-update-password.component.html',
+    styleUrl: './user-update-password.component.scss'
 })
 export class UserUpdatePasswordComponent {
   private actions = inject(ActionsService);

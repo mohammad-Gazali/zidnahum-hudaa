@@ -6,11 +6,10 @@ import { PointsDeletingCauseList, PointsDeletingCauseUpdate } from '../../../../
 import { ViewComponent } from '../../../../../shared/view/view.component';
 
 @Component({
-  selector: 'app-deleting-cause-view',
-  standalone: true,
-  imports: [ViewComponent],
-  templateUrl: './deleting-cause-view.component.html',
-  styleUrl: './deleting-cause-view.component.scss'
+    selector: 'app-deleting-cause-view',
+    imports: [ViewComponent],
+    templateUrl: './deleting-cause-view.component.html',
+    styleUrl: './deleting-cause-view.component.scss'
 })
 export class DeletingCauseViewComponent extends PointsBase {
   public config: ViewComponentConfig<PointsDeletingCauseList, PointsDeletingCauseUpdate> = {

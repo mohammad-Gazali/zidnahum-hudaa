@@ -23,30 +23,29 @@ import { Filter } from '../table.component.interface';
 import { DialogData } from './table-filters-dialog.component.interface';
 
 @Component({
-  selector: 'app-table-filters-dialog',
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatButtonModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    ReactiveFormsModule,
-    MatRadioModule,
-    TranslatePipe,
-  ],
-  providers: [
-    {
-      provide: MAT_DATE_LOCALE,
-      useValue: 'ar',
-    },
-    provideNativeDateAdapter(),
-  ],
-  templateUrl: './table-filters-dialog.component.html',
-  styleUrl: './table-filters-dialog.component.scss',
+    selector: 'app-table-filters-dialog',
+    imports: [
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatButtonModule,
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        ReactiveFormsModule,
+        MatRadioModule,
+        TranslatePipe,
+    ],
+    providers: [
+        {
+            provide: MAT_DATE_LOCALE,
+            useValue: 'ar',
+        },
+        provideNativeDateAdapter(),
+    ],
+    templateUrl: './table-filters-dialog.component.html',
+    styleUrl: './table-filters-dialog.component.scss'
 })
 export class TableFiltersDialogComponent {
   private fb = inject(NonNullableFormBuilder);

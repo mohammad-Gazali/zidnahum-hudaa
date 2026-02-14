@@ -6,11 +6,10 @@ import { ComingCategoryList, ComingCategoryUpdate } from '../../../../../service
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-coming-category-view',
-  standalone: true,
-  imports: [ViewComponent],
-  templateUrl: './coming-category-view.component.html',
-  styleUrl: './coming-category-view.component.scss'
+    selector: 'app-coming-category-view',
+    imports: [ViewComponent],
+    templateUrl: './coming-category-view.component.html',
+    styleUrl: './coming-category-view.component.scss'
 })
 export class ComingCategoryViewComponent extends ComingsBase {
   public config: ViewComponentConfig<ComingCategoryList, ComingCategoryUpdate> = {

@@ -6,11 +6,10 @@ import { AwqafNoQStudentRelationList } from '../../../../services/api/admin/mode
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-  selector: 'app-student-no-q-test-relation',
-  standalone: true,
-  imports: [TableComponent],
-  templateUrl: './student-no-q-test-relation.component.html',
-  styleUrl: './student-no-q-test-relation.component.scss'
+    selector: 'app-student-no-q-test-relation',
+    imports: [TableComponent],
+    templateUrl: './student-no-q-test-relation.component.html',
+    styleUrl: './student-no-q-test-relation.component.scss'
 })
 export class StudentNoQTestRelationComponent extends AwqafBase {
   public config: TableComponentConfig<AwqafNoQStudentRelationList> = {

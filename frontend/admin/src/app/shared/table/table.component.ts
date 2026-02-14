@@ -54,37 +54,36 @@ import { TableConfirmationDialogData } from './table-confirmation-dialog/table-c
 import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
-  selector: 'app-table',
-  standalone: true,
-  imports: [
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatCheckboxModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDividerModule,
-    MatChipsModule,
-    MatIconModule,
-    MatMenuModule,
-    ReactiveFormsModule,
-    RouterLink,
-    TranslatePipe,
-    ChangesFieldComponent,
-  ],
-  providers: [
-    { provide: MatPaginatorIntl, useClass: TableComponentPaginator },
-    {
-      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: {
-        appearance: 'outline',
-        subscriptSizing: 'dynamic',
-      },
-    },
-  ],
-  templateUrl: './table.component.html',
-  styleUrl: './table.component.scss',
+    selector: 'app-table',
+    imports: [
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatCheckboxModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDividerModule,
+        MatChipsModule,
+        MatIconModule,
+        MatMenuModule,
+        ReactiveFormsModule,
+        RouterLink,
+        TranslatePipe,
+        ChangesFieldComponent,
+    ],
+    providers: [
+        { provide: MatPaginatorIntl, useClass: TableComponentPaginator },
+        {
+            provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+            useValue: {
+                appearance: 'outline',
+                subscriptSizing: 'dynamic',
+            },
+        },
+    ],
+    templateUrl: './table.component.html',
+    styleUrl: './table.component.scss'
 })
 export class TableComponent<T extends { id: number }> implements OnInit {
   private fb = inject(NonNullableFormBuilder);

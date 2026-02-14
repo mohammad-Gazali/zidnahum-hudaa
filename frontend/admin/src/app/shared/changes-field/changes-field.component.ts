@@ -5,11 +5,10 @@ import { MatCard } from '@angular/material/card';
 import { QuranEliteTestService } from '../../services/quran/quran-elite-test.service';
 
 @Component({
-  selector: 'app-changes-field',
-  standalone: true,
-  imports: [MatCard],
-  templateUrl: './changes-field.component.html',
-  styleUrl: './changes-field.component.scss'
+    selector: 'app-changes-field',
+    imports: [MatCard],
+    templateUrl: './changes-field.component.html',
+    styleUrl: './changes-field.component.scss'
 })
 export class ChangesFieldComponent {
   public memorize = inject(QuranMemorzieService);

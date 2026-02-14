@@ -13,20 +13,19 @@ import { SnackbarService } from '../../services/snackbar.service';
 import { LOADING } from '../../tokens/loading.token';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatFormField,
-    MatLabel,
-    MatError,
-    MatInput,
-    MatButton,
-    MatIcon,
-    TranslatePipe,
-  ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+    selector: 'app-login',
+    imports: [
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatError,
+        MatInput,
+        MatButton,
+        MatIcon,
+        TranslatePipe,
+    ],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   private accounts = inject(AccountsService);

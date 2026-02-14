@@ -6,12 +6,11 @@ import { MatRippleModule } from '@angular/material/core';
 import { QuranAwqafTestService } from '../../../services/quran/quran-awqaf-test.service';
 
 @Component({
-  selector: 'app-quran-awqaf-test',
-  standalone: true,
-  imports: [MatCardModule, MatRippleModule, ReactiveFormsModule],
-  templateUrl: './quran-awqaf-test.component.html',
-  styleUrl: './quran-awqaf-test.component.scss',
-  viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }]
+    selector: 'app-quran-awqaf-test',
+    imports: [MatCardModule, MatRippleModule, ReactiveFormsModule],
+    templateUrl: './quran-awqaf-test.component.html',
+    styleUrl: './quran-awqaf-test.component.scss',
+    viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }]
 })
 export class QuranAwqafTestComponent {
   public transform = inject(QuranAwqafTestService).transform;

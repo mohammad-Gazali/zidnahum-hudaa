@@ -17,21 +17,20 @@ import { AccountsService } from '../../services/api/accounts/accounts.service';
 import { LOADING } from '../../tokens/loading.token';
 
 @Component({
-  selector: 'app-navbar',
-  standalone: true,
-  imports: [
-    MatToolbar,
-    MatButton,
-    MatIconButton,
-    MatIcon,
-    MatProgressBar,
-    TranslatePipe,
-    RouterLink,
-    MatIconAnchor,
-    MatAnchor,
-  ],
-  templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss',
+    selector: 'app-navbar',
+    imports: [
+        MatToolbar,
+        MatButton,
+        MatIconButton,
+        MatIcon,
+        MatProgressBar,
+        TranslatePipe,
+        RouterLink,
+        MatIconAnchor,
+        MatAnchor,
+    ],
+    templateUrl: './navbar.component.html',
+    styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
   private accounts = inject(AccountsService);

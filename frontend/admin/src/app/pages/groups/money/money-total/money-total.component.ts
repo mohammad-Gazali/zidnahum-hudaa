@@ -5,11 +5,10 @@ import { MoneyTotal } from '../../../../services/api/admin/models/money-total';
 import { ExtraService } from '../../../../services/api/admin/services';
 
 @Component({
-  selector: 'app-money-total',
-  standalone: true,
-  imports: [TableComponent],
-  templateUrl: './money-total.component.html',
-  styleUrl: './money-total.component.scss'
+    selector: 'app-money-total',
+    imports: [TableComponent],
+    templateUrl: './money-total.component.html',
+    styleUrl: './money-total.component.scss'
 })
 export class MoneyTotalComponent {
   private extra = inject(ExtraService);

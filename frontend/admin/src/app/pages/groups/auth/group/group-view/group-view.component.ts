@@ -6,11 +6,10 @@ import { Validators } from '@angular/forms';
 import { AuthBase } from '../../auth.base';
 
 @Component({
-  selector: 'app-group-view',
-  standalone: true,
-  imports: [ViewComponent],
-  templateUrl: './group-view.component.html',
-  styleUrl: './group-view.component.scss'
+    selector: 'app-group-view',
+    imports: [ViewComponent],
+    templateUrl: './group-view.component.html',
+    styleUrl: './group-view.component.scss'
 })
 export class GroupViewComponent extends AuthBase {
   public config: ViewComponentConfig<GroupList, GroupUpdate> = {

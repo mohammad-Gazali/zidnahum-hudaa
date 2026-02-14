@@ -5,11 +5,10 @@ import { StudentGroupList, StudentGroupUpdate } from '../../../../../services/ap
 import { StudentsBase } from '../../students.base';
 
 @Component({
-  selector: 'app-student-group-view',
-  standalone: true,
-  imports: [ViewComponent],
-  templateUrl: './group-view.component.html',
-  styleUrl: './group-view.component.scss'
+    selector: 'app-student-group-view',
+    imports: [ViewComponent],
+    templateUrl: './group-view.component.html',
+    styleUrl: './group-view.component.scss'
 })
 export class StudentGroupViewComponent extends StudentsBase {
   public config: ViewComponentConfig<StudentGroupList, StudentGroupUpdate> = {

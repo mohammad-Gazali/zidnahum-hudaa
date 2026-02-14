@@ -6,11 +6,10 @@ import { GlobalsBase } from '../globals.base';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-  selector: 'app-assets-file',
-  standalone: true,
-  imports: [TableComponent],
-  templateUrl: './assets-file.component.html',
-  styleUrl: './assets-file.component.scss'
+    selector: 'app-assets-file',
+    imports: [TableComponent],
+    templateUrl: './assets-file.component.html',
+    styleUrl: './assets-file.component.scss'
 })
 export class AssetsFileComponent extends GlobalsBase {
 

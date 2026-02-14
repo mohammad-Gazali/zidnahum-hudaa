@@ -6,11 +6,10 @@ import { MoneyDeletingCauseList } from '../../../../services/api/admin/models';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-  selector: 'app-money-deleting-cause',
-  standalone: true,
-  imports: [TableComponent],
-  templateUrl: './money-deleting-cause.component.html',
-  styleUrl: './money-deleting-cause.component.scss'
+    selector: 'app-money-deleting-cause',
+    imports: [TableComponent],
+    templateUrl: './money-deleting-cause.component.html',
+    styleUrl: './money-deleting-cause.component.scss'
 })
 export class MoneyDeletingCauseComponent extends MoneyBase {
   public config: TableComponentConfig<MoneyDeletingCauseList> = {

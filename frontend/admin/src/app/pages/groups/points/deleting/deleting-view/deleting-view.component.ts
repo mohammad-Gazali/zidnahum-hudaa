@@ -6,11 +6,10 @@ import { PointsDeletingList } from '../../../../../services/api/admin/models';
 import { map } from 'rxjs';
 
 @Component({
-  selector: 'app-deleting-view',
-  standalone: true,
-  imports: [],
-  templateUrl: './deleting-view.component.html',
-  styleUrl: './deleting-view.component.scss',
+    selector: 'app-deleting-view',
+    imports: [],
+    templateUrl: './deleting-view.component.html',
+    styleUrl: './deleting-view.component.scss'
 })
 export class DeletingViewComponent extends PointsBase {
   private auth = inject(AuthService);

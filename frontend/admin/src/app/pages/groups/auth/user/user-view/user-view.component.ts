@@ -6,11 +6,10 @@ import { Validators } from '@angular/forms';
 import { AuthBase } from '../../auth.base';
 
 @Component({
-  selector: 'app-user-view',
-  standalone: true,
-  imports: [ViewComponent],
-  templateUrl: './user-view.component.html',
-  styleUrl: './user-view.component.scss'
+    selector: 'app-user-view',
+    imports: [ViewComponent],
+    templateUrl: './user-view.component.html',
+    styleUrl: './user-view.component.scss'
 })
 export class UserViewComponent extends AuthBase {
   public config: ViewComponentConfig<UserDetails, UserUpdate> = {

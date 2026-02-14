@@ -7,11 +7,10 @@ import { TableComponentConfig } from '../../../../shared/table/table.component.i
 import { GlobalsBase } from '../globals.base';
 
 @Component({
-  selector: 'app-news',
-  standalone: true,
-  imports: [TableComponent],
-  templateUrl: './news.component.html',
-  styleUrl: './news.component.scss'
+    selector: 'app-news',
+    imports: [TableComponent],
+    templateUrl: './news.component.html',
+    styleUrl: './news.component.scss'
 })
 export class NewsComponent extends GlobalsBase {
   private masjed = inject(MasjedService);

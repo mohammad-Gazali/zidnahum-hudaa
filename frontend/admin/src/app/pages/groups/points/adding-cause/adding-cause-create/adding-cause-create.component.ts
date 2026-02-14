@@ -6,11 +6,10 @@ import { PointsAddingCauseCreate } from '../../../../../services/api/admin/model
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-adding-cause-create',
-  standalone: true,
-  imports: [CreateComponent],
-  templateUrl: './adding-cause-create.component.html',
-  styleUrl: './adding-cause-create.component.scss'
+    selector: 'app-adding-cause-create',
+    imports: [CreateComponent],
+    templateUrl: './adding-cause-create.component.html',
+    styleUrl: './adding-cause-create.component.scss'
 })
 export class AddingCauseCreateComponent extends PointsBase {
   public config: CreateComponentConfig<PointsAddingCauseCreate> = {

@@ -6,11 +6,10 @@ import { StudentsBase } from '../students.base';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-  selector: 'app-student-group',
-  standalone: true,
-  imports: [TableComponent],
-  templateUrl: './group.component.html',
-  styleUrl: './group.component.scss'
+    selector: 'app-student-group',
+    imports: [TableComponent],
+    templateUrl: './group.component.html',
+    styleUrl: './group.component.scss'
 })
 export class StudentGroupComponent extends StudentsBase {
   public config: TableComponentConfig<StudentGroupList> = {

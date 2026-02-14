@@ -7,11 +7,10 @@ import { AuthService } from '../../../../../services/api/admin/services';
 import { map } from 'rxjs';
 
 @Component({
-  selector: 'app-coming-view',
-  standalone: true,
-  imports: [ViewComponent],
-  templateUrl: './coming-view.component.html',
-  styleUrl: './coming-view.component.scss'
+    selector: 'app-coming-view',
+    imports: [ViewComponent],
+    templateUrl: './coming-view.component.html',
+    styleUrl: './coming-view.component.scss'
 })
 export class ComingViewComponent extends ComingsBase {
   private auth = inject(AuthService);

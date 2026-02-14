@@ -1,7 +1,8 @@
 @use "@angular/material" as mat;
 @use "./theme.scss" as theme;
 
-@include mat.core();
+@include mat.elevation-classes();
+@include mat.app-background();
 
 $admin-theme: theme.$light-theme;
 
@@ -74,14 +75,14 @@ a {
 }
 
 .snackbar-success {
-  --mdc-snackbar-container-color: var(--admin-success-color);
-  --mdc-snackbar-supporting-text-color: var(--admin-success-text-color);
+  --mat-snackbar-container-color: var(--admin-success-color);
+  --mat-snackbar-supporting-text-color: var(--admin-success-text-color);
   --mat-snack-bar-button-color: var(--admin-success-text-color);
 }
 
 .snackbar-error {
-  --mdc-snackbar-container-color: var(--admin-error-color);
-  --mdc-snackbar-supporting-text-color: var(--admin-error-text-color);
+  --mat-snackbar-container-color: var(--admin-error-color);
+  --mat-snackbar-supporting-text-color: var(--admin-error-text-color);
   --mat-snack-bar-button-color: var(--admin-error-text-color);
 }
 

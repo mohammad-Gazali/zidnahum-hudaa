@@ -6,11 +6,10 @@ import { ComingCategoryList } from '../../../../services/api/admin/models';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-  selector: 'app-coming-category',
-  standalone: true,
-  imports: [TableComponent],
-  templateUrl: './coming-category.component.html',
-  styleUrl: './coming-category.component.scss'
+    selector: 'app-coming-category',
+    imports: [TableComponent],
+    templateUrl: './coming-category.component.html',
+    styleUrl: './coming-category.component.scss'
 })
 export class ComingCategoryComponent extends ComingsBase {
   public config: TableComponentConfig<ComingCategoryList> = {

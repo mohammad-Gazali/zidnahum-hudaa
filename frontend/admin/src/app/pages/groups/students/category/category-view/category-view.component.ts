@@ -5,11 +5,10 @@ import { StudentCategoryList, StudentUpdate } from '../../../../../services/api/
 import { StudentsBase } from '../../students.base';
 
 @Component({
-  selector: 'app-category-view',
-  standalone: true,
-  imports: [ViewComponent],
-  templateUrl: './category-view.component.html',
-  styleUrl: './category-view.component.scss'
+    selector: 'app-category-view',
+    imports: [ViewComponent],
+    templateUrl: './category-view.component.html',
+    styleUrl: './category-view.component.scss'
 })
 export class CategoryViewComponent extends StudentsBase {
   public config: ViewComponentConfig<StudentCategoryList, StudentUpdate> = {

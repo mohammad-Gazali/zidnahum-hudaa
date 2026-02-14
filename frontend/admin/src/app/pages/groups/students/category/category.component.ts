@@ -6,11 +6,10 @@ import { StudentsBase } from '../students.base';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-  selector: 'app-category',
-  standalone: true,
-  imports: [TableComponent],
-  templateUrl: './category.component.html',
-  styleUrl: './category.component.scss'
+    selector: 'app-category',
+    imports: [TableComponent],
+    templateUrl: './category.component.html',
+    styleUrl: './category.component.scss'
 })
 export class CategoryComponent extends StudentsBase {
   public config: TableComponentConfig<StudentCategoryList> = {

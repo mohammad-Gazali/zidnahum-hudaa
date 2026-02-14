@@ -31,28 +31,27 @@ import { SnackbarService } from '../../../../services/snackbar.service';
 import { LOADING } from '../../../../tokens/loading.token';
 
 @Component({
-  selector: 'app-add-money-deleting',
-  standalone: true,
-  templateUrl: './add-money-deleting.component.html',
-  styleUrl: './add-money-deleting.component.scss',
-  imports: [
-    MatCard,
-    MatSelect,
-    MatOption,
-    MatFormField,
-    MatInput,
-    MatLabel,
-    MatError,
-    MatRadioGroup,
-    MatRadioButton,
-    MatButton,
-    MatChipRow,
-    MatChipRemove,
-    MatIcon,
-    StudentSearchComponent,
-    ReactiveFormsModule,
-    TranslatePipe,
-  ],
+    selector: 'app-add-money-deleting',
+    templateUrl: './add-money-deleting.component.html',
+    styleUrl: './add-money-deleting.component.scss',
+    imports: [
+        MatCard,
+        MatSelect,
+        MatOption,
+        MatFormField,
+        MatInput,
+        MatLabel,
+        MatError,
+        MatRadioGroup,
+        MatRadioButton,
+        MatButton,
+        MatChipRow,
+        MatChipRemove,
+        MatIcon,
+        StudentSearchComponent,
+        ReactiveFormsModule,
+        TranslatePipe,
+    ]
 })
 export class AddMoneyDeletingComponent extends MoneyBase {
   private extra = inject(ExtraService);

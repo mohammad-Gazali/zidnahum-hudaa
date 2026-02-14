@@ -5,11 +5,10 @@ import { MoneyDeletingList } from '../../../../../services/api/admin/models';
 import { MoneyBase } from '../../money.base';
 
 @Component({
-  selector: 'app-money-deleting-view',
-  standalone: true,
-  imports: [ViewComponent],
-  templateUrl: './money-deleting-view.component.html',
-  styleUrl: './money-deleting-view.component.scss'
+    selector: 'app-money-deleting-view',
+    imports: [ViewComponent],
+    templateUrl: './money-deleting-view.component.html',
+    styleUrl: './money-deleting-view.component.scss'
 })
 export class MoneyDeletingViewComponent extends MoneyBase {
   public config: ViewComponentConfig<MoneyDeletingList> = {

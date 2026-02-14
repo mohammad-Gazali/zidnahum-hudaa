@@ -20,26 +20,25 @@ import { LOADING } from '../../../../tokens/loading.token';
 import { SnackbarService } from '../../../../services/snackbar.service';
 
 @Component({
-  selector: 'app-settings',
-  standalone: true,
-  templateUrl: './settings.component.html',
-  styleUrl: './settings.component.scss',
-  imports: [
-    ReactiveFormsModule,
-    MatCard,
-    MatFormField,
-    MatLabel,
-    MatError,
-    MatInput,
-    MatCheckbox,
-    MatButton,
-    MatChipGrid,
-    MatChipRow,
-    MatChipRemove,
-    MatChipInput,
-    MatIcon,
-    TranslatePipe,
-  ],
+    selector: 'app-settings',
+    templateUrl: './settings.component.html',
+    styleUrl: './settings.component.scss',
+    imports: [
+        ReactiveFormsModule,
+        MatCard,
+        MatFormField,
+        MatLabel,
+        MatError,
+        MatInput,
+        MatCheckbox,
+        MatButton,
+        MatChipGrid,
+        MatChipRow,
+        MatChipRemove,
+        MatChipInput,
+        MatIcon,
+        TranslatePipe,
+    ]
 })
 export class SettingsComponent {
   private extra = inject(ExtraService);

@@ -6,11 +6,10 @@ import { ComingsBase } from '../../comings.base';
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-coming-category-create',
-  standalone: true,
-  imports: [CreateComponent],
-  templateUrl: './coming-category-create.component.html',
-  styleUrl: './coming-category-create.component.scss'
+    selector: 'app-coming-category-create',
+    imports: [CreateComponent],
+    templateUrl: './coming-category-create.component.html',
+    styleUrl: './coming-category-create.component.scss'
 })
 export class ComingCategoryCreateComponent extends ComingsBase {
   public config: CreateComponentConfig<ComingCategoryCreate> = {

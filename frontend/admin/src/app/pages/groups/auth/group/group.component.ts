@@ -6,11 +6,10 @@ import { AuthBase } from '../auth.base';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-  selector: 'app-group',
-  standalone: true,
-  imports: [TableComponent],
-  templateUrl: './group.component.html',
-  styleUrl: './group.component.scss'
+    selector: 'app-group',
+    imports: [TableComponent],
+    templateUrl: './group.component.html',
+    styleUrl: './group.component.scss'
 })
 export class GroupComponent extends AuthBase {
   public config: TableComponentConfig<GroupList> = {

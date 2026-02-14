@@ -8,11 +8,10 @@ import { deleteModelAction } from '../../../../common/delete-model-action';
 import { LevelService } from '../../../../services/level.service';
 
 @Component({
-  selector: 'app-student',
-  standalone: true,
-  imports: [TableComponent],
-  templateUrl: './student.component.html',
-  styleUrl: './student.component.scss',
+    selector: 'app-student',
+    imports: [TableComponent],
+    templateUrl: './student.component.html',
+    styleUrl: './student.component.scss'
 })
 export class StudentComponent extends StudentsBase {
   private masjed = inject(MasjedService);

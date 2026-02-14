@@ -16,17 +16,16 @@ import { EMPTY, catchError, finalize } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
-  selector: 'app-view-delete-dialog',
-  standalone: true,
-  imports: [
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatButtonModule,
-    TranslatePipe,
-  ],
-  templateUrl: './view-delete-dialog.component.html',
-  styleUrl: './view-delete-dialog.component.scss',
+    selector: 'app-view-delete-dialog',
+    imports: [
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatButtonModule,
+        TranslatePipe,
+    ],
+    templateUrl: './view-delete-dialog.component.html',
+    styleUrl: './view-delete-dialog.component.scss'
 })
 export class ViewDeleteDialogComponent {
   public ref = inject(MatDialogRef);

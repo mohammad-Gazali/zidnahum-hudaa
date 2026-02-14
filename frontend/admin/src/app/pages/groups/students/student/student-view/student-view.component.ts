@@ -9,11 +9,10 @@ import { StudentsBase } from '../../students.base';
 import { ExtraService } from '../../../../../services/api/admin/services';
 
 @Component({
-  selector: 'app-student-view',
-  standalone: true,
-  imports: [ViewComponent],
-  templateUrl: './student-view.component.html',
-  styleUrl: './student-view.component.scss',
+    selector: 'app-student-view',
+    imports: [ViewComponent],
+    templateUrl: './student-view.component.html',
+    styleUrl: './student-view.component.scss'
 })
 export class StudentViewComponent extends StudentsBase {
   private masjed = inject(MasjedService);

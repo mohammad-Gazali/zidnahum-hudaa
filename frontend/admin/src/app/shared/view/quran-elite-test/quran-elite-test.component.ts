@@ -6,12 +6,11 @@ import { QuranEliteTestService } from '../../../services/quran/quran-elite-test.
 import { MemoItemType } from '../../../services/quran/quran.constatns';
 
 @Component({
-  selector: 'app-quran-elite-test',
-  standalone: true,
-  imports: [MatCardModule, MatRippleModule, ReactiveFormsModule],
-  templateUrl: './quran-elite-test.component.html',
-  styleUrl: './quran-elite-test.component.scss',
-  viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }]
+    selector: 'app-quran-elite-test',
+    imports: [MatCardModule, MatRippleModule, ReactiveFormsModule],
+    templateUrl: './quran-elite-test.component.html',
+    styleUrl: './quran-elite-test.component.scss',
+    viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }]
 })
 export class QuranEliteTestComponent {
   public transform = inject(QuranEliteTestService).transform;

@@ -5,11 +5,10 @@ import { AwqafNoQStudentRelationList } from '../../../../../services/api/admin/m
 import { AwqafBase } from '../../awqaf.base';
 
 @Component({
-  selector: 'app-student-no-q-test-relation-view',
-  standalone: true,
-  imports: [ViewComponent],
-  templateUrl: './student-no-q-test-relation-view.component.html',
-  styleUrl: './student-no-q-test-relation-view.component.scss'
+    selector: 'app-student-no-q-test-relation-view',
+    imports: [ViewComponent],
+    templateUrl: './student-no-q-test-relation-view.component.html',
+    styleUrl: './student-no-q-test-relation-view.component.scss'
 })
 export class StudentNoQTestRelationViewComponent extends AwqafBase {
   public config: ViewComponentConfig<AwqafNoQStudentRelationList> = {

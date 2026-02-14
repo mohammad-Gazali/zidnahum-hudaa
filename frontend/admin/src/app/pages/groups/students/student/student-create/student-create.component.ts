@@ -7,11 +7,10 @@ import { StudentsBase } from '../../students.base';
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-student-create',
-  standalone: true,
-  imports: [CreateComponent],
-  templateUrl: './student-create.component.html',
-  styleUrl: './student-create.component.scss'
+    selector: 'app-student-create',
+    imports: [CreateComponent],
+    templateUrl: './student-create.component.html',
+    styleUrl: './student-create.component.scss'
 })
 export class StudentCreateComponent extends StudentsBase {
   private masjed = inject(MasjedService);

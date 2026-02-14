@@ -6,11 +6,10 @@ import { TableComponent } from '../../../../shared/table/table.component';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-  selector: 'app-deleting-cause',
-  standalone: true,
-  imports: [TableComponent],
-  templateUrl: './deleting-cause.component.html',
-  styleUrl: './deleting-cause.component.scss'
+    selector: 'app-deleting-cause',
+    imports: [TableComponent],
+    templateUrl: './deleting-cause.component.html',
+    styleUrl: './deleting-cause.component.scss'
 })
 export class DeletingCauseComponent extends PointsBase {
   public config: TableComponentConfig<PointsDeletingCauseList> = {

@@ -7,11 +7,10 @@ import { NewsCreate } from '../../../../../services/api/admin/models/news-create
 import { MasjedService } from '../../../../../services/masjed.service';
 
 @Component({
-  selector: 'app-news-create',
-  standalone: true,
-  imports: [CreateComponent],
-  templateUrl: './news-create.component.html',
-  styleUrl: './news-create.component.scss'
+    selector: 'app-news-create',
+    imports: [CreateComponent],
+    templateUrl: './news-create.component.html',
+    styleUrl: './news-create.component.scss'
 })
 export class NewsCreateComponent extends GlobalsBase {
   private masjed = inject(MasjedService);

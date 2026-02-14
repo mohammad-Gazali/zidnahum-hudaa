@@ -45,43 +45,42 @@ import { LOADING } from '../../tokens/loading.token';
 import { AccountsService } from '../../services/api/accounts/accounts.service';
 
 @Component({
-  selector: 'app-view',
-  standalone: true,
-  imports: [
-    MatDividerModule,
-    MatButtonModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCheckboxModule,
-    MatDatepickerModule,
-    MatSelectModule,
-    MatExpansionModule,
-    ReactiveFormsModule,
-    QuranMemorizeComponent,
-    QuranTestComponent,
-    QuranEliteTestComponent,
-    QuranAwqafTestComponent,
-    RouterLink,
-    TranslatePipe,
-    ChangesFieldComponent,
-  ],
-  providers: [
-    {
-      provide: MAT_DATE_LOCALE,
-      useValue: 'ar',
-    },
-    {
-      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: {
-        appearance: 'outline',
-        subscriptSizing: 'dynamic',
-      },
-    },
-    provideNativeDateAdapter(),
-  ],
-  templateUrl: './view.component.html',
-  styleUrl: './view.component.scss',
+    selector: 'app-view',
+    imports: [
+        MatDividerModule,
+        MatButtonModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatCheckboxModule,
+        MatDatepickerModule,
+        MatSelectModule,
+        MatExpansionModule,
+        ReactiveFormsModule,
+        QuranMemorizeComponent,
+        QuranTestComponent,
+        QuranEliteTestComponent,
+        QuranAwqafTestComponent,
+        RouterLink,
+        TranslatePipe,
+        ChangesFieldComponent,
+    ],
+    providers: [
+        {
+            provide: MAT_DATE_LOCALE,
+            useValue: 'ar',
+        },
+        {
+            provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+            useValue: {
+                appearance: 'outline',
+                subscriptSizing: 'dynamic',
+            },
+        },
+        provideNativeDateAdapter(),
+    ],
+    templateUrl: './view.component.html',
+    styleUrl: './view.component.scss'
 })
 export class ViewComponent<T, U> implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);

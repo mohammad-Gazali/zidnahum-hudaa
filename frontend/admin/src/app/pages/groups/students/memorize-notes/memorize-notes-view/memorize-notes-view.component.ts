@@ -7,11 +7,10 @@ import { AuthService } from '../../../../../services/api/admin/services';
 import { map } from 'rxjs';
 
 @Component({
-  selector: 'app-memorize-notes-view',
-  standalone: true,
-  imports: [ViewComponent],
-  templateUrl: './memorize-notes-view.component.html',
-  styleUrl: './memorize-notes-view.component.scss'
+    selector: 'app-memorize-notes-view',
+    imports: [ViewComponent],
+    templateUrl: './memorize-notes-view.component.html',
+    styleUrl: './memorize-notes-view.component.scss'
 })
 export class MemorizeNotesViewComponent extends StudentsBase {
   private auth = inject(AuthService);

@@ -6,11 +6,10 @@ import { AwqafTestNoQList, AwqafTestNoQUpdate } from '../../../../../services/ap
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-no-q-test-view',
-  standalone: true,
-  imports: [ViewComponent],
-  templateUrl: './no-q-test-view.component.html',
-  styleUrl: './no-q-test-view.component.scss'
+    selector: 'app-no-q-test-view',
+    imports: [ViewComponent],
+    templateUrl: './no-q-test-view.component.html',
+    styleUrl: './no-q-test-view.component.scss'
 })
 export class NoQTestViewComponent extends AwqafBase {
   public config: ViewComponentConfig<AwqafTestNoQList, AwqafTestNoQUpdate> = {

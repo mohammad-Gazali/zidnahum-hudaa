@@ -19,27 +19,26 @@ import { TranslatePipe } from '../../../../pipes/translate.pipe';
 import { MasjedService } from '../../../../services/masjed.service';
 
 @Component({
-  selector: 'app-statistics',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatCheckboxModule,
-    MatButtonModule,
-    MatCardModule,
-    DatePipe,
-    TranslatePipe,
-  ],
-  templateUrl: './statistics.component.html',
-  styleUrl: './statistics.component.scss',
-  providers: [
-    {
-      provide: MAT_DATE_LOCALE,
-      useValue: 'ar',
-    },
-    provideNativeDateAdapter(),
-  ],
+    selector: 'app-statistics',
+    imports: [
+        ReactiveFormsModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatCheckboxModule,
+        MatButtonModule,
+        MatCardModule,
+        DatePipe,
+        TranslatePipe,
+    ],
+    templateUrl: './statistics.component.html',
+    styleUrl: './statistics.component.scss',
+    providers: [
+        {
+            provide: MAT_DATE_LOCALE,
+            useValue: 'ar',
+        },
+        provideNativeDateAdapter(),
+    ]
 })
 export class StatisticsComponent {
   private extra = inject(ExtraService);

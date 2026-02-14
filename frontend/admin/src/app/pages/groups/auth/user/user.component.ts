@@ -6,11 +6,10 @@ import { AuthBase } from '../auth.base';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-  selector: 'app-user',
-  standalone: true,
-  imports: [TableComponent],
-  templateUrl: './user.component.html',
-  styleUrl: './user.component.scss',
+    selector: 'app-user',
+    imports: [TableComponent],
+    templateUrl: './user.component.html',
+    styleUrl: './user.component.scss'
 })
 export class UserComponent extends AuthBase {
   public config: TableComponentConfig<UserList> = {

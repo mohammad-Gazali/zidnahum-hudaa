@@ -6,11 +6,10 @@ import { StudentsBase } from '../../students.base';
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-category-create',
-  standalone: true,
-  imports: [CreateComponent],
-  templateUrl: './category-create.component.html',
-  styleUrl: './category-create.component.scss'
+    selector: 'app-category-create',
+    imports: [CreateComponent],
+    templateUrl: './category-create.component.html',
+    styleUrl: './category-create.component.scss'
 })
 export class CategoryCreateComponent extends StudentsBase {
   public config: CreateComponentConfig<StudentCategoryCreate> = {

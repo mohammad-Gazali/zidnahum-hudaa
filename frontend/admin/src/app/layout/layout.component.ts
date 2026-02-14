@@ -7,17 +7,16 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { AccountsService } from '../services/api/accounts/accounts.service';
 
 @Component({
-  selector: 'app-layout',
-  standalone: true,
-  templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss',
-  imports: [
-    NavbarComponent,
-    SidenavComponent,
-    MatSidenavContainer,
-    MatSidenavContent,
-    MatSidenav,
-  ],
+    selector: 'app-layout',
+    templateUrl: './layout.component.html',
+    styleUrl: './layout.component.scss',
+    imports: [
+        NavbarComponent,
+        SidenavComponent,
+        MatSidenavContainer,
+        MatSidenavContent,
+        MatSidenav,
+    ]
 })
 export class LayoutComponent {
   public breakpointObserver = inject(BreakpointObserver);

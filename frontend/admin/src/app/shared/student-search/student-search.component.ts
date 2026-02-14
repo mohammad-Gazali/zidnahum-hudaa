@@ -15,30 +15,29 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 import { MasjedService } from '../../services/masjed.service';
 
 @Component({
-  selector: 'app-student-search',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatListModule,
-    MatDividerModule,
-    MatTooltipModule,
-    TranslatePipe,
-  ],
-  providers: [
-    {
-      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: {
-        appearance: 'outline',
-        subscriptSizing: 'dynamic'
-      },
-    },
-  ],
-  templateUrl: './student-search.component.html',
-  styleUrl: './student-search.component.scss',
+    selector: 'app-student-search',
+    imports: [
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatListModule,
+        MatDividerModule,
+        MatTooltipModule,
+        TranslatePipe,
+    ],
+    providers: [
+        {
+            provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+            useValue: {
+                appearance: 'outline',
+                subscriptSizing: 'dynamic'
+            },
+        },
+    ],
+    templateUrl: './student-search.component.html',
+    styleUrl: './student-search.component.scss'
 })
 export class StudentSearchComponent {
   private studetns = inject(StudentsService);

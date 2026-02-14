@@ -6,11 +6,10 @@ import { AwqafBase } from '../awqaf.base';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-  selector: 'app-no-q-test',
-  standalone: true,
-  imports: [TableComponent],
-  templateUrl: './no-q-test.component.html',
-  styleUrl: './no-q-test.component.scss',
+    selector: 'app-no-q-test',
+    imports: [TableComponent],
+    templateUrl: './no-q-test.component.html',
+    styleUrl: './no-q-test.component.scss'
 })
 export class NoQTestComponent extends AwqafBase {
   public config: TableComponentConfig<AwqafTestNoQList> = {

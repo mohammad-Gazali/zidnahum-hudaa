@@ -6,11 +6,10 @@ import { AuthBase } from '../../auth.base';
 import { Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-group-create',
-  standalone: true,
-  imports: [CreateComponent],
-  templateUrl: './group-create.component.html',
-  styleUrl: './group-create.component.scss'
+    selector: 'app-group-create',
+    imports: [CreateComponent],
+    templateUrl: './group-create.component.html',
+    styleUrl: './group-create.component.scss'
 })
 export class GroupCreateComponent extends AuthBase {
   public config: CreateComponentConfig<GroupCreate> = {
