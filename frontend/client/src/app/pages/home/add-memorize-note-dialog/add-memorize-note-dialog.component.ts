@@ -16,23 +16,22 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatProgressBar } from '@angular/material/progress-bar';
 
 @Component({
-  selector: 'app-add-memorize-note-dialog',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatButton,
-    MatIcon,
-    MatFormField,
-    MatInput,
-    MatLabel,
-    MatError,
-    MatProgressBar,
-  ],
-  templateUrl: './add-memorize-note-dialog.component.html',
-  styleUrl: './add-memorize-note-dialog.component.scss'
+    selector: 'app-add-memorize-note-dialog',
+    imports: [
+        ReactiveFormsModule,
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatButton,
+        MatIcon,
+        MatFormField,
+        MatInput,
+        MatLabel,
+        MatError,
+        MatProgressBar,
+    ],
+    templateUrl: './add-memorize-note-dialog.component.html',
+    styleUrl: './add-memorize-note-dialog.component.scss'
 })
 export class AddMemorizeNoteDialogComponent {
   private students = inject(StudentsService);

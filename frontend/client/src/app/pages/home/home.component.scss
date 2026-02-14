@@ -3,7 +3,7 @@ form {
   flex-direction: column;
   max-width: 31rem;
   margin: 0 auto;
-  --mdc-outlined-text-field-container-shape: 2rem;
+  --mat-form-field-outlined-container-shape: 2rem;
 }
 
 .section-divider {
@@ -84,8 +84,8 @@ form {
 }
 
 .news-link {
-  --mdc-filled-button-container-height: 3rem;
-  --mdc-filled-button-container-shape: 0.5rem;
+  --mat-button-filled-container-height: 3rem;
+  --mat-button-filled-container-shape: 0.5rem;
 
   display: block;
   margin: 2rem auto;

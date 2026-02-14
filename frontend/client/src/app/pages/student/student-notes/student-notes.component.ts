@@ -8,11 +8,10 @@ import { StudentComponent } from '../student.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'app-student-notes',
-  standalone: true,
-  imports: [MatCard, MatButton, MatIcon, DatePipe],
-  templateUrl: './student-notes.component.html',
-  styleUrl: './student-notes.component.scss'
+    selector: 'app-student-notes',
+    imports: [MatCard, MatButton, MatIcon, DatePipe],
+    templateUrl: './student-notes.component.html',
+    styleUrl: './student-notes.component.scss'
 })
 export class StudentNotesComponent {
   private auth = inject(AuthService);

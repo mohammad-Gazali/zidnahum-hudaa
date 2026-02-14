@@ -5,11 +5,10 @@ import { MemoItemType } from '@shared';
 import { StudentComponent } from '../student.component';
 
 @Component({
-  selector: 'app-student-test',
-  standalone: true,
-  imports: [MatCard, MatDivider],
-  templateUrl: './student-test.component.html',
-  styleUrl: './student-test.component.scss'
+    selector: 'app-student-test',
+    imports: [MatCard, MatDivider],
+    templateUrl: './student-test.component.html',
+    styleUrl: './student-test.component.scss'
 })
 export class StudentTestComponent {
   protected student = inject(StudentComponent).student;

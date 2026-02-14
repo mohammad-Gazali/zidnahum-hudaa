@@ -5,15 +5,14 @@ import { MatAnchor } from '@angular/material/button';
 import { MatCard, MatCardContent } from '@angular/material/card';
 
 @Component({
-  selector: 'app-files',
-  standalone: true,
-  imports: [
-    MatAnchor,
-    MatCard,
-    MatCardContent
-  ],
-  templateUrl: './files.component.html',
-  styleUrl: './files.component.scss'
+    selector: 'app-files',
+    imports: [
+        MatAnchor,
+        MatCard,
+        MatCardContent
+    ],
+    templateUrl: './files.component.html',
+    styleUrl: './files.component.scss'
 })
 export class FilesComponent {
   private globals = inject(GlobalsService);

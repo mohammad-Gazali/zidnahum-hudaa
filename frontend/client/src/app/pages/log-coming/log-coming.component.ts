@@ -24,46 +24,45 @@ import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/cor
 import { MatInput } from '@angular/material/input';
 
 @Component({
-  selector: 'app-log-coming',
-  standalone: true,
-  imports: [
-    DatePipe,
-    MatButton,
-    MatCard,
-    MatCardContent,
-    MatCardHeader,
-    MatCardSubtitle,
-    MatCardTitle,
-    MatChip,
-    MatIcon,
-    MatMiniFabButton,
-    MatFormField,
-    MatLabel,
-    MatSuffix,
-    MatInput,
-    MatSelect,
-    MatOption,
-    MatDatepickerModule,
-    ReactiveFormsModule,
-    MasjedPipe,
-    MatIconButton,
-  ],
-  providers: [
-    provideNativeDateAdapter(),
-    {
-      provide: MAT_DATE_LOCALE,
-      useValue: 'ar',
-    },
-    {
-      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: {
-        appearance: 'outline',
-        subscriptSizing: 'dynamic'
-      },
-    }
-  ],
-  templateUrl: './log-coming.component.html',
-  styleUrl: './log-coming.component.scss'
+    selector: 'app-log-coming',
+    imports: [
+        DatePipe,
+        MatButton,
+        MatCard,
+        MatCardContent,
+        MatCardHeader,
+        MatCardSubtitle,
+        MatCardTitle,
+        MatChip,
+        MatIcon,
+        MatMiniFabButton,
+        MatFormField,
+        MatLabel,
+        MatSuffix,
+        MatInput,
+        MatSelect,
+        MatOption,
+        MatDatepickerModule,
+        ReactiveFormsModule,
+        MasjedPipe,
+        MatIconButton,
+    ],
+    providers: [
+        provideNativeDateAdapter(),
+        {
+            provide: MAT_DATE_LOCALE,
+            useValue: 'ar',
+        },
+        {
+            provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+            useValue: {
+                appearance: 'outline',
+                subscriptSizing: 'dynamic'
+            },
+        }
+    ],
+    templateUrl: './log-coming.component.html',
+    styleUrl: './log-coming.component.scss'
 })
 export class LogComingComponent {
   private comings = inject(ComingsService);

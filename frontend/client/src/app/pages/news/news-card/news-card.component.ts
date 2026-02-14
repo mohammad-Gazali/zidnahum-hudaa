@@ -4,17 +4,16 @@ import { News } from "@shared";
 import { LightboxService } from "./lightbox/lightbox.service";
 
 @Component({
-  selector: 'app-news-card',
-  standalone: true,
-  imports: [
-    MatCard,
-    MatCardHeader,
-    MatCardContent,
-    MatCardImage,
-    MatCardTitle,
-  ],
-  templateUrl: './news-card.component.html',
-  styleUrl: './news-card.component.scss',
+    selector: 'app-news-card',
+    imports: [
+        MatCard,
+        MatCardHeader,
+        MatCardContent,
+        MatCardImage,
+        MatCardTitle,
+    ],
+    templateUrl: './news-card.component.html',
+    styleUrl: './news-card.component.scss'
 })
 export class NewsCardComponent {
   private lightbox = inject(LightboxService);

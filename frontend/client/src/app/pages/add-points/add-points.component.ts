@@ -24,29 +24,28 @@ import { MatDivider } from '@angular/material/divider';
 import { filter, map, shareReplay, switchMap } from 'rxjs';
 
 @Component({
-  selector: 'app-add-points',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatButton,
-    MatFormField,
-    MatLabel,
-    MatError,
-    MatIcon,
-    MatInput,
-    MatSuffix,
-    MasjedPipe,
-    MatOption,
-    MatSelect,
-    MatCard,
-    MatCardContent,
-    MatChip,
-    MatChipRemove,
-    MatChipSet,
-    MatDivider,
-  ],
-  templateUrl: './add-points.component.html',
-  styleUrl: './add-points.component.scss'
+    selector: 'app-add-points',
+    imports: [
+        ReactiveFormsModule,
+        MatButton,
+        MatFormField,
+        MatLabel,
+        MatError,
+        MatIcon,
+        MatInput,
+        MatSuffix,
+        MasjedPipe,
+        MatOption,
+        MatSelect,
+        MatCard,
+        MatCardContent,
+        MatChip,
+        MatChipRemove,
+        MatChipSet,
+        MatDivider,
+    ],
+    templateUrl: './add-points.component.html',
+    styleUrl: './add-points.component.scss'
 })
 export class AddPointsComponent {
   private fb = inject(NonNullableFormBuilder);

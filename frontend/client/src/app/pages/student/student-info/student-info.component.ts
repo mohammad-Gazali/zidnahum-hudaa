@@ -5,20 +5,19 @@ import { AuthService, LevelPipe, MasjedPipe } from '@shared';
 import { StudentComponent } from '../student.component';
 
 @Component({
-  selector: 'app-student-info',
-  standalone: true,
-  imports: [MatFormField, MatLabel, MatInput, MasjedPipe, LevelPipe],
-  templateUrl: './student-info.component.html',
-  styleUrl: './student-info.component.scss',
-  providers: [
-    {
-      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: {
-        appearance: 'outline',
-        subscriptSizing: 'dynamic',
-      },
-    }
-  ],
+    selector: 'app-student-info',
+    imports: [MatFormField, MatLabel, MatInput, MasjedPipe, LevelPipe],
+    templateUrl: './student-info.component.html',
+    styleUrl: './student-info.component.scss',
+    providers: [
+        {
+            provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+            useValue: {
+                appearance: 'outline',
+                subscriptSizing: 'dynamic',
+            },
+        }
+    ]
 })
 export class StudentInfoComponent {
   protected student = inject(StudentComponent).student;

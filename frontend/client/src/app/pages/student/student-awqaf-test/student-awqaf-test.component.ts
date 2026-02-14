@@ -6,11 +6,10 @@ import { MemoItemType, AwqafService, AwqafRelation } from '@shared';
 import { StudentComponent } from '../student.component';
 
 @Component({
-  selector: 'app-student-awqaf-test',
-  standalone: true,
-  imports: [MatCard, MatDivider],
-  templateUrl: './student-awqaf-test.component.html',
-  styleUrl: './student-awqaf-test.component.scss'
+    selector: 'app-student-awqaf-test',
+    imports: [MatCard, MatDivider],
+    templateUrl: './student-awqaf-test.component.html',
+    styleUrl: './student-awqaf-test.component.scss'
 })
 export class StudentAwqafTestComponent {
   private awqaf = inject(AwqafService);

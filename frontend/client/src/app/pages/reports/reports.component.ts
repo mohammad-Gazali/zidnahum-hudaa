@@ -23,31 +23,30 @@ import { DatePipe } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
-  selector: 'app-reports',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatRadioModule,
-    MatChipsModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatButtonModule,
-    MatTableModule,
-    MatDividerModule,
-    DatePipe,
-    MasjedPipe
-],
-  providers: [
-    {
-      provide: MAT_DATE_LOCALE,
-      useValue: 'ar',
-    },
-    provideNativeDateAdapter(),
-  ],
-  templateUrl: './reports.component.html',
-  styleUrl: './reports.component.scss',
+    selector: 'app-reports',
+    imports: [
+        ReactiveFormsModule,
+        MatRadioModule,
+        MatChipsModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatButtonModule,
+        MatTableModule,
+        MatDividerModule,
+        DatePipe,
+        MasjedPipe
+    ],
+    providers: [
+        {
+            provide: MAT_DATE_LOCALE,
+            useValue: 'ar',
+        },
+        provideNativeDateAdapter(),
+    ],
+    templateUrl: './reports.component.html',
+    styleUrl: './reports.component.scss'
 })
 export class ReportsComponent {
   private fb = inject(NonNullableFormBuilder);

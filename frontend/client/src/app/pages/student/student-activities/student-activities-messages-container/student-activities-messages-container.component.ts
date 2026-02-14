@@ -3,15 +3,14 @@ import { MemoPipe, MemorizeMessageForStudent, MessageType, PagesSumService, Test
 import { MatCard } from '@angular/material/card';
 
 @Component({
-  selector: 'app-student-activities-messages-container',
-  standalone: true,
-  imports: [
-    MatCard,
-    MemoPipe,
-    TestPipe
-  ],
-  templateUrl: './student-activities-messages-container.component.html',
-  styleUrl: './student-activities-messages-container.component.scss'
+    selector: 'app-student-activities-messages-container',
+    imports: [
+        MatCard,
+        MemoPipe,
+        TestPipe
+    ],
+    templateUrl: './student-activities-messages-container.component.html',
+    styleUrl: './student-activities-messages-container.component.scss'
 })
 export class StudentActivitiesMessagesContainerComponent {
   private sumPages = inject(PagesSumService);

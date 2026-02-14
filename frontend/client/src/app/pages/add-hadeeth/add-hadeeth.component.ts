@@ -12,24 +12,23 @@ import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 
 @Component({
-  selector: 'app-add-hadeeth',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatButton,
-    MatFormField,
-    MatLabel,
-    MatError,
-    MatIcon,
-    MatInput,
-    MatSuffix,
-    MatCard,
-    MatCardContent,
-    MatRadioGroup,
-    MatRadioButton,
-  ],
-  templateUrl: './add-hadeeth.component.html',
-  styleUrl: './add-hadeeth.component.scss'
+    selector: 'app-add-hadeeth',
+    imports: [
+        ReactiveFormsModule,
+        MatButton,
+        MatFormField,
+        MatLabel,
+        MatError,
+        MatIcon,
+        MatInput,
+        MatSuffix,
+        MatCard,
+        MatCardContent,
+        MatRadioGroup,
+        MatRadioButton,
+    ],
+    templateUrl: './add-hadeeth.component.html',
+    styleUrl: './add-hadeeth.component.scss'
 })
 export class AddHadeethComponent {
   private fb = inject(NonNullableFormBuilder);

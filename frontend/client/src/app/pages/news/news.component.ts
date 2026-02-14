@@ -5,15 +5,14 @@ import { GlobalsService } from '@shared';
 import { NewsCardComponent } from './news-card/news-card.component';
 
 @Component({
-  selector: 'app-news',
-  standalone: true,
-  imports: [
-    MatTabGroup,
-    MatTab,
-    NewsCardComponent,
-  ],
-  templateUrl: './news.component.html',
-  styleUrl: './news.component.scss',
+    selector: 'app-news',
+    imports: [
+        MatTabGroup,
+        MatTab,
+        NewsCardComponent,
+    ],
+    templateUrl: './news.component.html',
+    styleUrl: './news.component.scss'
 })
 export class NewsComponent {
   private globals = inject(GlobalsService);

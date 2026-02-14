@@ -23,24 +23,23 @@ import { MatCard } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
 
 @Component({
-  selector: 'app-add-coming',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatFormField,
-    MatInput,
-    MatError,
-    MatButton,
-    MatIcon,
-    MatSelect,
-    MatOption,
-    DatePipe,
-    MasjedPipe,
-    MatCard,
-    MatDivider,
-  ],
-  templateUrl: './add-coming.component.html',
-  styleUrl: './add-coming.component.scss'
+    selector: 'app-add-coming',
+    imports: [
+        ReactiveFormsModule,
+        MatFormField,
+        MatInput,
+        MatError,
+        MatButton,
+        MatIcon,
+        MatSelect,
+        MatOption,
+        DatePipe,
+        MasjedPipe,
+        MatCard,
+        MatDivider,
+    ],
+    templateUrl: './add-coming.component.html',
+    styleUrl: './add-coming.component.scss'
 })
 export class AddComingComponent {
   private students = inject(StudentsService);

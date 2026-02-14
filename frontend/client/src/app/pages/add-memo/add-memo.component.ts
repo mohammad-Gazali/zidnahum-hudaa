@@ -15,24 +15,23 @@ import { TestFormComponent, TestSubmit } from './test-form/test-form.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-add-memo',
-  standalone: true,
-  imports: [
-    MatFormField,
-    MatSuffix,
-    MatInput,
-    MatIcon,
-    MatButton,
-    ReactiveFormsModule,
-    MatCard,
-    MatCardContent,
-    MatTabGroup,
-    MatTab,
-    MemoFormComponent,
-    TestFormComponent,
-  ],
-  templateUrl: './add-memo.component.html',
-  styleUrl: './add-memo.component.scss'
+    selector: 'app-add-memo',
+    imports: [
+        MatFormField,
+        MatSuffix,
+        MatInput,
+        MatIcon,
+        MatButton,
+        ReactiveFormsModule,
+        MatCard,
+        MatCardContent,
+        MatTabGroup,
+        MatTab,
+        MemoFormComponent,
+        TestFormComponent,
+    ],
+    templateUrl: './add-memo.component.html',
+    styleUrl: './add-memo.component.scss'
 })
 export class AddMemoComponent {
   private fb = inject(NonNullableFormBuilder);

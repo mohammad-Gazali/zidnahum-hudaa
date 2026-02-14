@@ -8,16 +8,15 @@ import {
 } from './student-activities-messages-container/student-activities-messages-container.component';
 
 @Component({
-  selector: 'app-student-activities',
-  standalone: true,
-  imports: [
-    MatCard,
-    DatePipe,
-    MatDivider,
-    StudentActivitiesMessagesContainerComponent
-  ],
-  templateUrl: './student-activities.component.html',
-  styleUrl: './student-activities.component.scss'
+    selector: 'app-student-activities',
+    imports: [
+        MatCard,
+        DatePipe,
+        MatDivider,
+        StudentActivitiesMessagesContainerComponent
+    ],
+    templateUrl: './student-activities.component.html',
+    styleUrl: './student-activities.component.scss'
 })
 export class StudentActivitiesComponent {
   protected student = inject(StudentComponent).student;

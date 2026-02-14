@@ -9,20 +9,19 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-test-form',
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatRadioModule,
-    MatCard,
-    MatRippleModule,
-    MatInput,
-    MatButton,
-    MatIcon,
-  ],
-  templateUrl: './test-form.component.html',
-  styleUrl: './test-form.component.scss'
+    selector: 'app-test-form',
+    imports: [
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatRadioModule,
+        MatCard,
+        MatRippleModule,
+        MatInput,
+        MatButton,
+        MatIcon,
+    ],
+    templateUrl: './test-form.component.html',
+    styleUrl: './test-form.component.scss'
 })
 export class TestFormComponent {
   private fb = inject(NonNullableFormBuilder);

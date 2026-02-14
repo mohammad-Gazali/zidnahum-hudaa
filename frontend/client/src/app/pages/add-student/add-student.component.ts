@@ -21,33 +21,32 @@ import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/cor
 import { formatDate } from '@angular/common';
 
 @Component({
-  selector: 'app-add-student',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatFormField,
-    MatLabel,
-    MatError,
-    MatSuffix,
-    MatInput,
-    MatSelect,
-    MatOption,
-    MatButton,
-    MatIcon,
-    MatDatepickerInput,
-    MatDatepickerToggle,
-    MatDatepicker,
-    MasjedPipe,
-  ],
-  templateUrl: './add-student.component.html',
-  styleUrl: './add-student.component.scss',
-  providers: [
-    provideNativeDateAdapter(),
-    {
-      provide: MAT_DATE_LOCALE,
-      useValue: 'ar',
-    },
-  ],
+    selector: 'app-add-student',
+    imports: [
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatError,
+        MatSuffix,
+        MatInput,
+        MatSelect,
+        MatOption,
+        MatButton,
+        MatIcon,
+        MatDatepickerInput,
+        MatDatepickerToggle,
+        MatDatepicker,
+        MasjedPipe,
+    ],
+    templateUrl: './add-student.component.html',
+    styleUrl: './add-student.component.scss',
+    providers: [
+        provideNativeDateAdapter(),
+        {
+            provide: MAT_DATE_LOCALE,
+            useValue: 'ar',
+        },
+    ]
 })
 export class AddStudentComponent {
   private fb = inject(NonNullableFormBuilder);

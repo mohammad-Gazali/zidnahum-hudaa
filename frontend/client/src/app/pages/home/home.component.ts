@@ -15,22 +15,21 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddMemorizeNoteDialogComponent } from './add-memorize-note-dialog/add-memorize-note-dialog.component';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
-  imports: [
-    ReactiveFormsModule,
-    MatFormField,
-    MatInput,
-    MatButton,
-    MatIcon,
-    MatCard,
-    MatDivider,
-    DatePipe,
-    MasjedPipe,
-    RouterLink,
-  ],
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.scss',
+    imports: [
+        ReactiveFormsModule,
+        MatFormField,
+        MatInput,
+        MatButton,
+        MatIcon,
+        MatCard,
+        MatDivider,
+        DatePipe,
+        MasjedPipe,
+        RouterLink,
+    ]
 })
 export class HomeComponent {
   private students = inject(StudentsService);

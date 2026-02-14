@@ -27,28 +27,27 @@ import { MatButton, MatMiniFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-log-memo',
-  standalone: true,
-  imports: [
-    MatCard,
-    MatCardHeader,
-    MatCardTitle,
-    MatCardSubtitle,
-    MatCardContent,
-    MatCardActions,
-    MatChip,
-    MatDivider,
-    MatIcon,
-    DatePipe,
-    MessageTypePipe,
-    MemoPipe,
-    TestPipe,
-    MatMiniFabButton,
-    MatButton,
-    MasjedPipe,
-  ],
-  templateUrl: './log-memo.component.html',
-  styleUrl: './log-memo.component.scss'
+    selector: 'app-log-memo',
+    imports: [
+        MatCard,
+        MatCardHeader,
+        MatCardTitle,
+        MatCardSubtitle,
+        MatCardContent,
+        MatCardActions,
+        MatChip,
+        MatDivider,
+        MatIcon,
+        DatePipe,
+        MessageTypePipe,
+        MemoPipe,
+        TestPipe,
+        MatMiniFabButton,
+        MatButton,
+        MasjedPipe,
+    ],
+    templateUrl: './log-memo.component.html',
+    styleUrl: './log-memo.component.scss'
 })
 export class LogMemoComponent {
   private students = inject(StudentsService);

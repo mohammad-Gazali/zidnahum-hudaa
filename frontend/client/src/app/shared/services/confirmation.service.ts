@@ -22,15 +22,14 @@ export class ConfirmationService {
 }
 
 @Component({
-  selector: 'app-confirmation-dialog',
-  standalone: true,
-  imports: [
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatButton
-  ],
-  template: `
+    selector: 'app-confirmation-dialog',
+    imports: [
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatButton
+    ],
+    template: `
     <h2 mat-dialog-title>تأكيد</h2>
     <mat-dialog-content>
       {{ message }}
@@ -39,7 +38,7 @@ export class ConfirmationService {
       <button (click)="reject()" mat-button>لا</button>
       <button (click)="accept()" class="error" mat-button>نعم</button>
     </mat-dialog-actions>
-  `,
+  `
 })
 class ConfirmationDialogComponent {
   private data = inject<ConfirmationParam>(MAT_DIALOG_DATA);

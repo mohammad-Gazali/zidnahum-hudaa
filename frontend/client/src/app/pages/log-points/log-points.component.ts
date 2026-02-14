@@ -17,24 +17,23 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatDivider } from '@angular/material/divider';
 
 @Component({
-  selector: 'app-log-points',
-  standalone: true,
-  imports: [
-    DatePipe,
-    MasjedPipe,
-    MatButton,
-    MatCard,
-    MatCardContent,
-    MatCardHeader,
-    MatCardSubtitle,
-    MatCardTitle,
-    MatChip,
-    MatIcon,
-    MatMiniFabButton,
-    MatDivider
-  ],
-  templateUrl: './log-points.component.html',
-  styleUrl: './log-points.component.scss'
+    selector: 'app-log-points',
+    imports: [
+        DatePipe,
+        MasjedPipe,
+        MatButton,
+        MatCard,
+        MatCardContent,
+        MatCardHeader,
+        MatCardSubtitle,
+        MatCardTitle,
+        MatChip,
+        MatIcon,
+        MatMiniFabButton,
+        MatDivider
+    ],
+    templateUrl: './log-points.component.html',
+    styleUrl: './log-points.component.scss'
 })
 export class LogPointsComponent {
   private points = inject(PointsService);

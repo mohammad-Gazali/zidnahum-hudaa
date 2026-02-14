@@ -11,22 +11,21 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { MatButton } from '@angular/material/button';
 
 @Component({
-  selector: 'app-memo-form',
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInput,
-    MatIcon,
-    MatExpansionPanel,
-    MatExpansionPanelHeader,
-    MatExpansionPanelTitle,
-    MatCheckbox,
-    MatButton,
-    MemoPipe
-  ],
-  templateUrl: './memo-form.component.html',
-  styleUrl: './memo-form.component.scss'
+    selector: 'app-memo-form',
+    imports: [
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatInput,
+        MatIcon,
+        MatExpansionPanel,
+        MatExpansionPanelHeader,
+        MatExpansionPanelTitle,
+        MatCheckbox,
+        MatButton,
+        MemoPipe
+    ],
+    templateUrl: './memo-form.component.html',
+    styleUrl: './memo-form.component.scss'
 })
 export class MemoFormComponent {
   private fb = inject(NonNullableFormBuilder);

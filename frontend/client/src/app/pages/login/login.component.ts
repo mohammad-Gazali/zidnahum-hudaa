@@ -8,18 +8,17 @@ import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatFormField,
-    MatLabel,
-    MatError,
-    MatInput,
-    MatButton,
-  ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+    selector: 'app-login',
+    imports: [
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatError,
+        MatInput,
+        MatButton,
+    ],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   private fb = inject(NonNullableFormBuilder);

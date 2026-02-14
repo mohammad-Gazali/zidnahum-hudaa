@@ -20,26 +20,25 @@ import { StudentNotesComponent } from './student-notes/student-notes.component';
 import { StudentEliteTestComponent } from './student-elite-test/student-elite-test.component';
 
 @Component({
-  selector: 'app-student',
-  standalone: true,
-  templateUrl: './student.component.html',
-  styleUrl: './student.component.scss',
-  imports: [
-    MatProgressSpinner,
-    MatAccordion,
-    MatExpansionPanel,
-    MatExpansionPanelHeader,
-    MatExpansionPanelTitle,
-    MatIcon,
-    StudentInfoComponent,
-    StudentActivitiesComponent,
-    StudentMemoComponent,
-    StudentTestComponent,
-    StudentAwqafTestComponent,
-    StudentGeneralComponent,
-    StudentNotesComponent,
-    StudentEliteTestComponent
-  ]
+    selector: 'app-student',
+    templateUrl: './student.component.html',
+    styleUrl: './student.component.scss',
+    imports: [
+        MatProgressSpinner,
+        MatAccordion,
+        MatExpansionPanel,
+        MatExpansionPanelHeader,
+        MatExpansionPanelTitle,
+        MatIcon,
+        StudentInfoComponent,
+        StudentActivitiesComponent,
+        StudentMemoComponent,
+        StudentTestComponent,
+        StudentAwqafTestComponent,
+        StudentGeneralComponent,
+        StudentNotesComponent,
+        StudentEliteTestComponent
+    ]
 })
 export class StudentComponent {
   private students = inject(StudentsService);
