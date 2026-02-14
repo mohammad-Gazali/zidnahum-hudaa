@@ -1,3 +1,4 @@
 export const environment = {
-    baseApiUrl: '/api/v1/admin'
+  baseApiUrl: '/api/v1/admin',
+  appUrlPrefix: 'admin',
 };

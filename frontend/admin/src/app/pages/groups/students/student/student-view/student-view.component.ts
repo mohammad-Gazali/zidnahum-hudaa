@@ -53,7 +53,7 @@ export class StudentViewComponent extends StudentsBase {
           return this.students.studentsCategoryList();
         },
         getUrlFunc: (id) => {
-          return id !== null ? `/students/category/view/${id}` : '';
+          return id !== null ? `/students/student-category/view/${id}` : '';
         },
       },
       group: {
@@ -63,7 +63,7 @@ export class StudentViewComponent extends StudentsBase {
           return this.students.studentsGroupList();
         },
         getUrlFunc: (id) => {
-          return id !== null ? `/students/group/view/${id}` : '';
+          return id !== null ? `/students/student-group/view/${id}` : '';
         },
       },
       masjed: {

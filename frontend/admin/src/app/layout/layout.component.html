@@ -1,5 +1,5 @@
 <mat-sidenav-container>
-    <mat-sidenav fixedInViewport (openedChange)="handleSidenavChange($event)" [mode]="mode()">
+    <mat-sidenav fixedInViewport (openedChange)="handleSidenavChange($event)" [(opened)]="open" [mode]="mode()">
         <app-sidenav (onItemClick)="handleSidenavItemClick()" />
     </mat-sidenav>
     <mat-sidenav-content>

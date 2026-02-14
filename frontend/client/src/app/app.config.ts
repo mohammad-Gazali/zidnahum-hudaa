@@ -2,6 +2,7 @@ import {
   provideAppInitializer,
   ApplicationConfig,
   inject,
+  provideBrowserGlobalErrorListeners,
 } from "@angular/core";
 import { provideRouter } from "@angular/router";
 import { provideHttpClient, withInterceptors } from "@angular/common/http";
@@ -12,6 +13,7 @@ import { interceptors } from "./interceptors";
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideBrowserGlobalErrorListeners(),
     provideHttpClient(withInterceptors(interceptors)),
     provideRouter(routes),
     provideAppInitializer(() => {

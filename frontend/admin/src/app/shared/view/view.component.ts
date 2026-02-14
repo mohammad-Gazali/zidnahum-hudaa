@@ -43,6 +43,7 @@ import {
 import { ChangesFieldComponent } from '../changes-field/changes-field.component';
 import { LOADING } from '../../tokens/loading.token';
 import { AccountsService } from '../../services/api/accounts/accounts.service';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
     selector: 'app-view',
@@ -218,7 +219,7 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
                   type: 'link',
                   nonEditable: fieldsInfo?.nonEditable,
                   stringFieldValue: (res as any)[fieldsInfo.stringField],
-                  url: fieldsInfo.getUrlFunc(value),
+                  url: environment.appUrlPrefix + fieldsInfo.getUrlFunc(value),
                 };
               }
 
