@@ -3,9 +3,9 @@ name = "zidnahum-hudaa"
 version = "1.0.0"
 description = "A management system for Masjid (Muslim house of worship)."
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.10"
 dependencies = [
-    "django>=6.0.2",
+    "django>=5.2.11",
     "django-cors-headers>=4.9.0",
     "django-filter>=25.2",
     "django-stubs-ext>=5.2.9",
