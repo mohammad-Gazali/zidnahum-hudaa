@@ -44,14 +44,14 @@ class MemorizeMessageSignal(TestCase):
             masjed=StudentMasjedChoice.HASANIN,
         )
 
-        self.existing_qmemo = [0, 530, 100]
+        self.existing_qmemo = [0, 530, 203, 100, 601, 350, 166, 30]
         for qm in self.existing_qmemo:
             student.q_memorizing[qm] = NEW
 
         self.existing_qtest = [100, 120]
         for qt in self.existing_qtest:
             student.q_test[qt] = NEW
-        
+
         self.existing_alarbaein_alnawawia = 20
         student.alarbaein_alnawawia_new = self.existing_alarbaein_alnawawia
 

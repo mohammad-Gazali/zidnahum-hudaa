@@ -142,7 +142,7 @@ class StudentUpdateTestCase(TestCase):
 
             self.assertEqual(set(message.changes), set(q_test))
             self.assertEqual(self.control_settings.double_points, message.is_doubled, f"id = {student.pk}")
-            
+
     def test_update_student_qtest_protection(self):
         student = self.students[0]
         url = reverse("students_update_qtest_view", args=[student.pk])
@@ -171,7 +171,7 @@ class StudentUpdateTestCase(TestCase):
         self.assertEqual(res.status_code, HTTP_200_OK)
 
         # from the end of qmemo
-        student.q_memorizing = [NON] * 597 + [get_non_NON() for _ in range(21)] 
+        student.q_memorizing = [NON] * 597 + [get_non_NON() for _ in range(21)]
         student.save()
 
         res = self.client.put(url, {
