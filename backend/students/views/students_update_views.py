@@ -26,7 +26,7 @@ from students.serializers import (
   StudentUpdateQTestSerializer,
   StudentUpdateRiadAlsaalihinSerializer,
 )
-from students.utils import check_for_qtest
+from students.utils import check_for_qtest, check_for_qmemo
 
 
 class HandledExceptionAPIView(APIView):
@@ -61,6 +61,18 @@ class StudentUpdateQMemoView(HandledExceptionAPIView):
           )
         ],
       ),
+      400: OpenApiResponse(
+        description="error",
+        response=OpenApiTypes.OBJECT,
+        examples=[
+          OpenApiExample(
+            "Example",
+            value={
+              "detail": "error message here"
+            }
+          )
+        ]
+      )
     },
   )
   @transaction.atomic
@@ -82,7 +94,12 @@ class StudentUpdateQMemoView(HandledExceptionAPIView):
           repeated_memo.append(item)
         else:
           added_memo.append(item)
-          student.q_memorizing[item] = NEW
+
+      if result := check_for_qmemo(student, added_memo):
+        return Response({"detail": result}, HTTP_400_BAD_REQUEST)
+
+      for item in added_memo:
+        student.q_memorizing[item] = NEW
 
       student.save()
 
