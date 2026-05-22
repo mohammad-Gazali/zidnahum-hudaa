@@ -169,7 +169,9 @@ def _check_for_qmemo_section_completeness(student, changes: List[int]) -> str | 
     section_for_change = 0 if change <= 20 else min(29, (change - 1) // 20)
 
     if section_for_change not in only_allowed_sections:
-      return "يجب إتمام تسميع الجزء قبل البدء بتسميع جزء جديد"
+      allowed_sections = " + ".join(map(lambda section: f"الجزء {section + 1}", only_allowed_sections))
+
+      return f"يجب إتمام تسميع ({allowed_sections}) قبل البدء بتسميع جزء جديد"
 
 
 def _check_for_qtest_by_previously_qmemo(student, changes: List[int]) -> str | None:

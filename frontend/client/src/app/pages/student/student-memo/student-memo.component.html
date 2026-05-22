@@ -1,3 +1,10 @@
+@if (toContinueSectionsMessage(); as message) {
+    <div class="text-secondary bg-secondary-fixed continue-message">
+        الأجزاء التي يجب متابعة تسميعها:
+        <strong class="text-primary"> {{ message }}</strong>
+    </div>
+    <mat-divider />
+}
 <div class="bg-surface top-section">
     <div>
         <mat-card class="bg-primary-fixed-dim" />
