@@ -130,7 +130,7 @@ export class ReportsComponent {
   });
 
   public form = this.fb.group({
-    masjed: this.fb.control<1 | 2 | 3 | undefined>(undefined),
+    masjed: this.fb.control<1 | 2 | 3 | 4 | undefined>(undefined),
     category: this.fb.control<number | undefined>(undefined),
     group: this.fb.control<number | undefined>(undefined),
     start_date: this.fb.control<Date | undefined>(undefined, [

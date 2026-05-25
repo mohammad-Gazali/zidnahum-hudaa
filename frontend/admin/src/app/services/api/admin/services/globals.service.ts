@@ -628,7 +628,7 @@ module GlobalsService {
     /**
      * category
      */
-    masjed?: 1 | 2 | 3; 
+    masjed?: 1 | 2 | 3 | 4; 
   }
 
   export interface GlobalsNewsCreateParams {
@@ -636,7 +636,7 @@ module GlobalsService {
     description?: string;
     low_quality_image: Blob;
     main_image: Blob;
-    masjed: 1 | 2 | 3;
+    masjed: 1 | 2 | 3 | 4;
   }
 }
 

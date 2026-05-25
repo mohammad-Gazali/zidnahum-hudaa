@@ -4,5 +4,5 @@ export interface NewsList {
   description?: string;
   main_image: string;
   low_quality_image: string;
-  masjed: 1 | 2 | 3;
+  masjed: 1 | 2 | 3 | 4;
 }

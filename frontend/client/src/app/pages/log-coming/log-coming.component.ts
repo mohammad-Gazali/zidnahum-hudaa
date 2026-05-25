@@ -79,7 +79,7 @@ export class LogComingComponent {
     startDate: this.fb.control<Date | undefined>(undefined),
     endDate: this.fb.control<Date | undefined>(undefined),
     category: this.fb.control<number | undefined>(undefined),
-    masjed: this.fb.control<1 | 2 | 3 | undefined>(undefined),
+    masjed: this.fb.control<1 | 2 | 3 | 4 | undefined>(undefined),
   });
 
   private page$ = new BehaviorSubject(1);
@@ -173,5 +173,5 @@ interface SearchFormValue {
   startDate?: Date;
   endDate?: Date;
   category?: number;
-  masjed?: 1 | 2 | 3;
+  masjed?: 1 | 2 | 3 | 4;
 }

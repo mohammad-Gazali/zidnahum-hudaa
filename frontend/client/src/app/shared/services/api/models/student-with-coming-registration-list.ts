@@ -5,7 +5,7 @@ export interface StudentWithComingRegistrationList {
   category?: StudentCategory;
   group?: StudentGroup;
   id: number;
-  masjed: 1 | 2 | 3;
+  masjed: 1 | 2 | 3 | 4;
   mother_name?: null | string;
   name: string;
   is_registered_today: boolean;

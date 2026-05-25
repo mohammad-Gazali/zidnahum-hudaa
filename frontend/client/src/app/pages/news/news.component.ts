@@ -26,4 +26,5 @@ export class NewsComponent {
 
   public hassaneinNews = computed(() => this.news().filter(({ masjed }) => masjed === 1))
   public qazzazNews = computed(() => this.news().filter(({ masjed }) => masjed === 3))
+  public khansaaNews = computed(() => this.news().filter(({ masjed }) => masjed === 4))
 }

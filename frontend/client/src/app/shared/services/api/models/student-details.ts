@@ -24,7 +24,7 @@ export interface StudentDetails {
   group?: StudentGroup;
   id?: number;
   last_comings: Array<ComingListForStudent>;
-  masjed: 1 | 2 | 3;
+  masjed: 1 | 2 | 3 | 4;
   memo_notes: Array<MemorizeNotesGet>;
   mother_name?: null | string;
   mother_phone?: null | string;

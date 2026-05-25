@@ -660,7 +660,7 @@ module StudentsService {
     /**
      * param for filtering result via masjed
      */
-    masjed?: 1 | 2 | 3;
+    masjed?: 1 | 2 | 3 | 4;
 
     /**
      * A page number within the paginated result set.
@@ -680,7 +680,7 @@ module StudentsService {
     /**
      * param for filtering result via masjed
      */
-    masjed?: 1 | 2 | 3;
+    masjed?: 1 | 2 | 3 | 4;
 
     comingCategoryId: string;
 

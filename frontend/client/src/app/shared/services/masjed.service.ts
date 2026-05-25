@@ -4,5 +4,5 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class MasjedService {
-  public masjedOptions = [1, 2, 3] as const;
+  public masjedOptions = [1, 2, 3, 4] as const;
 }

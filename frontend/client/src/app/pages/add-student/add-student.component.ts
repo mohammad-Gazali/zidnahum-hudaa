@@ -68,7 +68,7 @@ export class AddStudentComponent {
     name: this.fb.control('', [Validators.required]),
     mother_name: this.fb.control('', [Validators.required]),
     birthdate: this.fb.control<Date | null>(null),
-    masjed: this.fb.control<1 | 2 | 3>(undefined as any, [Validators.required]),
+    masjed: this.fb.control<1 | 2 | 3 | 4>(undefined as any, [Validators.required]),
     address: this.fb.control(''),
     static_phone: this.fb.control(''),
     cell_phone: this.fb.control(''),

@@ -58,7 +58,7 @@ export class ReportsComponent {
   public masjeds = this.masjed.masjedOptions;
 
   public form = this.fb.group({
-    masjed: this.fb.control<1 | 2 | 3 | undefined>(undefined, [Validators.required]),
+    masjed: this.fb.control<1 | 2 | 3 | 4 | undefined>(undefined, [Validators.required]),
     start_date: this.fb.control<Date | undefined>(undefined, [
       Validators.required,
     ]),

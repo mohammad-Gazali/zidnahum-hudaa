@@ -61,7 +61,7 @@ export class AddPointsComponent {
   protected masjedOptions = this.masjed.masjedOptions;
   protected searchForm = this.fb.group({
     search: this.fb.control(''),
-    masjed: this.fb.control<1 | 2 | 3>(1),
+    masjed: this.fb.control<1 | 2 | 3 | 4>(1),
   });
 
   protected addingCauses = toSignal<PointsAddingCause[]>(this.points.pointsAddingCauseList(), {

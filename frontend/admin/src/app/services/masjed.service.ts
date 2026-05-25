@@ -5,11 +5,12 @@ import { of } from 'rxjs';
   providedIn: 'root',
 })
 export class MasjedService {
-  getMasjed(id: 1 | 2 | 3): string {
+  getMasjed(id: 1 | 2 | 3 | 4): string {
     switch (id) {
       case 1: return 'الحسنين';
       case 2: return 'السلام';
       case 3: return 'القزاز';
+      case 4: return 'الخنساء';
     }
   }
 
@@ -25,6 +26,10 @@ export class MasjedService {
       },
       {
         id: 3,
+        name: 'القزاز',
+      },
+      {
+        id: 4,
         name: 'القزاز',
       },
     ]);

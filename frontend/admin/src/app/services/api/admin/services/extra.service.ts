@@ -438,7 +438,7 @@ module ExtraService {
     /**
      * student__masjed
      */
-    studentMasjed?: '1' | '2' | '3';
+    studentMasjed?: '1' | '2' | '3' | '4';
 
     /**
      * The initial index from which to return the results.

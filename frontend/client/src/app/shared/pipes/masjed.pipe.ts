@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'masjed',
 })
 export class MasjedPipe implements PipeTransform {
-  transform(value: 1 | 2 | 3): string {
+  transform(value: 1 | 2 | 3 | 4): string {
     switch (value) {
       case 1:
         return 'الحسنين';
@@ -13,6 +13,8 @@ export class MasjedPipe implements PipeTransform {
         return 'السلام';
       case 3:
         return 'القزاز';
+      case 4:
+        return 'الخنساء';
     }
   }
 }

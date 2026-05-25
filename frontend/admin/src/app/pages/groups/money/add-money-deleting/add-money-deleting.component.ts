@@ -78,7 +78,7 @@ export class AddMoneyDeletingComponent extends MoneyBase {
   });
 
   public categoryForm = this.fb.group({
-    masjed: this.fb.control<1 | 2 | 3 | undefined>(undefined, [
+    masjed: this.fb.control<1 | 2 | 3 | 4 | undefined>(undefined, [
       Validators.required,
     ]),
     category: this.fb.control<number | undefined>(undefined, [

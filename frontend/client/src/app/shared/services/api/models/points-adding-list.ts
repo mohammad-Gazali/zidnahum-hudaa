@@ -6,5 +6,5 @@ export interface PointsAddingList {
   master?: null | number;
   student: number;
   value: number;
-  masjed: 1 | 2 | 3;
+  masjed: 1 | 2 | 3 | 4;
 }

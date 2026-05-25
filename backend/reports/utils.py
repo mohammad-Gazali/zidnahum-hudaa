@@ -226,8 +226,10 @@ def excel_all_students_report(data, start_date: str, end_date: str, masjed: int)
         sheet.cell(2, 2, 'الحسنين').alignment = alignment
     elif masjed == StudentMasjedChoice.SALAM:
         sheet.cell(2, 2, 'السلام').alignment = alignment
-    else:
+    elif masjed == StudentMasjedChoice.QAZZAZ:
         sheet.cell(2, 2, 'القزاز').alignment = alignment
+    else:
+        sheet.cell(2, 2, 'الخنساء').alignment = alignment
 
 
     cell = sheet.cell(3, 1, 'تاريخ البداية')
@@ -311,8 +313,10 @@ def excel_category_or_group_report(data, category_or_group_name: str, masjed: in
         sheet.cell(2, 2, 'الحسنين').alignment = alignment
     elif masjed == StudentMasjedChoice.SALAM:
         sheet.cell(2, 2, 'السلام').alignment = alignment
-    else:
+    elif masjed == StudentMasjedChoice.QAZZAZ:
         sheet.cell(2, 2, 'القزاز').alignment = alignment
+    else:
+        sheet.cell(2, 2, 'الخنساء').alignment = alignment
 
 
     cell = sheet.cell(3, 1, 'تاريخ البداية')
@@ -412,8 +416,10 @@ def excel_all_categories_or_groups_report(data, masjed: int, start_date: str, en
         sheet.cell(2, 2, 'الحسنين').alignment = alignment
     elif masjed == StudentMasjedChoice.SALAM:
         sheet.cell(2, 2, 'السلام').alignment = alignment
-    else:
+    elif masjed == StudentMasjedChoice.QAZZAZ:
         sheet.cell(2, 2, 'القزاز').alignment = alignment
+    else:
+        sheet.cell(2, 2, 'الخنساء').alignment = alignment
 
     cell = sheet.cell(3, 1, 'تاريخ البداية')
     cell.alignment = alignment

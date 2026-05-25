@@ -21,4 +21,16 @@
       }
     </div>
   </mat-tab>
+  <mat-tab label="الخنساء">
+    <div class="news-container">
+      @for (news of khansaaNews(); track news.id) {
+        <app-news-card [index]="$index" [news]="news" />
+      } @empty {
+        <p class="no-news">
+          لا يوجد إعلانات
+        </p>
+      }
+    </div>
+  </mat-tab>
+
 </mat-tab-group>

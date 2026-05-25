@@ -11,7 +11,7 @@ export class AddComingStudentListService {
   public searchForm = this.fb.group({
     search: this.fb.control(''),
     categoryId: this.fb.control<undefined | number>(undefined, [Validators.required]),
-    masjed: this.fb.control<1 | 2 | 3>(1),
+    masjed: this.fb.control<1 | 2 | 3 | 4>(1),
   });
   public lastResponse = signal<
     | {
