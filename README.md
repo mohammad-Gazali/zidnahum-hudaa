@@ -16,7 +16,7 @@ A management system for Masjid (Muslim house of worship) built on top of Django 
 
 ## Requirements
 
-- Python 3.14 or bigger.
+- Python 3.10 or bigger.
 - Node.js in your system.
 
 ## Installation
@@ -28,19 +28,19 @@ A management system for Masjid (Muslim house of worship) built on top of Django 
 
 2. Install dependencies:
    ```bash
-   pip install -r requirements.txt
+   uv sync
    ```
 
 3. Perform migrations:
    ```bash
-   python manage.py migrate
+   make migrate
    ```
 
 ## Usage
 
 To start the development server, run:
 ```bash
-python manage.py runserver
+make
 ```
 
 Access the app in your web browser at `http://localhost:8000`.
