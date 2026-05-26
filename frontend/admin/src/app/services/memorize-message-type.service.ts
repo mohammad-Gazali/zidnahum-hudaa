@@ -30,6 +30,10 @@ export class MemorizeMessageTypeService {
           {
             id: 6,
             name: 'سبر أحزاب'
+          },
+          {
+            id: 7,
+            name: 'سرد القرآن نظراً'
           }
         ]);
     }

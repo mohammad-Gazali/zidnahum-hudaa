@@ -1,6 +1,7 @@
 <div class="container">
     @switch (type()) {
-        @case (1) {
+        @case (1)
+        @case (7) {
             @for (item of content(); track item) {
                 <mat-card class="bg-primary-fixed-dim">
                     {{ memorize.transform(item) }}

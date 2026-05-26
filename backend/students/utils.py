@@ -1,6 +1,6 @@
 from copy import copy
 from math import ceil
-from typing import List
+from typing import List, Literal
 
 from django.utils import timezone
 
@@ -143,21 +143,30 @@ def check_for_qtest(student, changes: List[int]) -> str | None:
 
 
 def check_for_qmemo(student, changes: List[int]) -> str | None:
-  return _check_for_qmemo_section_completeness(student, changes)
+  return _check_for_section_completeness(student, changes, "memo")
 
 
-def _check_for_qmemo_section_completeness(student, changes: List[int]) -> str | None:
+def check_for_qviewing(student, changes: List[int]) -> str | None:
+  return _check_for_section_completeness(student, changes, "viewing")
+
+
+def _check_for_section_completeness(student, changes: List[int], type_of_check: Literal["memo"] | Literal["viewing"]) -> str | None:
   only_allowed_sections: List[int] = []
 
-  student_memorize = student.q_memorizing
+  if type_of_check == "memo":
+    original = student.q_memorizing
+    action = "تسميع"
+  elif type_of_check == "viewing":
+    original = student.q_viewing
+    action = "سرد"
 
   for i in range(30):
     if i == 0:
-      s = student_memorize[:21]
+      s = original[:21]
     elif i != 29:
-      s = student_memorize[i * 20 + 1 : i * 20 + 21]
+      s = original[i * 20 + 1 : i * 20 + 21]
     else:
-      s = student_memorize[581:]
+      s = original[581:]
 
     if not all(map(lambda item: item == NON, s)) and any(map(lambda item: item == NON, s)):
       only_allowed_sections.append(i)
@@ -171,7 +180,7 @@ def _check_for_qmemo_section_completeness(student, changes: List[int]) -> str | 
     if section_for_change not in only_allowed_sections:
       allowed_sections = " + ".join(map(lambda section: f"الجزء {section + 1}", only_allowed_sections))
 
-      return f"يجب إتمام تسميع ({allowed_sections}) قبل البدء بتسميع جزء جديد"
+      return f"يجب إتمام {action} ({allowed_sections}) قبل البدء ب{action} جزء جديد"
 
 
 def _check_for_qtest_by_previously_qmemo(student, changes: List[int]) -> str | None:

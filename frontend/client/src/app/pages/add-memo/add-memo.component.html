@@ -53,6 +53,9 @@
         <mat-tab label="سبر">
           <app-test-form (onSubmit)="onTestSubmit($event)" />
         </mat-tab>
+        <mat-tab label="سرد نظراً">
+          <app-memo-form (onSubmit)="onViewingSubmit($event)" />
+        </mat-tab>
       </mat-tab-group>
     </mat-card-content>
   </mat-card>

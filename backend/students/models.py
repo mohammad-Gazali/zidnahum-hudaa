@@ -33,7 +33,7 @@ class StudentMasjedChoice(models.IntegerChoices):
     SALAM = 2, "السلام"
     QAZZAZ = 3, "القزاز"
     KHANSAA = 4, "الخنساء"
-    
+
 
 class StudentLevelChoice(models.IntegerChoices):
     ONE = 1, "مستوى أول"
@@ -54,22 +54,24 @@ class Student(models.Model):
     notes = models.CharField(max_length=60, null=True, blank=True, verbose_name="ملاحظات")
     bring_him = models.CharField(max_length=80, verbose_name="أحضره", null=True, blank=True)
     parts_received = models.CharField(max_length=50, verbose_name="الأجزاء المستلمة", null=True, blank=True)
-    
+
     q_memorizing = models.JSONField(default=json_default_value_618, verbose_name="حفظ القرآن")
     q_test = models.JSONField(default=json_default_value_240, verbose_name="السبر في المسجد")
     q_elite_test = models.JSONField(default=json_default_value_60, verbose_name="سبر الأحزاب في المسجد")
-    # q_viewing = models.JSONField(default=json_default_value_618, verbose_name="سرد القرآن نظراً")
+    q_viewing = models.JSONField(default=json_default_value_618, verbose_name="سرد القرآن نظراً")
     q_awqaf_test = models.JSONField(default=json_default_value_30, verbose_name="سبر القرآن في الأوقاف")
     q_awqaf_test_looking = models.JSONField(default=json_default_value_30, verbose_name="سبر القرآن نظراً في الأوقاف")
     q_awqaf_test_explaining = models.JSONField(default=json_default_value_30, verbose_name="سبر القرآن تفسيراً في الأوقاف")
-    
+
     alarbaein_alnawawia_old = models.PositiveIntegerField(verbose_name="الأربعين النووية قديم", default=0, validators=[MaxValueValidator(50)])
     alarbaein_alnawawia_new = models.PositiveIntegerField(verbose_name="الأربعين النووية جديد", default=0, validators=[MaxValueValidator(50)])
     riad_alsaalihin_old = models.PositiveIntegerField(verbose_name="رياض الصالحين قديم", default=0)
     riad_alsaalihin_new = models.PositiveIntegerField(verbose_name="رياض الصالحين جديد", default=0)
+    # kunuz_old = models.PositiveIntegerField(verbose_name="كنوز من السنة قديم", default=0, validators=[MaxValueValidator(30)])
+    # kunuz_new = models.PositiveIntegerField(verbose_name="كنوز من السنة جديد", default=0, validators=[MaxValueValidator(30)])
     allah_names_old = models.BooleanField(verbose_name="أسماء الله الحسنى قديم", default=False)
     allah_names_new = models.BooleanField(verbose_name="أسماء الله الحسنى جديد", default=False)
-    
+
     category = models.ForeignKey(StudentCategory, on_delete=models.SET_NULL, verbose_name="الفئة", null=True, blank=True)
     group = models.ForeignKey(StudentGroup, on_delete=models.SET_NULL, verbose_name="المجموعة", null=True, blank=True)
 
@@ -95,7 +97,7 @@ class Student(models.Model):
                 .replace("\u0625", "(\u0623|\u0625|\u0627)")
                 .replace("\u0627", "(\u0623|\u0625|\u0627)")
             ) + r".*"
-        
+
         return regex
 
     @classmethod
@@ -153,6 +155,8 @@ class MessageTypeChoice(models.IntegerChoices):
     ALSAALIHIN = 4, "رياض الصالحين"
     ALLAH_NAMES = 5, "أسماء الله الحسنى"
     ELITE_TEST = 6, "سبر الأحزاب"
+    VIEWING = 7, "سرد نظراً"
+    KUNUZ = 8, "كنوز من السنة"
 
 
 class MemorizeMessage(models.Model):
@@ -161,14 +165,14 @@ class MemorizeMessage(models.Model):
     sended_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الإرسال")
     student_level = models.IntegerField(verbose_name="مستوى الطالب", choices=StudentLevelChoice.choices)
 
-    # for type MEMO, TEST, ELITE_TEST the changes is the "list" of changed indexes in the related field
-    # for type ALNAWAWIA, ALSAALIHIN the changes is the "list" of three numbers where the first item is the old value of the related field and the second is the new value before edit and the third is the new value after edit
+    # for type MEMO, TEST, ELITE_TEST, VIEWING the changes is the "list" of changed indexes in the related field
+    # for type ALNAWAWIA, ALSAALIHIN, KUNUZ the changes is the "list" of three numbers where the first item is the old value of the related field and the second is the new value before edit and the third is the new value after edit
     # for type ALLAH_NAMES the changes is empty list
     changes = models.JSONField(default=list, verbose_name="التعديلات")
 
     message_type = models.IntegerField(verbose_name="نوع الرسالة", choices=MessageTypeChoice.choices, default=MessageTypeChoice.MEMO)
     is_doubled = models.BooleanField(verbose_name="القيمة مضاعفة", default=False)
-    
+
 
     def __str__(self):
         return f"رسالة التسميع {self.id}"

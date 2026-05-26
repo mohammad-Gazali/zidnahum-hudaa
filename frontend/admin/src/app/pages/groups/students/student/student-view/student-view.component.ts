@@ -76,6 +76,9 @@ export class StudentViewComponent extends StudentsBase {
       q_memorizing: {
         type: 'q_memorize',
       },
+      q_viewing: {
+        type: 'q_memorize',
+      },
       q_test: {
         type: 'q_test',
       },

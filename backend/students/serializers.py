@@ -68,7 +68,7 @@ class StudentDetailsSerializer(serializers.ModelSerializer):
     category = StudentCategorySerializer()
     group = StudentGroupSerializer()
     memo_notes = MemorizeNotesGetSerializer(many=True)
-    
+
     awqaf_relations = AwqafRelationSerializer(many=True)
     last_comings = ComingListForStudentSerializer(many=True)
 
@@ -86,6 +86,13 @@ class StudentDetailsSerializer(serializers.ModelSerializer):
 
 class StudentUpdateQMemoSerializer(serializers.Serializer):
     q_memo = serializers.ListField(
+        allow_empty=False,
+        child=serializers.IntegerField(min_value=0, max_value=617),
+    )
+
+
+class StudentUpdateQViewingSerializer(serializers.Serializer):
+    q_viewing = serializers.ListField(
         allow_empty=False,
         child=serializers.IntegerField(min_value=0, max_value=617),
     )

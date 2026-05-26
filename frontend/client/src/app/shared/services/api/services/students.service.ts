@@ -12,6 +12,7 @@ import { MemorizeNotesCreate } from '../models/memorize-notes-create';
 import { StudentUpdateAlarbaeinAlnawawia } from '../models/student-update-alarbaein-alnawawia';
 import { StudentUpdatePartsReceived } from '../models/student-update-parts-received';
 import { StudentUpdateQMemo } from '../models/student-update-qmemo';
+import { StudentUpdateQViewing } from '../models/student-update-qviewing';
 import { StudentUpdateQTest } from '../models/student-update-qtest';
 import { StudentUpdateRiadAlsaalihin } from '../models/student-update-riad-alsaalihin';
 import { StudentDetails } from '../models/student-details';
@@ -471,6 +472,49 @@ class StudentsService extends __BaseService {
   }
 
   /**
+   * @param params The `StudentsService.StudentsUpdateQviewingUpdateParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `data`:
+   */
+  studentsUpdateQviewingUpdateResponse(params: StudentsService.StudentsUpdateQviewingUpdateParams): __Observable<__StrictHttpResponse<{ repeated_viewing: number[] }>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    __body = params.data;
+    let req = new HttpRequest<any>(
+      'PUT',
+      this.rootUrl + `/students/update/qviewing/${encodeURIComponent(String(params.id))}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<{ repeated_viewing: number[] }>;
+      })
+    );
+  }
+  /**
+   * @param params The `StudentsService.StudentsUpdateQviewingUpdateParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `data`:
+   */
+  studentsUpdateQviewingUpdate(params: StudentsService.StudentsUpdateQviewingUpdateParams): __Observable<{ repeated_viewing: number[] }> {
+    return this.studentsUpdateQviewingUpdateResponse(params).pipe(
+      __map(_r => _r.body as { repeated_viewing: number[] })
+    );
+  }
+
+  /**
    * @param params The `StudentsService.StudentsUpdateQtestUpdateParams` containing the following parameters:
    *
    * - `id`:
@@ -712,6 +756,14 @@ module StudentsService {
   export interface StudentsUpdateQmemoUpdateParams {
     id: string;
     data: StudentUpdateQMemo;
+  }
+
+  /**
+   * Parameters for studentsUpdateQviewingUpdate
+   */
+  export interface StudentsUpdateQviewingUpdateParams {
+    id: string;
+    data: StudentUpdateQViewing;
   }
 
   /**

@@ -22,7 +22,7 @@
 <mat-divider />
 <div class="memo-container">
     @if (student(); as student) {
-        @for (item of $any(student.q_memorizing); track $index) {
+        @for (item of viewing() ? $any(student.q_viewing) : $any(student.q_memorizing); track $index) {
             <mat-card
             [class.bg-primary-fixed-dim]="item === MemoItemType.NEW"
             [class.bg-secondary-fixed]="item === MemoItemType.OLD"

@@ -16,5 +16,5 @@ export class ChangesFieldComponent {
   public eliteTest = inject(QuranEliteTestService);
 
   public content = input.required<number[]>();
-  public type = input.required<1 | 2 | 3 | 4 | 5 | 6>();
+  public type = input.required<1 | 2 | 3 | 4 | 5 | 6 | 7>();
 }

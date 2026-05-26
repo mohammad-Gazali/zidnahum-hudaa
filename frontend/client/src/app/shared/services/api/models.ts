@@ -28,6 +28,7 @@ export { MemorizeNotesCreate } from './models/memorize-notes-create';
 export { StudentUpdateAlarbaeinAlnawawia } from './models/student-update-alarbaein-alnawawia';
 export { StudentUpdatePartsReceived } from './models/student-update-parts-received';
 export { StudentUpdateQMemo } from './models/student-update-qmemo';
+export { StudentUpdateQViewing } from './models/student-update-qviewing';
 export { StudentUpdateQTest } from './models/student-update-qtest';
 export { StudentUpdateRiadAlsaalihin } from './models/student-update-riad-alsaalihin';
 export { MemorizeNotesGet } from './models/memorize-notes-get';

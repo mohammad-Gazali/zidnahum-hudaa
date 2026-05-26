@@ -4,4 +4,6 @@ export enum MessageType {
   AlNawawia,
   AlSaalihin,
   AllahNames,
+  Parts,
+  Viewing,
 }

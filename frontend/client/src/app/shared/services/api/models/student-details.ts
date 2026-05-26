@@ -37,6 +37,7 @@ export interface StudentDetails {
   q_awqaf_test_looking?: {};
   q_elite_test?: {};
   q_memorizing?: {};
+  q_viewing?: {};
   q_test?: {};
   registered_at?: string;
   riad_alsaalihin_new: number;

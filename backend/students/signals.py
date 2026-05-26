@@ -34,3 +34,8 @@ def pre_delete_message(sender, instance: MemorizeMessage, **kwargs):
         for item in instance.changes:
             student.q_elite_test[item] = NON
         student.save()
+
+    elif instance.message_type == MessageTypeChoice.VIEWING:
+        for item in instance.changes:
+            student.q_viewing[item] = NON
+        student.save()

@@ -28,7 +28,8 @@
           <mat-divider/>
         }
         @switch (message.message_type) {
-          @case (messageType.Memo) {
+          @case (messageType.Memo)
+          @case (messageType.Viewing) {
             <div class="inner-cards-container">
               @for (item of message.changes; track item) {
                 <mat-card class="small-card bg-primary-fixed-dim">

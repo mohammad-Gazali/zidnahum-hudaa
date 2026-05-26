@@ -189,6 +189,50 @@ export class AddMemoComponent {
     });
   }
 
+  onViewingSubmit(value: MemoSubmit) {
+    if (this.loading()) return;
+
+    const selectedStudent = this.selectedStudent();
+
+    if (!selectedStudent) return;
+
+    const q_viewing = [...value.exact];
+
+    value.single && q_viewing.push(value.single);
+
+    if (value.from && value.to) {
+      for (let item = value.from; item <= value.to; item++) {
+        q_viewing.push(item);
+      }
+    }
+
+    this.loading.set(true);
+
+    this.studentsService.studentsUpdateQviewingUpdate({
+      id: selectedStudent.id.toString(),
+      data: {
+        q_viewing: q_viewing.map(n => n - 1),
+      },
+    })
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe({
+        error: ({ error }) => {
+          this.loading.set(false);
+          this.snackbar.error((error && error.detail) ?? error);
+        },
+        next: (res) => {
+          this.loading.set(false);
+          if (res.repeated_viewing.length !== 0) {
+            this.matSnackbar.open(' تم تسجيل السرد بنجاح, ولكن يوجد تكرار بـ:' + res.repeated_viewing.map((item: number) => this.memo.transform(item)).join(', '), 'إغلاق');
+          } else {
+            this.snackbar.success('تم تسجيل السرد بنجاح');
+          }
+        }
+      });
+  }
+
   testArrayFromPartNumber(part: number) {
     let initial = part === 1 ? 1 : 4 * part - 3;
     return Array(4).fill(null).map(() => initial++);

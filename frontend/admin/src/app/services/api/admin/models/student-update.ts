@@ -23,6 +23,7 @@ export interface StudentUpdate {
   q_awqaf_test_looking?: {};
   q_elite_test?: {};
   q_memorizing?: {};
+  q_viewing?: {};
   q_test?: {};
   riad_alsaalihin_new?: number;
   riad_alsaalihin_old?: number;

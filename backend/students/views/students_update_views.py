@@ -23,10 +23,11 @@ from students.serializers import (
   StudentUpdateAlarbaeinAlnawawiaSerializer,
   StudentUpdatePartsReceivedSerializer,
   StudentUpdateQMemoSerializer,
+  StudentUpdateQViewingSerializer,
   StudentUpdateQTestSerializer,
   StudentUpdateRiadAlsaalihinSerializer,
 )
-from students.utils import check_for_qtest, check_for_qmemo
+from students.utils import check_for_qtest, check_for_qmemo, check_for_qviewing
 
 
 class HandledExceptionAPIView(APIView):
@@ -116,6 +117,88 @@ class StudentUpdateQMemoView(HandledExceptionAPIView):
       return Response(
         {
           "repeated_memo": repeated_memo,
+        },
+        HTTP_200_OK,
+      )
+
+    return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
+
+
+# TODO: test it
+class StudentUpdateQViewingView(HandledExceptionAPIView):
+  permission_classes = [IsMemoGroup]
+  http_method_names = ["put"]
+
+  @extend_schema(
+    request=StudentUpdateQViewingSerializer,
+    responses={
+      200: OpenApiResponse(
+        description="success",
+        response=OpenApiTypes.OBJECT,
+        examples=[
+          OpenApiExample(
+            "Example",
+            value={
+              "repeated_viewing": [10, 12, 13, 20, 200],
+            },
+          )
+        ],
+      ),
+      400: OpenApiResponse(
+        description="error",
+        response=OpenApiTypes.OBJECT,
+        examples=[
+          OpenApiExample(
+            "Example",
+            value={
+              "detail": "error message here"
+            }
+          )
+        ]
+      )
+    },
+  )
+  @transaction.atomic
+  def put(self, *args, **kwargs):
+    pk: int = kwargs.get("pk")
+    student: Student = get_object_or_404(Student, pk=pk)
+
+    serializer = StudentUpdateQViewingSerializer(data=self.request.data)
+
+    if serializer.is_valid():
+      new_qviewing: List[int] = list(set(serializer.validated_data["q_viewing"]))
+      repeated_viewing = []
+      added_viewing = []
+
+      new_qviewing.sort()
+
+      for item in new_qviewing:
+        if student.q_viewing[item] != NON:
+          repeated_viewing.append(item)
+        else:
+          added_viewing.append(item)
+
+      if result := check_for_qviewing(student, added_viewing):
+        return Response({"detail": result}, HTTP_400_BAD_REQUEST)
+
+      for item in added_viewing:
+        student.q_viewing[item] = NEW
+
+      student.save()
+
+      if added_viewing:
+        MemorizeMessage.objects.create(
+          master=self.request.user,
+          student=student,
+          changes=added_viewing,
+          message_type=MessageTypeChoice.VIEWING,
+          is_doubled=ControlSettings.get_double_points(),
+          student_level=student.level,
+        )
+
+      return Response(
+        {
+          "repeated_viewing": repeated_viewing,
         },
         HTTP_200_OK,
       )
