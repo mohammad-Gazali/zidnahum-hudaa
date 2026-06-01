@@ -30,7 +30,7 @@ export class MasjedService {
       },
       {
         id: 4,
-        name: 'القزاز',
+        name: 'الخنساء',
       },
     ]);
   }
