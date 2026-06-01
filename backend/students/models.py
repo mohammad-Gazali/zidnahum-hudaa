@@ -58,7 +58,7 @@ class Student(models.Model):
     q_memorizing = models.JSONField(default=json_default_value_618, verbose_name="حفظ القرآن")
     q_test = models.JSONField(default=json_default_value_240, verbose_name="السبر في المسجد")
     q_elite_test = models.JSONField(default=json_default_value_60, verbose_name="سبر الأحزاب في المسجد")
-    q_viewing = models.JSONField(default=json_default_value_618, verbose_name="سرد القرآن نظراً")
+    q_viewing = models.JSONField(default=json_default_value_618, verbose_name="قراءة القرآن نظراً")
     q_awqaf_test = models.JSONField(default=json_default_value_30, verbose_name="سبر القرآن في الأوقاف")
     q_awqaf_test_looking = models.JSONField(default=json_default_value_30, verbose_name="سبر القرآن نظراً في الأوقاف")
     q_awqaf_test_explaining = models.JSONField(default=json_default_value_30, verbose_name="سبر القرآن تفسيراً في الأوقاف")
@@ -155,7 +155,7 @@ class MessageTypeChoice(models.IntegerChoices):
     ALSAALIHIN = 4, "رياض الصالحين"
     ALLAH_NAMES = 5, "أسماء الله الحسنى"
     ELITE_TEST = 6, "سبر الأحزاب"
-    VIEWING = 7, "سرد نظراً"
+    VIEWING = 7, "قراءة نظراً"
     KUNUZ = 8, "كنوز من السنة"
 
 

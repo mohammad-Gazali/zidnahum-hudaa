@@ -1,6 +1,6 @@
 @if (toContinueSectionsMessage(); as message) {
     <div class="text-secondary bg-secondary-fixed continue-message">
-        الأجزاء التي يجب متابعة تسميعها:
+        الأجزاء التي يجب متابعة {{ viewing() ? "قراءتها" : "تسميعها" }}:
         <strong class="text-primary"> {{ message }}</strong>
     </div>
     <mat-divider />

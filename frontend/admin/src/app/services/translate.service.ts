@@ -87,9 +87,9 @@ export class TranslateService {
         this.translateMap.set('bring_him', 'أحضره');
         this.translateMap.set('parts_received', 'الأجزاء المستلمة');
         this.translateMap.set('q_memorizing', 'تسميع الصفحات غيباً');
-        this.translateMap.set('q_viewing', 'سرد القرآن نظراً');
+        this.translateMap.set('q_viewing', 'قراءة القرآن نظراً');
         this.translateMap.set('q_test', 'سبر الأرباع في المسجد');
-        this.translateMap.set('q_elite_test', 'السبر الأحزاب في المسجد');
+        this.translateMap.set('q_elite_test', 'سبر الأحزاب في المسجد');
         this.translateMap.set('q_awqaf_test', 'سبر القرآن في الأوقاف غيباً');
         this.translateMap.set('q_awqaf_test_looking', 'سبر القرآن في الأوقاف نظراً');
         this.translateMap.set('q_awqaf_test_explaining', 'سبر القرآن في الأوقاف تفسيراً');

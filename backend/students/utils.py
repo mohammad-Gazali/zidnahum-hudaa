@@ -158,7 +158,7 @@ def _check_for_section_completeness(student, changes: List[int], type_of_check: 
     action = "تسميع"
   elif type_of_check == "viewing":
     original = student.q_viewing
-    action = "سرد"
+    action = "قراءة"
 
   for i in range(30):
     if i == 0:

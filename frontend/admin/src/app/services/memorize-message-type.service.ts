@@ -33,7 +33,7 @@ export class MemorizeMessageTypeService {
           },
           {
             id: 7,
-            name: 'سرد القرآن نظراً'
+            name: 'قراءة القرآن نظراً'
           }
         ]);
     }

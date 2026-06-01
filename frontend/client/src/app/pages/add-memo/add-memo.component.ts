@@ -225,9 +225,9 @@ export class AddMemoComponent {
         next: (res) => {
           this.loading.set(false);
           if (res.repeated_viewing.length !== 0) {
-            this.matSnackbar.open(' تم تسجيل السرد بنجاح, ولكن يوجد تكرار بـ:' + res.repeated_viewing.map((item: number) => this.memo.transform(item)).join(', '), 'إغلاق');
+            this.matSnackbar.open(' تم تسجيل القراءة بنجاح, ولكن يوجد تكرار بـ:' + res.repeated_viewing.map((item: number) => this.memo.transform(item)).join(', '), 'إغلاق');
           } else {
-            this.snackbar.success('تم تسجيل السرد بنجاح');
+            this.snackbar.success('تم تسجيل القراءة بنجاح');
           }
         }
       });

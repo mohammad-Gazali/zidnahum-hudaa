@@ -14,7 +14,7 @@ export class MessageTypePipe implements PipeTransform {
       case MessageType.AlSaalihin: return 'رياض الصالحين';
       case MessageType.AllahNames: return 'أسماء الله الحسنى';
       case MessageType.Parts: return 'سبر الأحزاب';
-      case MessageType.Viewing: return 'سرد القرآن نظراً'
+      case MessageType.Viewing: return 'قراءة القرآن نظراً'
     }
   }
 }
