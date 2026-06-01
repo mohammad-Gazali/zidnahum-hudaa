@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { EXTRA_HADEETH_LABEL } from "../constants";
 
 @Injectable({
     providedIn: 'root',
@@ -97,6 +98,7 @@ export class TranslateService {
         this.translateMap.set('alarbaein_alnawawia_new', 'الأربعين النووية جديد');
         this.translateMap.set('riad_alsaalihin_old', 'رياض الصالحين قديم');
         this.translateMap.set('riad_alsaalihin_new', 'رياض الصالحين جديد');
+        this.translateMap.set('extra_hadeeth', EXTRA_HADEETH_LABEL);
         this.translateMap.set('allah_names_old', 'أسماء الله الحسنى قديم');
         this.translateMap.set('allah_names_new', 'أسماء الله الحسنى جديد');
         this.translateMap.set('level', 'مستوى التجويد');

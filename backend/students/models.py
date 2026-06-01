@@ -3,6 +3,7 @@ from django.core.validators import MaxValueValidator
 from django.core.exceptions import ValidationError
 from django.conf.global_settings import AUTH_USER_MODEL
 from students.utils import json_default_value_618, json_default_value_240, json_default_value_60, json_default_value_30
+from students.constants import EXTRA_HADEETH_LABEL, EXTRA_HADEETH_LIMIT
 import re
 
 
@@ -67,10 +68,9 @@ class Student(models.Model):
     alarbaein_alnawawia_new = models.PositiveIntegerField(verbose_name="الأربعين النووية جديد", default=0, validators=[MaxValueValidator(50)])
     riad_alsaalihin_old = models.PositiveIntegerField(verbose_name="رياض الصالحين قديم", default=0)
     riad_alsaalihin_new = models.PositiveIntegerField(verbose_name="رياض الصالحين جديد", default=0)
-    # kunuz_old = models.PositiveIntegerField(verbose_name="كنوز من السنة قديم", default=0, validators=[MaxValueValidator(30)])
-    # kunuz_new = models.PositiveIntegerField(verbose_name="كنوز من السنة جديد", default=0, validators=[MaxValueValidator(30)])
     allah_names_old = models.BooleanField(verbose_name="أسماء الله الحسنى قديم", default=False)
     allah_names_new = models.BooleanField(verbose_name="أسماء الله الحسنى جديد", default=False)
+    extra_hadeeth = models.PositiveIntegerField(verbose_name=EXTRA_HADEETH_LABEL, default=0, validators=[MaxValueValidator(EXTRA_HADEETH_LIMIT)])
 
     category = models.ForeignKey(StudentCategory, on_delete=models.SET_NULL, verbose_name="الفئة", null=True, blank=True)
     group = models.ForeignKey(StudentGroup, on_delete=models.SET_NULL, verbose_name="المجموعة", null=True, blank=True)
@@ -156,7 +156,7 @@ class MessageTypeChoice(models.IntegerChoices):
     ALLAH_NAMES = 5, "أسماء الله الحسنى"
     ELITE_TEST = 6, "سبر الأحزاب"
     VIEWING = 7, "قراءة نظراً"
-    KUNUZ = 8, "كنوز من السنة"
+    EXTRA_HADEETH = 8, EXTRA_HADEETH_LABEL
 
 
 class MemorizeMessage(models.Model):
@@ -166,8 +166,9 @@ class MemorizeMessage(models.Model):
     student_level = models.IntegerField(verbose_name="مستوى الطالب", choices=StudentLevelChoice.choices)
 
     # for type MEMO, TEST, ELITE_TEST, VIEWING the changes is the "list" of changed indexes in the related field
-    # for type ALNAWAWIA, ALSAALIHIN, KUNUZ the changes is the "list" of three numbers where the first item is the old value of the related field and the second is the new value before edit and the third is the new value after edit
+    # for type ALNAWAWIA, ALSAALIHIN the changes is the "list" of three numbers where the first item is the old value of the related field and the second is the new value before edit and the third is the new value after edit
     # for type ALLAH_NAMES the changes is empty list
+    # for type EXTRA_HADEETH the changes is the "list" of two elements, the first one is old value and the second one is the new value
     changes = models.JSONField(default=list, verbose_name="التعديلات")
 
     message_type = models.IntegerField(verbose_name="نوع الرسالة", choices=MessageTypeChoice.choices, default=MessageTypeChoice.MEMO)

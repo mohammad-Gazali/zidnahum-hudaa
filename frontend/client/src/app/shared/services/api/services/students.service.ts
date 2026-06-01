@@ -15,6 +15,7 @@ import { StudentUpdateQMemo } from '../models/student-update-qmemo';
 import { StudentUpdateQViewing } from '../models/student-update-qviewing';
 import { StudentUpdateQTest } from '../models/student-update-qtest';
 import { StudentUpdateRiadAlsaalihin } from '../models/student-update-riad-alsaalihin';
+import { StudentUpdateExtraHadeeth } from '../models/student-update-extra-hadeeth';
 import { StudentDetails } from '../models/student-details';
 import { StudentWithComingRegistrationList } from '../models/student-with-coming-registration-list';
 import { StudentCreate } from '../models/student-create';
@@ -601,6 +602,49 @@ class StudentsService extends __BaseService {
   }
 
   /**
+   * @param params The `StudentsService.StudentsUpdateExtraHadeethUpdateParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `data`:
+   */
+  studentsUpdateExtraHadeethUpdateResponse(params: StudentsService.StudentsUpdateExtraHadeethUpdateParams): __Observable<__StrictHttpResponse<StudentUpdateExtraHadeeth>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+
+    __body = params.data;
+    let req = new HttpRequest<any>(
+      'PUT',
+      this.rootUrl + `/students/update/extra-hadeeth/${encodeURIComponent(String(params.id))}`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<StudentUpdateExtraHadeeth>;
+      })
+    );
+  }
+  /**
+   * @param params The `StudentsService.StudentsUpdateExtraHadeethUpdateParams` containing the following parameters:
+   *
+   * - `id`:
+   *
+   * - `data`:
+   */
+  studentsUpdateExtraHadeethUpdate(params: StudentsService.StudentsUpdateExtraHadeethUpdateParams): __Observable<StudentUpdateExtraHadeeth> {
+    return this.studentsUpdateExtraHadeethUpdateResponse(params).pipe(
+      __map(_r => _r.body as StudentUpdateExtraHadeeth)
+    );
+  }
+
+  /**
    * @param id undefined
    */
   studentsReadResponse(id: string): __Observable<__StrictHttpResponse<StudentDetails>> {
@@ -780,6 +824,14 @@ module StudentsService {
   export interface StudentsUpdateRiadAlsaalihinUpdateParams {
     id: string;
     data: StudentUpdateRiadAlsaalihin;
+  }
+
+  /**
+   * Parameters for studentsUpdateExtraHadeethUpdate
+   */
+  export interface StudentsUpdateExtraHadeethUpdateParams {
+    id: string;
+    data: StudentUpdateExtraHadeeth;
   }
 }
 

@@ -39,3 +39,7 @@ def pre_delete_message(sender, instance: MemorizeMessage, **kwargs):
         for item in instance.changes:
             student.q_viewing[item] = NON
         student.save()
+
+    elif instance.message_type == MessageTypeChoice.EXTRA_HADEETH:
+        student.extra_hadeeth = instance.changes[0]
+        student.save()

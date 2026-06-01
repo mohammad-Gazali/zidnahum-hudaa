@@ -1,6 +1,6 @@
 from django.urls import path
 from students.views.students_list_and_details_and_create_views import StudentCreateListView, StudentWithComingRegistrationListView, StudentDetailsView
-from students.views.students_update_views import StudentUpdateQMemoView, StudentUpdateQViewingView, StudentUpdateQTestView, StudentUpdateAlarbaeinAlnawawiaView, StudentUpdateRiadAlsaalihinView, StudentUpdateAllahNamesView, StudentUpdatePartsReceivedView
+from students.views.students_update_views import StudentUpdateQMemoView, StudentUpdateQViewingView, StudentUpdateQTestView, StudentUpdateAlarbaeinAlnawawiaView, StudentUpdateRiadAlsaalihinView, StudentUpdateExtraHadeethView, StudentUpdateAllahNamesView, StudentUpdatePartsReceivedView
 from students.views.memorize_messages_views import MemorizeMessageListView, MemorizeMessageDeleteView
 from students.views.memorize_notes_views import MemorizeNotesCreateView, MemorizeNotesDeleteView
 from students.views.extra_views import StudentCategoryListView, StudentGroupListView
@@ -17,6 +17,7 @@ urlpatterns = [
     path("update/qtest/<int:pk>", StudentUpdateQTestView.as_view(), name="students_update_qtest_view"),
     path("update/alarbaein-alnawawia/<int:pk>", StudentUpdateAlarbaeinAlnawawiaView.as_view(), name="students_update_alarbaein_alnawawia_view"),
     path("update/riad-alsaalihin/<int:pk>", StudentUpdateRiadAlsaalihinView.as_view(), name="students_update_riad_alsaalihin_view"),
+    path("update/extra-hadeeth/<int:pk>", StudentUpdateExtraHadeethView.as_view(), name="students_update_extra_hadeeth_view"),
     path("update/allah-names/<int:pk>", StudentUpdateAllahNamesView.as_view(), name="students_update_allah_names_view"),
     path("update/parts-received/<int:pk>", StudentUpdatePartsReceivedView.as_view(), name="students_update_parts_received_view"),
 

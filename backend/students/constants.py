@@ -88,3 +88,5 @@ POINTS_GROUP = 'نقاط'
 REPORTS_GROUP = 'التقارير'
 HADEETH_GROUP = 'حديث'
 ADD_STUDENTS_GROUP = 'إضافة طلاب'
+EXTRA_HADEETH_LABEL = 'كنوز من السنة'
+EXTRA_HADEETH_LIMIT = 50

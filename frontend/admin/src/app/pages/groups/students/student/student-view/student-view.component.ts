@@ -7,6 +7,7 @@ import { LevelService } from '../../../../../services/level.service';
 import { Validators } from '@angular/forms';
 import { StudentsBase } from '../../students.base';
 import { ExtraService } from '../../../../../services/api/admin/services';
+import { EXTRA_HADEETH_LIMIT } from '../../../../../constants';
 
 @Component({
     selector: 'app-student-view',
@@ -36,6 +37,10 @@ export class StudentViewComponent extends StudentsBase {
       alarbaein_alnawawia_old: {
         type: 'number',
         validators: [Validators.min(0), Validators.max(50)],
+      },
+      extra_hadeeth: {
+        type: 'number',
+        validators: [Validators.min(0), Validators.max(EXTRA_HADEETH_LIMIT)],
       },
       allah_names_new: {
         type: 'boolean',
@@ -100,9 +105,11 @@ export class StudentViewComponent extends StudentsBase {
       },
       riad_alsaalihin_new: {
         type: 'number',
+        validators: [Validators.min(0)],
       },
       riad_alsaalihin_old: {
         type: 'number',
+        validators: [Validators.min(0)],
       },
       level: {
         type: 'relation',

@@ -51,6 +51,9 @@
           <mat-radio-button value="riad-alsaalihin">
             رياض الصالحين
           </mat-radio-button>
+          <mat-radio-button value="extra-hadeeth">
+            {{ extraHadeethLabel }}
+          </mat-radio-button>
           <mat-radio-button value="allah-names">
             أسماء الله الحسنى
           </mat-radio-button>
@@ -64,7 +67,7 @@
             [formControl]="form.controls.hadeethNumber"
             type="number"
             min="1"
-            [max]="form.controls.type.value === 'alarbaein-alnawawia' ? 50 : null"
+            [max]="maximumLimit() ?? null"
           />
           <mat-error>هذا الحقل مطلوب</mat-error>
         </mat-form-field>
@@ -76,4 +79,3 @@
     </mat-card-content>
   </mat-card>
 }
-

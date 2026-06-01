@@ -26,6 +26,7 @@ from students.serializers import (
   StudentUpdateQViewingSerializer,
   StudentUpdateQTestSerializer,
   StudentUpdateRiadAlsaalihinSerializer,
+  StudentUpdateExtraHadeethSerializer,
 )
 from students.utils import check_for_qtest, check_for_qmemo, check_for_qviewing
 
@@ -307,6 +308,45 @@ class StudentUpdateAlarbaeinAlnawawiaView(HandledExceptionAPIView):
         )
 
         student.alarbaein_alnawawia_new = new_value
+        student.save()
+
+        return Response(status=HTTP_204_NO_CONTENT)
+
+      else:
+        return Response({"detail": "هذا الحديث مسمع مسبقاً"}, HTTP_400_BAD_REQUEST)
+
+    return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
+
+
+class StudentUpdateExtraHadeethView(HandledExceptionAPIView):
+  permission_classes = [IsHadeethGroup]
+  http_method_names = ["put"]
+
+  @extend_schema(request=StudentUpdateExtraHadeethSerializer)
+  @transaction.atomic
+  def put(self, *args, **kwargs):
+    pk: int = kwargs.get("pk")
+    student: Student = get_object_or_404(Student, pk=pk)
+
+    serializer = StudentUpdateExtraHadeethSerializer(data=self.request.data)
+
+    if serializer.is_valid():
+      value: int = serializer.validated_data["value"]
+
+      if student.extra_hadeeth < value:
+        MemorizeMessage.objects.create(
+          master=self.request.user,
+          student=student,
+          changes=[
+            student.extra_hadeeth,
+            value,
+          ],
+          message_type=MessageTypeChoice.EXTRA_HADEETH,
+          is_doubled=ControlSettings.get_double_points(),
+          student_level=StudentLevelChoice.ONE,
+        )
+
+        student.extra_hadeeth = value
         student.save()
 
         return Response(status=HTTP_204_NO_CONTENT)

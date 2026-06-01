@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { MessageType } from '@shared';
+import { EXTRA_HADEETH_LABEL, MessageType } from '@shared';
 
 @Pipe({
   name: 'messageType',
@@ -15,6 +15,7 @@ export class MessageTypePipe implements PipeTransform {
       case MessageType.AllahNames: return 'أسماء الله الحسنى';
       case MessageType.Parts: return 'سبر الأحزاب';
       case MessageType.Viewing: return 'قراءة القرآن نظراً'
+      case MessageType.ExtraHadeeth: return EXTRA_HADEETH_LABEL;
     }
   }
 }

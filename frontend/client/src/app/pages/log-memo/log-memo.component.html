@@ -65,6 +65,15 @@
               }
             </p>
           }
+          @case (messageType.ExtraHadeeth) {
+            <p>
+              @if (message.changes[0] + 1 === message.changes[1]) {
+                الحديث {{ message.changes[1] }}
+              } @else {
+                من الحديث {{ message.changes[0] + 1 }} إلى {{ message.changes[1] }}
+              }
+            </p>
+          }
         }
       </mat-card-content>
     </mat-card>

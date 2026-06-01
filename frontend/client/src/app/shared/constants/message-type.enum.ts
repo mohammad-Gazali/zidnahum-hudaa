@@ -6,4 +6,5 @@ export enum MessageType {
   AllahNames,
   Parts,
   Viewing,
+  ExtraHadeeth,
 }

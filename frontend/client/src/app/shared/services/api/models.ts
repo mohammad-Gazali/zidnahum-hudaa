@@ -31,6 +31,7 @@ export { StudentUpdateQMemo } from './models/student-update-qmemo';
 export { StudentUpdateQViewing } from './models/student-update-qviewing';
 export { StudentUpdateQTest } from './models/student-update-qtest';
 export { StudentUpdateRiadAlsaalihin } from './models/student-update-riad-alsaalihin';
+export { StudentUpdateExtraHadeeth } from './models/student-update-extra-hadeeth';
 export { MemorizeNotesGet } from './models/memorize-notes-get';
 export { AwqafRelation } from './models/awqaf-relation';
 export { ComingListForStudent } from './models/coming-list-for-student';

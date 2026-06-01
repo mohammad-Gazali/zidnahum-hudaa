@@ -27,6 +27,7 @@ export interface StudentUpdate {
   q_test?: {};
   riad_alsaalihin_new?: number;
   riad_alsaalihin_old?: number;
+  extra_hadeeth?: number;
   static_phone?: null | string;
   level: 1 | 2 | 3;
 }

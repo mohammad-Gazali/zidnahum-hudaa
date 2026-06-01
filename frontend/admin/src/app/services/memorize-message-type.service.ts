@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { of } from "rxjs";
+import { EXTRA_HADEETH_LABEL } from "../constants";
 
 @Injectable({
     providedIn: 'root',
@@ -34,6 +35,10 @@ export class MemorizeMessageTypeService {
           {
             id: 7,
             name: 'قراءة القرآن نظراً'
+          },
+          {
+            id: 8,
+            name: EXTRA_HADEETH_LABEL,
           }
         ]);
     }

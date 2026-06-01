@@ -47,6 +47,17 @@
                 </mat-card>
             }
         }
+        @case (8) {
+          @if (content()[0] + 1 === content()[1]) {
+              <mat-card class="bg-primary-fixed-dim">
+                الحديث {{ content()[1] }}
+              </mat-card>
+          } @else {
+              <mat-card class="bg-primary-fixed-dim">
+                  من الحديث {{ content()[0] + 1 }} إلى {{ content()[1] }}
+              </mat-card>
+          }
+        }
         @default {
             Unhandled Type
         }

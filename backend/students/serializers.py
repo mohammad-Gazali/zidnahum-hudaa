@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from students.models import StudentCategory, StudentGroup, MemorizeNotes, Student, MemorizeMessage
+from students.constants import EXTRA_HADEETH_LIMIT
 from awqaf.serializers import AwqafRelationSerializer
 from comings.serializers import ComingListForStudentSerializer
 
@@ -115,6 +116,10 @@ class StudentUpdateAlarbaeinAlnawawiaSerializer(serializers.Serializer):
 
 class StudentUpdateRiadAlsaalihinSerializer(serializers.Serializer):
     value = serializers.IntegerField(min_value=0)
+
+
+class StudentUpdateExtraHadeethSerializer(serializers.Serializer):
+    value = serializers.IntegerField(min_value=0, max_value=EXTRA_HADEETH_LIMIT)
 
 
 class MemorizeMessageSerializer(serializers.ModelSerializer):

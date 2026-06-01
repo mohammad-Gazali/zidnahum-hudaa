@@ -15,7 +15,8 @@
         student.riad_alsaalihin_old ||
         student.riad_alsaalihin_new ||
         student.allah_names_old ||
-        student.allah_names_new
+        student.allah_names_new ||
+        student.extra_hadeeth
     ) {
         <mat-divider />
         <div class="group">
@@ -69,6 +70,17 @@
                     أسماء الله الحسنى
                 </mat-card>
             }
+        </div>
+        <div class="group">
+          @if (student.extra_hadeeth) {
+            <mat-card class="bg-primary-fixed-dim">
+              @if (student.extra_hadeeth === 1) {
+                {{ extraHadeethLabel }}: الحديث 1
+              } @else {
+                {{ extraHadeethLabel }}: 1 إلى {{ student.extra_hadeeth }}
+              }
+            </mat-card>
+          }
         </div>
     } @else {
         <p>

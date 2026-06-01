@@ -18,6 +18,7 @@ export interface StudentDetails {
   cell_phone?: null | string;
   current_date: string;
   current_week_messages: Array<MemorizeMessageForStudent>;
+  extra_hadeeth: number;
   father_phone?: null | string;
   father_work?: null | string;
   first_half_month_messages: Array<MemorizeMessageForStudent>;
