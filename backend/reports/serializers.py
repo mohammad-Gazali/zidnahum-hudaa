@@ -20,6 +20,9 @@ class ReportsStudentResponseSerializer(serializers.Serializer):
     messages = ReportMemorizeMessageSerializer(many=True)
     sum_memo = serializers.FloatField()
     sum_test = serializers.FloatField()
+    sum_viewing = serializers.FloatField()
+    sum_elite_test = serializers.FloatField()
+    sum_extra_hadeeth = serializers.FloatField()
     sum_all = serializers.FloatField()
 
 class ReportsStudentCategoryOrGroupStudentSerializer(serializers.Serializer):
@@ -27,20 +30,20 @@ class ReportsStudentCategoryOrGroupStudentSerializer(serializers.Serializer):
     student_name = serializers.CharField()
     sum_memo = serializers.FloatField()
     sum_test = serializers.FloatField()
+    sum_viewing = serializers.FloatField()
+    sum_elite_test = serializers.FloatField()
+    sum_extra_hadeeth = serializers.FloatField()
     sum_all = serializers.FloatField()
 
 class ReportsStudentCategoryOrGroupResponseSerializer(serializers.Serializer):
     students = ReportsStudentCategoryOrGroupStudentSerializer(many=True)
     total_memo = serializers.FloatField()
     total_test = serializers.FloatField()
+    total_viewing = serializers.FloatField()
+    total_elite_test = serializers.FloatField()
+    total_extra_hadeeth = serializers.FloatField()
     total = serializers.FloatField()
 
 class ReportsCategoryOrGroupSpecificResponseSerializer(ReportsStudentCategoryOrGroupResponseSerializer):
     category_id = serializers.IntegerField()
     category_name = serializers.CharField()
-
-class ReportsPointsRequestSerializer(serializers.Serializer):
-    masjed = serializers.ChoiceField(choices=StudentMasjedChoice.choices)
-
-class ReportsPointsResponseSerializer(serializers.Serializer):
-    pass

@@ -404,7 +404,7 @@ export class ReportsComponent {
   }
 }
 
-type MessageType = 1 | 2 | 3 | 4 | 5;
+type MessageType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
 interface ReportsAllResponseItem extends ReportsStudentCategoryOrGroupResponse {
   id: number;

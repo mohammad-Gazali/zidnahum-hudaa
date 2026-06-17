@@ -111,6 +111,15 @@ def display_memorize_message_changes(changes, message_type) -> str:
   elif message_type == 2:
     return " - ".join(map(_convert_test_item, changes))
 
+  elif message_type == 6:
+    return " - ".join(map(_convert_elite_test_item, changes))
+
+  elif message_type == 7:
+    return " - ".join(map(_convert_memo_item, changes))
+
+  elif message_type == 8:
+    return _convert_extra_hadeeth(changes)
+
   else:
     return "!!"
 
@@ -133,6 +142,17 @@ def _convert_test_item(item: int):
   partNumber = ceil(orderNumber / 4)
 
   return f"الربع {partOrderNumber} من الحزب {partNumber}"
+
+
+def _convert_elite_test_item(item: int):
+  return f"الحزب {item + 1}"
+
+
+def _convert_extra_hadeeth(changes: List[int]):
+  if changes[1] - changes[0] == 1:
+    return f"الحديث {changes[1]}"
+
+  return f"من الحديث {changes[0] + 1} إلى الحديث {changes[1]}"
 
 
 # adding memorize protections

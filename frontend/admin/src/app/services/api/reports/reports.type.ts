@@ -14,6 +14,9 @@ export interface ReportsStudentCategoryOrGroupResponse {
   total: number;
   total_memo: number;
   total_test: number;
+  total_viewing: number;
+  total_elite_test: number;
+  total_extra_hadeeth: number;
 }
 
 export interface ReportsStudentCategoryOrGroupStudent {
@@ -22,6 +25,9 @@ export interface ReportsStudentCategoryOrGroupStudent {
   sum_all: number;
   sum_memo: number;
   sum_test: number;
+  sum_viewing: number;
+  sum_elite_test: number;
+  sum_extra_hadeeth: number;
 }
 
 export interface ReportsStudentResponse {
@@ -29,6 +35,9 @@ export interface ReportsStudentResponse {
   sum_all: number;
   sum_memo: number;
   sum_test: number;
+  sum_viewing: number;
+  sum_elite_test: number;
+  sum_extra_hadeeth: number;
 }
 
 export interface ReportMemorizeMessage {
@@ -36,7 +45,7 @@ export interface ReportMemorizeMessage {
   id: number;
   is_doubled: boolean;
   master: null | number;
-  message_type: 1 | 2 | 3 | 4 | 5;
+  message_type: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
   sended_at: string;
 }
 

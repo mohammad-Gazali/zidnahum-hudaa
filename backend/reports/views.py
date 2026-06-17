@@ -1,7 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import OpenApiParameter, extend_schema
-from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
@@ -10,8 +9,6 @@ from students.permissions import IsReportsGroup
 
 from reports.serializers import (
   ReportsCategoryOrGroupSpecificResponseSerializer,
-  ReportsPointsRequestSerializer,
-  ReportsPointsResponseSerializer,
   ReportsRequestSerializer,
   ReportsRequestWithMasjedSerializer,
   ReportsStudentCategoryOrGroupResponseSerializer,
@@ -338,26 +335,5 @@ class ReportsAllGroupsView(APIView):
         return response
 
       return Response(report_data, HTTP_200_OK)
-
-    return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
-
-
-class ReportsPointsView(APIView):
-  permission_classes = [IsAdminUser]
-  http_method_names = ["post"]
-
-  @extend_schema(
-    parameters=[excel_param],
-    request=ReportsPointsRequestSerializer,
-    responses={
-      HTTP_200_OK: ReportsPointsResponseSerializer(many=True),
-    },
-  )
-  def post(self, *args, **kwargs):
-    serializer = ReportsPointsRequestSerializer(data=self.request.data)
-    excel = self.request.GET.get("excel", "").lower() == "true"
-
-    if serializer.is_valid():
-      pass
 
     return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)

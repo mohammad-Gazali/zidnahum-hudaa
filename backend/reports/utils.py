@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Prefetch, Count
 from reports.serializers import (
     ReportMemorizeMessageSerializer,
-    ReportsStudentCategoryOrGroupStudentSerializer, 
+    ReportsStudentCategoryOrGroupStudentSerializer,
     ReportsStudentCategoryOrGroupResponseSerializer,
 )
 from students.models import MemorizeMessage, MessageTypeChoice, Student, StudentCategory, StudentGroup, StudentMasjedChoice
@@ -17,18 +17,27 @@ import math
 def get_student_report(student: Student, start_date, end_date):
     messages = student.memorizemessage_set.filter(
         sended_at__date__range=[start_date, end_date],
-        message_type__in=[MessageTypeChoice.MEMO, MessageTypeChoice.TEST],
+        message_type__in=[
+          MessageTypeChoice.MEMO,
+          MessageTypeChoice.TEST,
+          MessageTypeChoice.VIEWING,
+          MessageTypeChoice.ELITE_TEST,
+          MessageTypeChoice.EXTRA_HADEETH,
+        ],
     )
 
-    sum_memo, sum_test = _get_sums_student_report(messages)
+    sum_memo, sum_test, sum_viewing, sum_elite_test, sum_extra_hadeeth = _get_sums_student_report(messages)
 
     messages_data = ReportMemorizeMessageSerializer(messages, many=True)
 
-    return { 
+    return {
         'messages': messages_data.data,
         'sum_memo': sum_memo,
         'sum_test': sum_test,
-        'sum_all': sum_memo + sum_test,
+        'sum_viewing': sum_viewing,
+        'sum_elite_test': sum_elite_test,
+        'sum_extra_hadeeth': sum_extra_hadeeth,
+        'sum_all': sum_memo + sum_test + sum_viewing + sum_elite_test,
     }
 
 
@@ -41,7 +50,13 @@ def get_all_students_report(masjed, start_date, end_date):
                 lookup="memorizemessage_set",
                 queryset=MemorizeMessage.objects.filter(
                     sended_at__date__range=[start_date, end_date],
-                    message_type__in=[MessageTypeChoice.MEMO, MessageTypeChoice.TEST],
+                    message_type__in=[
+                      MessageTypeChoice.MEMO,
+                      MessageTypeChoice.TEST,
+                      MessageTypeChoice.VIEWING,
+                      MessageTypeChoice.ELITE_TEST,
+                      MessageTypeChoice.EXTRA_HADEETH,
+                    ],
                 ),
                 to_attr="messages"
             )
@@ -55,14 +70,17 @@ def get_all_students_report(masjed, start_date, end_date):
     for student in students:
         messages = student.messages
 
-        sum_memo, sum_test = _get_sums_student_report(messages)
+        sum_memo, sum_test, sum_viewing, sum_elite_test, sum_extra_hadeeth = _get_sums_student_report(messages)
 
         students_result.append(ReportsStudentCategoryOrGroupStudentSerializer({
             'student_id': student.pk,
             'student_name': student.name,
             'sum_memo': sum_memo,
             'sum_test': sum_test,
-            'sum_all': sum_memo + sum_test,
+            'sum_viewing': sum_viewing,
+            'sum_elite_test': sum_elite_test,
+            'sum_extra_hadeeth': sum_extra_hadeeth,
+            'sum_all': sum_memo + sum_test + sum_viewing + sum_elite_test,
         }).data)
 
     students_result.sort(key=lambda x: x['sum_all'], reverse=True)
@@ -72,6 +90,9 @@ def get_all_students_report(masjed, start_date, end_date):
 def get_category_or_group_report(category_or_group: StudentCategory | StudentGroup, masjed, start_date, end_date):
     total_memo = 0
     total_test = 0
+    total_viewing = 0
+    total_elite_test = 0
+    total_extra_hadeeth = 0
     students_result = []
 
     students = category_or_group.student_set.filter(masjed=masjed)
@@ -79,20 +100,32 @@ def get_category_or_group_report(category_or_group: StudentCategory | StudentGro
     for student in students:
         messages = student.memorizemessage_set.filter(
             sended_at__date__range=[start_date, end_date],
-            message_type__in=[MessageTypeChoice.MEMO, MessageTypeChoice.TEST],
+            message_type__in=[
+              MessageTypeChoice.MEMO,
+              MessageTypeChoice.TEST,
+              MessageTypeChoice.VIEWING,
+              MessageTypeChoice.ELITE_TEST,
+              MessageTypeChoice.EXTRA_HADEETH,
+            ],
         )
 
-        sum_memo, sum_test = _get_sums_student_report(messages)
+        sum_memo, sum_test, sum_viewing, sum_elite_test, sum_extra_hadeeth = _get_sums_student_report(messages)
 
         total_memo += sum_memo
         total_test += sum_test
+        total_viewing += sum_viewing
+        total_elite_test += sum_elite_test
+        total_extra_hadeeth += sum_extra_hadeeth
 
         students_result.append(ReportsStudentCategoryOrGroupStudentSerializer({
             'student_id': student.pk,
             'student_name': student.name,
             'sum_memo': sum_memo,
             'sum_test': sum_test,
-            'sum_all': sum_memo + sum_test,
+            'sum_viewing': sum_viewing,
+            'sum_elite_test': sum_elite_test,
+            'sum_extra_hadeeth': sum_extra_hadeeth,
+            'sum_all': sum_memo + sum_test + sum_viewing + sum_elite_test,
         }).data)
 
     students_result.sort(key=lambda x: x['sum_all'], reverse=True)
@@ -101,13 +134,19 @@ def get_category_or_group_report(category_or_group: StudentCategory | StudentGro
         'students': students_result,
         'total_memo': total_memo,
         'total_test': total_test,
-        'total': total_memo + total_test,
+        'total_viewing': total_viewing,
+        'total_elite_test': total_elite_test,
+        'total_extra_hadeeth': total_extra_hadeeth,
+        'total': total_memo + total_test + total_viewing + total_elite_test,
     }).data
 
 
 def _get_sums_student_report(messages: Iterable[MemorizeMessage]):
     sum_memo = 0
     sum_test = 0
+    sum_viewing = 0
+    sum_elite_test = 0
+    sum_extra_hadeeth = 0
 
     for message in messages:
         if message.message_type == MessageTypeChoice.MEMO:
@@ -116,7 +155,16 @@ def _get_sums_student_report(messages: Iterable[MemorizeMessage]):
         elif message.message_type == MessageTypeChoice.TEST:
             sum_test += get_num_pages_test(message.changes)
 
-    return math.ceil(sum_memo), math.ceil(sum_test)
+        elif message.message_type == MessageTypeChoice.VIEWING:
+            sum_viewing += get_num_pages_memo(message.changes)
+
+        elif message.message_type == MessageTypeChoice.ELITE_TEST:
+            sum_elite_test += 10 * len(message.changes)
+
+        elif message.message_type == MessageTypeChoice.EXTRA_HADEETH:
+            sum_extra_hadeeth += message.changes[1] - message.changes[0]
+
+    return math.ceil(sum_memo), math.ceil(sum_test), math.ceil(sum_viewing), sum_elite_test, sum_extra_hadeeth
 
 
 def excel_student_report(data, student_name: str, start_date: str, end_date: str):
@@ -145,22 +193,37 @@ def excel_student_report(data, student_name: str, start_date: str, end_date: str
     cell.font = header_font
     sheet.cell(3, 2, end_date).alignment = alignment
 
-    cell = sheet.cell(4, 1, 'صفحات التسميع')
+    cell = sheet.cell(4, 1, 'صفحات القراءة نظراً')
     cell.alignment = alignment
     cell.font = header_font
-    sheet.cell(4, 2, data['sum_memo']).alignment = alignment
+    sheet.cell(4, 2, data['sum_viewing']).alignment = alignment
 
-    cell = sheet.cell(5, 1, 'صفحات السبر')
+    cell = sheet.cell(5, 1, 'صفحات التسميع غيباً')
     cell.alignment = alignment
     cell.font = header_font
-    sheet.cell(5, 2, data['sum_test']).alignment = alignment
+    sheet.cell(5, 2, data['sum_memo']).alignment = alignment
 
-    cell = sheet.cell(6, 1, 'كلي الصفحات')
+    cell = sheet.cell(6, 1, 'صفحات سبر الأرباع غيباً')
     cell.alignment = alignment
     cell.font = header_font
-    sheet.cell(6, 2, data['sum_all']).alignment = alignment
+    sheet.cell(6, 2, data['sum_test']).alignment = alignment
 
-    details_cell_start = 8
+    cell = sheet.cell(7, 1, 'صفحات سبر الأحزاب غيباً')
+    cell.alignment = alignment
+    cell.font = header_font
+    sheet.cell(7, 2, data['sum_elite_test']).alignment = alignment
+
+    cell = sheet.cell(8, 1, 'كلي الصفحات')
+    cell.alignment = alignment
+    cell.font = header_font
+    sheet.cell(8, 2, data['sum_all']).alignment = alignment
+
+    cell = sheet.cell(9, 1, 'مجموع الأحاديث')
+    cell.alignment = alignment
+    cell.font = header_font
+    sheet.cell(9, 2, data['sum_extra_hadeeth']).alignment = alignment
+
+    details_cell_start = 11
 
     cell = sheet.cell(details_cell_start, 1, 'الأستاذ')
     cell.alignment = alignment
@@ -183,19 +246,19 @@ def excel_student_report(data, student_name: str, start_date: str, end_date: str
     for row, message in enumerate(data['messages'], details_cell_start + 1):
         master = master_map.get(message['master'], '-')
         changes = display_memorize_message_changes(message['changes'], message['message_type'])
-        message_type = 'تسميع' if message['message_type'] == 1 else 'سبر'
+        message_type = str(MessageTypeChoice(message['message_type']).label)
         is_doubled = 'نعم' if message['is_doubled'] else 'لا'
 
-        sheet.column_dimensions['A'].width = 20
+        sheet.column_dimensions['A'].width = 26
         sheet.column_dimensions['B'].width = 60
         sheet.column_dimensions['C'].width = 12
-        sheet.column_dimensions['D'].width = 12
+        sheet.column_dimensions['D'].width = 20
 
         sheet.cell(row, 1, master).alignment = alignment
         sheet.cell(row, 2, changes).alignment = alignment_wrap
         sheet.cell(row, 3, message_type).alignment = alignment
         sheet.cell(row, 4, is_doubled).alignment = alignment
-    
+
     buffer = BytesIO()
 
     workbook.save(buffer)
@@ -204,6 +267,7 @@ def excel_student_report(data, student_name: str, start_date: str, end_date: str
 
     return buffer.getvalue()
 
+
 def excel_all_students_report(data, start_date: str, end_date: str, masjed: int):
     workbook = Workbook()
 
@@ -211,7 +275,7 @@ def excel_all_students_report(data, start_date: str, end_date: str, masjed: int)
 
     sheet.title = 'التقرير'
 
-    alignment = Alignment(horizontal='center', vertical='center') 
+    alignment = Alignment(horizontal='center', vertical='center')
     header_font = Font(bold=True)
 
     cell = sheet.cell(1, 1, 'تقرير')
@@ -252,36 +316,58 @@ def excel_all_students_report(data, start_date: str, end_date: str, masjed: int)
     cell.alignment = alignment
     cell.font = header_font
 
-    cell = sheet.cell(details_cell_start, 3, 'صفحات التسميع')
+    cell = sheet.cell(details_cell_start, 3, 'صفحات القراءة نظراً')
     cell.alignment = alignment
     cell.font = header_font
 
-    cell = sheet.cell(details_cell_start, 4, 'صفحات السبر')
+    cell = sheet.cell(details_cell_start, 4, 'صفحات التسميع غيباً')
     cell.alignment = alignment
     cell.font = header_font
 
-    cell = sheet.cell(details_cell_start, 5, 'كلي الصفحات')
+    cell = sheet.cell(details_cell_start, 5, 'صفحات سبر الأرباع غيباً')
     cell.alignment = alignment
     cell.font = header_font
+
+    cell = sheet.cell(details_cell_start, 6, 'صفحات سبر الأحزاب غيباً')
+    cell.alignment = alignment
+    cell.font = header_font
+
+    cell = sheet.cell(details_cell_start, 7, 'كلي الصفحات')
+    cell.alignment = alignment
+    cell.font = header_font
+
+    cell = sheet.cell(details_cell_start, 8, 'مجموع الأحاديث')
+    cell.alignment = alignment
+    cell.font = header_font
+
 
     for row, student in enumerate(data, details_cell_start + 1):
         student_id = student['student_id']
         student_name = student['student_name']
         sum_memo = student['sum_memo']
         sum_test = student['sum_test']
+        sum_viewing = student['sum_viewing']
+        sum_elite_test = student['sum_elite_test']
+        sum_extra_hadeeth = student['sum_extra_hadeeth']
         sum_all = student['sum_all']
 
         sheet.column_dimensions['A'].width = 20
         sheet.column_dimensions['B'].width = 24
-        sheet.column_dimensions['C'].width = 12
-        sheet.column_dimensions['D'].width = 12
-        sheet.column_dimensions['E'].width = 12
+        sheet.column_dimensions['C'].width = 24
+        sheet.column_dimensions['D'].width = 24
+        sheet.column_dimensions['E'].width = 24
+        sheet.column_dimensions['F'].width = 24
+        sheet.column_dimensions['G'].width = 24
+        sheet.column_dimensions['H'].width = 24
 
         sheet.cell(row, 1, student_id).alignment = alignment
         sheet.cell(row, 2, student_name).alignment = alignment
-        sheet.cell(row, 3, sum_memo).alignment = alignment
-        sheet.cell(row, 4, sum_test).alignment = alignment
-        sheet.cell(row, 5, sum_all).alignment = alignment
+        sheet.cell(row, 3, sum_viewing).alignment = alignment
+        sheet.cell(row, 4, sum_memo).alignment = alignment
+        sheet.cell(row, 5, sum_test).alignment = alignment
+        sheet.cell(row, 6, sum_elite_test).alignment = alignment
+        sheet.cell(row, 7, sum_all).alignment = alignment
+        sheet.cell(row, 8, sum_extra_hadeeth).alignment = alignment
 
     buffer = BytesIO()
 
@@ -291,6 +377,7 @@ def excel_all_students_report(data, start_date: str, end_date: str, masjed: int)
 
     return buffer.getvalue()
 
+
 def excel_category_or_group_report(data, category_or_group_name: str, masjed: int, start_date: str, end_date: str, is_category: bool):
     workbook = Workbook()
 
@@ -298,7 +385,7 @@ def excel_category_or_group_report(data, category_or_group_name: str, masjed: in
 
     sheet.title = 'التقرير'
 
-    alignment = Alignment(horizontal='center', vertical='center') 
+    alignment = Alignment(horizontal='center', vertical='center')
     header_font = Font(bold=True)
 
     cell = sheet.cell(1, 1, 'الفئة' if is_category else 'المجموعة')
@@ -329,22 +416,37 @@ def excel_category_or_group_report(data, category_or_group_name: str, masjed: in
     cell.font = header_font
     sheet.cell(4, 2, end_date).alignment = alignment
 
-    cell = sheet.cell(5, 1, 'صفحات التسميع')
+    cell = sheet.cell(5, 1, 'صفحات القراءة نظراً')
     cell.alignment = alignment
     cell.font = header_font
-    sheet.cell(5, 2, data['total_memo']).alignment = alignment
+    sheet.cell(5, 2, data['total_viewing']).alignment = alignment
 
-    cell = sheet.cell(6, 1, 'صفحات السبر')
+    cell = sheet.cell(6, 1, 'صفحات التسميع غيباً')
     cell.alignment = alignment
     cell.font = header_font
-    sheet.cell(6, 2, data['total_test']).alignment = alignment
+    sheet.cell(6, 2, data['total_memo']).alignment = alignment
 
-    cell = sheet.cell(7, 1, 'كلي الصفحات')
+    cell = sheet.cell(7, 1, 'صفحات سبر الأرباع غيباً')
     cell.alignment = alignment
     cell.font = header_font
-    sheet.cell(7, 2, data['total']).alignment = alignment
+    sheet.cell(7, 2, data['total_test']).alignment = alignment
 
-    details_cell_start = 9
+    cell = sheet.cell(8, 1, 'صفحات سبر الأحزاب غيباً')
+    cell.alignment = alignment
+    cell.font = header_font
+    sheet.cell(8, 2, data['total_elite_test']).alignment = alignment
+
+    cell = sheet.cell(9, 1, 'كلي الصفحات')
+    cell.alignment = alignment
+    cell.font = header_font
+    sheet.cell(9, 2, data['total']).alignment = alignment
+
+    cell = sheet.cell(10, 1, 'مجموع الأحاديث')
+    cell.alignment = alignment
+    cell.font = header_font
+    sheet.cell(10, 2, data['total_extra_hadeeth']).alignment = alignment
+
+    details_cell_start = 12
 
     cell = sheet.cell(details_cell_start, 1, 'معرف الطالب')
     cell.alignment = alignment
@@ -354,36 +456,57 @@ def excel_category_or_group_report(data, category_or_group_name: str, masjed: in
     cell.alignment = alignment
     cell.font = header_font
 
-    cell = sheet.cell(details_cell_start, 3, 'صفحات التسميع')
+    cell = sheet.cell(details_cell_start, 3, 'صفحات القراءة نظراً')
     cell.alignment = alignment
     cell.font = header_font
 
-    cell = sheet.cell(details_cell_start, 4, 'صفحات السبر')
+    cell = sheet.cell(details_cell_start, 4, 'صفحات التسميع غيباً')
     cell.alignment = alignment
     cell.font = header_font
 
-    cell = sheet.cell(details_cell_start, 5, 'كلي الصفحات')
+    cell = sheet.cell(details_cell_start, 5, 'صفحات سبر الأرباع غيباً')
+    cell.alignment = alignment
+    cell.font = header_font
+
+    cell = sheet.cell(details_cell_start, 6, 'صفحات سبر الأحزاب غيباً')
+    cell.alignment = alignment
+    cell.font = header_font
+
+    cell = sheet.cell(details_cell_start, 7, 'كلي الصفحات')
+    cell.alignment = alignment
+    cell.font = header_font
+
+    cell = sheet.cell(details_cell_start, 8, 'مجموع الأحاديث')
     cell.alignment = alignment
     cell.font = header_font
 
     for row, student in enumerate(data['students'], details_cell_start + 1):
         student_id = student['student_id']
         student_name = student['student_name']
+        sum_viewing = student['sum_viewing']
         sum_memo = student['sum_memo']
         sum_test = student['sum_test']
+        sum_elite_test = student['sum_elite_test']
         sum_all = student['sum_all']
+        sum_extra_hadeeth = student['sum_extra_hadeeth']
 
-        sheet.column_dimensions['A'].width = 20
+        sheet.column_dimensions['A'].width = 26
         sheet.column_dimensions['B'].width = 24
-        sheet.column_dimensions['C'].width = 12
-        sheet.column_dimensions['D'].width = 12
-        sheet.column_dimensions['E'].width = 12
+        sheet.column_dimensions['C'].width = 24
+        sheet.column_dimensions['D'].width = 24
+        sheet.column_dimensions['E'].width = 24
+        sheet.column_dimensions['F'].width = 24
+        sheet.column_dimensions['G'].width = 24
+        sheet.column_dimensions['H'].width = 24
 
         sheet.cell(row, 1, student_id).alignment = alignment
         sheet.cell(row, 2, student_name).alignment = alignment
-        sheet.cell(row, 3, sum_memo).alignment = alignment
-        sheet.cell(row, 4, sum_test).alignment = alignment
-        sheet.cell(row, 5, sum_all).alignment = alignment
+        sheet.cell(row, 3, sum_viewing).alignment = alignment
+        sheet.cell(row, 4, sum_memo).alignment = alignment
+        sheet.cell(row, 5, sum_test).alignment = alignment
+        sheet.cell(row, 6, sum_elite_test).alignment = alignment
+        sheet.cell(row, 7, sum_all).alignment = alignment
+        sheet.cell(row, 8, sum_extra_hadeeth).alignment = alignment
 
     buffer = BytesIO()
 
@@ -401,7 +524,7 @@ def excel_all_categories_or_groups_report(data, masjed: int, start_date: str, en
 
     sheet.title = 'التقرير'
 
-    alignment = Alignment(horizontal='center', vertical='center') 
+    alignment = Alignment(horizontal='center', vertical='center')
     header_font = Font(bold=True)
 
     cell = sheet.cell(1, 1, 'تقرير')
@@ -441,69 +564,113 @@ def excel_all_categories_or_groups_report(data, masjed: int, start_date: str, en
         cell = sheet.cell(details_cell_start, 2, one_data['category_name' if is_category else 'group_name'])
         cell.alignment = alignment
 
-        cell = sheet.cell(details_cell_start + 1, 1, 'صفحات التسميع')
+        cell = sheet.cell(details_cell_start + 1, 1, 'صفحات القراءة نظراً')
         cell.alignment = alignment
         cell.font = header_font
 
-        cell = sheet.cell(details_cell_start + 1, 2, one_data['total_memo'])
+        cell = sheet.cell(details_cell_start + 1, 2, one_data['total_viewing'])
         cell.alignment = alignment
 
-        cell = sheet.cell(details_cell_start + 2, 1, 'صفحات السبر')
-        cell.alignment = alignment
-        cell.font = header_font
-
-        cell = sheet.cell(details_cell_start + 2, 2, one_data['total_test'])
-        cell.alignment = alignment
-
-        cell = sheet.cell(details_cell_start + 3, 1, 'كلي الصفحات')
+        cell = sheet.cell(details_cell_start + 2, 1, 'صفحات التسميع غيباً')
         cell.alignment = alignment
         cell.font = header_font
 
-        cell = sheet.cell(details_cell_start + 3, 2, one_data['total'])
+        cell = sheet.cell(details_cell_start + 2, 2, one_data['total_memo'])
         cell.alignment = alignment
 
-        cell = sheet.cell(details_cell_start + 4, 1, 'معرف الطالب')
-        cell.alignment = alignment
-        cell.font = header_font
-
-        cell = sheet.cell(details_cell_start + 4, 2, 'اسم الطالب')
+        cell = sheet.cell(details_cell_start + 3, 1, 'صفحات سبر الأرباع غيباً')
         cell.alignment = alignment
         cell.font = header_font
 
-        cell = sheet.cell(details_cell_start + 4, 3, 'صفحات التسميع')
+        cell = sheet.cell(details_cell_start + 3, 2, one_data['total_test'])
+        cell.alignment = alignment
+
+        cell = sheet.cell(details_cell_start + 4, 1, 'صفحات سبر الأحزاب غيباً')
         cell.alignment = alignment
         cell.font = header_font
 
-        cell = sheet.cell(details_cell_start + 4, 4, 'صفحات السبر')
+        cell = sheet.cell(details_cell_start + 4, 2, one_data['total_elite_test'])
+        cell.alignment = alignment
+
+        cell = sheet.cell(details_cell_start + 5, 1, 'كلي الصفحات')
         cell.alignment = alignment
         cell.font = header_font
 
-        cell = sheet.cell(details_cell_start + 4, 5, 'كلي الصفحات')
+        cell = sheet.cell(details_cell_start + 5, 2, one_data['total'])
+        cell.alignment = alignment
+
+        cell = sheet.cell(details_cell_start + 6, 1, 'مجموع الأحاديث')
         cell.alignment = alignment
         cell.font = header_font
 
-        for row, student in enumerate(one_data['students'], details_cell_start + 5):
+        cell = sheet.cell(details_cell_start + 6, 2, one_data['total_extra_hadeeth'])
+        cell.alignment = alignment
+
+
+        cell = sheet.cell(details_cell_start + 7, 1, 'معرف الطالب')
+        cell.alignment = alignment
+        cell.font = header_font
+
+        cell = sheet.cell(details_cell_start + 7, 2, 'اسم الطالب')
+        cell.alignment = alignment
+        cell.font = header_font
+
+        cell = sheet.cell(details_cell_start + 7, 3, 'صفحات القراءة نظراً')
+        cell.alignment = alignment
+        cell.font = header_font
+
+        cell = sheet.cell(details_cell_start + 7, 4, 'صفحات التسميع غيباً')
+        cell.alignment = alignment
+        cell.font = header_font
+
+        cell = sheet.cell(details_cell_start + 7, 5, 'صفحات سبر الأرباع غيباً')
+        cell.alignment = alignment
+        cell.font = header_font
+
+        cell = sheet.cell(details_cell_start + 7, 6, 'صفحات سبر الأحزاب غيباً')
+        cell.alignment = alignment
+        cell.font = header_font
+
+        cell = sheet.cell(details_cell_start + 7, 7, 'كلي الصفحات')
+        cell.alignment = alignment
+        cell.font = header_font
+
+        cell = sheet.cell(details_cell_start + 7, 8, 'مجموع الأحاديث')
+        cell.alignment = alignment
+        cell.font = header_font
+
+        for row, student in enumerate(one_data['students'], details_cell_start + 8):
             student_id = student['student_id']
             student_name = student['student_name']
+            sum_viewing = student['sum_viewing']
             sum_memo = student['sum_memo']
             sum_test = student['sum_test']
+            sum_elite_test = student['sum_elite_test']
             sum_all = student['sum_all']
+            sum_extra_hadeeth = student['sum_extra_hadeeth']
 
-            sheet.column_dimensions['A'].width = 20
+            sheet.column_dimensions['A'].width = 26
             sheet.column_dimensions['B'].width = 24
-            sheet.column_dimensions['C'].width = 12
-            sheet.column_dimensions['D'].width = 12
-            sheet.column_dimensions['E'].width = 12
+            sheet.column_dimensions['C'].width = 24
+            sheet.column_dimensions['D'].width = 24
+            sheet.column_dimensions['E'].width = 24
+            sheet.column_dimensions['F'].width = 24
+            sheet.column_dimensions['G'].width = 24
+            sheet.column_dimensions['H'].width = 24
 
             sheet.cell(row, 1, student_id).alignment = alignment
             sheet.cell(row, 2, student_name).alignment = alignment
-            sheet.cell(row, 3, sum_memo).alignment = alignment
-            sheet.cell(row, 4, sum_test).alignment = alignment
-            sheet.cell(row, 5, sum_all).alignment = alignment
+            sheet.cell(row, 3, sum_viewing).alignment = alignment
+            sheet.cell(row, 4, sum_memo).alignment = alignment
+            sheet.cell(row, 5, sum_test).alignment = alignment
+            sheet.cell(row, 6, sum_elite_test).alignment = alignment
+            sheet.cell(row, 7, sum_all).alignment = alignment
+            sheet.cell(row, 8, sum_extra_hadeeth).alignment = alignment
+
 
             details_cell_start += 1
 
-        details_cell_start += 7
+        details_cell_start += 9
 
     buffer = BytesIO()
 

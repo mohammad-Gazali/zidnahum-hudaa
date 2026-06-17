@@ -5,4 +5,7 @@ export interface ReportsStudentCategoryOrGroupResponse {
   total: number;
   total_memo: number;
   total_test: number;
+  total_viewing: number;
+  total_elite_test: number;
+  total_extra_hadeeth: number;
 }

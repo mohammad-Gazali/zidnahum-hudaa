@@ -5,4 +5,7 @@ export interface ReportsStudentCategoryOrGroupStudent {
   sum_all: number;
   sum_memo: number;
   sum_test: number;
+  sum_viewing: number;
+  sum_elite_test: number;
+  sum_extra_hadeeth: number;
 }
