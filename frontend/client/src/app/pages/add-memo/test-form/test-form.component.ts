@@ -1,5 +1,10 @@
 import { Component, inject, output } from '@angular/core';
-import { FormGroupDirective, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormGroupDirective,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
@@ -9,19 +14,19 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
-    selector: 'app-test-form',
-    imports: [
-        MatFormFieldModule,
-        ReactiveFormsModule,
-        MatRadioModule,
-        MatCard,
-        MatRippleModule,
-        MatInput,
-        MatButton,
-        MatIcon,
-    ],
-    templateUrl: './test-form.component.html',
-    styleUrl: './test-form.component.scss'
+  selector: 'app-test-form',
+  imports: [
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatRadioModule,
+    MatCard,
+    MatRippleModule,
+    MatInput,
+    MatButton,
+    MatIcon,
+  ],
+  templateUrl: './test-form.component.html',
+  styleUrl: './test-form.component.scss',
 })
 export class TestFormComponent {
   private fb = inject(NonNullableFormBuilder);
@@ -29,7 +34,9 @@ export class TestFormComponent {
   public onSubmit = output<TestSubmit>();
 
   protected form = this.fb.group({
-    type: this.fb.control<'quarter' | 'half' | 'whole'>('quarter', [Validators.required]),
+    type: this.fb.control<'quarter' | 'half' | 'whole'>('quarter', [
+      Validators.required,
+    ]),
     part: this.fb.control<number | undefined>(undefined, [Validators.required]),
     extra: this.fb.control<1 | 2 | 3 | 4>(1, [Validators.required]),
   });

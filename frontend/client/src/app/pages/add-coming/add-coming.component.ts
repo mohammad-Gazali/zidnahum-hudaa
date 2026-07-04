@@ -11,7 +11,7 @@ import {
   MasjedService,
   MobileUtilsService,
   SnackbarService,
-  StudentsService
+  StudentsService,
 } from '@shared';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
@@ -23,23 +23,23 @@ import { MatCard } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
 
 @Component({
-    selector: 'app-add-coming',
-    imports: [
-        ReactiveFormsModule,
-        MatFormField,
-        MatInput,
-        MatError,
-        MatButton,
-        MatIcon,
-        MatSelect,
-        MatOption,
-        DatePipe,
-        MasjedPipe,
-        MatCard,
-        MatDivider,
-    ],
-    templateUrl: './add-coming.component.html',
-    styleUrl: './add-coming.component.scss'
+  selector: 'app-add-coming',
+  imports: [
+    ReactiveFormsModule,
+    MatFormField,
+    MatInput,
+    MatError,
+    MatButton,
+    MatIcon,
+    MatSelect,
+    MatOption,
+    DatePipe,
+    MasjedPipe,
+    MatCard,
+    MatDivider,
+  ],
+  templateUrl: './add-coming.component.html',
+  styleUrl: './add-coming.component.scss',
 })
 export class AddComingComponent {
   private students = inject(StudentsService);
@@ -60,9 +60,9 @@ export class AddComingComponent {
     this.comings.comingsCategoryList().pipe(
       tap((res) => {
         this.searchForm.controls.categoryId.setValue(res[0].id);
-      })
+      }),
     ),
-    { initialValue: [] as ComingCategory[] }
+    { initialValue: [] as ComingCategory[] },
   );
 
   submit() {
@@ -77,7 +77,9 @@ export class AddComingComponent {
     const query = params.get('query') ?? this.searchForm.value.search;
     const masjed: any = params.get('masjed') ?? this.searchForm.value.masjed;
     const page = Number(params.get('page')) || 1;
-    const comingCategoryId = url?.split('?')[0].split('/').at(-1) ?? String(this.searchForm.value.categoryId);
+    const comingCategoryId =
+      url?.split('?')[0].split('/').at(-1) ??
+      String(this.searchForm.value.categoryId);
 
     this.loading.set(true);
 
@@ -88,9 +90,7 @@ export class AddComingComponent {
         page,
         masjed,
       })
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-      )
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         error: () => {
           this.loading.set(false);
@@ -107,29 +107,38 @@ export class AddComingComponent {
   addComing(studentId: number) {
     if (this.loadingIds().indexOf(studentId) !== -1) return;
 
-    this.loadingIds.update(pre => [...pre, studentId]);
+    this.loadingIds.update((pre) => [...pre, studentId]);
 
-    this.comings.comingsCreate({
-      student: studentId,
-      category: this.searchForm.value.categoryId!,
-    }).pipe(
-      takeUntilDestroyed(this.destroyRef),
-    ).subscribe({
-      error: ({ error }) => {
-        this.loadingIds.update(pre => pre.filter(id => id !== studentId));
-        this.snackbar.error((error && error.detail) ?? error);
-      },
-      next: () => {
-        this.loadingIds.update(pre => pre.filter(id => id !== studentId));
-        this.snackbar.success('تم تسجيل الحضور بنجاح');
-        this.response.update(pre => pre ? ({
-          ...pre,
-          results: pre.results.map(s => s.id !== studentId ? s : ({
-            ...s,
-            is_registered_today: true,
-          }))
-        }) : pre);
-      }
-    });
+    this.comings
+      .comingsCreate({
+        student: studentId,
+        category: this.searchForm.value.categoryId!,
+      })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        error: ({ error }) => {
+          this.loadingIds.update((pre) => pre.filter((id) => id !== studentId));
+          this.snackbar.error((error && error.detail) ?? error);
+        },
+        next: () => {
+          this.loadingIds.update((pre) => pre.filter((id) => id !== studentId));
+          this.snackbar.success('تم تسجيل الحضور بنجاح');
+          this.response.update((pre) =>
+            pre
+              ? {
+                  ...pre,
+                  results: pre.results.map((s) =>
+                    s.id !== studentId
+                      ? s
+                      : {
+                          ...s,
+                          is_registered_today: true,
+                        },
+                  ),
+                }
+              : pre,
+          );
+        },
+      });
   }
 }

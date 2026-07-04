@@ -7,46 +7,63 @@ import {
   SnackbarService,
   StudentCategory,
   StudentGroup,
-  StudentsService
+  StudentsService,
 } from '@shared';
-import { FormGroupDirective, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatError, MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import {
+  FormGroupDirective,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import {
+  MatError,
+  MatFormField,
+  MatLabel,
+  MatSuffix,
+} from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { MatDatepicker, MatDatepickerInput, MatDatepickerToggle } from '@angular/material/datepicker';
-import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
+import {
+  MatDatepicker,
+  MatDatepickerInput,
+  MatDatepickerToggle,
+} from '@angular/material/datepicker';
+import {
+  MAT_DATE_LOCALE,
+  provideNativeDateAdapter,
+} from '@angular/material/core';
 import { formatDate } from '@angular/common';
 
 @Component({
-    selector: 'app-add-student',
-    imports: [
-        ReactiveFormsModule,
-        MatFormField,
-        MatLabel,
-        MatError,
-        MatSuffix,
-        MatInput,
-        MatSelect,
-        MatOption,
-        MatButton,
-        MatIcon,
-        MatDatepickerInput,
-        MatDatepickerToggle,
-        MatDatepicker,
-        MasjedPipe,
-    ],
-    templateUrl: './add-student.component.html',
-    styleUrl: './add-student.component.scss',
-    providers: [
-        provideNativeDateAdapter(),
-        {
-            provide: MAT_DATE_LOCALE,
-            useValue: 'ar',
-        },
-    ]
+  selector: 'app-add-student',
+  imports: [
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatError,
+    MatSuffix,
+    MatInput,
+    MatSelect,
+    MatOption,
+    MatButton,
+    MatIcon,
+    MatDatepickerInput,
+    MatDatepickerToggle,
+    MatDatepicker,
+    MasjedPipe,
+  ],
+  templateUrl: './add-student.component.html',
+  styleUrl: './add-student.component.scss',
+  providers: [
+    provideNativeDateAdapter(),
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: 'ar',
+    },
+  ],
 })
 export class AddStudentComponent {
   private fb = inject(NonNullableFormBuilder);
@@ -58,17 +75,25 @@ export class AddStudentComponent {
   private mobileUtils = inject(MobileUtilsService);
 
   protected masjedOptions = this.masjed.masjedOptions;
-  protected categories = toSignal<StudentCategory[]>(this.students.studentsCategoryList(), {
-    initialValue: [] as any,
-  });
-  protected groups = toSignal<StudentGroup[]>(this.students.studentsGroupList(), {
-    initialValue: [] as any,
-  });
+  protected categories = toSignal<StudentCategory[]>(
+    this.students.studentsCategoryList(),
+    {
+      initialValue: [] as any,
+    },
+  );
+  protected groups = toSignal<StudentGroup[]>(
+    this.students.studentsGroupList(),
+    {
+      initialValue: [] as any,
+    },
+  );
   protected form = this.fb.group({
     name: this.fb.control('', [Validators.required]),
     mother_name: this.fb.control('', [Validators.required]),
     birthdate: this.fb.control<Date | null>(null),
-    masjed: this.fb.control<1 | 2 | 3 | 4>(undefined as any, [Validators.required]),
+    masjed: this.fb.control<1 | 2 | 3 | 4>(undefined as any, [
+      Validators.required,
+    ]),
     address: this.fb.control(''),
     static_phone: this.fb.control(''),
     cell_phone: this.fb.control(''),
@@ -93,7 +118,9 @@ export class AddStudentComponent {
     this.students
       .studentsCreate({
         ...value,
-        birthdate: value.birthdate ? formatDate(value.birthdate, 'yyyy-MM-dd', 'en-Us') : null,
+        birthdate: value.birthdate
+          ? formatDate(value.birthdate, 'yyyy-MM-dd', 'en-Us')
+          : null,
       })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
@@ -106,7 +133,7 @@ export class AddStudentComponent {
           this.snackbar.success('تمت إضافة الطالب بنجاح');
           this.mobileUtils.hideMobileKeyboard();
           ngForm.resetForm();
-        }
+        },
       });
   }
 }

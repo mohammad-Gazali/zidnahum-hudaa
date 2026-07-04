@@ -6,8 +6,26 @@ import { MatButton } from '@angular/material/button';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { LayoutService, MemoService, MobileUtilsService, SnackbarService, StudentList, StudentsService, TestService } from '@shared';
-import { catchError, distinctUntilChanged, EMPTY, filter, map, merge, Subject, switchMap, tap } from 'rxjs';
+import {
+  LayoutService,
+  MemoService,
+  MobileUtilsService,
+  SnackbarService,
+  StudentList,
+  StudentsService,
+  TestService,
+} from '@shared';
+import {
+  catchError,
+  distinctUntilChanged,
+  EMPTY,
+  filter,
+  map,
+  merge,
+  Subject,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { MemoFormComponent, MemoSubmit } from './memo-form/memo-form.component';
@@ -15,23 +33,23 @@ import { TestFormComponent, TestSubmit } from './test-form/test-form.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-    selector: 'app-add-memo',
-    imports: [
-        MatFormField,
-        MatSuffix,
-        MatInput,
-        MatIcon,
-        MatButton,
-        ReactiveFormsModule,
-        MatCard,
-        MatCardContent,
-        MatTabGroup,
-        MatTab,
-        MemoFormComponent,
-        TestFormComponent,
-    ],
-    templateUrl: './add-memo.component.html',
-    styleUrl: './add-memo.component.scss'
+  selector: 'app-add-memo',
+  imports: [
+    MatFormField,
+    MatSuffix,
+    MatInput,
+    MatIcon,
+    MatButton,
+    ReactiveFormsModule,
+    MatCard,
+    MatCardContent,
+    MatTabGroup,
+    MatTab,
+    MemoFormComponent,
+    TestFormComponent,
+  ],
+  templateUrl: './add-memo.component.html',
+  styleUrl: './add-memo.component.scss',
 })
 export class AddMemoComponent {
   private fb = inject(NonNullableFormBuilder);
@@ -56,21 +74,18 @@ export class AddMemoComponent {
   protected search$ = new Subject<string>();
 
   protected students = toSignal(
-    merge(
-      this.route.queryParams,
-      this.search$,
-    ).pipe(
-      map(val => typeof val === 'string' ? val : val['id'] as string),
+    merge(this.route.queryParams, this.search$).pipe(
+      map((val) => (typeof val === 'string' ? val : (val['id'] as string))),
       filter(Boolean),
       distinctUntilChanged(),
       tap(() => this.loading.set(true)),
-      switchMap(value =>
+      switchMap((value) =>
         this.studentsService.studentsList({
-          query: value
-        })
+          query: value,
+        }),
       ),
-      map(res => res.results),
-      tap(students => {
+      map((res) => res.results),
+      tap((students) => {
         this.loading.set(false);
         this.selectedStudent.set(null);
         this.search.setValue('');
@@ -83,16 +98,12 @@ export class AddMemoComponent {
       catchError(() => {
         this.loading.set(false);
         return EMPTY;
-      })
-    ));
-  protected searched = toSignal(
-    this.search$.pipe(
-      map(Boolean),
+      }),
     ),
-    {
-      initialValue: false,
-    }
   );
+  protected searched = toSignal(this.search$.pipe(map(Boolean)), {
+    initialValue: false,
+  });
 
   submit() {
     this.search$.next(this.search.value);
@@ -117,15 +128,14 @@ export class AddMemoComponent {
 
     this.loading.set(true);
 
-    this.studentsService.studentsUpdateQmemoUpdate({
-      id: selectedStudent.id.toString(),
-      data: {
-        q_memo: q_memo.map(n => n - 1),
-      },
-    })
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-      )
+    this.studentsService
+      .studentsUpdateQmemoUpdate({
+        id: selectedStudent.id.toString(),
+        data: {
+          q_memo: q_memo.map((n) => n - 1),
+        },
+      })
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         error: ({ error }) => {
           this.loading.set(false);
@@ -134,11 +144,17 @@ export class AddMemoComponent {
         next: (res) => {
           this.loading.set(false);
           if (res.repeated_memo.length !== 0) {
-            this.matSnackbar.open(' تم تسجيل التسميع بنجاح, ولكن يوجد تكرار بـ:' + res.repeated_memo.map((item: number) => this.memo.transform(item)).join(', '), 'إغلاق');
+            this.matSnackbar.open(
+              ' تم تسجيل التسميع بنجاح, ولكن يوجد تكرار بـ:' +
+                res.repeated_memo
+                  .map((item: number) => this.memo.transform(item))
+                  .join(', '),
+              'إغلاق',
+            );
           } else {
             this.snackbar.success('تم تسجيل التسميع بنجاح');
           }
-        }
+        },
       });
   }
 
@@ -165,28 +181,34 @@ export class AddMemoComponent {
 
     this.loading.set(true);
 
-    this.studentsService.studentsUpdateQtestUpdate({
-      id: selectedStudent.id.toString(),
-      data: {
-        q_test: q_test.map(n => n - 1),
-      },
-    })
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-      ).subscribe({
-      error: ({ error }) => {
-        this.loading.set(false);
-        this.snackbar.error((error && error.detail) ?? error);
-      },
-      next: (res) => {
-        this.loading.set(false);
-        if (res.repeated_test.length !== 0) {
-          this.matSnackbar.open(' تم تسجيل التسميع بنجاح, ولكن يوجد تكرار بـ:' + res.repeated_test.map((item: number) => this.test.transform(item)).join(', '), 'إغلاق');
-        } else {
-          this.snackbar.success('تم تسجيل التسميع بنجاح');
-        }
-      }
-    });
+    this.studentsService
+      .studentsUpdateQtestUpdate({
+        id: selectedStudent.id.toString(),
+        data: {
+          q_test: q_test.map((n) => n - 1),
+        },
+      })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        error: ({ error }) => {
+          this.loading.set(false);
+          this.snackbar.error((error && error.detail) ?? error);
+        },
+        next: (res) => {
+          this.loading.set(false);
+          if (res.repeated_test.length !== 0) {
+            this.matSnackbar.open(
+              ' تم تسجيل التسميع بنجاح, ولكن يوجد تكرار بـ:' +
+                res.repeated_test
+                  .map((item: number) => this.test.transform(item))
+                  .join(', '),
+              'إغلاق',
+            );
+          } else {
+            this.snackbar.success('تم تسجيل التسميع بنجاح');
+          }
+        },
+      });
   }
 
   onViewingSubmit(value: MemoSubmit) {
@@ -208,15 +230,14 @@ export class AddMemoComponent {
 
     this.loading.set(true);
 
-    this.studentsService.studentsUpdateQviewingUpdate({
-      id: selectedStudent.id.toString(),
-      data: {
-        q_viewing: q_viewing.map(n => n - 1),
-      },
-    })
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-      )
+    this.studentsService
+      .studentsUpdateQviewingUpdate({
+        id: selectedStudent.id.toString(),
+        data: {
+          q_viewing: q_viewing.map((n) => n - 1),
+        },
+      })
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         error: ({ error }) => {
           this.loading.set(false);
@@ -225,16 +246,24 @@ export class AddMemoComponent {
         next: (res) => {
           this.loading.set(false);
           if (res.repeated_viewing.length !== 0) {
-            this.matSnackbar.open(' تم تسجيل القراءة بنجاح, ولكن يوجد تكرار بـ:' + res.repeated_viewing.map((item: number) => this.memo.transform(item)).join(', '), 'إغلاق');
+            this.matSnackbar.open(
+              ' تم تسجيل القراءة بنجاح, ولكن يوجد تكرار بـ:' +
+                res.repeated_viewing
+                  .map((item: number) => this.memo.transform(item))
+                  .join(', '),
+              'إغلاق',
+            );
           } else {
             this.snackbar.success('تم تسجيل القراءة بنجاح');
           }
-        }
+        },
       });
   }
 
   testArrayFromPartNumber(part: number) {
     let initial = part === 1 ? 1 : 4 * part - 3;
-    return Array(4).fill(null).map(() => initial++);
+    return Array(4)
+      .fill(null)
+      .map(() => initial++);
   }
 }

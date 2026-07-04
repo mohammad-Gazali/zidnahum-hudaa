@@ -3,15 +3,22 @@ import { DatePipe } from '@angular/common';
 import { MatCard } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { AuthService, ConfirmationService, Group, LayoutService, SnackbarService, StudentsService } from '@shared';
+import {
+  AuthService,
+  ConfirmationService,
+  Group,
+  LayoutService,
+  SnackbarService,
+  StudentsService,
+} from '@shared';
 import { StudentComponent } from '../student.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
-    selector: 'app-student-notes',
-    imports: [MatCard, MatButton, MatIcon, DatePipe],
-    templateUrl: './student-notes.component.html',
-    styleUrl: './student-notes.component.scss'
+  selector: 'app-student-notes',
+  imports: [MatCard, MatButton, MatIcon, DatePipe],
+  templateUrl: './student-notes.component.html',
+  styleUrl: './student-notes.component.scss',
 })
 export class StudentNotesComponent {
   private auth = inject(AuthService);
@@ -39,14 +46,18 @@ export class StudentNotesComponent {
             next: () => {
               this.loading.set(false);
               this.snackbar.success('تم الحذف الملاحظة بنجاح');
-              this.student.update(pre => pre ? ({
-                ...pre,
-                memo_notes: pre.memo_notes.filter(n => n.id !== id),
-              }) : pre)
+              this.student.update((pre) =>
+                pre
+                  ? {
+                      ...pre,
+                      memo_notes: pre.memo_notes.filter((n) => n.id !== id),
+                    }
+                  : pre,
+              );
             },
-          })
-      }
-    })
+          });
+      },
+    });
   }
 
   hasGroup(): boolean {

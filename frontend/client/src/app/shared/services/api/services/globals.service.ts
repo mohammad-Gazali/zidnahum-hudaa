@@ -74,7 +74,7 @@ class GlobalsService extends __BaseService {
   }
 }
 
-module GlobalsService {
+namespace GlobalsService {
 }
 
 export { GlobalsService }

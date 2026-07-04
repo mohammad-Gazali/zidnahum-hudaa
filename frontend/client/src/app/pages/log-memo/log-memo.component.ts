@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, signal } from "@angular/core";
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import {
   ConfirmationService,
   LayoutService,
@@ -10,24 +10,24 @@ import {
   SnackbarService,
   StudentsService,
   TestPipe,
-} from "@shared";
-import { takeUntilDestroyed, toSignal } from "@angular/core/rxjs-interop";
-import { BehaviorSubject, combineLatest, map, switchMap, tap } from "rxjs";
+} from '@shared';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { BehaviorSubject, combineLatest, map, switchMap, tap } from 'rxjs';
 import {
   MatCard,
   MatCardContent,
   MatCardHeader,
   MatCardSubtitle,
   MatCardTitle,
-} from "@angular/material/card";
-import { DatePipe } from "@angular/common";
-import { MatChip } from "@angular/material/chips";
-import { MatDivider } from "@angular/material/divider";
-import { MatButton, MatMiniFabButton } from "@angular/material/button";
-import { MatIcon } from "@angular/material/icon";
+} from '@angular/material/card';
+import { DatePipe } from '@angular/common';
+import { MatChip } from '@angular/material/chips';
+import { MatDivider } from '@angular/material/divider';
+import { MatButton, MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  selector: "app-log-memo",
+  selector: 'app-log-memo',
   imports: [
     MatCard,
     MatCardHeader,
@@ -45,8 +45,8 @@ import { MatIcon } from "@angular/material/icon";
     MatButton,
     MasjedPipe,
   ],
-  templateUrl: "./log-memo.component.html",
-  styleUrl: "./log-memo.component.scss",
+  templateUrl: './log-memo.component.html',
+  styleUrl: './log-memo.component.scss',
 })
 export class LogMemoComponent {
   private students = inject(StudentsService);
@@ -90,7 +90,7 @@ export class LogMemoComponent {
 
   delete(studentId: number) {
     this.confirmation.confirm({
-      message: "هل أنت متأكد من حذف التسميع للطالب ؟",
+      message: 'هل أنت متأكد من حذف التسميع للطالب ؟',
       onConfirm: () => {
         this.loadingIds.update((pre) => [...pre, studentId]);
         this.students
@@ -107,7 +107,7 @@ export class LogMemoComponent {
               this.loadingIds.update((pre) =>
                 pre.filter((id) => id !== studentId),
               );
-              this.snackbar.success("تم حذف التسميع بنجاح");
+              this.snackbar.success('تم حذف التسميع بنجاح');
               this.refresh$.next(null);
             },
           });

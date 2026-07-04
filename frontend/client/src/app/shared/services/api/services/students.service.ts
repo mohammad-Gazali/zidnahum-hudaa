@@ -733,7 +733,7 @@ class StudentsService extends __BaseService {
   }
 }
 
-module StudentsService {
+namespace StudentsService {
 
   /**
    * Parameters for studentsList

@@ -9,27 +9,34 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { MatCard } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
-import { AuthService, Group, LayoutService, MasjedPipe, MobileUtilsService, StudentsService } from '@shared';
+import {
+  AuthService,
+  Group,
+  LayoutService,
+  MasjedPipe,
+  MobileUtilsService,
+  StudentsService,
+} from '@shared';
 import { HomeStudentListService } from './home-student-list.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddMemorizeNoteDialogComponent } from './add-memorize-note-dialog/add-memorize-note-dialog.component';
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.scss',
-    imports: [
-        ReactiveFormsModule,
-        MatFormField,
-        MatInput,
-        MatButton,
-        MatIcon,
-        MatCard,
-        MatDivider,
-        DatePipe,
-        MasjedPipe,
-        RouterLink,
-    ]
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss',
+  imports: [
+    ReactiveFormsModule,
+    MatFormField,
+    MatInput,
+    MatButton,
+    MatIcon,
+    MatCard,
+    MatDivider,
+    DatePipe,
+    MasjedPipe,
+    RouterLink,
+  ],
 })
 export class HomeComponent {
   private students = inject(StudentsService);
@@ -49,8 +56,8 @@ export class HomeComponent {
     if (!user) return false;
     if (user.isAdmin) return true;
 
-    return user.groups.indexOf(Group.Memo) !== -1
-  })
+    return user.groups.indexOf(Group.Memo) !== -1;
+  });
 
   submit() {
     if (!this.searchForm.value.search) return;
@@ -71,9 +78,7 @@ export class HomeComponent {
         query,
         page,
       })
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-      )
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         error: () => this.loading.set(false),
         next: (res) => {
@@ -90,6 +95,6 @@ export class HomeComponent {
       data: studentId,
       // maxWidth: '500px',
       width: '80%',
-    })
+    });
   }
 }

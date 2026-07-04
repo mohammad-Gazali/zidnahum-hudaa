@@ -2,7 +2,7 @@
   @switch (message.message_type) {
     @case (messageType.Memo) {
       @for (item of message.changes; track item) {
-        <mat-card class="small-card bg-primary-fixed-dim">
+        <mat-card class="small-card bg-primary-fixed-dim" [class.flex-width]="item >= 581">
           {{ item | memo }}
         </mat-card>
       }

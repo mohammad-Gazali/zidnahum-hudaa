@@ -1,20 +1,20 @@
-import { Component, DestroyRef, inject, signal } from "@angular/core";
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import {
   FormGroupDirective,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
-} from "@angular/forms";
-import { MatButton } from "@angular/material/button";
+} from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import {
   MatError,
   MatFormField,
   MatLabel,
   MatSuffix,
-} from "@angular/material/form-field";
-import { MatIcon } from "@angular/material/icon";
-import { MatInput } from "@angular/material/input";
-import { ActivatedRoute } from "@angular/router";
+} from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { ActivatedRoute } from '@angular/router';
 import {
   EXTRA_HADEETH_LABEL,
   EXTRA_HADEETH_LIMIT,
@@ -23,7 +23,7 @@ import {
   SnackbarService,
   StudentList,
   StudentsService,
-} from "@shared";
+} from '@shared';
 import {
   catchError,
   distinctUntilChanged,
@@ -35,13 +35,13 @@ import {
   Subject,
   switchMap,
   tap,
-} from "rxjs";
-import { takeUntilDestroyed, toSignal } from "@angular/core/rxjs-interop";
-import { MatCard, MatCardContent } from "@angular/material/card";
-import { MatRadioButton, MatRadioGroup } from "@angular/material/radio";
+} from 'rxjs';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { MatCard, MatCardContent } from '@angular/material/card';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 
 @Component({
-  selector: "app-add-hadeeth",
+  selector: 'app-add-hadeeth',
   imports: [
     ReactiveFormsModule,
     MatButton,
@@ -56,8 +56,8 @@ import { MatRadioButton, MatRadioGroup } from "@angular/material/radio";
     MatRadioGroup,
     MatRadioButton,
   ],
-  templateUrl: "./add-hadeeth.component.html",
-  styleUrl: "./add-hadeeth.component.scss",
+  templateUrl: './add-hadeeth.component.html',
+  styleUrl: './add-hadeeth.component.scss',
 })
 export class AddHadeethComponent {
   private fb = inject(NonNullableFormBuilder);
@@ -78,7 +78,7 @@ export class AddHadeethComponent {
       .subscribe((value) => {
         const control = this.form.controls.hadeethNumber;
 
-        if (value === "allah-names") {
+        if (value === 'allah-names') {
           control.removeValidators(Validators.required);
         } else {
           control.addValidators(Validators.required);
@@ -89,16 +89,16 @@ export class AddHadeethComponent {
   }
 
   protected extraHadeethLabel = EXTRA_HADEETH_LABEL;
-  protected search = this.fb.control("");
+  protected search = this.fb.control('');
   protected selectedStudent = signal<StudentList | null>(null);
   protected search$ = new Subject<string>();
   protected form = this.fb.group({
     type: this.fb.control<
-      | "alarbaein-alnawawia"
-      | "riad-alsaalihin"
-      | "extra-hadeeth"
-      | "allah-names"
-    >("alarbaein-alnawawia"),
+      | 'alarbaein-alnawawia'
+      | 'riad-alsaalihin'
+      | 'extra-hadeeth'
+      | 'allah-names'
+    >('alarbaein-alnawawia'),
     hadeethNumber: this.fb.control<number | undefined>(undefined, [
       Validators.required,
     ]),
@@ -108,25 +108,25 @@ export class AddHadeethComponent {
     this.form.controls.type.valueChanges.pipe(
       map((val) => {
         switch (val) {
-          case "alarbaein-alnawawia":
+          case 'alarbaein-alnawawia':
             return 50;
-          case "riad-alsaalihin":
+          case 'riad-alsaalihin':
             return null;
-          case "extra-hadeeth":
+          case 'extra-hadeeth':
             return EXTRA_HADEETH_LIMIT;
-          case "allah-names":
+          case 'allah-names':
             return null;
         }
       }),
     ),
     {
       initialValue: 50,
-    }
+    },
   );
 
   protected students = toSignal(
     merge(this.route.queryParams, this.search$).pipe(
-      map((val) => (typeof val === "string" ? val : (val["id"] as string))),
+      map((val) => (typeof val === 'string' ? val : (val['id'] as string))),
       filter(Boolean),
       distinctUntilChanged(),
       tap(() => this.loading.set(true)),
@@ -140,7 +140,7 @@ export class AddHadeethComponent {
         this.loading.set(false);
         this.selectedStudent.set(null);
         this.mobileUtils.hideMobileKeyboard();
-        this.search.setValue("");
+        this.search.setValue('');
 
         if (students.length === 1) {
           this.selectedStudent.set(students[0]);
@@ -172,21 +172,21 @@ export class AddHadeethComponent {
     const type = value.type;
 
     const observable: Observable<any> =
-      type === "alarbaein-alnawawia"
+      type === 'alarbaein-alnawawia'
         ? this.studentsService.studentsUpdateAlarbaeinAlnawawiaUpdate({
             id: student.id.toString(),
             data: {
               value: value.hadeethNumber!,
             },
           })
-        : type === "riad-alsaalihin"
+        : type === 'riad-alsaalihin'
           ? this.studentsService.studentsUpdateRiadAlsaalihinUpdate({
               id: student.id.toString(),
               data: {
                 value: value.hadeethNumber!,
               },
             })
-          : type === "extra-hadeeth"
+          : type === 'extra-hadeeth'
             ? this.studentsService.studentsUpdateExtraHadeethUpdate({
                 id: student.id.toString(),
                 data: {
@@ -209,9 +209,9 @@ export class AddHadeethComponent {
         ngForm.resetForm();
         this.loading.set(false);
         this.snackbar.success(
-          type === "allah-names"
-            ? "تم تسجيل أسماء الله الحسنى بنجاح"
-            : "تم تسجيل الأحاديث بنجاح",
+          type === 'allah-names'
+            ? 'تم تسجيل أسماء الله الحسنى بنجاح'
+            : 'تم تسجيل الأحاديث بنجاح',
         );
       },
     });

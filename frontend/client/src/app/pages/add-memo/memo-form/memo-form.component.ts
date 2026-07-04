@@ -1,31 +1,39 @@
 import { Component, inject, output, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormGroupDirective, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroupDirective,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
 import { merge } from 'rxjs';
-import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import {
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+} from '@angular/material/expansion';
 import { MemoPipe, SnackbarService } from '@shared';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatButton } from '@angular/material/button';
 
 @Component({
-    selector: 'app-memo-form',
-    imports: [
-        MatFormFieldModule,
-        ReactiveFormsModule,
-        MatInput,
-        MatIcon,
-        MatExpansionPanel,
-        MatExpansionPanelHeader,
-        MatExpansionPanelTitle,
-        MatCheckbox,
-        MatButton,
-        MemoPipe
-    ],
-    templateUrl: './memo-form.component.html',
-    styleUrl: './memo-form.component.scss'
+  selector: 'app-memo-form',
+  imports: [
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInput,
+    MatIcon,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle,
+    MatCheckbox,
+    MatButton,
+    MemoPipe,
+  ],
+  templateUrl: './memo-form.component.html',
+  styleUrl: './memo-form.component.scss',
 })
 export class MemoFormComponent {
   private fb = inject(NonNullableFormBuilder);
@@ -65,13 +73,13 @@ export class MemoFormComponent {
 
     const exact = formValue.exact
       .map((val, index) => [val, index] as const)
-      .filter(v => v[0])
-      .map(v => v[1] + 582)
+      .filter((v) => v[0])
+      .map((v) => v[1] + 582);
 
     if (
       formValue.single === null &&
       (formValue.from === null || formValue.to === null) &&
-      (exact.length === 0)
+      exact.length === 0
     ) {
       this.snackbar.error('يجب أن تقوم بإضافة التسميع قبل إضافته');
       return;
@@ -81,7 +89,7 @@ export class MemoFormComponent {
       ...formValue,
       exact,
     });
-    ngForm.resetForm()
+    ngForm.resetForm();
   }
 }
 

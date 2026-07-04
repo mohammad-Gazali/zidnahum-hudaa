@@ -1,12 +1,10 @@
-import { DIALOG_DATA } from "@angular/cdk/dialog";
-import { Component, inject } from "@angular/core";
+import { DIALOG_DATA } from '@angular/cdk/dialog';
+import { Component, inject } from '@angular/core';
 
 @Component({
   selector: 'app-lightbox',
   standalone: true,
-  template: `
-    <img [alt]="data.alt" [src]="data.src" />
-  `,
+  template: ` <img [alt]="data.alt" [src]="data.src" /> `,
   styles: `
     img {
       max-width: 100%;

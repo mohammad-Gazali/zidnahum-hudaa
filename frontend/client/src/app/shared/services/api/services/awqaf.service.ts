@@ -46,7 +46,7 @@ class AwqafService extends __BaseService {
   }
 }
 
-module AwqafService {
+namespace AwqafService {
 }
 
 export { AwqafService }

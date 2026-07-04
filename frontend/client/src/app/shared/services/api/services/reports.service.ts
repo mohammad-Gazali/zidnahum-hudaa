@@ -344,7 +344,7 @@ class ReportsService extends __BaseService {
   }
 }
 
-module ReportsService {
+namespace ReportsService {
   /**
    * Parameters for reportsCategoryAllCreate
    */

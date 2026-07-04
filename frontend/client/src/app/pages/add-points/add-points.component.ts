@@ -1,5 +1,10 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { FormGroupDirective, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormGroupDirective,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
   LayoutService,
@@ -10,7 +15,7 @@ import {
   PointsService,
   SnackbarService,
   StudentList,
-  StudentsService
+  StudentsService,
 } from '@shared';
 import { MatButton } from '@angular/material/button';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
@@ -23,27 +28,27 @@ import { MatChip, MatChipRemove, MatChipSet } from '@angular/material/chips';
 import { MatDivider } from '@angular/material/divider';
 
 @Component({
-    selector: 'app-add-points',
-    imports: [
-        ReactiveFormsModule,
-        MatButton,
-        MatFormField,
-        MatLabel,
-        MatError,
-        MatIcon,
-        MatInput,
-        MasjedPipe,
-        MatOption,
-        MatSelect,
-        MatCard,
-        MatCardContent,
-        MatChip,
-        MatChipRemove,
-        MatChipSet,
-        MatDivider,
-    ],
-    templateUrl: './add-points.component.html',
-    styleUrl: './add-points.component.scss'
+  selector: 'app-add-points',
+  imports: [
+    ReactiveFormsModule,
+    MatButton,
+    MatFormField,
+    MatLabel,
+    MatError,
+    MatIcon,
+    MatInput,
+    MasjedPipe,
+    MatOption,
+    MatSelect,
+    MatCard,
+    MatCardContent,
+    MatChip,
+    MatChipRemove,
+    MatChipSet,
+    MatDivider,
+  ],
+  templateUrl: './add-points.component.html',
+  styleUrl: './add-points.component.scss',
 })
 export class AddPointsComponent {
   private fb = inject(NonNullableFormBuilder);
@@ -64,13 +69,20 @@ export class AddPointsComponent {
     masjed: this.fb.control<1 | 2 | 3 | 4>(1),
   });
 
-  protected addingCauses = toSignal<PointsAddingCause[]>(this.points.pointsAddingCauseList(), {
-    initialValue: [] as any,
-  })
+  protected addingCauses = toSignal<PointsAddingCause[]>(
+    this.points.pointsAddingCauseList(),
+    {
+      initialValue: [] as any,
+    },
+  );
 
   protected pointsForm = this.fb.group({
-    value: this.fb.control<number | undefined>(undefined, [Validators.required]),
-    cause: this.fb.control<number | undefined>(undefined, [Validators.required]),
+    value: this.fb.control<number | undefined>(undefined, [
+      Validators.required,
+    ]),
+    cause: this.fb.control<number | undefined>(undefined, [
+      Validators.required,
+    ]),
   });
 
   submitSearch() {
@@ -79,28 +91,29 @@ export class AddPointsComponent {
 
     this.loading.set(true);
 
-    this.students.studentsList({
-      query: this.searchForm.getRawValue().search,
-      masjed: this.searchForm.getRawValue().masjed,
-    }).pipe(
-      takeUntilDestroyed(this.destroyRef),
-    ).subscribe({
-      error: () => {
-        this.loading.set(false);
-      },
-      next: (res) => {
-        this.loading.set(false);
-        this.searched.set(true);
-        this.mobileUtils.hideMobileKeyboard();
-        this.searchForm.controls.search.setValue('');
-        this.studentsResponse.set(res.results);
-      }
-    })
+    this.students
+      .studentsList({
+        query: this.searchForm.getRawValue().search,
+        masjed: this.searchForm.getRawValue().masjed,
+      })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        error: () => {
+          this.loading.set(false);
+        },
+        next: (res) => {
+          this.loading.set(false);
+          this.searched.set(true);
+          this.mobileUtils.hideMobileKeyboard();
+          this.searchForm.controls.search.setValue('');
+          this.studentsResponse.set(res.results);
+        },
+      });
   }
 
   selectStudent(student: StudentList) {
-    this.selectedStudents.update(pre => {
-      if (pre.find(s => s.id === student.id)) return pre;
+    this.selectedStudents.update((pre) => {
+      if (pre.find((s) => s.id === student.id)) return pre;
 
       return [...pre, student];
     });
@@ -109,7 +122,9 @@ export class AddPointsComponent {
   }
 
   removeStudent(student: StudentList) {
-    this.selectedStudents.update(pre => pre.filter(s => s.id !== student.id));
+    this.selectedStudents.update((pre) =>
+      pre.filter((s) => s.id !== student.id),
+    );
   }
 
   submitPoints(ngForm: FormGroupDirective) {
@@ -119,34 +134,37 @@ export class AddPointsComponent {
     const value = this.pointsForm.getRawValue();
 
     // validate maximum limit
-    const cause = this.addingCauses()?.find(c => c.id === value.cause)
+    const cause = this.addingCauses()?.find((c) => c.id === value.cause);
 
     if (cause && value.value && cause.maximum_limit < value.value) {
-      this.snackbar.error(`الحد الأقصى لعدد النقاط المسموح إضافته لـ: ${cause.name} هو ${cause.maximum_limit}`);
+      this.snackbar.error(
+        `الحد الأقصى لعدد النقاط المسموح إضافته لـ: ${cause.name} هو ${cause.maximum_limit}`,
+      );
       return;
     }
 
     this.loading.set(true);
 
-    this.points.pointsAddingCreate({
-      students: this.selectedStudents().map(s => s.id),
-      cause: value.cause!,
-      value: value.value!,
-    }).pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe({
-      error: ({ error }) => {
-        ngForm.resetForm();
-        this.loading.set(false);
-        this.snackbar.error((error && error.detail) ?? error);
-      },
-      next: () => {
-        ngForm.resetForm();
-        this.loading.set(false);
-        this.selectedStudents.set([]);
-        this.searched.set(false);
-        this.snackbar.success('تمت الإضافة بنجاح')
-      }
-    })
+    this.points
+      .pointsAddingCreate({
+        students: this.selectedStudents().map((s) => s.id),
+        cause: value.cause!,
+        value: value.value!,
+      })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        error: ({ error }) => {
+          ngForm.resetForm();
+          this.loading.set(false);
+          this.snackbar.error((error && error.detail) ?? error);
+        },
+        next: () => {
+          ngForm.resetForm();
+          this.loading.set(false);
+          this.selectedStudents.set([]);
+          this.searched.set(false);
+          this.snackbar.success('تمت الإضافة بنجاح');
+        },
+      });
   }
 }

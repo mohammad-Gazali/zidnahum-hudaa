@@ -181,7 +181,7 @@ class ComingsService extends __BaseService {
   }
 }
 
-module ComingsService {
+namespace ComingsService {
   export interface ComingsListParams {
     /**
      * param for filtering result via student name or student id

@@ -127,7 +127,7 @@ class AccountsService extends __BaseService {
   }
 }
 
-module AccountsService {
+namespace AccountsService {
 }
 
 export { AccountsService }

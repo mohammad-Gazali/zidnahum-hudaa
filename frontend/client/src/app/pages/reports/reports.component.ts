@@ -1,4 +1,4 @@
-import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
@@ -15,7 +15,14 @@ import {
   provideNativeDateAdapter,
 } from '@angular/material/core';
 import { finalize } from 'rxjs';
-import { ReportsService, MasjedService, LayoutService, MasjedPipe, ReportsStudentCategoryOrGroupStudent, ReportsStudentCategoryOrGroupResponse } from '@shared';
+import {
+  ReportsService,
+  MasjedService,
+  LayoutService,
+  MasjedPipe,
+  ReportsStudentCategoryOrGroupStudent,
+  ReportsStudentCategoryOrGroupResponse,
+} from '@shared';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
@@ -23,30 +30,30 @@ import { DatePipe } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
-    selector: 'app-reports',
-    imports: [
-        ReactiveFormsModule,
-        MatRadioModule,
-        MatChipsModule,
-        MatIconModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatDatepickerModule,
-        MatButtonModule,
-        MatTableModule,
-        MatDividerModule,
-        DatePipe,
-        MasjedPipe
-    ],
-    providers: [
-        {
-            provide: MAT_DATE_LOCALE,
-            useValue: 'ar',
-        },
-        provideNativeDateAdapter(),
-    ],
-    templateUrl: './reports.component.html',
-    styleUrl: './reports.component.scss'
+  selector: 'app-reports',
+  imports: [
+    ReactiveFormsModule,
+    MatRadioModule,
+    MatChipsModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatButtonModule,
+    MatTableModule,
+    MatDividerModule,
+    DatePipe,
+    MasjedPipe,
+  ],
+  providers: [
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: 'ar',
+    },
+    provideNativeDateAdapter(),
+  ],
+  templateUrl: './reports.component.html',
+  styleUrl: './reports.component.scss',
 })
 export class ReportsComponent {
   private fb = inject(NonNullableFormBuilder);
@@ -58,7 +65,9 @@ export class ReportsComponent {
   public masjeds = this.masjed.masjedOptions;
 
   public form = this.fb.group({
-    masjed: this.fb.control<1 | 2 | 3 | 4 | undefined>(undefined, [Validators.required]),
+    masjed: this.fb.control<1 | 2 | 3 | 4 | undefined>(undefined, [
+      Validators.required,
+    ]),
     start_date: this.fb.control<Date | undefined>(undefined, [
       Validators.required,
     ]),
@@ -68,7 +77,9 @@ export class ReportsComponent {
   });
 
   public allResponse = signal<ReportsAllResponseItem[] | null>(null);
-  public allStudentsResponse = signal<ReportsStudentCategoryOrGroupStudent[] | null>(null)
+  public allStudentsResponse = signal<
+    ReportsStudentCategoryOrGroupStudent[] | null
+  >(null);
   public type = this.fb.control<
     'all-students' | 'all-categories' | 'all-groups'
   >('all-students');
@@ -88,7 +99,7 @@ export class ReportsComponent {
         })
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          finalize(() => this.loading.set(false))
+          finalize(() => this.loading.set(false)),
         )
         .subscribe((res) => this.downloadBlob(res as any));
     } else {
@@ -99,14 +110,13 @@ export class ReportsComponent {
         })
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          finalize(() => this.loading.set(false))
+          finalize(() => this.loading.set(false)),
         )
         .subscribe((res) => {
           this.allStudentsResponse.set(res);
         });
     }
   }
-
 
   private submitAllCategories(excel?: boolean) {
     const data = {
@@ -122,7 +132,7 @@ export class ReportsComponent {
         })
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          finalize(() => this.loading.set(false))
+          finalize(() => this.loading.set(false)),
         )
         .subscribe((res) => this.downloadBlob(res as any));
     } else {
@@ -133,7 +143,7 @@ export class ReportsComponent {
         })
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          finalize(() => this.loading.set(false))
+          finalize(() => this.loading.set(false)),
         )
         .subscribe((res) => {
           this.allResponse.set(
@@ -141,7 +151,7 @@ export class ReportsComponent {
               ...item,
               id: item.category_id,
               name: item.category_name,
-            }))
+            })),
           );
         });
     }
@@ -161,7 +171,7 @@ export class ReportsComponent {
         })
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          finalize(() => this.loading.set(false))
+          finalize(() => this.loading.set(false)),
         )
         .subscribe((res) => this.downloadBlob(res as any));
     } else {
@@ -172,7 +182,7 @@ export class ReportsComponent {
         })
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          finalize(() => this.loading.set(false))
+          finalize(() => this.loading.set(false)),
         )
         .subscribe((res) => {
           this.allResponse.set(
@@ -180,7 +190,7 @@ export class ReportsComponent {
               ...item,
               id: item.group_id,
               name: item.group_name,
-            }))
+            })),
           );
         });
     }
@@ -218,7 +228,7 @@ export class ReportsComponent {
 
   private dateToISO(value: Date) {
     const timezoneOffset = value.getTimezoneOffset() * 60000;
-    return new Date(value.getTime() - timezoneOffset).toISOString();  
+    return new Date(value.getTime() - timezoneOffset).toISOString();
   }
 }
 

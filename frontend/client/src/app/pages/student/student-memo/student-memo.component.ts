@@ -1,14 +1,20 @@
-import { booleanAttribute, Component, computed, inject, input } from "@angular/core";
-import { MatCard } from "@angular/material/card";
-import { MatDivider } from "@angular/material/divider";
-import { MemoPipe, MemoItemType } from "@shared";
-import { StudentComponent } from "../student.component";
+import {
+  booleanAttribute,
+  Component,
+  computed,
+  inject,
+  input,
+} from '@angular/core';
+import { MatCard } from '@angular/material/card';
+import { MatDivider } from '@angular/material/divider';
+import { MemoPipe, MemoItemType } from '@shared';
+import { StudentComponent } from '../student.component';
 
 @Component({
-  selector: "app-student-memo",
+  selector: 'app-student-memo',
   imports: [MatCard, MatDivider, MemoPipe],
-  templateUrl: "./student-memo.component.html",
-  styleUrl: "./student-memo.component.scss",
+  templateUrl: './student-memo.component.html',
+  styleUrl: './student-memo.component.scss',
 })
 export class StudentMemoComponent {
   public viewing = input(false, { transform: booleanAttribute });
@@ -40,19 +46,19 @@ export class StudentMemoComponent {
       section.every(
         (item) => item === MemoItemType.NEW || item === MemoItemType.OLD,
       )
-        ? ("Done" as const)
+        ? ('Done' as const)
         : section.every((item) => item === MemoItemType.NON)
-          ? "Empty"
-          : "Progress",
+          ? 'Empty'
+          : 'Progress',
     );
 
-    if (sectionsState.filter((item) => item === "Progress").length === 0)
-      return "";
+    if (sectionsState.filter((item) => item === 'Progress').length === 0)
+      return '';
 
     return sectionsState
       .map((item, index) => ({ item, index }))
-      .filter(({ item }) => item === "Progress")
+      .filter(({ item }) => item === 'Progress')
       .map(({ index }) => `الجزء ${index + 1}`)
-      .join(" + ");
+      .join(' + ');
   });
 }

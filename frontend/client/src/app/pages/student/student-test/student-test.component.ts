@@ -5,10 +5,10 @@ import { MemoItemType } from '@shared';
 import { StudentComponent } from '../student.component';
 
 @Component({
-    selector: 'app-student-test',
-    imports: [MatCard, MatDivider],
-    templateUrl: './student-test.component.html',
-    styleUrl: './student-test.component.scss'
+  selector: 'app-student-test',
+  imports: [MatCard, MatDivider],
+  templateUrl: './student-test.component.html',
+  styleUrl: './student-test.component.scss',
 })
 export class StudentTestComponent {
   protected student = inject(StudentComponent).student;
@@ -18,7 +18,7 @@ export class StudentTestComponent {
   MemoItemType = MemoItemType;
 
   constructor() {
-    const array = (this.student()?.q_test as MemoItemType[]) ?? []
+    const array = (this.student()?.q_test as MemoItemType[]) ?? [];
 
     for (let i = 0; i < array.length; i += 8) {
       const currentBigChunk: MemoItemType[][] = [];
@@ -28,7 +28,7 @@ export class StudentTestComponent {
       currentBigChunk.push(chunk.slice(0, 4));
       currentBigChunk.push(chunk.slice(4));
 
-      this.testArray.update(pre => [...pre, currentBigChunk])
+      this.testArray.update((pre) => [...pre, currentBigChunk]);
     }
   }
 }

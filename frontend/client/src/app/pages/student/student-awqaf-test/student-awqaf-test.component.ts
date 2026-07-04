@@ -6,10 +6,10 @@ import { MemoItemType, AwqafService, AwqafRelation } from '@shared';
 import { StudentComponent } from '../student.component';
 
 @Component({
-    selector: 'app-student-awqaf-test',
-    imports: [MatCard, MatDivider],
-    templateUrl: './student-awqaf-test.component.html',
-    styleUrl: './student-awqaf-test.component.scss'
+  selector: 'app-student-awqaf-test',
+  imports: [MatCard, MatDivider],
+  templateUrl: './student-awqaf-test.component.html',
+  styleUrl: './student-awqaf-test.component.scss',
 })
 export class StudentAwqafTestComponent {
   private awqaf = inject(AwqafService);
@@ -20,10 +20,10 @@ export class StudentAwqafTestComponent {
   MemoItemType = MemoItemType;
 
   containsNewRelation(relations: AwqafRelation[], id: number): boolean {
-    return relations.some(rel => rel.test === id && !rel.is_old);
+    return relations.some((rel) => rel.test === id && !rel.is_old);
   }
 
   containsOldRelation(relations: AwqafRelation[], id: number): boolean {
-    return relations.some(rel => rel.test === id && rel.is_old);
+    return relations.some((rel) => rel.test === id && rel.is_old);
   }
 }
