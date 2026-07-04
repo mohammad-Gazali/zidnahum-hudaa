@@ -7,8 +7,8 @@
   - Entry point: `backend/manage.py` (settings module: `backend.settings`)
   - Env config: `backend/backend/env.py` (committed, prod must override)
   - API: all endpoints under `/api/v1/`
-- **`frontend/client/`** — Angular 21 app (public-facing), package manager: **bun**
-- **`frontend/admin/`** — Angular 21 app (admin dashboard), package manager: **bun**
+- **`frontend/client/`** — Angular 22 app (public-facing), package manager: **bun**
+- **`frontend/admin/`** — Angular 22 app (admin dashboard), package manager: **bun**
 - **`database/backup/`** — SQLite backups
 
 ## Setup

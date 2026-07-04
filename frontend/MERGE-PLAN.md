@@ -1,24 +1,20 @@
-# Merge Plan: admin + client → single Angular 21 app
+# Merge Plan: admin + client → single Angular 22 app
 
 ## Goal
 
-Replace `frontend/admin/` and `frontend/client/` with a single Angular 21 app rooted at `frontend/` that serves both the public-facing site and the admin dashboard in one SPA.
+Replace `frontend/admin/` and `frontend/client/` with a single Angular 22 app rooted at `new-frontend/` that serves both the public-facing site and the admin dashboard in one SPA.
 
 ---
 
 ## Phase 0 — Scaffold the new app
 
 ```sh
-# backup both existing apps
-mv frontend/admin frontend/admin.bak
-mv frontend/client frontend/client.bak
-
-# scaffold at frontend/ (no routing flag — we'll wire it manually)
-ng new frontend --directory . --style scss --ssr false --standalone true
+# scaffold new-frontend (no routing flag — we'll wire it manually)
+ng new new-frontend . --style scss --ssr false
 ```
 
 Apply existing conventions from the backups:
-- `angular.json`: set `"packageManager": "bun"`, `skipTests: true` in schematics
+- `angular.json`: set `"packageManager": "bun"`, `skipTests: true` in schematics, and set the `schematics` for naming convention in like it is used in admin and client apps
 - `.editorconfig`: `indent_size = 2`, `quote_type = single` for `*.ts`
 - `tsconfig.json`: strict mode, `paths` alias `@shared` → `src/app/shared/index.ts`
 - Delete generated `src/app/app.*` contents (keep the files as shells)
@@ -29,12 +25,12 @@ Apply existing conventions from the backups:
 
 This is shared code that both client and admin pages depend on.
 
-### 1.1 Auth (`core/auth/`)
+### 1.1 Auth (`shared/services/auth.service`)
 
 Merge `AccountsService` (admin) + `AuthService` (client) into one service:
 
 ```typescript
-// core/auth/auth.service.ts
+// shared/service/auth.service
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   // signal-based state
@@ -50,9 +46,9 @@ export class AuthService {
 ```
 
 - Use the admin-style `AccountsService.userDetails()` approach (simpler, more explicit)
-- Provide via `APP_INITIALIZER` / `provideAppInitializer` (client's pattern — runs before any route guards fire)
+- Provide via `provideAppInitializer` (client's pattern — runs before any route guards fire)
 
-### 1.2 HTTP interceptors (`core/interceptors/`)
+### 1.2 HTTP interceptors (`src/interceptors/`)
 
 Merge both apps' interceptor chains:
 
@@ -63,7 +59,7 @@ error.interceptor.ts     — admin's version (catches non-auth errors, shows sna
 
 Keep admin's error interceptor over client's simpler one — it's more robust.
 
-### 1.3 Loading state (`core/loading.ts`)
+### 1.3 Loading state (`shared/tokens/loading.token.ts`)
 
 Replace admin's `LOADING` InjectionToken with a simple root service (or keep the token — either works). The key is one source of truth.
 
@@ -71,29 +67,37 @@ Replace admin's `LOADING` InjectionToken with a simple root service (or keep the
 core/loading.service.ts  — WritableSignal<boolean>, consumed by navbar and guards
 ```
 
-### 1.4 Snackbar / Confirmation (`core/`)
+### 1.4 Snackbar / Confirmation (`shared/services/`)
 
 ```
 snackbar.service.ts      — merge admin's (success/error/open) + client's (both are near-identical)
 confirmation.service.ts  — move from client (admin lacks this; it's useful everywhere)
 ```
 
-### 1.5 Layout (`core/layout/`)
+### 1.5 Common (`common/error/` & `features/login/`)
+Those are not related to any feature so keep them as common things.
 
-Build a unified layout that detects the current route prefix and renders the right navigation.
+### 1.6 Features (`features/client/` & `features/admin/`)
+
+Create a features folder that will contain modular logic inside it for each feature.
+
+Make sure each feature has its only necessary code that won't be used globally or in other feature, otherwise move this code to `shared/` in suitable way.
 
 ```
-layout/
-  layout.component.ts       — shell: toolbar + sidenav + <router-outlet />
-  navbar/navbar.component   — responsive toolbar with mode-aware nav items
-  sidenav/sidenav.component — driven by a route config array (merge admin's GroupsService + client's LayoutService)
+features/
+  client/
+    components/
+    services/
+    layout/                — coming from the `frontend/client/app/layout/`
+    client.routes.ts
+  admin/
+    components/
+    services/
+    layout/                — coming from the `frontend/admin/app/layout/`
+    admin.routes.ts
 ```
 
-- Use admin's `mat-sidenav-container` layout as the base (it's more polished: responsive `mode`, persistent state)
-- Add client's dark-mode toggle and theme persistence (`localStorage` → `zidnahum-theme`)
-- The sidenav config should be a single `RouteConfig[]` with a `scope: 'client' | 'admin' | 'both'` flag, filtered by auth + scope
-
-### 1.6 Shared utilities (`shared/`)
+### 1.7 Shared utilities (`shared/`)
 
 Collect everything both apps need:
 
@@ -101,15 +105,15 @@ Collect everything both apps need:
 shared/
   constants/           — Group enum, MessageType enum, StudentLevel, EXTRA_HADEETH_LABEL, EXTRA_HADEETH_LIMIT (merge both — they match)
   pipes/               — all from client: masjed, memo, test, message-type, level; + admin's translate pipe
-  services/            — masjed, level, memorize-message-type, helper, date, memo, test, pages-sum (merge both sets)
+  services/            — masjed, level, memorize-message-type, helper, date, memo, test, pages-sum, and what we dicussed before (for auth, snackbar, etc...) (merge both sets)
   quran/               — move client's 4 quran display services (memo, test, elite-test, awqaf-test) — these are domain logic, not API wrappers
   utils/               — delete-model-action factory (admin), mobile-utils (client)
 ```
 
 ### 1.7 Theme & styles
 
-- Keep both theme files — they already use the same primary `#009587` / secondary `#fcb54c`
-- Single `styles.scss` + `theme.scss` at `src/`
+- Keep both theme files — like `client-theme.scss` and `admin-theme.scss`
+- Single `styles.scss` at `src/` with combined styles from both apps
 - Both use same font (Noto Kufi Arabic), RTL layout, Material Icons
 
 ---
@@ -119,44 +123,43 @@ shared/
 ### Top-level route tree
 
 ```
-/                           → ClientHomeComponent (lazy)
-/login                      → LoginComponent (lazy, shared)
+/                           → ClientHomeComponent
+/login                      → LoginComponent (common)
 
-/student/:id                → StudentDetailComponent (lazy, client)
+/student/:id                → StudentDetailComponent (client)
 
-/files                      → FilesComponent (lazy, client)
-/news                       → NewsComponent (lazy, client)
+/files                      → FilesComponent (client)
+/news                       → NewsComponent (client)
 
-/add-memo                   → AddMemoComponent (lazy, client)
-/add-coming                 → AddComingComponent (lazy, client)
-/add-points                 → AddPointsComponent (lazy, client)
-/add-hadeeth                → AddHadeethComponent (lazy, client)
-/add-student                → AddStudentComponent (lazy, client)
+/add-memo                   → AddMemoComponent (client)
+/add-coming                 → AddComingComponent (client)
+/add-points                 → AddPointsComponent (client)
+/add-hadeeth                → AddHadeethComponent (client)
+/add-student                → AddStudentComponent (client)
 
-/log-memo                   → LogMemoComponent (lazy, client)
-/log-coming                 → LogComingComponent (lazy, client)
-/log-points                 → LogPointsComponent (lazy, client)
+/log-memo                   → LogMemoComponent (client)
+/log-coming                 → LogComingComponent (client)
+/log-points                 → LogPointsComponent (client)
 
-/reports                    → ReportsComponent (lazy, client)
+/reports                    → ReportsComponent (client)
 
-/admin                      → redirect to /admin/students (or AdminHomeComponent)
-/admin/login                → AdminLoginComponent (lazy, shared? or just /login works for both)
-/admin/students/*           → AdminStudentsModule (lazy)
-/admin/points/*             → AdminPointsModule (lazy)
-/admin/comings/*            → AdminComingsModule (lazy)
-/admin/awqaf/*              → AdminAwqafModule (lazy)
-/admin/globals/*            → AdminGlobalsModule (lazy)
-/admin/money/*              → AdminMoneyModule (lazy)
-/admin/auth/*               → AdminAuthModule (lazy, superadmin)
-/admin/settings             → SettingsComponent (lazy, superadmin)
-/admin/reports              → AdminReportsComponent (lazy)
-/admin/statistics           → StatisticsComponent (lazy, superadmin)
+/admin                      → AdminHomeComponent (coming from `frontend/admin/src/app/home/`)
+/admin/students/*           → AdminStudentsRoutes
+/admin/points/*             → AdminPointsRoutes
+/admin/comings/*            → AdminComingsRoutes
+/admin/awqaf/*              → AdminAwqafRoutes
+/admin/globals/*            → AdminGlobalsRoutes
+/admin/money/*              → AdminMoneyRoutes
+/admin/auth/*               → AdminAuthRoutes (superadmin)
+/admin/settings             → SettingsComponent (superadmin)
+/admin/reports              → AdminReportsComponent
+/admin/statistics           → StatisticsComponent (superadmin)
 ```
 
 ### Implementation notes
 
-- **Every route above is lazy-loaded** via `loadComponent` or `loadChildren`. Currently only admin does this; client is fully eager. Convert client routes to lazy.
-- **Login can be shared** — both apps use the same JWT + `/accounts/token` endpoint. One `LoginComponent` handles both. After login, redirect to `/` (client) or `/admin` based on user.isAdmin.
+- **Every route above is normally loaded** except for the main `/` and `admin` which represent each feature of `features/client/` and `features/admin/`, those two are lazy loaded via **loadChildren()**.
+- **Login is shared** — both apps use the same JWT + `/accounts/token` endpoint. One `LoginComponent` handles both. After login, redirect to `/` (client) or `/admin` based on user.isAdmin.
 - **Guards**: Use the client's guard pattern (functional `CanActivateFn`, waiting for `auth.currentUser` to be defined) — it's more robust than admin's on-spot check in `AppComponent.init()`.
 
 ### Feature directory layout
@@ -165,37 +168,52 @@ Merge both apps' pages into a flat-by-scope structure:
 
 ```
 src/app/
-  core/                    ← infra layer (auth, interceptors, layout, core services)
-  shared/                  ← shared components, pipes, constants
-
-  client/                  ← public-facing pages
-    home/
-    login/                 ← (or keep at app level since shared)
-    student/
-    files/
-    news/
-    add-memo/
-    add-coming/
-    add-points/
-    add-hadeeth/
-    add-student/
-    log-memo/
-    log-coming/
-    log-points/
-    reports/
-
-  admin/                   ← admin pages
-    home/
-    students/
-    points/
-    comings/
-    awqaf/
-    globals/
-    money/
-    auth/
-    settings/
-    reports/
-    statistics/
+  common/
+    login/
+    error/
+  interceptors/
+  shared/                  ← shared components, pipes, constants and other things
+  features/
+    client/                  ← public-facing pages
+      components/
+        home/
+        login/                 ← (or keep at app level since shared)
+        student/
+        files/
+        news/
+        add-memo/
+        add-coming/
+        add-points/
+        add-hadeeth/
+        add-student/
+        log-memo/
+        log-coming/
+        log-points/
+        reports/
+      layout/
+      services/
+      (whatever is good to be modular here)
+      client.routes.ts (use the layout for this feature here depending on the router-outlet) (normal loading not lazy)
+    admin/
+      components/
+        home/
+        students/
+        points/
+        comings/
+        awqaf/
+        globals/
+        money/
+        auth/
+        settings/
+        reports/
+        statistics/
+      layout/
+      services/
+      (whatever is good to be modular here)
+      admin.routes.ts (use the layout for this feature here depending on the router-outlet) (normal loading not lazy)
+    app.component.ts
+    app.config.ts
+    app.routes.ts (lazy loading for features and normal for commmon comopnents (login and error))
 ```
 
 ---
@@ -208,62 +226,11 @@ Both apps have ng-swagger-gen generated services that **share names** (`Students
 
 ### Solution
 
-Re-generate all services from the unified Django schema into **separate namespaces**:
+Move those services into the scope of each feature (except for shared ones) and rename the duplicated names to match the feature scope with file name identical.
 
-```
-src/app/
-  api/
-    client/                ← ng-swagger-gen output (client scope)
-      services/
-        accounts.service.ts
-        students.service.ts
-        comings.service.ts
-        points.service.ts
-        awqaf.service.ts
-        globals.service.ts
-        reports.service.ts
-      models/
-      base-service.ts
-      api-configuration.ts
+For types and models you can make them shared in `src/app/shared/types/` folder you create, same goes for base api configuration it can be in `src/app/shared/services/api-configuration or any name you want`
 
-    admin/                 ← ng-swagger-gen output (admin scope)
-      services/
-        accounts.service.ts  (or keep a shared version)
-        adminstration.service.ts
-        students.service.ts
-        comings.service.ts
-        points.service.ts
-        awqaf.service.ts
-        globals.service.ts
-        money.service.ts
-        reports.service.ts
-      models/
-      base-service.ts
-      api-configuration.ts
-```
-
-Each namespace gets its own `ApiConfiguration` with the right `rootUrl`:
-- Client: `/api/v1`
-- Admin: `/api/v1/admin`
-
-**Codegen config** (`ng-swagger-gen.json` or package.json scripts):
-
-```json
-{
-  "generate:services:client": "ng-swagger-gen -i http://127.0.0.1:8000/docs/schema -o ./src/app/api/client",
-  "generate:services:admin": "ng-swagger-gen -i http://127.0.0.1:8000/docs/schema/admin -o ./src/app/api/admin"
-}
-```
-
-The Django schema at `/docs/schema` includes all endpoints. ng-swagger-gen generates all services from it — the client and admin just use different subsets. Having both in the same app means you can import `ApiConfiguration` with the right prefix for each context.
-
-Alternatively, if ng-swagger-gen can't namespace (it outputs flat files), post-process or alias via `paths` in `tsconfig.json`:
-```json
-"paths": {
-  "@api/client/*": ["src/app/api/client/*"],
-  "@api/admin/*": ["src/app/api/admin/*"]
-}
-```
+You can remove the package.json commands for generating services because I won't use it anymore.
 
 ---
 
@@ -272,7 +239,7 @@ Alternatively, if ng-swagger-gen can't namespace (it outputs flat files), post-p
 Unify using client's pattern (more robust):
 
 ```typescript
-// core/guards/auth.guard.ts
+// src/app/shared/guards/auth.guard.ts
 export const authGuard: CanActivateFn = () => {
   const auth = inject(AuthService);
   // wait for initialize() to finish (currentUser ≠ undefined)
@@ -282,7 +249,7 @@ export const authGuard: CanActivateFn = () => {
   );
 };
 
-// core/guards/group.guard.ts — client's logic, no change
+// src/app/shared/guards/group.guard.ts — client's logic, no change
 export const groupGuard = (groups: Group[]): CanActivateFn => ...
 ```
 
@@ -292,7 +259,7 @@ export const groupGuard = (groups: Group[]): CanActivateFn => ...
 
 After the merge, the Django `build` management command (`backend/commands/management/commands/build.py`) needs updating:
 
-- Build targets: was `frontend/admin` + `frontend/client` → now just `frontend/` with two build configurations
+- Build targets: was `frontend/admin` + `frontend/client` → now just `new-frontend/` with two build configurations
 - **Option A**: Single `ng build` with `--base-href /` → serves combined app at root. Admin routes are just routes within the SPA.
 - **Option B**: Two `ng build` invocations (admin build with `--base-href /admin`, client build with `--base-href /`) → need separate Angular projects in `angular.json`
 
@@ -300,7 +267,7 @@ After the merge, the Django `build` management command (`backend/commands/manage
 
 The `build` command then becomes:
 ```python
-os.chdir(Path.cwd() / "frontend")
+os.chdir(Path.cwd() / "new-frontend")
 os.system("ng build")
 ```
 
@@ -321,32 +288,30 @@ After each phase:
 
 | Concern | Decision |
 |---------|----------|
-| App root | `frontend/` |
-| Angular version | Keep Angular 21 (as-is) |
+| App root | `new-frontend/` |
+| Angular version | Keep Angular 22 (as-is) |
 | Build strategy | Single SPA, one build (Option A) |
-| Route architecture | Lazy-load every feature, admin under `/admin/*` |
-| Auth | Merge into one `AuthService` with signal state + `APP_INITIALIZER` |
-| API services | Two ng-swagger-gen namespaces: `@api/client/*`, `@api/admin/*` |
-| Layout | Admin's sidenav layout as base, add client's dark mode |
+| Route architecture | Lazy-load the main `/admin` and `/` at `app.routes.ts` scope |
+| Auth | Merge into one `AuthService` with signal state + `provideAppInitializer` |
+| API services | Feature scope except for shared one + types in shared folder `src/app/shared/types/` |
+| Layout | Seperate layout for each feature used in its `<feature-name>.routes.ts` |
 | Guards | Client's functional-guard pattern (filter + map) |
 | Package manager | `bun` (already set in both angular.json) |
 | State | Signals only — no NgRx (current pattern) |
-| Codegen | `bun run generate:services:client` / `generate:services:admin` |
 | Tests | Vitest (already in both) |
 
 ---
 
 ## Suggested implementation order
 
-1. Scaffold new app at `frontend/`
-2. Copy over core/infrastructure (auth, interceptors, loading, snackbar, confirmation)
-3. Copy over shared (constants, pipes, shared services, quran services)
-4. Copy over theme/styles/assets
-5. Wire up layout component
-6. Move client pages as lazy-loaded features (update imports to new paths)
-7. Move admin pages as lazy-loaded features under `/admin/*`
-8. Regenerate API services into `api/client/` and `api/admin/`
+1. Scaffold new app at `new-frontend/`
+2. Copy over /interceptors
+3. Make /common
+4. Copy over shared (constants, pipes, shared services, quran services)
+5. Copy over theme + styles + assets
+6. Unify the `src/environments/`
+7. Create /features and make two features `client` and `admin`, move two them their content as I described before.
+8. Create `src/app/shared/types/` and move api services for each feature.
 9. Wire up routing + guards
 10. Update Django `build` command
 11. Build & test
-12. Delete `admin.bak/` and `client.bak/`
