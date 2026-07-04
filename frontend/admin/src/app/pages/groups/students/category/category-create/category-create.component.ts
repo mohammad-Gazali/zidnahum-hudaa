@@ -6,10 +6,10 @@ import { StudentsBase } from '../../students.base';
 import { Validators } from '@angular/forms';
 
 @Component({
-    selector: 'app-category-create',
-    imports: [CreateComponent],
-    templateUrl: './category-create.component.html',
-    styleUrl: './category-create.component.scss'
+  selector: 'app-category-create',
+  imports: [CreateComponent],
+  templateUrl: './category-create.component.html',
+  styleUrl: './category-create.component.scss',
 })
 export class CategoryCreateComponent extends StudentsBase {
   public config: CreateComponentConfig<StudentCategoryCreate> = {
@@ -18,8 +18,8 @@ export class CategoryCreateComponent extends StudentsBase {
     fields: {
       name: {
         type: 'string',
-        validators: [Validators.required]
-      }
+        validators: [Validators.required],
+      },
     },
-  }
+  };
 }

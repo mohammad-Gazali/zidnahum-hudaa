@@ -6,20 +6,20 @@ import { GlobalsBase } from '../globals.base';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-    selector: 'app-assets-category',
-    imports: [TableComponent],
-    templateUrl: './assets-category.component.html',
-    styleUrl: './assets-category.component.scss'
+  selector: 'app-assets-category',
+  imports: [TableComponent],
+  templateUrl: './assets-category.component.html',
+  styleUrl: './assets-category.component.scss',
 })
 export class AssetsCategoryComponent extends GlobalsBase {
   public config: TableComponentConfig<AssetsCategoryList> = {
     hasPagination: false,
-    dataFunc: options => this.globals.globalsAssetsCategoryList(options),
+    dataFunc: (options) => this.globals.globalsAssetsCategoryList(options),
     createUrl: '/globals/assets-category/create',
-    getUrlFunc: id => `/globals/assets-category/view/${id}`,
+    getUrlFunc: (id) => `/globals/assets-category/view/${id}`,
     actions: [
       deleteModelAction('فئات الملفات', (ids) =>
-        this.actions.actionsAssetsCategoryDeleteDelete({ ids })
+        this.actions.actionsAssetsCategoryDeleteDelete({ ids }),
       ),
     ],
     columns: {

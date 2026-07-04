@@ -6,21 +6,20 @@ import { GlobalsBase } from '../globals.base';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-    selector: 'app-assets-file',
-    imports: [TableComponent],
-    templateUrl: './assets-file.component.html',
-    styleUrl: './assets-file.component.scss'
+  selector: 'app-assets-file',
+  imports: [TableComponent],
+  templateUrl: './assets-file.component.html',
+  styleUrl: './assets-file.component.scss',
 })
 export class AssetsFileComponent extends GlobalsBase {
-
   public config: TableComponentConfig<AssetFileList> = {
     hasPagination: true,
     createUrl: '/globals/assets-file/create',
-    getUrlFunc: id => `/globals/assets-file/view/${id}`,
-    dataFunc: options => this.globals.globalsAssetFileList(options),
+    getUrlFunc: (id) => `/globals/assets-file/view/${id}`,
+    dataFunc: (options) => this.globals.globalsAssetFileList(options),
     actions: [
       deleteModelAction('الملفات', (ids) =>
-        this.actions.actionsAssetFileDeleteDelete({ ids })
+        this.actions.actionsAssetFileDeleteDelete({ ids }),
       ),
     ],
     columns: {
@@ -36,5 +35,5 @@ export class AssetsFileComponent extends GlobalsBase {
         getFieldValueFunc: () => this.globals.globalsAssetsCategoryList(),
       },
     },
-  }
+  };
 }

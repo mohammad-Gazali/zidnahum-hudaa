@@ -714,7 +714,7 @@ class PointsService extends __BaseService {
   }
 }
 
-module PointsService {
+namespace PointsService {
 
   /**
    * Parameters for pointsAddingCauseUpdate

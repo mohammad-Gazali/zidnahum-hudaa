@@ -791,7 +791,7 @@ class ActionsService extends __BaseService {
   }
 }
 
-module ActionsService {
+namespace ActionsService {
 }
 
 export { ActionsService }

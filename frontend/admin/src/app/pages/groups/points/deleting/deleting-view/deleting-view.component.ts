@@ -6,10 +6,10 @@ import { PointsDeletingList } from '../../../../../services/api/admin/models';
 import { map } from 'rxjs';
 
 @Component({
-    selector: 'app-deleting-view',
-    imports: [],
-    templateUrl: './deleting-view.component.html',
-    styleUrl: './deleting-view.component.scss'
+  selector: 'app-deleting-view',
+  imports: [],
+  templateUrl: './deleting-view.component.html',
+  styleUrl: './deleting-view.component.scss',
 })
 export class DeletingViewComponent extends PointsBase {
   private auth = inject(AuthService);
@@ -44,8 +44,8 @@ export class DeletingViewComponent extends PointsBase {
               list.map((user) => ({
                 id: user.id,
                 name: String(user.first_name) + ' ' + String(user.last_name),
-              }))
-            )
+              })),
+            ),
           ),
       },
       value: {

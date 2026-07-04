@@ -564,7 +564,7 @@ class GlobalsService extends __BaseService {
   }
 }
 
-module GlobalsService {
+namespace GlobalsService {
 
   /**
    * Parameters for globalsAssetFileList
@@ -628,7 +628,7 @@ module GlobalsService {
     /**
      * category
      */
-    masjed?: 1 | 2 | 3 | 4; 
+    masjed?: 1 | 2 | 3 | 4;
   }
 
   export interface GlobalsNewsCreateParams {

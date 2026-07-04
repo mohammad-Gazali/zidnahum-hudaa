@@ -355,7 +355,7 @@ class MoneyService extends __BaseService {
   }
 }
 
-module MoneyService {
+namespace MoneyService {
 
   /**
    * Parameters for moneyDeletingCauseUpdate

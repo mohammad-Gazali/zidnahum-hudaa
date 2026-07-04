@@ -41,5 +41,5 @@ export const routes: Routes = [
   {
     path: 'add-elite-test',
     component: AddEliteTestComponent,
-  }
+  },
 ];

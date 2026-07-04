@@ -21,19 +21,19 @@ import { finalize } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-    selector: 'app-add-elite-test',
-    imports: [
-        MatCard,
-        MatIcon,
-        MatChip,
-        MatChipRemove,
-        MatButton,
-        MatRipple,
-        StudentSearchComponent,
-        ReactiveFormsModule,
-    ],
-    templateUrl: './add-elite-test.component.html',
-    styleUrl: './add-elite-test.component.scss'
+  selector: 'app-add-elite-test',
+  imports: [
+    MatCard,
+    MatIcon,
+    MatChip,
+    MatChipRemove,
+    MatButton,
+    MatRipple,
+    StudentSearchComponent,
+    ReactiveFormsModule,
+  ],
+  templateUrl: './add-elite-test.component.html',
+  styleUrl: './add-elite-test.component.scss',
 })
 export class AddEliteTestComponent {
   private fb = inject(NonNullableFormBuilder);
@@ -50,7 +50,7 @@ export class AddEliteTestComponent {
     parts: this.fb.array(
       Array(60)
         .fill(-1)
-        .map(() => this.fb.control(false))
+        .map(() => this.fb.control(false)),
     ),
   });
 
@@ -70,21 +70,26 @@ export class AddEliteTestComponent {
     this.extra
       .extraAddEliteTest({
         student: selectedStudent.id,
-        parts:
-          value.parts
-            .map((value, index) => (value ? index : -1))
-            .filter((item) => item !== -1),
+        parts: value.parts
+          .map((value, index) => (value ? index : -1))
+          .filter((item) => item !== -1),
       })
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        finalize(() => this.loading.set(false))
+        finalize(() => this.loading.set(false)),
       )
-      .subscribe(res => {
+      .subscribe((res) => {
         this.selectedStudent.set(null);
         form.resetForm();
 
         if (res.repeated_parts.length !== 0) {
-          this.matSnackbar.open(' تم التسجيل بنجاح, ولكن يوجد تكرار بـ:' + res.repeated_parts.map((item: number) => this.quranElite.transform(item)).join(', '), 'إغلاق');
+          this.matSnackbar.open(
+            ' تم التسجيل بنجاح, ولكن يوجد تكرار بـ:' +
+              res.repeated_parts
+                .map((item: number) => this.quranElite.transform(item))
+                .join(', '),
+            'إغلاق',
+          );
         } else {
           this.snackbar.success('تمت الإضافة بنجاح');
         }

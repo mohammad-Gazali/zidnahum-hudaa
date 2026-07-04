@@ -1,9 +1,6 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -15,19 +12,19 @@ import { SnackbarService } from '../../../../../services/snackbar.service';
 import { LOADING } from '../../../../../tokens/loading.token';
 
 @Component({
-    selector: 'app-user-update-password',
-    imports: [
-        MatFormField,
-        MatLabel,
-        MatError,
-        MatInput,
-        MatButton,
-        MatIcon,
-        ReactiveFormsModule,
-        TranslatePipe,
-    ],
-    templateUrl: './user-update-password.component.html',
-    styleUrl: './user-update-password.component.scss'
+  selector: 'app-user-update-password',
+  imports: [
+    MatFormField,
+    MatLabel,
+    MatError,
+    MatInput,
+    MatButton,
+    MatIcon,
+    ReactiveFormsModule,
+    TranslatePipe,
+  ],
+  templateUrl: './user-update-password.component.html',
+  styleUrl: './user-update-password.component.scss',
 })
 export class UserUpdatePasswordComponent {
   private actions = inject(ActionsService);

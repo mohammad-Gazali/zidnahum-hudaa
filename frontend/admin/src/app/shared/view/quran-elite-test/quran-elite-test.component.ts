@@ -1,16 +1,24 @@
 import { Component, inject, input } from '@angular/core';
-import { ControlContainer, FormArray, FormControl, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import {
+  ControlContainer,
+  FormArray,
+  FormControl,
+  FormGroupDirective,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatRippleModule } from '@angular/material/core';
 import { QuranEliteTestService } from '../../../services/quran/quran-elite-test.service';
 import { MemoItemType } from '../../../services/quran/quran.constatns';
 
 @Component({
-    selector: 'app-quran-elite-test',
-    imports: [MatCardModule, MatRippleModule, ReactiveFormsModule],
-    templateUrl: './quran-elite-test.component.html',
-    styleUrl: './quran-elite-test.component.scss',
-    viewProviders: [{ provide: ControlContainer, useExisting: FormGroupDirective }]
+  selector: 'app-quran-elite-test',
+  imports: [MatCardModule, MatRippleModule, ReactiveFormsModule],
+  templateUrl: './quran-elite-test.component.html',
+  styleUrl: './quran-elite-test.component.scss',
+  viewProviders: [
+    { provide: ControlContainer, useExisting: FormGroupDirective },
+  ],
 })
 export class QuranEliteTestComponent {
   public transform = inject(QuranEliteTestService).transform;

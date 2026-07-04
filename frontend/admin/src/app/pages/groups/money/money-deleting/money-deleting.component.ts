@@ -5,29 +5,31 @@ import { TableComponentConfig } from '../../../../shared/table/table.component.i
 import { MoneyDeletingList } from '../../../../services/api/admin/models';
 
 @Component({
-    selector: 'app-money-deleting',
-    imports: [TableComponent],
-    templateUrl: './money-deleting.component.html',
-    styleUrl: './money-deleting.component.scss'
+  selector: 'app-money-deleting',
+  imports: [TableComponent],
+  templateUrl: './money-deleting.component.html',
+  styleUrl: './money-deleting.component.scss',
 })
 export class MoneyDeletingComponent extends MoneyBase {
   public config: TableComponentConfig<MoneyDeletingList> = {
     hasPagination: true,
     useStudentMasjedFilter: true,
     searchField: 'student_name',
-    dataFunc: options => this.money.moneyDeletingList(options),
-    getUrlFunc: id => `/money/money-deleting/view/${id}`,
+    dataFunc: (options) => this.money.moneyDeletingList(options),
+    getUrlFunc: (id) => `/money/money-deleting/view/${id}`,
     actions: [
       {
         name: 'active-to-points-true',
-        delegateFunc: ids => this.actions.actionsMoneyDeletingActiveUpdate({ ids, value: true }),
+        delegateFunc: (ids) =>
+          this.actions.actionsMoneyDeletingActiveUpdate({ ids, value: true }),
         confirmation: {
           message: 'هل أنت متأكد من جعل الغرامات مخصومة من النقاط ؟',
         },
       },
       {
         name: 'active-to-points-false',
-        delegateFunc: ids => this.actions.actionsMoneyDeletingActiveUpdate({ ids, value: false }),
+        delegateFunc: (ids) =>
+          this.actions.actionsMoneyDeletingActiveUpdate({ ids, value: false }),
         confirmation: {
           message: 'هل أنت متأكد من جعل الغرامات غير مخصومة من النقاط ؟',
         },
@@ -37,7 +39,7 @@ export class MoneyDeletingComponent extends MoneyBase {
       student: {
         display: 'link',
         stringField: 'student_name',
-        getUrlFunc: id => `/students/student/view/${id}`,
+        getUrlFunc: (id) => `/students/student/view/${id}`,
       },
       student_name: {
         display: 'ignore',

@@ -9,10 +9,10 @@ import { MemorizeMessageTypeService } from '../../../../../services/memorize-mes
 import { LevelService } from '../../../../../services/level.service';
 
 @Component({
-    selector: 'app-memorize-message-view',
-    imports: [ViewComponent],
-    templateUrl: './memorize-message-view.component.html',
-    styleUrl: './memorize-message-view.component.scss'
+  selector: 'app-memorize-message-view',
+  imports: [ViewComponent],
+  templateUrl: './memorize-message-view.component.html',
+  styleUrl: './memorize-message-view.component.scss',
 })
 export class MemorizeMessageViewComponent extends StudentsBase {
   private auth = inject(AuthService);
@@ -22,13 +22,13 @@ export class MemorizeMessageViewComponent extends StudentsBase {
   public config: ViewComponentConfig<MemorizeMessageList> = {
     groupName: 'students',
     itemNameAndRouteName: 'memorize-message',
-    viewFunc: id => this.students.studentsMemorizeMessageRead(id),
-    deleteFunc: id => this.students.studentsMemorizeMessageDelete(id),
+    viewFunc: (id) => this.students.studentsMemorizeMessageRead(id),
+    deleteFunc: (id) => this.students.studentsMemorizeMessageDelete(id),
     fieldsInfo: {
       student: {
         type: 'link',
         stringField: 'student_name',
-        getUrlFunc: id => `/students/student/view/${id}`,
+        getUrlFunc: (id) => `/students/student/view/${id}`,
       },
       student_name: {
         type: 'ignore',
@@ -42,14 +42,15 @@ export class MemorizeMessageViewComponent extends StudentsBase {
       master: {
         type: 'relation',
         relationType: 'nullable',
-        getFieldValueFunc: () => this.auth.authUserList().pipe(
-          map((list) =>
-            list.map((u) => ({
-              id: u.id,
-              name: String(u.first_name) + ' ' + String(u.last_name),
-            }))
-          )
-        ),
+        getFieldValueFunc: () =>
+          this.auth.authUserList().pipe(
+            map((list) =>
+              list.map((u) => ({
+                id: u.id,
+                name: String(u.first_name) + ' ' + String(u.last_name),
+              })),
+            ),
+          ),
       },
       message_type: {
         type: 'relation',

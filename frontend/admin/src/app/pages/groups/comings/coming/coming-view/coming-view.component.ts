@@ -7,10 +7,10 @@ import { AuthService } from '../../../../../services/api/admin/services';
 import { map } from 'rxjs';
 
 @Component({
-    selector: 'app-coming-view',
-    imports: [ViewComponent],
-    templateUrl: './coming-view.component.html',
-    styleUrl: './coming-view.component.scss'
+  selector: 'app-coming-view',
+  imports: [ViewComponent],
+  templateUrl: './coming-view.component.html',
+  styleUrl: './coming-view.component.scss',
 })
 export class ComingViewComponent extends ComingsBase {
   private auth = inject(AuthService);
@@ -18,12 +18,12 @@ export class ComingViewComponent extends ComingsBase {
   public config: ViewComponentConfig<ComingList> = {
     groupName: 'comings',
     itemNameAndRouteName: 'coming',
-    viewFunc: id => this.comings.comingsComingRead(id),
-    deleteFunc: id => this.comings.comingsComingDelete(id),
+    viewFunc: (id) => this.comings.comingsComingRead(id),
+    deleteFunc: (id) => this.comings.comingsComingDelete(id),
     fieldsInfo: {
       student: {
         type: 'link',
-        getUrlFunc: id => `/students/student/view/${id}`,
+        getUrlFunc: (id) => `/students/student/view/${id}`,
         stringField: 'student_name',
       },
       student_name: {
@@ -42,8 +42,8 @@ export class ComingViewComponent extends ComingsBase {
               list.map((user) => ({
                 id: user.id,
                 name: String(user.first_name) + ' ' + String(user.last_name),
-              }))
-            )
+              })),
+            ),
           ),
       },
       registered_at: {
@@ -53,8 +53,8 @@ export class ComingViewComponent extends ComingsBase {
         type: 'relation',
         relationType: 'normal',
         getFieldValueFunc: () => this.comings.comingsCategoryList(),
-        getUrlFunc: id => `/comings/coming-category/view/${id}`,
-      }
+        getUrlFunc: (id) => `/comings/coming-category/view/${id}`,
+      },
     },
-  }
+  };
 }

@@ -8,10 +8,10 @@ import { map } from 'rxjs';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-    selector: 'app-adding',
-    imports: [TableComponent],
-    templateUrl: './adding.component.html',
-    styleUrl: './adding.component.scss'
+  selector: 'app-adding',
+  imports: [TableComponent],
+  templateUrl: './adding.component.html',
+  styleUrl: './adding.component.scss',
 })
 export class AddingComponent extends PointsBase {
   private auth = inject(AuthService);
@@ -24,7 +24,7 @@ export class AddingComponent extends PointsBase {
     dataFunc: (options) => this.points.pointsAddingList(options),
     actions: [
       deleteModelAction('الإضافات', (ids) =>
-        this.actions.actionsPointsAddingDeleteDelete({ ids })
+        this.actions.actionsPointsAddingDeleteDelete({ ids }),
       ),
     ],
     columns: {
@@ -36,7 +36,7 @@ export class AddingComponent extends PointsBase {
       created_at: {
         display: 'normal',
         filterType: 'datetime_date',
-        dateFormat: 'yyyy/MM/dd hh:mm a'
+        dateFormat: 'yyyy/MM/dd hh:mm a',
       },
       master: {
         display: 'relation',
@@ -47,8 +47,8 @@ export class AddingComponent extends PointsBase {
               list.map((u) => ({
                 id: u.id,
                 name: String(u.first_name) + ' ' + String(u.last_name),
-              }))
-            )
+              })),
+            ),
           ),
       },
       student: {

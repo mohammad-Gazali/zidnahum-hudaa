@@ -8,10 +8,10 @@ import { map } from 'rxjs';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-    selector: 'app-memorize-notes',
-    imports: [TableComponent],
-    templateUrl: './memorize-notes.component.html',
-    styleUrl: './memorize-notes.component.scss'
+  selector: 'app-memorize-notes',
+  imports: [TableComponent],
+  templateUrl: './memorize-notes.component.html',
+  styleUrl: './memorize-notes.component.scss',
 })
 export class MemorizeNotesComponent extends StudentsBase {
   private auth = inject(AuthService);
@@ -19,28 +19,32 @@ export class MemorizeNotesComponent extends StudentsBase {
   public config: TableComponentConfig<MemorizeNotesList> = {
     hasPagination: true,
     useStudentMasjedFilter: true,
-    dataFunc: options => this.students.studentsMemorizeNotesList(options).pipe(
-      // here we reduce the content displayed size
-      map(res => ({
-        ...res,
-        results: res.results.map(note => ({
-          ...note,
-          content: note.content.length >= 30 ? note.content.slice(0, 27) + '...' : note.content,
-        }))
-      })),
-    ),
-    getUrlFunc: id => `/students/memorize-notes/view/${id}`,
+    dataFunc: (options) =>
+      this.students.studentsMemorizeNotesList(options).pipe(
+        // here we reduce the content displayed size
+        map((res) => ({
+          ...res,
+          results: res.results.map((note) => ({
+            ...note,
+            content:
+              note.content.length >= 30
+                ? note.content.slice(0, 27) + '...'
+                : note.content,
+          })),
+        })),
+      ),
+    getUrlFunc: (id) => `/students/memorize-notes/view/${id}`,
     searchField: 'student_name', // here we added it like this because it will be converted to camelCase which will be converted to the right query param
     actions: [
       deleteModelAction('ملاحظات التسميع', (ids) =>
-        this.actions.actionsMemorizeNotesDeleteDelete({ ids })
+        this.actions.actionsMemorizeNotesDeleteDelete({ ids }),
       ),
     ],
     columns: {
       student: {
         display: 'link',
         stringField: 'student_name',
-        getUrlFunc: id => `/students/student/view/${id}`,
+        getUrlFunc: (id) => `/students/student/view/${id}`,
       },
       student_name: {
         display: 'ignore',
@@ -51,7 +55,7 @@ export class MemorizeNotesComponent extends StudentsBase {
       sended_at: {
         display: 'normal',
         filterType: 'datetime_date',
-        dateFormat: 'yyyy/MM/dd hh:mm a'
+        dateFormat: 'yyyy/MM/dd hh:mm a',
       },
       master: {
         display: 'relation',
@@ -62,8 +66,8 @@ export class MemorizeNotesComponent extends StudentsBase {
               list.map((u) => ({
                 id: u.id,
                 name: String(u.first_name) + ' ' + String(u.last_name),
-              }))
-            )
+              })),
+            ),
           ),
       },
     },

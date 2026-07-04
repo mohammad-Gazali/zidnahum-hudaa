@@ -6,10 +6,10 @@ import { ViewComponentConfig } from '../../../../../shared/view/view.component.i
 import { GlobalsBase } from '../../globals.base';
 
 @Component({
-    selector: 'app-news-view',
-    imports: [ViewComponent],
-    templateUrl: './news-view.component.html',
-    styleUrl: './news-view.component.scss'
+  selector: 'app-news-view',
+  imports: [ViewComponent],
+  templateUrl: './news-view.component.html',
+  styleUrl: './news-view.component.scss',
 })
 export class NewsViewComponent extends GlobalsBase {
   private masjed = inject(MasjedService);
@@ -17,8 +17,8 @@ export class NewsViewComponent extends GlobalsBase {
   public config: ViewComponentConfig<NewsList> = {
     groupName: 'globals',
     itemNameAndRouteName: 'news',
-    viewFunc: id => this.globals.globalsNewsRead(id),
-    deleteFunc: id => this.globals.globalsNewsDelete(id),
+    viewFunc: (id) => this.globals.globalsNewsRead(id),
+    deleteFunc: (id) => this.globals.globalsNewsDelete(id),
     fieldsInfo: {
       title: {
         type: 'string',
@@ -40,5 +40,5 @@ export class NewsViewComponent extends GlobalsBase {
         },
       },
     },
-  }
+  };
 }

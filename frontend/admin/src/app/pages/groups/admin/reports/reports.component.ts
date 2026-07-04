@@ -41,33 +41,33 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatCard } from '@angular/material/card';
 
 @Component({
-    selector: 'app-reports',
-    imports: [
-        ReactiveFormsModule,
-        MatRadioModule,
-        MatChipsModule,
-        MatIconModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatDatepickerModule,
-        MatButtonModule,
-        MatTableModule,
-        MatDividerModule,
-        MatCard,
-        StudentSearchComponent,
-        ChangesFieldComponent,
-        TranslatePipe,
-        DatePipe,
-    ],
-    providers: [
-        {
-            provide: MAT_DATE_LOCALE,
-            useValue: 'ar',
-        },
-        provideNativeDateAdapter(),
-    ],
-    templateUrl: './reports.component.html',
-    styleUrl: './reports.component.scss'
+  selector: 'app-reports',
+  imports: [
+    ReactiveFormsModule,
+    MatRadioModule,
+    MatChipsModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatButtonModule,
+    MatTableModule,
+    MatDividerModule,
+    MatCard,
+    StudentSearchComponent,
+    ChangesFieldComponent,
+    TranslatePipe,
+    DatePipe,
+  ],
+  providers: [
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: 'ar',
+    },
+    provideNativeDateAdapter(),
+  ],
+  templateUrl: './reports.component.html',
+  styleUrl: './reports.component.scss',
 })
 export class ReportsComponent {
   private fb = inject(NonNullableFormBuilder);
@@ -145,9 +145,16 @@ export class ReportsComponent {
   public categoryOrGroupResponse =
     signal<ReportsStudentCategoryOrGroupResponse | null>(null);
   public allResponse = signal<ReportsAllResponseItem[] | null>(null);
-  public allStudentsResponse = signal<ReportsStudentCategoryOrGroupStudent[] | null>(null)
+  public allStudentsResponse = signal<
+    ReportsStudentCategoryOrGroupStudent[] | null
+  >(null);
   public type = this.fb.control<
-    'student' | 'all-students' | 'category' | 'group' | 'all-categories' | 'all-groups'
+    | 'student'
+    | 'all-students'
+    | 'category'
+    | 'group'
+    | 'all-categories'
+    | 'all-groups'
   >('student');
   public changesColumnHidden = signal(true);
 
@@ -194,7 +201,7 @@ export class ReportsComponent {
         .createStudentReportExcel(id, this.getDurationData())
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          finalize(() => this.loading.set(false))
+          finalize(() => this.loading.set(false)),
         )
         .subscribe((res) => this.downloadBlob(res));
     } else {
@@ -202,7 +209,7 @@ export class ReportsComponent {
         .createStudentReport(id, this.getDurationData())
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          finalize(() => this.loading.set(false))
+          finalize(() => this.loading.set(false)),
         )
         .subscribe((res) => this.studentResponse.set(res));
     }
@@ -219,7 +226,7 @@ export class ReportsComponent {
         .createAllStudentsReportExcel(data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          finalize(() => this.loading.set(false))
+          finalize(() => this.loading.set(false)),
         )
         .subscribe((res) => this.downloadBlob(res));
     } else {
@@ -227,7 +234,7 @@ export class ReportsComponent {
         .createAllStudentsReport(data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          finalize(() => this.loading.set(false))
+          finalize(() => this.loading.set(false)),
         )
         .subscribe((res) => {
           this.allStudentsResponse.set(res);
@@ -247,7 +254,7 @@ export class ReportsComponent {
         .createCategoryReportExcel(id, data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          finalize(() => this.loading.set(false))
+          finalize(() => this.loading.set(false)),
         )
         .subscribe((res) => this.downloadBlob(res));
     } else {
@@ -255,7 +262,7 @@ export class ReportsComponent {
         .createCategoryReport(id, data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          finalize(() => this.loading.set(false))
+          finalize(() => this.loading.set(false)),
         )
         .subscribe((res) => this.categoryOrGroupResponse.set(res));
     }
@@ -272,7 +279,7 @@ export class ReportsComponent {
         .createGroupReportExcel(id, data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          finalize(() => this.loading.set(false))
+          finalize(() => this.loading.set(false)),
         )
         .subscribe((res) => this.downloadBlob(res));
     } else {
@@ -280,7 +287,7 @@ export class ReportsComponent {
         .createGroupReport(id, data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          finalize(() => this.loading.set(false))
+          finalize(() => this.loading.set(false)),
         )
         .subscribe((res) => this.categoryOrGroupResponse.set(res));
     }
@@ -297,7 +304,7 @@ export class ReportsComponent {
         .createAllCategoriesReportExcel(data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          finalize(() => this.loading.set(false))
+          finalize(() => this.loading.set(false)),
         )
         .subscribe((res) => this.downloadBlob(res));
     } else {
@@ -305,7 +312,7 @@ export class ReportsComponent {
         .createAllCategoriesReport(data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          finalize(() => this.loading.set(false))
+          finalize(() => this.loading.set(false)),
         )
         .subscribe((res) => {
           this.allResponse.set(
@@ -313,7 +320,7 @@ export class ReportsComponent {
               ...item,
               id: item.category_id,
               name: item.category_name,
-            }))
+            })),
           );
         });
     }
@@ -330,7 +337,7 @@ export class ReportsComponent {
         .createAllGroupsReportExcel(data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          finalize(() => this.loading.set(false))
+          finalize(() => this.loading.set(false)),
         )
         .subscribe((res) => this.downloadBlob(res));
     } else {
@@ -338,7 +345,7 @@ export class ReportsComponent {
         .createAllGroupsReport(data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          finalize(() => this.loading.set(false))
+          finalize(() => this.loading.set(false)),
         )
         .subscribe((res) => {
           this.allResponse.set(
@@ -346,7 +353,7 @@ export class ReportsComponent {
               ...item,
               id: item.group_id,
               name: item.group_name,
-            }))
+            })),
           );
         });
     }

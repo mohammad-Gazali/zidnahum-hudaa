@@ -7,10 +7,10 @@ import { AuthService } from '../../../../../services/api/admin/services';
 import { map } from 'rxjs';
 
 @Component({
-    selector: 'app-adding-view',
-    imports: [ViewComponent],
-    templateUrl: './adding-view.component.html',
-    styleUrl: './adding-view.component.scss'
+  selector: 'app-adding-view',
+  imports: [ViewComponent],
+  templateUrl: './adding-view.component.html',
+  styleUrl: './adding-view.component.scss',
 })
 export class AddingViewComponent extends PointsBase {
   private auth = inject(AuthService);
@@ -18,13 +18,13 @@ export class AddingViewComponent extends PointsBase {
   public config: ViewComponentConfig<PointsAddingList> = {
     groupName: 'points',
     itemNameAndRouteName: 'adding',
-    viewFunc: id => this.points.pointsAddingRead(id),
-    deleteFunc: id => this.points.pointsAddingDelete(id),
+    viewFunc: (id) => this.points.pointsAddingRead(id),
+    deleteFunc: (id) => this.points.pointsAddingDelete(id),
     fieldsInfo: {
       student: {
         type: 'link',
         stringField: 'student_name',
-        getUrlFunc: id => `/students/sutdent/view/${id}`,
+        getUrlFunc: (id) => `/students/sutdent/view/${id}`,
       },
       student_name: {
         type: 'ignore',
@@ -32,17 +32,22 @@ export class AddingViewComponent extends PointsBase {
       cause: {
         type: 'relation',
         relationType: 'normal',
-        getUrlFunc: id => `/points/adding-cause/view/${id}`,
+        getUrlFunc: (id) => `/points/adding-cause/view/${id}`,
         getFieldValueFunc: () => this.points.pointsAddingCauseList(),
       },
       master: {
         type: 'relation',
         relationType: 'nullable',
-        getUrlFunc: id => `/auth/user/view/${id}`,
-        getFieldValueFunc: () => this.auth.authUserList().pipe(map(list => list.map(user => ({
-          id: user.id,
-          name: String(user.first_name) + " " + String(user.last_name),
-        }))))
+        getUrlFunc: (id) => `/auth/user/view/${id}`,
+        getFieldValueFunc: () =>
+          this.auth.authUserList().pipe(
+            map((list) =>
+              list.map((user) => ({
+                id: user.id,
+                name: String(user.first_name) + ' ' + String(user.last_name),
+              })),
+            ),
+          ),
       },
       value: {
         type: 'number',
@@ -52,5 +57,5 @@ export class AddingViewComponent extends PointsBase {
         nonEditable: true,
       },
     },
-  }
+  };
 }

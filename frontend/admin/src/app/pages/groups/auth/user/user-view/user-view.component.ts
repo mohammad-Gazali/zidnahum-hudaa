@@ -1,15 +1,18 @@
 import { Component } from '@angular/core';
 import { ViewComponent } from '../../../../../shared/view/view.component';
 import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
-import { UserUpdate, UserDetails } from '../../../../../services/api/admin/models';
+import {
+  UserUpdate,
+  UserDetails,
+} from '../../../../../services/api/admin/models';
 import { Validators } from '@angular/forms';
 import { AuthBase } from '../../auth.base';
 
 @Component({
-    selector: 'app-user-view',
-    imports: [ViewComponent],
-    templateUrl: './user-view.component.html',
-    styleUrl: './user-view.component.scss'
+  selector: 'app-user-view',
+  imports: [ViewComponent],
+  templateUrl: './user-view.component.html',
+  styleUrl: './user-view.component.scss',
 })
 export class UserViewComponent extends AuthBase {
   public config: ViewComponentConfig<UserDetails, UserUpdate> = {
@@ -40,7 +43,7 @@ export class UserViewComponent extends AuthBase {
         relationType: 'multiple',
         getFieldValueFunc: () => this.auth.authGroupList(),
         getUrlFunc: (id) => `/auth/group/view/${id}`,
-      }
+      },
     },
     groupName: 'auth',
     itemNameAndRouteName: 'user',
@@ -51,6 +54,6 @@ export class UserViewComponent extends AuthBase {
       name: 'Reset Password',
       icon: 'lock',
       link: (id) => `/auth/user/update-password/${id}`,
-    }
+    },
   };
 }

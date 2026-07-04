@@ -395,7 +395,7 @@ class AuthService extends __BaseService {
   }
 }
 
-module AuthService {
+namespace AuthService {
 
   /**
    * Parameters for authGroupUpdate

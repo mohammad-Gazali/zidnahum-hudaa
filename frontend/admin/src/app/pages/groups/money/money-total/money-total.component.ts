@@ -5,10 +5,10 @@ import { MoneyTotal } from '../../../../services/api/admin/models/money-total';
 import { ExtraService } from '../../../../services/api/admin/services';
 
 @Component({
-    selector: 'app-money-total',
-    imports: [TableComponent],
-    templateUrl: './money-total.component.html',
-    styleUrl: './money-total.component.scss'
+  selector: 'app-money-total',
+  imports: [TableComponent],
+  templateUrl: './money-total.component.html',
+  styleUrl: './money-total.component.scss',
 })
 export class MoneyTotalComponent {
   private extra = inject(ExtraService);
@@ -16,12 +16,12 @@ export class MoneyTotalComponent {
   protected config: TableComponentConfig<MoneyTotal> = {
     hasPagination: true,
     dataFunc: (options) => this.extra.extraMoneyTotalList(options),
-    getUrlFunc: id => `/students/student/view/${id}`,
+    getUrlFunc: (id) => `/students/student/view/${id}`,
     searchField: 'student_name',
     useStudentMasjedFilter: true,
     columns: {
       name: { display: 'normal' },
-      sum: { display: 'normal' }
+      sum: { display: 'normal' },
     },
-  }
+  };
 }

@@ -54,36 +54,36 @@ import { TableConfirmationDialogData } from './table-confirmation-dialog/table-c
 import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
-    selector: 'app-table',
-    imports: [
-        MatTableModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatCheckboxModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatDividerModule,
-        MatChipsModule,
-        MatIconModule,
-        MatMenuModule,
-        ReactiveFormsModule,
-        RouterLink,
-        TranslatePipe,
-        ChangesFieldComponent,
-    ],
-    providers: [
-        { provide: MatPaginatorIntl, useClass: TableComponentPaginator },
-        {
-            provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-            useValue: {
-                appearance: 'outline',
-                subscriptSizing: 'dynamic',
-            },
-        },
-    ],
-    templateUrl: './table.component.html',
-    styleUrl: './table.component.scss'
+  selector: 'app-table',
+  imports: [
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatCheckboxModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDividerModule,
+    MatChipsModule,
+    MatIconModule,
+    MatMenuModule,
+    ReactiveFormsModule,
+    RouterLink,
+    TranslatePipe,
+    ChangesFieldComponent,
+  ],
+  providers: [
+    { provide: MatPaginatorIntl, useClass: TableComponentPaginator },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {
+        appearance: 'outline',
+        subscriptSizing: 'dynamic',
+      },
+    },
+  ],
+  templateUrl: './table.component.html',
+  styleUrl: './table.component.scss',
 })
 export class TableComponent<T extends { id: number }> implements OnInit {
   private fb = inject(NonNullableFormBuilder);
@@ -124,9 +124,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
       .filter(([name]) => name !== 'changes' || !this.changesFieldHidden())
       .map(([name]) => name);
     return ['check', 'id', ...columns] as (
-      | 'check'
-      | 'id'
-      | GetStringKeys<Omit<T, 'id'>>
+      'check' | 'id' | GetStringKeys<Omit<T, 'id'>>
     )[];
   });
 
@@ -152,7 +150,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
         if (config.display === 'changes') {
           this.containsChangesField.set(true);
         }
-      }
+      },
     );
 
     if (this.config.useStudentMasjedFilter) {
@@ -188,7 +186,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
     // this index indicates the required index for getting the sutiable page
     // size options
     const targetIndex = this.pageSizeOptions.findIndex(
-      (size) => size >= this.paginator.length
+      (size) => size >= this.paginator.length,
     );
 
     return targetIndex === -1
@@ -197,7 +195,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
   }
 
   private convertDataToMap(
-    data: { id: number; name: string }[]
+    data: { id: number; name: string }[],
   ): Map<number, string> {
     const result = new Map<number, string>();
 
@@ -248,7 +246,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
 
     if (searchValue === undefined || searchValue === '') {
       this.activeFilters.update((pre) =>
-        pre.filter((f) => f.type !== 'search')
+        pre.filter((f) => f.type !== 'search'),
       );
 
       this.fetchData();
@@ -285,7 +283,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
       });
 
     const masjedActiveFilter = this.activeFilters().find(
-      (f) => f.name === 'student_masjed'
+      (f) => f.name === 'student_masjed',
     );
 
     const masjedFilter: DialogData['filters'][number] =
@@ -311,7 +309,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
             ? [...fieldsFilters, masjedFilter]
             : fieldsFilters,
         },
-      }
+      },
     );
 
     const sub = ref.componentInstance.onSubmit
@@ -323,7 +321,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
           if (f.type === 'boolean' && f.value === '0') {
             const { name } = f;
             this.activeFilters.update((fs) =>
-              fs.filter((f) => f.name !== name)
+              fs.filter((f) => f.name !== name),
             );
           } else {
             this.addFilter(f);
@@ -460,7 +458,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
               .delegateFunc(ids)
               .pipe(
                 takeUntilDestroyed(this.destroyRef),
-                finalize(() => this.loading.set(false))
+                finalize(() => this.loading.set(false)),
               )
               .subscribe(() => {
                 this.snackbar.success('تم الإجراء بنجاح');
@@ -474,7 +472,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
         .delegateFunc(ids)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
-          finalize(() => this.loading.set(false))
+          finalize(() => this.loading.set(false)),
         )
         .subscribe(() => {
           this.snackbar.success('تم الإجراء بنجاح');

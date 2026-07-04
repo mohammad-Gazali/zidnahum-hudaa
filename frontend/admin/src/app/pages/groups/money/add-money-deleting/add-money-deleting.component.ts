@@ -31,27 +31,27 @@ import { SnackbarService } from '../../../../services/snackbar.service';
 import { LOADING } from '../../../../tokens/loading.token';
 
 @Component({
-    selector: 'app-add-money-deleting',
-    templateUrl: './add-money-deleting.component.html',
-    styleUrl: './add-money-deleting.component.scss',
-    imports: [
-        MatCard,
-        MatSelect,
-        MatOption,
-        MatFormField,
-        MatInput,
-        MatLabel,
-        MatError,
-        MatRadioGroup,
-        MatRadioButton,
-        MatButton,
-        MatChipRow,
-        MatChipRemove,
-        MatIcon,
-        StudentSearchComponent,
-        ReactiveFormsModule,
-        TranslatePipe,
-    ]
+  selector: 'app-add-money-deleting',
+  templateUrl: './add-money-deleting.component.html',
+  styleUrl: './add-money-deleting.component.scss',
+  imports: [
+    MatCard,
+    MatSelect,
+    MatOption,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatError,
+    MatRadioGroup,
+    MatRadioButton,
+    MatButton,
+    MatChipRow,
+    MatChipRemove,
+    MatIcon,
+    StudentSearchComponent,
+    ReactiveFormsModule,
+    TranslatePipe,
+  ],
 })
 export class AddMoneyDeletingComponent extends MoneyBase {
   private extra = inject(ExtraService);
@@ -94,7 +94,7 @@ export class AddMoneyDeletingComponent extends MoneyBase {
 
   removeStudent(student: SearchStudent) {
     this.selectedStudents.update(
-      (pre) => new Set([...pre].filter((s) => s.id !== student.id))
+      (pre) => new Set([...pre].filter((s) => s.id !== student.id)),
     );
   }
 
@@ -119,7 +119,7 @@ export class AddMoneyDeletingComponent extends MoneyBase {
       })
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        finalize(() => this.loading.set(false))
+        finalize(() => this.loading.set(false)),
       )
       .subscribe(() => {
         this.selectedStudents.set(new Set());
@@ -142,7 +142,7 @@ export class AddMoneyDeletingComponent extends MoneyBase {
       })
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        finalize(() => this.loading.set(false))
+        finalize(() => this.loading.set(false)),
       )
       .subscribe(() => {
         this.selectedStudents.set(new Set());

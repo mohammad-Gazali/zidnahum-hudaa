@@ -372,7 +372,7 @@ class ComingsService extends __BaseService {
   }
 }
 
-module ComingsService {
+namespace ComingsService {
 
   /**
    * Parameters for comingsCategoryUpdate

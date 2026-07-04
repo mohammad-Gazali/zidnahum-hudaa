@@ -9,12 +9,11 @@ import { deleteModelAction } from '../../../../common/delete-model-action';
 import { MemorizeMessageTypeService } from '../../../../services/memorize-message-type.service';
 import { LevelService } from '../../../../services/level.service';
 
-
 @Component({
-    selector: 'app-memorize-message',
-    imports: [TableComponent],
-    templateUrl: './memorize-message.component.html',
-    styleUrl: './memorize-message.component.scss'
+  selector: 'app-memorize-message',
+  imports: [TableComponent],
+  templateUrl: './memorize-message.component.html',
+  styleUrl: './memorize-message.component.scss',
 })
 export class MemorizeMessageComponent extends StudentsBase {
   private types = inject(MemorizeMessageTypeService);
@@ -24,19 +23,19 @@ export class MemorizeMessageComponent extends StudentsBase {
   public config: TableComponentConfig<MemorizeMessageList> = {
     hasPagination: true,
     useStudentMasjedFilter: true,
-    dataFunc: options => this.students.studentsMemorizeMessageList(options),
-    getUrlFunc: id => `/students/memorize-message/view/${id}`,
+    dataFunc: (options) => this.students.studentsMemorizeMessageList(options),
+    getUrlFunc: (id) => `/students/memorize-message/view/${id}`,
     searchField: 'student_name',
     actions: [
       deleteModelAction('رسائل التسميع', (ids) =>
-        this.actions.actionsMemorizeMessageDeleteDelete({ ids })
+        this.actions.actionsMemorizeMessageDeleteDelete({ ids }),
       ),
     ],
     columns: {
       student: {
         display: 'link',
         stringField: 'student_name',
-        getUrlFunc: id => `/students/student/view/${id}`,
+        getUrlFunc: (id) => `/students/student/view/${id}`,
       },
       student_name: {
         display: 'ignore',
@@ -46,7 +45,7 @@ export class MemorizeMessageComponent extends StudentsBase {
       },
       is_doubled: {
         display: 'boolean',
-        filterType: 'boolean'
+        filterType: 'boolean',
       },
       master: {
         display: 'relation',
@@ -57,8 +56,8 @@ export class MemorizeMessageComponent extends StudentsBase {
               list.map((u) => ({
                 id: u.id,
                 name: String(u.first_name) + ' ' + String(u.last_name),
-              }))
-            )
+              })),
+            ),
           ),
       },
       message_type: {
@@ -69,7 +68,7 @@ export class MemorizeMessageComponent extends StudentsBase {
       sended_at: {
         display: 'normal',
         dateFormat: 'yyyy/MM/dd hh:mm a',
-        filterType: 'datetime_date'
+        filterType: 'datetime_date',
       },
       student_level: {
         display: 'relation',

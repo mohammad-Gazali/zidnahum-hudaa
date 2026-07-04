@@ -4,7 +4,8 @@ import {
   OnInit,
   inject,
   input,
-  signal, computed,
+  signal,
+  computed,
   OnDestroy,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -13,7 +14,10 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
+import {
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
+  MatFormFieldModule,
+} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -46,42 +50,42 @@ import { AccountsService } from '../../services/api/accounts/accounts.service';
 import { environment } from '../../../environments/environment.development';
 
 @Component({
-    selector: 'app-view',
-    imports: [
-        MatDividerModule,
-        MatButtonModule,
-        MatIconModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatCheckboxModule,
-        MatDatepickerModule,
-        MatSelectModule,
-        MatExpansionModule,
-        ReactiveFormsModule,
-        QuranMemorizeComponent,
-        QuranTestComponent,
-        QuranEliteTestComponent,
-        QuranAwqafTestComponent,
-        RouterLink,
-        TranslatePipe,
-        ChangesFieldComponent,
-    ],
-    providers: [
-        {
-            provide: MAT_DATE_LOCALE,
-            useValue: 'ar',
-        },
-        {
-            provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-            useValue: {
-                appearance: 'outline',
-                subscriptSizing: 'dynamic',
-            },
-        },
-        provideNativeDateAdapter(),
-    ],
-    templateUrl: './view.component.html',
-    styleUrl: './view.component.scss'
+  selector: 'app-view',
+  imports: [
+    MatDividerModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatSelectModule,
+    MatExpansionModule,
+    ReactiveFormsModule,
+    QuranMemorizeComponent,
+    QuranTestComponent,
+    QuranEliteTestComponent,
+    QuranAwqafTestComponent,
+    RouterLink,
+    TranslatePipe,
+    ChangesFieldComponent,
+  ],
+  providers: [
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: 'ar',
+    },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {
+        appearance: 'outline',
+        subscriptSizing: 'dynamic',
+      },
+    },
+    provideNativeDateAdapter(),
+  ],
+  templateUrl: './view.component.html',
+  styleUrl: './view.component.scss',
 })
 export class ViewComponent<T, U> implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
@@ -96,7 +100,7 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
 
   public fields = signal<Field[]>([]);
   public editMode = signal(false);
-  public isSuperUser = computed(() => !!this.accounts.details()?.is_superuser)
+  public isSuperUser = computed(() => !!this.accounts.details()?.is_superuser);
   public extraData = signal<ExtraData>({});
   public form = this.fb.group({});
   public viewId!: string;
@@ -108,14 +112,14 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
       e.preventDefault();
       this.toggleMode();
     }
-  }
+  };
 
   constructor() {
-    document.documentElement.addEventListener('keydown', this.listener)
+    document.documentElement.addEventListener('keydown', this.listener);
   }
 
   ngOnDestroy(): void {
-    document.documentElement.removeEventListener('keydown', this.listener)
+    document.documentElement.removeEventListener('keydown', this.listener);
   }
 
   ngOnInit(): void {
@@ -142,8 +146,7 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
             .filter(([name]) => name !== 'id')
             .map(([name, value]) => {
               const fieldsInfo = (this.config().fieldsInfo as any)[name] as
-                | FieldConfig
-                | undefined;
+                FieldConfig | undefined;
 
               if (!fieldsInfo?.nonEditable) {
                 if (fieldsInfo?.type === 'relation') {
@@ -152,7 +155,7 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
                     name,
                     this.fb.control(value ?? -1, [
                       ...(fieldsInfo?.validators ?? []),
-                    ])
+                    ]),
                   );
                 } else if (
                   fieldsInfo?.type === 'q_memorize' ||
@@ -164,14 +167,14 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
                     name,
                     this.fb.array(
                       (value as MemoItemType[]).map((item) =>
-                        this.fb.control(item)
-                      )
-                    )
+                        this.fb.control(item),
+                      ),
+                    ),
                   );
                 } else {
                   this.form.addControl(
                     name,
-                    this.fb.control(value, [...(fieldsInfo?.validators ?? [])])
+                    this.fb.control(value, [...(fieldsInfo?.validators ?? [])]),
                   );
                 }
               }
@@ -229,7 +232,7 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
                 type: fieldsInfo?.type ?? 'string',
                 nonEditable: fieldsInfo?.nonEditable,
               };
-            })
+            }),
         );
       });
   }
@@ -264,7 +267,7 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
         this.snackbar.success('تم التعديل بنجاح');
         this.loading.set(false);
         this.router.navigateByUrl(
-          `/${this.config().groupName}/${this.config().itemNameAndRouteName}`
+          `/${this.config().groupName}/${this.config().itemNameAndRouteName}`,
         );
       });
     }
@@ -285,14 +288,14 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
             groupName: this.config().groupName,
             itemNameAndRouteName: this.config().itemNameAndRouteName,
           },
-        }
+        },
       );
     }
   }
 
   // memorize message specific
   findMessageType() {
-    const messageType = this.fields().find(f => f.name === 'message_type')
+    const messageType = this.fields().find((f) => f.name === 'message_type');
     return messageType?.type === 'relation' && messageType.value;
   }
 }

@@ -32,28 +32,28 @@ import {
 import { LOADING } from '../../tokens/loading.token';
 
 @Component({
-    selector: 'app-create',
-    imports: [
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDividerModule,
-        MatCheckboxModule,
-        MatDatepickerModule,
-        MatSelectModule,
-        TranslatePipe,
-    ],
-    providers: [
-        {
-            provide: MAT_DATE_LOCALE,
-            useValue: 'ar',
-        },
-        provideNativeDateAdapter(),
-    ],
-    templateUrl: './create.component.html',
-    styleUrl: './create.component.scss'
+  selector: 'app-create',
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDividerModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatSelectModule,
+    TranslatePipe,
+  ],
+  providers: [
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: 'ar',
+    },
+    provideNativeDateAdapter(),
+  ],
+  templateUrl: './create.component.html',
+  styleUrl: './create.component.scss',
 })
 export class CreateComponent<T> implements OnInit {
   private fb = inject(NonNullableFormBuilder);
@@ -112,7 +112,7 @@ export class CreateComponent<T> implements OnInit {
               });
             });
         }
-      }
+      },
     );
   }
 
@@ -141,7 +141,7 @@ export class CreateComponent<T> implements OnInit {
           this.loading.set(false);
           this.goToTable();
         });
-    } else if (this.fields().some(f => f.config.type === 'file')) {
+    } else if (this.fields().some((f) => f.config.type === 'file')) {
       this.snackbar.error('يوجد خطأ في الاستمارة, ربما تكون قد نسيت رفع الملف');
     }
   }
@@ -153,9 +153,9 @@ export class CreateComponent<T> implements OnInit {
   // file specific
   onFilePicked(event: Event, name: string) {
     const file = (event.target as HTMLInputElement).files?.item(0);
-    
+
     this.form.patchValue({
       [name]: file,
-    })
+    });
   }
 }

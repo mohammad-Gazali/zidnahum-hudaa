@@ -1,7 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { ViewComponent } from '../../../../../shared/view/view.component';
 import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
-import { StudentDetails, StudentUpdate } from '../../../../../services/api/admin/models';
+import {
+  StudentDetails,
+  StudentUpdate,
+} from '../../../../../services/api/admin/models';
 import { MasjedService } from '../../../../../services/masjed.service';
 import { LevelService } from '../../../../../services/level.service';
 import { Validators } from '@angular/forms';
@@ -10,10 +13,10 @@ import { ExtraService } from '../../../../../services/api/admin/services';
 import { EXTRA_HADEETH_LIMIT } from '../../../../../constants';
 
 @Component({
-    selector: 'app-student-view',
-    imports: [ViewComponent],
-    templateUrl: './student-view.component.html',
-    styleUrl: './student-view.component.scss'
+  selector: 'app-student-view',
+  imports: [ViewComponent],
+  templateUrl: './student-view.component.html',
+  styleUrl: './student-view.component.scss',
 })
 export class StudentViewComponent extends StudentsBase {
   private masjed = inject(MasjedService);
@@ -125,13 +128,13 @@ export class StudentViewComponent extends StudentsBase {
       return this.students.studentsStudentRead(id);
     },
     deleteFunc: (id) => {
-      return this.students.studentsStudentDelete(id)
+      return this.students.studentsStudentDelete(id);
     },
     updateFunc: (id, data) => {
       return this.extra.extraStudentUpdate({
         id,
         data,
-      })
-    }
+      });
+    },
   };
 }

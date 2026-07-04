@@ -6,10 +6,10 @@ import { StudentsBase } from '../students.base';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-    selector: 'app-student-group',
-    imports: [TableComponent],
-    templateUrl: './group.component.html',
-    styleUrl: './group.component.scss'
+  selector: 'app-student-group',
+  imports: [TableComponent],
+  templateUrl: './group.component.html',
+  styleUrl: './group.component.scss',
 })
 export class StudentGroupComponent extends StudentsBase {
   public config: TableComponentConfig<StudentGroupList> = {
@@ -21,13 +21,13 @@ export class StudentGroupComponent extends StudentsBase {
     hasPagination: false,
     actions: [
       deleteModelAction('مجموعات الطلاب', (ids) =>
-        this.actions.actionsStudentGroupDeleteDelete({ ids })
+        this.actions.actionsStudentGroupDeleteDelete({ ids }),
       ),
     ],
     columns: {
       name: {
         display: 'normal',
-      }
+      },
     },
-  }
+  };
 }

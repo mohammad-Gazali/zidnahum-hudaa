@@ -1,13 +1,12 @@
-import {
-  Component,
-  computed,
-  inject,
-  output,
-  signal,
-} from '@angular/core';
+import { Component, computed, inject, output, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatToolbar } from '@angular/material/toolbar';
-import { MatAnchor, MatButton, MatIconAnchor, MatIconButton } from '@angular/material/button';
+import {
+  MatAnchor,
+  MatButton,
+  MatIconAnchor,
+  MatIconButton,
+} from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
@@ -17,20 +16,20 @@ import { AccountsService } from '../../services/api/accounts/accounts.service';
 import { LOADING } from '../../tokens/loading.token';
 
 @Component({
-    selector: 'app-navbar',
-    imports: [
-        MatToolbar,
-        MatButton,
-        MatIconButton,
-        MatIcon,
-        MatProgressBar,
-        TranslatePipe,
-        RouterLink,
-        MatIconAnchor,
-        MatAnchor,
-    ],
-    templateUrl: './navbar.component.html',
-    styleUrl: './navbar.component.scss'
+  selector: 'app-navbar',
+  imports: [
+    MatToolbar,
+    MatButton,
+    MatIconButton,
+    MatIcon,
+    MatProgressBar,
+    TranslatePipe,
+    RouterLink,
+    MatIconAnchor,
+    MatAnchor,
+  ],
+  templateUrl: './navbar.component.html',
+  styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
   private accounts = inject(AccountsService);

@@ -19,26 +19,26 @@ import { TranslatePipe } from '../../../../pipes/translate.pipe';
 import { MasjedService } from '../../../../services/masjed.service';
 
 @Component({
-    selector: 'app-statistics',
-    imports: [
-        ReactiveFormsModule,
-        MatDatepickerModule,
-        MatFormFieldModule,
-        MatCheckboxModule,
-        MatButtonModule,
-        MatCardModule,
-        DatePipe,
-        TranslatePipe,
-    ],
-    templateUrl: './statistics.component.html',
-    styleUrl: './statistics.component.scss',
-    providers: [
-        {
-            provide: MAT_DATE_LOCALE,
-            useValue: 'ar',
-        },
-        provideNativeDateAdapter(),
-    ]
+  selector: 'app-statistics',
+  imports: [
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatButtonModule,
+    MatCardModule,
+    DatePipe,
+    TranslatePipe,
+  ],
+  templateUrl: './statistics.component.html',
+  styleUrl: './statistics.component.scss',
+  providers: [
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: 'ar',
+    },
+    provideNativeDateAdapter(),
+  ],
 })
 export class StatisticsComponent {
   private extra = inject(ExtraService);
@@ -82,21 +82,21 @@ export class StatisticsComponent {
       })
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        finalize(() => this.loading.set(false))
+        finalize(() => this.loading.set(false)),
       )
       .subscribe(this.response.set);
   }
 
   public responseToArray(response: StatisticsResponse) {
-    return Object.entries(response).filter(
-      ([, value]) => value !== undefined && value !== null
-    ).map(([name, value]) => ({
-      name,
-      value: value as number[],
-    }));
+    return Object.entries(response)
+      .filter(([, value]) => value !== undefined && value !== null)
+      .map(([name, value]) => ({
+        name,
+        value: value as number[],
+      }));
   }
 
   protected ciel(num: number): number {
-    return Math.ceil(num)
+    return Math.ceil(num);
   }
 }

@@ -16,16 +16,16 @@ import { EMPTY, catchError, finalize } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
-    selector: 'app-view-delete-dialog',
-    imports: [
-        MatDialogTitle,
-        MatDialogContent,
-        MatDialogActions,
-        MatButtonModule,
-        TranslatePipe,
-    ],
-    templateUrl: './view-delete-dialog.component.html',
-    styleUrl: './view-delete-dialog.component.scss'
+  selector: 'app-view-delete-dialog',
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatButtonModule,
+    TranslatePipe,
+  ],
+  templateUrl: './view-delete-dialog.component.html',
+  styleUrl: './view-delete-dialog.component.scss',
 })
 export class ViewDeleteDialogComponent {
   public ref = inject(MatDialogRef);
@@ -50,11 +50,11 @@ export class ViewDeleteDialogComponent {
           }
           this.ref.close();
           return EMPTY;
-        })
+        }),
       )
       .subscribe(() => {
         this.router.navigateByUrl(
-          `/${this.data.groupName}/${this.data.itemNameAndRouteName}`
+          `/${this.data.groupName}/${this.data.itemNameAndRouteName}`,
         );
         this.ref.close();
 

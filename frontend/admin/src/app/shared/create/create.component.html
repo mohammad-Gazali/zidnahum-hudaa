@@ -9,7 +9,7 @@
             @if (field.config.type !== "date" && field.config.type !== 'boolean' && field.config.type !== 'file') {
                 <mat-form-field>
                     <mat-label>{{ field.name | translate }}</mat-label>
-                    
+
                     @switch(field.config.type) {
                         @case ("string") {
                             <input matInput [formControlName]="field.name" />
@@ -23,7 +23,7 @@
                                     <mat-option [value]="-1">
                                         ({{ 'empty value' | translate }})
                                     </mat-option>
-                                }                            
+                                }
                                 @for (option of field.options; track option.id) {
                                     <mat-option [value]="option.id">
                                         {{ option.name }}
@@ -34,7 +34,7 @@
                             ERROR
                         }
                     }
-    
+
                     @if (form.getError('required', field.name)) {
                         <mat-error>{{ 'this field is required' | translate }}</mat-error>
                     }

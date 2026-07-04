@@ -4,16 +4,16 @@ import { MoneyDeletingCauseCreateComponent } from './money-deleting-cause-create
 import { MoneyDeletingCauseViewComponent } from './money-deleting-cause-view/money-deleting-cause-view.component';
 
 export const routes: Routes = [
-    {
-        path: '',
-        component: MoneyDeletingCauseComponent,
-    },
-    {
-        path: 'create',
-        component: MoneyDeletingCauseCreateComponent,
-    },
-    {
-        path: 'view/:id',
-        component: MoneyDeletingCauseViewComponent,
-    },
+  {
+    path: '',
+    component: MoneyDeletingCauseComponent,
+  },
+  {
+    path: 'create',
+    component: MoneyDeletingCauseCreateComponent,
+  },
+  {
+    path: 'view/:id',
+    component: MoneyDeletingCauseViewComponent,
+  },
 ];

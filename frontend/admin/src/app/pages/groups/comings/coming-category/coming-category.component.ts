@@ -6,20 +6,20 @@ import { ComingCategoryList } from '../../../../services/api/admin/models';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-    selector: 'app-coming-category',
-    imports: [TableComponent],
-    templateUrl: './coming-category.component.html',
-    styleUrl: './coming-category.component.scss'
+  selector: 'app-coming-category',
+  imports: [TableComponent],
+  templateUrl: './coming-category.component.html',
+  styleUrl: './coming-category.component.scss',
 })
 export class ComingCategoryComponent extends ComingsBase {
   public config: TableComponentConfig<ComingCategoryList> = {
     createUrl: '/comings/coming-category/create',
-    getUrlFunc: id => `/comings/coming-category/view/${id}`,
+    getUrlFunc: (id) => `/comings/coming-category/view/${id}`,
     dataFunc: (options) => this.comings.comingsCategoryList(options),
     hasPagination: false,
     actions: [
       deleteModelAction('أسباب الحضور', (ids) =>
-        this.actions.actionsComingCategoryDeleteDelete({ ids })
+        this.actions.actionsComingCategoryDeleteDelete({ ids }),
       ),
     ],
     columns: {
@@ -30,5 +30,5 @@ export class ComingCategoryComponent extends ComingsBase {
         display: 'normal',
       },
     },
-  }
+  };
 }

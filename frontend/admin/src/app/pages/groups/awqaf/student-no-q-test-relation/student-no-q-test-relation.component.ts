@@ -6,21 +6,21 @@ import { AwqafNoQStudentRelationList } from '../../../../services/api/admin/mode
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-    selector: 'app-student-no-q-test-relation',
-    imports: [TableComponent],
-    templateUrl: './student-no-q-test-relation.component.html',
-    styleUrl: './student-no-q-test-relation.component.scss'
+  selector: 'app-student-no-q-test-relation',
+  imports: [TableComponent],
+  templateUrl: './student-no-q-test-relation.component.html',
+  styleUrl: './student-no-q-test-relation.component.scss',
 })
 export class StudentNoQTestRelationComponent extends AwqafBase {
   public config: TableComponentConfig<AwqafNoQStudentRelationList> = {
     hasPagination: true,
     useStudentMasjedFilter: true,
-    dataFunc: options => this.awqaf.awqafStudentNoQRelationList(options),
-    getUrlFunc: id => `/awqaf/student-no-q-test-relation/view/${id}`,
+    dataFunc: (options) => this.awqaf.awqafStudentNoQRelationList(options),
+    getUrlFunc: (id) => `/awqaf/student-no-q-test-relation/view/${id}`,
     searchField: 'student_name',
     actions: [
       deleteModelAction('أسبار الطالب بالأوقاف بغير القرآن', (ids) =>
-        this.actions.actionsAwqafNoQStudentRelationDeleteDelete({ ids })
+        this.actions.actionsAwqafNoQStudentRelationDeleteDelete({ ids }),
       ),
     ],
     columns: {
@@ -41,6 +41,6 @@ export class StudentNoQTestRelationComponent extends AwqafBase {
         display: 'boolean',
         filterType: 'boolean',
       },
-    }
+    },
   };
 }

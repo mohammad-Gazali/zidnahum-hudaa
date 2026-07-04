@@ -7,17 +7,17 @@ import { NewsCreate } from '../../../../../services/api/admin/models/news-create
 import { MasjedService } from '../../../../../services/masjed.service';
 
 @Component({
-    selector: 'app-news-create',
-    imports: [CreateComponent],
-    templateUrl: './news-create.component.html',
-    styleUrl: './news-create.component.scss'
+  selector: 'app-news-create',
+  imports: [CreateComponent],
+  templateUrl: './news-create.component.html',
+  styleUrl: './news-create.component.scss',
 })
 export class NewsCreateComponent extends GlobalsBase {
   private masjed = inject(MasjedService);
 
   public config: CreateComponentConfig<NewsCreate> = {
     tableRoute: '/globals/news',
-    createFunc: body => this.globals.globalsNewsCreate(body as any),
+    createFunc: (body) => this.globals.globalsNewsCreate(body as any),
     fields: {
       title: {
         type: 'string',
@@ -43,5 +43,5 @@ export class NewsCreateComponent extends GlobalsBase {
         validators: [Validators.required],
       },
     },
-  }
+  };
 }

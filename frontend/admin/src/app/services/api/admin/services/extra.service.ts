@@ -428,7 +428,7 @@ class ExtraService extends __BaseService {
   }
 }
 
-module ExtraService {
+namespace ExtraService {
   export interface MoneyTotalListParams {
     /**
      * param for filtering result via student name or student id

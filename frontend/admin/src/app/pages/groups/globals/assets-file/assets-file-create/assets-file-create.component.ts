@@ -6,15 +6,15 @@ import { CreateComponentConfig } from '../../../../../shared/create/create.compo
 import { AssetFileCreate } from '../../../../../services/api/admin/models';
 
 @Component({
-    selector: 'app-assets-file-create',
-    imports: [CreateComponent],
-    templateUrl: './assets-file-create.component.html',
-    styleUrl: './assets-file-create.component.scss'
+  selector: 'app-assets-file-create',
+  imports: [CreateComponent],
+  templateUrl: './assets-file-create.component.html',
+  styleUrl: './assets-file-create.component.scss',
 })
 export class AssetsFileCreateComponent extends GlobalsBase {
   public config: CreateComponentConfig<AssetFileCreate> = {
     tableRoute: '/globals/assets-file',
-    createFunc: body => this.globals.globalsAssetFileCreate(body as any),
+    createFunc: (body) => this.globals.globalsAssetFileCreate(body as any),
     fields: {
       name: {
         type: 'string',
@@ -31,5 +31,5 @@ export class AssetsFileCreateComponent extends GlobalsBase {
         validators: [Validators.required],
       },
     },
-  }
+  };
 }

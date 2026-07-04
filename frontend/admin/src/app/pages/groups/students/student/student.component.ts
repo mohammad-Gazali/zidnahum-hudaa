@@ -8,10 +8,10 @@ import { deleteModelAction } from '../../../../common/delete-model-action';
 import { LevelService } from '../../../../services/level.service';
 
 @Component({
-    selector: 'app-student',
-    imports: [TableComponent],
-    templateUrl: './student.component.html',
-    styleUrl: './student.component.scss'
+  selector: 'app-student',
+  imports: [TableComponent],
+  templateUrl: './student.component.html',
+  styleUrl: './student.component.scss',
 })
 export class StudentComponent extends StudentsBase {
   private masjed = inject(MasjedService);
@@ -27,7 +27,7 @@ export class StudentComponent extends StudentsBase {
     createUrl: '/students/student/create',
     actions: [
       deleteModelAction('الطلاب', (ids) =>
-        this.actions.actionsStudentDeleteDelete({ ids })
+        this.actions.actionsStudentDeleteDelete({ ids }),
       ),
     ],
     columns: {
@@ -42,14 +42,14 @@ export class StudentComponent extends StudentsBase {
         filterType: 'exact',
         getFieldValueFunc: () => {
           return this.masjed.getMasjeds();
-        }
+        },
       },
       level: {
         display: 'relation',
         filterType: 'exact',
         getFieldValueFunc: () => {
           return this.level.getLevels();
-        }
+        },
       },
       category: {
         display: 'relation',
@@ -68,7 +68,7 @@ export class StudentComponent extends StudentsBase {
       registered_at: {
         display: 'normal',
         filterType: 'date',
-      }
+      },
     },
   };
 }

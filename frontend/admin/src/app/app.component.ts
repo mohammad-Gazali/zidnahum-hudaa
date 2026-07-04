@@ -6,10 +6,10 @@ import { AccountsService } from './services/api/accounts/accounts.service';
 import { SnackbarService } from './services/snackbar.service';
 
 @Component({
-    selector: 'app-root',
-    imports: [RouterOutlet, LayoutComponent, MatProgressSpinner],
-    templateUrl: './app.component.html',
-    styleUrl: './app.component.scss'
+  selector: 'app-root',
+  imports: [RouterOutlet, LayoutComponent, MatProgressSpinner],
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
   private accounts = inject(AccountsService);
@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
         const el = document.querySelector('mat-form-field input');
         (el as HTMLInputElement)?.focus();
       }
-    })
+    });
   }
 
   ngOnInit(): void {
@@ -42,7 +42,13 @@ export class AppComponent implements OnInit {
         this.loading.set(false);
         this.accounts.details.set(res);
       },
-      error: ({ status, error: { detail } }: { status: number; error: { detail: string } }) => {
+      error: ({
+        status,
+        error: { detail },
+      }: {
+        status: number;
+        error: { detail: string };
+      }) => {
         this.loading.set(false);
 
         if (status === 401) {
@@ -50,29 +56,30 @@ export class AppComponent implements OnInit {
 
           if (refreshToken === null || !withRefresh) {
             this.router.navigateByUrl('login');
-            return
+            return;
           }
 
-          this.accounts.tokenRefresh({
-            refresh: refreshToken,
-          }).subscribe({
-            next: (res) => {
-              localStorage.setItem('zidnahum-token', res.access);
-              localStorage.setItem('zidnahum-refresh-token', res.refresh);
+          this.accounts
+            .tokenRefresh({
+              refresh: refreshToken,
+            })
+            .subscribe({
+              next: (res) => {
+                localStorage.setItem('zidnahum-token', res.access);
+                localStorage.setItem('zidnahum-refresh-token', res.refresh);
 
-              this.init(false);
-            },
-            error: () => {
-              localStorage.removeItem('zidnahum-token');
-              localStorage.removeItem('zidnahum-refresh-token');
-              this.router.navigateByUrl('login');
-            }
-          })
-
+                this.init(false);
+              },
+              error: () => {
+                localStorage.removeItem('zidnahum-token');
+                localStorage.removeItem('zidnahum-refresh-token');
+                this.router.navigateByUrl('login');
+              },
+            });
         } else {
           this.snackbar.error(detail);
         }
       },
-    })
+    });
   }
 }

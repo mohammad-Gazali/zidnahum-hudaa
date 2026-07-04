@@ -8,10 +8,10 @@ import { map } from 'rxjs';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-    selector: 'app-coming',
-    imports: [TableComponent],
-    templateUrl: './coming.component.html',
-    styleUrl: './coming.component.scss'
+  selector: 'app-coming',
+  imports: [TableComponent],
+  templateUrl: './coming.component.html',
+  styleUrl: './coming.component.scss',
 })
 export class ComingComponent extends ComingsBase {
   private auth = inject(AuthService);
@@ -19,19 +19,19 @@ export class ComingComponent extends ComingsBase {
   public config: TableComponentConfig<ComingList> = {
     hasPagination: true,
     useStudentMasjedFilter: true,
-    getUrlFunc: id => `/comings/coming/view/${id}`,
-    dataFunc: options => this.comings.comingsComingList(options),
+    getUrlFunc: (id) => `/comings/coming/view/${id}`,
+    dataFunc: (options) => this.comings.comingsComingList(options),
     searchField: 'student_name', // here we added it like this because it will be converted to camelCase which will be converted to the right query param
     actions: [
       deleteModelAction('تسجيلات الحضور', (ids) =>
-        this.actions.actionsComingDeleteDelete({ ids })
+        this.actions.actionsComingDeleteDelete({ ids }),
       ),
     ],
     columns: {
       student: {
         display: 'link',
         stringField: 'student_name',
-        getUrlFunc: id => `/students/student/view/${id}`,
+        getUrlFunc: (id) => `/students/student/view/${id}`,
       },
       student_name: {
         display: 'ignore',
@@ -55,14 +55,14 @@ export class ComingComponent extends ComingsBase {
               list.map((u) => ({
                 id: u.id,
                 name: String(u.first_name) + ' ' + String(u.last_name),
-              }))
-            )
+              })),
+            ),
           ),
       },
       is_doubled: {
         display: 'boolean',
         filterType: 'boolean',
       },
-    }
-  }
+    },
+  };
 }

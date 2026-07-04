@@ -15,5 +15,5 @@ export const routes: Routes = [
   {
     path: 'add-awqaf-test-student',
     component: AddAwqafTestStudentComponent,
-  }
+  },
 ];

@@ -23,29 +23,29 @@ import { Filter } from '../table.component.interface';
 import { DialogData } from './table-filters-dialog.component.interface';
 
 @Component({
-    selector: 'app-table-filters-dialog',
-    imports: [
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        MatDatepickerModule,
-        MatButtonModule,
-        MatDialogTitle,
-        MatDialogContent,
-        MatDialogActions,
-        ReactiveFormsModule,
-        MatRadioModule,
-        TranslatePipe,
-    ],
-    providers: [
-        {
-            provide: MAT_DATE_LOCALE,
-            useValue: 'ar',
-        },
-        provideNativeDateAdapter(),
-    ],
-    templateUrl: './table-filters-dialog.component.html',
-    styleUrl: './table-filters-dialog.component.scss'
+  selector: 'app-table-filters-dialog',
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatButtonModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    ReactiveFormsModule,
+    MatRadioModule,
+    TranslatePipe,
+  ],
+  providers: [
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: 'ar',
+    },
+    provideNativeDateAdapter(),
+  ],
+  templateUrl: './table-filters-dialog.component.html',
+  styleUrl: './table-filters-dialog.component.scss',
 })
 export class TableFiltersDialogComponent {
   private fb = inject(NonNullableFormBuilder);
@@ -64,51 +64,36 @@ export class TableFiltersDialogComponent {
           this.date.containsSeparator(filter.defaultValue)
         ) {
           const [startDate, endDate] = this.date.extractTwoDates(
-            filter.defaultValue
+            filter.defaultValue,
           );
 
-          this.form.addControl(
-            filter.name + '_gt',
-            this.fb.control(startDate)
-          );
+          this.form.addControl(filter.name + '_gt', this.fb.control(startDate));
 
-          this.form.addControl(
-            filter.name + '_lt',
-            this.fb.control(endDate)
-          );
+          this.form.addControl(filter.name + '_lt', this.fb.control(endDate));
 
-          this.form.addControl(
-            filter.name + '_type',
-            this.fb.control('range')
-          );
+          this.form.addControl(filter.name + '_type', this.fb.control('range'));
 
           this.form.addControl(filter.name, this.fb.control(''));
 
           return;
         }
 
-        this.form.addControl(
-          filter.name + '_gt',
-          this.fb.control('')
-        );
-        this.form.addControl(
-          filter.name + '_lt',
-          this.fb.control('')
-        );
-        this.form.addControl(
-          filter.name + '_type',
-          this.fb.control('single')
-        );
+        this.form.addControl(filter.name + '_gt', this.fb.control(''));
+        this.form.addControl(filter.name + '_lt', this.fb.control(''));
+        this.form.addControl(filter.name + '_type', this.fb.control('single'));
       }
 
       if (filter.type === 'boolean') {
-        this.form.addControl(filter.name, this.fb.control(filter.defaultValue ?? '0'));
+        this.form.addControl(
+          filter.name,
+          this.fb.control(filter.defaultValue ?? '0'),
+        );
         return;
       }
 
       this.form.addControl(
         filter.name,
-        this.fb.control(filter.defaultValue ?? '')
+        this.fb.control(filter.defaultValue ?? ''),
       );
     });
   }
@@ -123,7 +108,7 @@ export class TableFiltersDialogComponent {
           if (formValue[filter.name] instanceof Date) {
             const dateValue = this.date.format(
               formValue[filter.name],
-              'yyyy-MM-dd'
+              'yyyy-MM-dd',
             );
 
             usedFilters.push({
@@ -139,11 +124,11 @@ export class TableFiltersDialogComponent {
           ) {
             const startDateValue = this.date.format(
               formValue[filter.name + '_gt'],
-              'yyyy-MM-dd'
+              'yyyy-MM-dd',
             );
             const endDateValue = this.date.format(
               formValue[filter.name + '_lt'],
-              'yyyy-MM-dd'
+              'yyyy-MM-dd',
             );
 
             usedFilters.push({
@@ -175,12 +160,12 @@ export class TableFiltersDialogComponent {
         }
       } else if (filter.type === 'boolean') {
         const value = formValue[filter.name];
-        
+
         usedFilters.push({
           name: filter.name,
           type: 'boolean',
           value: value,
-        })
+        });
       }
     });
 

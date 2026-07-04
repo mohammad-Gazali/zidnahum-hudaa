@@ -15,11 +15,7 @@ import {
   MatRadioChange,
 } from '@angular/material/radio';
 import { MatSelect, MatOption } from '@angular/material/select';
-import {
-  MatFormField,
-  MatLabel,
-  MatError,
-} from '@angular/material/form-field';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
 import { MatRipple } from '@angular/material/core';
 import { finalize } from 'rxjs';
@@ -36,27 +32,27 @@ import { QuranAwqafTestService } from '../../../../services/quran/quran-awqaf-te
 import { LOADING } from '../../../../tokens/loading.token';
 
 @Component({
-    selector: 'app-add-awqaf-test-student',
-    imports: [
-        MatCard,
-        MatChipRow,
-        MatChipRemove,
-        MatIcon,
-        MatRadioGroup,
-        MatRadioButton,
-        MatSelect,
-        MatOption,
-        MatFormField,
-        MatLabel,
-        MatError,
-        MatButton,
-        MatRipple,
-        ReactiveFormsModule,
-        StudentSearchComponent,
-        TranslatePipe,
-    ],
-    templateUrl: './add-awqaf-test-student.component.html',
-    styleUrl: './add-awqaf-test-student.component.scss'
+  selector: 'app-add-awqaf-test-student',
+  imports: [
+    MatCard,
+    MatChipRow,
+    MatChipRemove,
+    MatIcon,
+    MatRadioGroup,
+    MatRadioButton,
+    MatSelect,
+    MatOption,
+    MatFormField,
+    MatLabel,
+    MatError,
+    MatButton,
+    MatRipple,
+    ReactiveFormsModule,
+    StudentSearchComponent,
+    TranslatePipe,
+  ],
+  templateUrl: './add-awqaf-test-student.component.html',
+  styleUrl: './add-awqaf-test-student.component.scss',
 })
 export class AddAwqafTestStudentComponent {
   private awqaf = inject(AwqafService);
@@ -80,7 +76,7 @@ export class AddAwqafTestStudentComponent {
         .fill(-1)
         .map(() => {
           return this.fb.control<boolean>(false);
-        })
+        }),
     ),
   });
 
@@ -97,7 +93,7 @@ export class AddAwqafTestStudentComponent {
 
   removeStudent(student: SearchStudent) {
     this.selectedStudents.update(
-      (pre) => new Set([...pre].filter((s) => s.id !== student.id))
+      (pre) => new Set([...pre].filter((s) => s.id !== student.id)),
     );
   }
 
@@ -121,7 +117,7 @@ export class AddAwqafTestStudentComponent {
       })
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        finalize(() => this.loading.set(false))
+        finalize(() => this.loading.set(false)),
       )
       .subscribe(() => {
         this.selectedStudents.set(new Set());
@@ -150,7 +146,7 @@ export class AddAwqafTestStudentComponent {
       })
       .pipe(
         takeUntilDestroyed(this.destroyRef),
-        finalize(() => this.loading.set(false))
+        finalize(() => this.loading.set(false)),
       )
       .subscribe(() => {
         this.selectedStudents.set(new Set());

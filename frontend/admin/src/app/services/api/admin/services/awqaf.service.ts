@@ -347,7 +347,7 @@ class AwqafService extends __BaseService {
   }
 }
 
-module AwqafService {
+namespace AwqafService {
 
   /**
    * Parameters for awqafStudentNoQRelationList

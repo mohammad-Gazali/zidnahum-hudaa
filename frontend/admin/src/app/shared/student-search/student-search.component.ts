@@ -1,7 +1,18 @@
-import { Component, DestroyRef, inject, input, model, output, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  inject,
+  input,
+  model,
+  output,
+  signal,
+} from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
+import {
+  MAT_FORM_FIELD_DEFAULT_OPTIONS,
+  MatFormFieldModule,
+} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,29 +26,29 @@ import { TranslatePipe } from '../../pipes/translate.pipe';
 import { MasjedService } from '../../services/masjed.service';
 
 @Component({
-    selector: 'app-student-search',
-    imports: [
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        MatIconModule,
-        MatListModule,
-        MatDividerModule,
-        MatTooltipModule,
-        TranslatePipe,
-    ],
-    providers: [
-        {
-            provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-            useValue: {
-                appearance: 'outline',
-                subscriptSizing: 'dynamic'
-            },
-        },
-    ],
-    templateUrl: './student-search.component.html',
-    styleUrl: './student-search.component.scss'
+  selector: 'app-student-search',
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    MatDividerModule,
+    MatTooltipModule,
+    TranslatePipe,
+  ],
+  providers: [
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {
+        appearance: 'outline',
+        subscriptSizing: 'dynamic',
+      },
+    },
+  ],
+  templateUrl: './student-search.component.html',
+  styleUrl: './student-search.component.scss',
 })
 export class StudentSearchComponent {
   private studetns = inject(StudentsService);
@@ -74,7 +85,7 @@ export class StudentSearchComponent {
           finalize(() => {
             this.loading.set(false);
             this.form.controls.search.enable();
-          })
+          }),
         )
         .subscribe((res) => {
           this.students.set(res.results);

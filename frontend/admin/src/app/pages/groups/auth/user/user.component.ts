@@ -6,10 +6,10 @@ import { AuthBase } from '../auth.base';
 import { deleteModelAction } from '../../../../common/delete-model-action';
 
 @Component({
-    selector: 'app-user',
-    imports: [TableComponent],
-    templateUrl: './user.component.html',
-    styleUrl: './user.component.scss'
+  selector: 'app-user',
+  imports: [TableComponent],
+  templateUrl: './user.component.html',
+  styleUrl: './user.component.scss',
 })
 export class UserComponent extends AuthBase {
   public config: TableComponentConfig<UserList> = {
@@ -19,15 +19,17 @@ export class UserComponent extends AuthBase {
     dataFunc: (options) => this.auth.authUserList(options),
     actions: [
       deleteModelAction('المستخدمين', (ids) =>
-        this.actions.actionsUserDeleteDelete({ ids })
+        this.actions.actionsUserDeleteDelete({ ids }),
       ),
       {
         name: 'activate-users',
-        delegateFunc: ids => this.actions.actionsUserActiveUpdate({ ids, value: true }),
+        delegateFunc: (ids) =>
+          this.actions.actionsUserActiveUpdate({ ids, value: true }),
       },
       {
         name: 'decativate-users',
-        delegateFunc: ids => this.actions.actionsUserActiveUpdate({ ids, value: false }),
+        delegateFunc: (ids) =>
+          this.actions.actionsUserActiveUpdate({ ids, value: false }),
       },
     ],
     columns: {
