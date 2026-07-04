@@ -2,7 +2,9 @@
 
 ## Goal
 
-Replace `frontend/admin/` and `frontend/client/` with a single Angular 22 app rooted at `new-frontend/` that serves both the public-facing site and the admin dashboard in one SPA.
+Combine `frontend/admin/` and `frontend/client/` with a single Angular 22 app rooted at `new-frontend/` that serves both the public-facing site and the admin dashboard in one SPA.
+
+IMPORTANT: DON'T CREATE COMOPNENTS FROM YOURSELF, JUST MIGRATE PROPERLY AND MERGE COMPONENTS, DON'T APPLY YOUR OWN NEW WAY, ONLY COPY AND DON'T MODIFY EXCEPT FOR IMPORTS PATHS AND ANYTHING CAUSES COMPILING ERRORS
 
 ---
 
@@ -25,7 +27,7 @@ Apply existing conventions from the backups:
 
 This is shared code that both client and admin pages depend on.
 
-### 1.1 Auth (`shared/services/auth.service`)
+### 1.1 Auth (`src/shared/services/auth.service`)
 
 Merge `AccountsService` (admin) + `AuthService` (client) into one service:
 
@@ -59,7 +61,7 @@ error.interceptor.ts     — admin's version (catches non-auth errors, shows sna
 
 Keep admin's error interceptor over client's simpler one — it's more robust.
 
-### 1.3 Loading state (`shared/tokens/loading.token.ts`)
+### 1.3 Loading state (`src/shared/tokens/loading.token.ts`)
 
 Replace admin's `LOADING` InjectionToken with a simple root service (or keep the token — either works). The key is one source of truth.
 
@@ -67,14 +69,14 @@ Replace admin's `LOADING` InjectionToken with a simple root service (or keep the
 core/loading.service.ts  — WritableSignal<boolean>, consumed by navbar and guards
 ```
 
-### 1.4 Snackbar / Confirmation (`shared/services/`)
+### 1.4 Snackbar / Confirmation (`src/shared/services/`)
 
 ```
 snackbar.service.ts      — merge admin's (success/error/open) + client's (both are near-identical)
 confirmation.service.ts  — move from client (admin lacks this; it's useful everywhere)
 ```
 
-### 1.5 Common (`common/error/` & `features/login/`)
+### 1.5 Common (`common/error/` & `common/login/`)
 Those are not related to any feature so keep them as common things.
 
 ### 1.6 Features (`features/client/` & `features/admin/`)
@@ -112,7 +114,7 @@ shared/
 
 ### 1.7 Theme & styles
 
-- Keep both theme files — like `client-theme.scss` and `admin-theme.scss`
+- Keep both theme files — like `src/client-theme.scss` and `src/admin-theme.scss`
 - Single `styles.scss` at `src/` with combined styles from both apps
 - Both use same font (Noto Kufi Arabic), RTL layout, Material Icons
 
@@ -123,48 +125,50 @@ shared/
 ### Top-level route tree
 
 ```
-/                           → ClientHomeComponent
-/login                      → LoginComponent (common)
+/                           → ClientHomeComponent (not lazy)
+/login                      → LoginComponent (common) (not lazy)
 
-/student/:id                → StudentDetailComponent (client)
+/student/:id                → StudentDetailComponent (client) (not lazy)
 
-/files                      → FilesComponent (client)
-/news                       → NewsComponent (client)
+/files                      → FilesComponent (client) (not lazy)
+/news                       → NewsComponent (client) (not lazy)
 
-/add-memo                   → AddMemoComponent (client)
-/add-coming                 → AddComingComponent (client)
-/add-points                 → AddPointsComponent (client)
-/add-hadeeth                → AddHadeethComponent (client)
-/add-student                → AddStudentComponent (client)
+/add-memo                   → AddMemoComponent (client) (not lazy)
+/add-coming                 → AddComingComponent (client) (not lazy)
+/add-points                 → AddPointsComponent (client) (not lazy)
+/add-hadeeth                → AddHadeethComponent (client) (not lazy)
+/add-student                → AddStudentComponent (client) (not lazy)
 
-/log-memo                   → LogMemoComponent (client)
-/log-coming                 → LogComingComponent (client)
-/log-points                 → LogPointsComponent (client)
+/log-memo                   → LogMemoComponent (client) (not lazy)
+/log-coming                 → LogComingComponent (client) (not lazy)
+/log-points                 → LogPointsComponent (client) (not lazy)
 
-/reports                    → ReportsComponent (client)
+/reports                    → ReportsComponent (client) (not lazy)
 
-/admin                      → AdminHomeComponent (coming from `frontend/admin/src/app/home/`)
-/admin/students/*           → AdminStudentsRoutes
-/admin/points/*             → AdminPointsRoutes
-/admin/comings/*            → AdminComingsRoutes
-/admin/awqaf/*              → AdminAwqafRoutes
-/admin/globals/*            → AdminGlobalsRoutes
-/admin/money/*              → AdminMoneyRoutes
-/admin/auth/*               → AdminAuthRoutes (superadmin)
-/admin/settings             → SettingsComponent (superadmin)
-/admin/reports              → AdminReportsComponent
-/admin/statistics           → StatisticsComponent (superadmin)
+/admin                      → AdminHomeComponent (coming from `frontend/admin/src/app/home/`) (not lazy)
+/admin/students/*           → AdminStudentsRoutes (not lazy)
+/admin/points/*             → AdminPointsRoutes (not lazy)
+/admin/comings/*            → AdminComingsRoutes (not lazy)
+/admin/awqaf/*              → AdminAwqafRoutes (not lazy)
+/admin/globals/*            → AdminGlobalsRoutes (not lazy)
+/admin/money/*              → AdminMoneyRoutes (not lazy)
+/admin/auth/*               → AdminAuthRoutes (superadmin) (not lazy)
+/admin/settings             → SettingsComponent (superadmin) (not lazy)
+/admin/reports              → AdminReportsComponent (not lazy)
+/admin/statistics           → StatisticsComponent (superadmin) (not lazy)
 ```
 
 ### Implementation notes
 
-- **Every route above is normally loaded** except for the main `/` and `admin` which represent each feature of `features/client/` and `features/admin/`, those two are lazy loaded via **loadChildren()**.
+- **Every route above is normally loaded** except for the main `/` and `/admin` which represent each feature of `features/client/` and `features/admin/`, they will be lazy loaded inside (app.routes.ts) only, those two are lazy loaded via **loadChildren()**.
 - **Login is shared** — both apps use the same JWT + `/accounts/token` endpoint. One `LoginComponent` handles both. After login, redirect to `/` (client) or `/admin` based on user.isAdmin.
 - **Guards**: Use the client's guard pattern (functional `CanActivateFn`, waiting for `auth.currentUser` to be defined) — it's more robust than admin's on-spot check in `AppComponent.init()`.
 
 ### Feature directory layout
 
 Merge both apps' pages into a flat-by-scope structure:
+
+Everything below make sure to COPY, not replace, except for imports errors and paths
 
 ```
 src/app/
@@ -190,7 +194,7 @@ src/app/
         log-coming/
         log-points/
         reports/
-      layout/
+      layout/          
       services/
       (whatever is good to be modular here)
       client.routes.ts (use the layout for this feature here depending on the router-outlet) (normal loading not lazy)
@@ -223,6 +227,8 @@ src/app/
 ### Problem
 
 Both apps have ng-swagger-gen generated services that **share names** (`StudentsService`, `ComingsService`, etc.) but contain **different methods** (client has student-facing endpoints, admin has CRUD endpoints). They cannot coexist at the same import path.
+
+Make sure to put them inside another folder called `api` like `src/features/<feature-name>/services/api/<service-name>.service.ts`
 
 ### Solution
 
