@@ -1,0 +1,32 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <mat-form-field>
+        <mat-icon matPrefix>search</mat-icon>
+        <mat-label>{{ 'student_name' | translate }}</mat-label>
+        <input matInput type="text" [formControl]="form.controls.search" />
+    </mat-form-field>
+    @if (students().length !== 0) {
+        <button 
+        mat-mini-fab 
+        color="warn" 
+        (click)="clear()" 
+        type="button"
+        [matTooltip]="'clear result' | translate"
+        >
+            <mat-icon>close</mat-icon>
+        </button>
+    }
+</form>
+<mat-action-list>
+    @for (student of students(); track student.id) {
+        <div>
+            <button mat-list-item (click)="choose(student)">
+                <mat-icon matListItemIcon>person</mat-icon>
+                {{ student.id }} - {{ student.name }}
+                <div matListItemMeta>
+                    (مسجد {{ masjed.getMasjed(student.masjed) }})
+                </div>
+            </button>
+            <mat-divider></mat-divider>
+        </div>
+    }
+</mat-action-list>

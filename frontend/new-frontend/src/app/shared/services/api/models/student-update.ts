@@ -1,0 +1,33 @@
+/* tslint:disable */
+export interface StudentUpdate {
+  address?: null | string;
+  alarbaein_alnawawia_new?: number;
+  alarbaein_alnawawia_old?: number;
+  allah_names_new?: boolean;
+  allah_names_old?: boolean;
+  birthdate?: null | string;
+  bring_him?: null | string;
+  category?: null | number;
+  cell_phone?: null | string;
+  father_phone?: null | string;
+  father_work?: null | string;
+  group?: null | number;
+  masjed: 1 | 2 | 3 | 4;
+  mother_name?: null | string;
+  mother_phone?: null | string;
+  name: string;
+  notes?: null | string;
+  parts_received?: null | string;
+  q_awqaf_test?: {};
+  q_awqaf_test_explaining?: {};
+  q_awqaf_test_looking?: {};
+  q_elite_test?: {};
+  q_memorizing?: {};
+  q_viewing?: {};
+  q_test?: {};
+  riad_alsaalihin_new?: number;
+  riad_alsaalihin_old?: number;
+  extra_hadeeth?: number;
+  static_phone?: null | string;
+  level: 1 | 2 | 3;
+}

@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>{{ 'warning' | translate }}</h2>
+<mat-dialog-content>
+    {{ 'Are you sure you want to delete this' | translate }} {{ data.itemNameAndRouteName | translate }} {{ '?' | translate }}
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button [disabled]="loading()" mat-flat-button (click)="ref.close()">
+        {{ 'cancel' | translate }}
+    </button>
+    <button [disabled]="loading()" mat-flat-button color="primary" (click)="deleteFunc()">
+        {{ 'yes' | translate }}
+    </button>
+</mat-dialog-actions>

@@ -1,0 +1,12 @@
+.news-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.no-news {
+  grid-column: -1 / 1;
+  text-align: center;
+  font-size: 1.25rem;
+}

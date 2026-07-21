@@ -1,0 +1,62 @@
+<div class="title bg-primary-fixed-dim">
+  تسجيل التسميع
+</div>
+<mat-form-field class="search-field">
+  <input [formControl]="search" (keyup)="$event.key === 'Enter' && submit()" matInput placeholder="اكتب اسم الطالب أو معرفه" />
+  <button (click)="$event.stopPropagation(); submit()" mat-flat-button matSuffix>
+    بحث
+    <mat-icon>search</mat-icon>
+  </button>
+</mat-form-field>
+<div class="cards-container">
+  @if (selectedStudent() === null && students(); as students) {
+    @for (student of students; track student.id) {
+      <mat-card>
+        <mat-card-content>
+          <span>
+            {{ student.name }}
+          </span>
+          <button
+            (click)="selectedStudent.set(student)"
+            mat-flat-button
+            class="secondary"
+          >
+            اختيار
+          </button>
+        </mat-card-content>
+      </mat-card>
+    } @empty {
+      @if (searched()) {
+        <mat-card class="empty-card">
+          <mat-card-content>
+            لا يوجد طلاب بهذه التفاصيل
+          </mat-card-content>
+        </mat-card>
+      }
+    }
+  }
+</div>
+@if (selectedStudent(); as selectedStudent) {
+  <mat-card class="selected-student-card">
+    <mat-card-content>
+      <span class="student-name">
+        الطالب:
+        {{ ' ' }}{{ selectedStudent.name }}
+      </span>
+      <mat-tab-group
+        animationDuration="0"
+        mat-stretch-tabs="false"
+      >
+        <mat-tab label="التسميع غيباً">
+          <app-memo-form (onSubmit)="onMemoSubmit($event)" />
+        </mat-tab>
+        <mat-tab label="سبر الأرباع">
+          <app-test-form (onSubmit)="onTestSubmit($event)" />
+        </mat-tab>
+        <mat-tab label="القراءة نظراً">
+          <app-memo-form (onSubmit)="onViewingSubmit($event)" />
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card-content>
+  </mat-card>
+}

@@ -1,0 +1,37 @@
+mat-card {
+  padding: 1rem;
+}
+
+mat-chip {
+  width: fit-content;
+}
+
+form {
+  max-width: 730px;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  button {
+    width: fit-content;
+  }
+}
+
+.parts-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+  gap: 0.5rem;
+
+  mat-card {
+    display: grid;
+    place-items: center;
+    flex-grow: 1;
+    width: 40px;
+    height: 40px;
+    padding: 0px 8px;
+    cursor: pointer;
+    user-select: none;
+  }
+}

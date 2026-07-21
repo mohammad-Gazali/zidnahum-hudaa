@@ -1,0 +1,28 @@
+form {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+mat-action-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 900px) {
+    mat-action-list {
+        mat-icon {
+            display: none;
+        }
+    
+        [matListItemMeta] {
+            display: none;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    mat-action-list {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,54 @@
+.last-comings {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+
+  mat-card {
+    padding: 0.5rem;
+    text-align: center;
+  }
+
+  @media (max-width: 500px) {
+    & {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+}
+
+h5 {
+  text-align: center;
+  margin-bottom: 1rem;
+
+  &.bg-secondary-fixed {
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+  }
+}
+
+.not-found {
+  font-weight: 500;
+  text-align: center;
+  grid-column: 1 / -1;
+}
+
+mat-divider {
+  margin: 1.5rem 0;
+}
+
+.flex-row {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 2rem;
+  align-items: center;
+  flex-wrap: wrap;
+
+  &.reverse {
+    flex-direction: row-reverse;
+  }
+
+  > * {
+    display: grid;
+    place-items: center;
+  }
+}

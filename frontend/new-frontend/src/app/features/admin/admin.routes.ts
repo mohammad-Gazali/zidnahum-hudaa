@@ -1,0 +1,56 @@
+import { Routes } from '@angular/router';
+import { LayoutComponent } from './layout/layout.component';
+import { routes as studentsRoutes } from './pages/groups/students/students.routes';
+import { routes as authRoutes } from './pages/groups/auth/auth.routes';
+import { routes as pointsRoutes } from './pages/groups/points/points.routes';
+import { routes as comingsRoutes } from './pages/groups/comings/comings.routes';
+import { routes as awqafRoutes } from './pages/groups/awqaf/awqaf.routes';
+import { routes as globalsRoutes } from './pages/groups/globals/globals.routes';
+import { routes as moneyRoutes } from './pages/groups/money/money.routes';
+import { routes as adminSettingsRoutes } from './pages/groups/admin/admin.routes';
+
+export const routes: Routes = [
+  {
+    path: '',
+    component: LayoutComponent,
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./pages/home/home.component').then((m) => m.HomeComponent),
+      },
+      {
+        path: 'students',
+        children: studentsRoutes,
+      },
+      {
+        path: 'auth',
+        children: authRoutes,
+      },
+      {
+        path: 'points',
+        children: pointsRoutes,
+      },
+      {
+        path: 'comings',
+        children: comingsRoutes,
+      },
+      {
+        path: 'awqaf',
+        children: awqafRoutes,
+      },
+      {
+        path: 'globals',
+        children: globalsRoutes,
+      },
+      {
+        path: 'money',
+        children: moneyRoutes,
+      },
+      {
+        path: 'admin',
+        children: adminSettingsRoutes,
+      },
+    ],
+  },
+];

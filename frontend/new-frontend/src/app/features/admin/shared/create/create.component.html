@@ -1,0 +1,77 @@
+<form [formGroup]="form" class="fields-container" (ngSubmit)="submit()">
+    @for (field of fields(); track field.name) {
+        <div class="field-row">
+            <div class="row-title">
+                <span>
+                    {{ field.name | translate }}
+                </span>
+            </div>
+            @if (field.config.type !== "date" && field.config.type !== 'boolean' && field.config.type !== 'file') {
+                <mat-form-field>
+                    <mat-label>{{ field.name | translate }}</mat-label>
+
+                    @switch(field.config.type) {
+                        @case ("string") {
+                            <input matInput [formControlName]="field.name" />
+                        } @case ("password") {
+                            <input matInput [formControlName]="field.name" type="password" />
+                        } @case ("number") {
+                            <input matInput [formControlName]="field.name" type="number" />
+                        } @case ("relation") {
+                            <mat-select [formControlName]="field.name" [multiple]="field.config.relationType === 'multiple'">
+                                @if (field.config.relationType === 'nullable') {
+                                    <mat-option [value]="-1">
+                                        ({{ 'empty value' | translate }})
+                                    </mat-option>
+                                }
+                                @for (option of field.options; track option.id) {
+                                    <mat-option [value]="option.id">
+                                        {{ option.name }}
+                                    </mat-option>
+                                }
+                            </mat-select>
+                        } @default {
+                            ERROR
+                        }
+                    }
+
+                    @if (form.getError('required', field.name)) {
+                        <mat-error>{{ 'this field is required' | translate }}</mat-error>
+                    }
+                    @if (form.getError('min', field.name)) {
+                        <mat-error>{{ 'the minimum value is' | translate }} {{ $any(form.get(field.name)?.errors).min.min }}</mat-error>
+                    }
+                    @if (form.getError('max', field.name)) {
+                        <mat-error>{{ 'the maximum value is' | translate }} {{ $any(form.get(field.name)?.errors).max.max }}</mat-error>
+                    }
+                </mat-form-field>
+            } @else if (field.config.type === 'date') {
+                <mat-form-field>
+                    <mat-label>{{ field.name | translate }}</mat-label>
+                    <input matInput [matDatepicker]="picker" [formControlName]="field.name">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+
+                    @if (form.getError('required', field.name)) {
+                        <mat-error>{{ 'this field is required' | translate }}</mat-error>
+                    }
+                </mat-form-field>
+            } @else if (field.config.type === 'boolean') {
+                <mat-checkbox [formControlName]="field.name"></mat-checkbox>
+            } @else if (field.config.type === 'file') {
+                <input type="file" (change)="onFilePicked($event, field.name)" />
+            }
+        </div>
+        <mat-divider></mat-divider>
+    }
+    <div class="buttons-container">
+        <button [disabled]="loading()" (click)="goToTable()" mat-flat-button type="button">
+            <mat-icon class="mat-icon-rtl-mirror">reply</mat-icon>
+            {{ 'Cancel' | translate }}
+        </button>
+        <button [disabled]="loading()" mat-flat-button color="primary" type="submit">
+            <mat-icon>add</mat-icon>
+            {{ 'Create' | translate }}
+        </button>
+    </div>
+</form>

@@ -1,0 +1,37 @@
+import { Component, inject, output } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import {
+  MatListItem,
+  MatListItemIcon,
+  MatListItemTitle,
+  MatNavList,
+} from '@angular/material/list';
+import { MatIcon } from '@angular/material/icon';
+import { GroupsService } from '@admin';
+import { MatDivider } from '@angular/material/divider';
+import { AccountsService } from '@admin/services/api/accounts/accounts.service';
+
+@Component({
+  selector: 'app-sidenav',
+  imports: [
+    MatNavList,
+    MatListItem,
+    MatListItemTitle,
+    MatListItemIcon,
+    MatIcon,
+    MatDivider,
+    RouterLink,
+    RouterLinkActive,
+  ],
+  templateUrl: './sidenav.component.html',
+  styleUrl: './sidenav.component.scss',
+})
+export class SidenavComponent {
+  public groupsService = inject(GroupsService);
+  public onItemClick = output();
+  public userDetails = inject(AccountsService).details;
+
+  close() {
+    this.onItemClick.emit();
+  }
+}

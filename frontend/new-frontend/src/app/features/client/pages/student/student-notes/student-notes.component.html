@@ -1,0 +1,20 @@
+@if (student(); as student) {
+    @for (note of student.memo_notes; track note.content) {
+        <mat-card appearance="outlined">
+            @if (hasGroup()) {
+                <button (click)="removeNote(note.id)" class="error" mat-flat-button>
+                    <mat-icon>delete</mat-icon>
+                    حذف
+                </button>
+            }
+            <p>
+                {{ note.content }}
+            </p>
+            <span class="text-outline">
+                {{ note.sended_at | date: 'yyyy-MM-dd' }}
+            </span>
+        </mat-card>
+    } @empty {
+        <p class="not-found">لا يوجد</p>
+    }
+}

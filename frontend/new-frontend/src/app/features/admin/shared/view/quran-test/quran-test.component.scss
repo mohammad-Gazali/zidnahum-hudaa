@@ -1,0 +1,57 @@
+.test-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    gap: 2rem;
+    max-width: 80vw;
+
+    mat-card {
+        display: grid;
+        place-items: center;
+        flex-grow: 1;
+        width: 80px;
+        height: 40px;
+        padding: 0px 8px;
+    }
+
+    .edit-mode {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    @media (max-width: 500px) {
+        & {
+            max-width: 100%;
+        }
+    }
+}
+
+.section-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    > * {
+        flex-grow: 1;
+    }
+
+    .section-card {
+        width: 100%;
+    }
+}
+
+.part-container {
+    display: flex;
+    gap: 0.5rem;
+
+    .part-name-card {
+        height: 100%;
+        text-wrap: nowrap;
+    }
+
+    .self-parts-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+}

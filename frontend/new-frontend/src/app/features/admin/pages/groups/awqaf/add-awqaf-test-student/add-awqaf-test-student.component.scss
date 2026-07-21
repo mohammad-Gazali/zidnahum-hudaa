@@ -1,0 +1,46 @@
+mat-card {
+    padding: 1rem;
+}
+
+.chips-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 0.5rem 0;
+}
+
+mat-radio-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+form {
+    max-width: 500px;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    button {
+        width: fit-content;
+    }
+}
+
+.awqaf-test-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    gap: 0.5rem;
+    
+    mat-card {
+        display: grid;
+        place-items: center;
+        flex-grow: 1;
+        width: 80px;
+        height: 40px;
+        padding: 0px 8px;
+        cursor: pointer;
+        user-select: none;
+    }
+}
