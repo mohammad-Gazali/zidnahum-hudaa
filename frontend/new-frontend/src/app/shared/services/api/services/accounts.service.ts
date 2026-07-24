@@ -23,6 +23,7 @@ class AccountsService extends __BaseService {
     http: HttpClient
   ) {
     super(config, http);
+    this.rootUrl = '/api/v1/admin';
   }
   accountsDetailsListResponse(): __Observable<__StrictHttpResponse<UserSerilizer>> {
     let __params = this.newParams();

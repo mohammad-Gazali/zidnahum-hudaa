@@ -16,7 +16,7 @@ import {
 })
 export class ReportsService {
   private http = inject(HttpClient);
-  private rootUrl = inject(ApiConfiguration).rootUrl.slice(0, -5) + 'reports';
+  private rootUrl = '/api/v1/admin/reports';
 
   public createStudentReport(id: number, data: ReportsRequest) {
     return this.http.post<ReportsStudentResponse>(

@@ -38,6 +38,7 @@ class GlobalsService extends __BaseService {
     http: HttpClient
   ) {
     super(config, http);
+    this.rootUrl = '/api/v1/admin';
   }
 
   /**

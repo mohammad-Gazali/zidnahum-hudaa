@@ -1,5 +1,6 @@
 export * from './types';
 export * from './constants/extra-hadeeth.const';
+export * from './constants/labels.const';
 export * from './services';
 export * from './pipes';
 export * from './tokens/loading.token';
