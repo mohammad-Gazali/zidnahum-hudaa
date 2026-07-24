@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { TableComponent } from '../../../../shared/table/table.component';
-import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
+import { TableComponent, TableComponentConfig } from '@admin/components';
+import { deleteModelAction } from '@admin/helpers';
 import { AwqafTestNoQList } from '@shared';
 import { AwqafBase } from '../awqaf.base';
-import { deleteModelAction } from '@admin';
 
 @Component({
   selector: 'app-no-q-test',

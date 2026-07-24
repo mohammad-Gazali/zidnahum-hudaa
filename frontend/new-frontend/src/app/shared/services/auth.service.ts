@@ -3,7 +3,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { EMPTY, catchError, switchMap, tap } from 'rxjs';
 import { AccountsService } from './api/services';
 import { SnackbarService } from './snackbar.service';
-import { Group } from '../types';
 import { CurrentUser } from '../types';
 import { Router } from '@angular/router';
 

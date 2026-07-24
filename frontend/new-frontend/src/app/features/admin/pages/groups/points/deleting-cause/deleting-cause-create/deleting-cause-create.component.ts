@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { PointsBase } from '../../points.base';
-import { CreateComponentConfig } from '../../../../../shared/create/create.component.interface';
-import { PointsDeletingCauseCreate } from '@shared';
-import { CreateComponent } from '../../../../../shared/create/create.component';
 import { Validators } from '@angular/forms';
+import { CreateComponent, CreateComponentConfig } from '@admin/components';
+import { PointsDeletingCauseCreate } from '@shared';
+import { PointsBase } from '../../points.base';
 
 @Component({
   selector: 'app-deleting-cause-create',

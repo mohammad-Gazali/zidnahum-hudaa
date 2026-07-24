@@ -21,9 +21,9 @@ import {
   MatSidenavContent,
 } from '@angular/material/sidenav';
 import { MatToolbar } from '@angular/material/toolbar';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService, CurrentUser } from '@shared';
-import { LayoutService, LayoutRoute } from '../services/layout.service';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { AuthService, CurrentUser, LayoutService } from '@shared';
+import { ClientRoutesService, ClientRoute } from '@client/services';
 import { HomeStudentListService } from '../pages/home/home-student-list.service';
 
 @Component({
@@ -51,19 +51,21 @@ import { HomeStudentListService } from '../pages/home/home-student-list.service'
     MatExpansionPanelHeader,
     MatExpansionPanelTitle,
     MatAnchor,
+    RouterOutlet,
   ],
-  providers: [LayoutService],
+  providers: [ClientRoutesService],
 })
 export class LayoutComponent {
   private studentsList = inject(HomeStudentListService);
   protected auth = inject(AuthService);
-  protected layout = inject(LayoutService);
+  protected clientRoutes = inject(ClientRoutesService);
   protected router = inject(Router);
+  protected layout = inject(LayoutService);
 
   protected currentUser = this.auth.currentUser;
 
-  protected routes = computed<LayoutRoute[]>(() => {
-    return this.layout.routes
+  protected routes = computed<ClientRoute[]>(() => {
+    return this.clientRoutes.routes
       .filter(this.handleRoute(this.currentUser()))
       .map((r) => ({
         ...r,
@@ -77,8 +79,8 @@ export class LayoutComponent {
 
   private handleRoute(
     user: CurrentUser | null | undefined,
-  ): (route: LayoutRoute) => boolean {
-    return (route: LayoutRoute) => {
+  ): (route: ClientRoute) => boolean {
+    return (route: ClientRoute) => {
       if (route.nonAuthOnly) return !user;
       if (route.authOnly) return !!user;
       if (user?.isAdmin) return true;

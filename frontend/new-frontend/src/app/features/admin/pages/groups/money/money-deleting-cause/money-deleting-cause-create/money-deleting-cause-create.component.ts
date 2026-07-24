@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { CreateComponent } from '../../../../../shared/create/create.component';
-import { CreateComponentConfig } from '../../../../../shared/create/create.component.interface';
+import { Validators } from '@angular/forms';
+import { CreateComponent, CreateComponentConfig } from '@admin/components';
 import { MoneyDeletingCauseCreate } from '@shared';
 import { MoneyBase } from '../../money.base';
-import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-money-deleting-cause-create',

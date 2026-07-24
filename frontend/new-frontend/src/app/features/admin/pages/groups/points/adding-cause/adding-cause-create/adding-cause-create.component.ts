@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { PointsBase } from '../../points.base';
-import { CreateComponent } from '../../../../../shared/create/create.component';
-import { CreateComponentConfig } from '../../../../../shared/create/create.component.interface';
-import { PointsAddingCauseCreate } from '@shared';
 import { Validators } from '@angular/forms';
+import { CreateComponent, CreateComponentConfig } from '@admin/components';
+import { PointsAddingCauseCreate } from '@shared';
+import { PointsBase } from '../../points.base';
 
 @Component({
   selector: 'app-adding-cause-create',

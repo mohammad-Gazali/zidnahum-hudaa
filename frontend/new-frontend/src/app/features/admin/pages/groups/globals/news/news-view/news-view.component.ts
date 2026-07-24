@@ -1,8 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { NewsList } from '@shared';
-import { MasjedService } from '@shared';
-import { ViewComponent } from '../../../../../shared/view/view.component';
-import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
+import { ViewComponent, ViewComponentConfig } from '@admin/components';
+import { NewsList, MasjedService } from '@shared';
 import { GlobalsBase } from '../../globals.base';
 
 @Component({

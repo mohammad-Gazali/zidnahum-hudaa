@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { TableComponent } from '../../../../shared/table/table.component';
-import { AwqafBase } from '../awqaf.base';
-import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
+import { TableComponent, TableComponentConfig } from '@admin/components';
+import { deleteModelAction } from '@admin/helpers';
 import { AwqafNoQStudentRelationList } from '@shared';
-import { deleteModelAction } from '@admin';
+import { AwqafBase } from '../awqaf.base';
 
 @Component({
   selector: 'app-student-no-q-test-relation',

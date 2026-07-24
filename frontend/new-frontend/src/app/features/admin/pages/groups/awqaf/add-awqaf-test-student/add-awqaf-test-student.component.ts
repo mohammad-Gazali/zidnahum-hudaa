@@ -19,17 +19,16 @@ import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatButton } from '@angular/material/button';
 import { MatRipple } from '@angular/material/core';
 import { finalize } from 'rxjs';
-import { TranslatePipe } from '@shared';
-import { StudentSearchComponent } from '../../../../shared/student-search/student-search.component';
-import { SearchStudent } from '../../../../shared/student-search/search-student.interface';
+import { StudentSearchComponent, SearchStudent } from '@admin/components';
+import { QuranAwqafTestService } from '@admin/services';
 import {
   AwqafService,
   ExtraService,
+  TranslatePipe,
+  SnackbarService,
+  AwqafTestNoQList,
+  LOADING,
 } from '@shared';
-import { SnackbarService } from '@shared';
-import { AwqafTestNoQList } from '@shared';
-import { QuranAwqafTestService } from '@admin/services/quran/quran-awqaf-test.service';
-import { LOADING } from '@shared';
 
 @Component({
   selector: 'app-add-awqaf-test-student',

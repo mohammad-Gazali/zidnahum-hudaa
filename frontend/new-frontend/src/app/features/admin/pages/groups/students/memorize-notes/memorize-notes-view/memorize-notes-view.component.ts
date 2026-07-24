@@ -1,10 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { ViewComponent } from '../../../../../shared/view/view.component';
-import { StudentsBase } from '../../students.base';
-import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
-import { MemorizeNotesList } from '@shared';
-import { UsersGroupsService } from '@shared';
 import { map } from 'rxjs';
+import { ViewComponent, ViewComponentConfig } from '@admin/components';
+import { MemorizeNotesList, UsersGroupsService } from '@shared';
+import { StudentsBase } from '../../students.base';
 
 @Component({
   selector: 'app-memorize-notes-view',

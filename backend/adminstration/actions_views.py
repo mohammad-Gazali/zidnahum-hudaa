@@ -35,7 +35,10 @@ class AdminUserPasswordUpdateView(APIView):
   permission_classes = [IsSuperUser]
   http_method_names = ["put"]
 
-  @extend_schema(request=UserUpdatePasswordSerializer)
+  @extend_schema(
+    request=UserUpdatePasswordSerializer,
+    tags=["admin-actions"]
+  )
   def put(self, *args, **kwargs):
     serializer = UserUpdatePasswordSerializer(data=self.request.data)
 
@@ -54,7 +57,10 @@ class AdminUserUpdateActiveView(APIView):
   permission_classes = [IsSuperUser]
   http_method_names = ["put"]
 
-  @extend_schema(request=ActionBooleanUpdateSerializer)
+  @extend_schema(
+    request=ActionBooleanUpdateSerializer,
+    tags=["admin-actions"]
+  )
   def put(self, *args, **kwargs):
     serializer = ActionBooleanUpdateSerializer(data=self.request.data)
 
@@ -75,7 +81,10 @@ class AdminMoneyDeletingUpdateActiveView(APIView):
   permission_classes = [IsSuperUser]
   http_method_names = ["put"]
 
-  @extend_schema(request=ActionBooleanUpdateSerializer)
+  @extend_schema(
+    request=ActionBooleanUpdateSerializer,
+    tags=["admin-actions"]
+  )
   def put(self, *args, **kwargs):
     serializer = ActionBooleanUpdateSerializer(data=self.request.data)
 

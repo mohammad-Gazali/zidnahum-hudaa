@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { MessageType } from '../types/message-type.enum';
+import { MessageType } from '../enums';
 import { MESSAGE_TYPE_LABELS } from '../constants/labels.const';
 
 @Injectable({

@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { PointsBase } from '../../points.base';
-import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
 import { Validators } from '@angular/forms';
+import { ViewComponent, ViewComponentConfig } from '@admin/components';
 import {
   PointsDeletingCauseList,
   PointsDeletingCauseUpdate,
 } from '@shared';
-import { ViewComponent } from '../../../../../shared/view/view.component';
+import { PointsBase } from '../../points.base';
 
 @Component({
   selector: 'app-deleting-cause-view',

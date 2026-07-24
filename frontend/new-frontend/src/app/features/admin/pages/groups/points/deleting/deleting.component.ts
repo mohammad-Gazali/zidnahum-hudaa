@@ -1,11 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { PointsBase } from '../points.base';
-import { UsersGroupsService } from '@shared';
-import { TableComponent } from '../../../../shared/table/table.component';
-import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
-import { PointsDeletingList } from '@shared';
 import { map } from 'rxjs';
-import { deleteModelAction } from '@admin';
+import { UsersGroupsService } from '@shared';
+import { TableComponent, TableComponentConfig } from '@admin/components';
+import { deleteModelAction } from '@admin/helpers';
+import { PointsDeletingList } from '@shared';
+import { PointsBase } from '../points.base';
 
 @Component({
   selector: 'app-deleting',

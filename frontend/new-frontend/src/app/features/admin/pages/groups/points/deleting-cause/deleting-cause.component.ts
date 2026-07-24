@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { PointsBase } from '../points.base';
+import { TableComponent, TableComponentConfig } from '@admin/components';
+import { deleteModelAction } from '@admin/helpers';
 import { PointsDeletingCauseList } from '@shared';
-import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
-import { TableComponent } from '../../../../shared/table/table.component';
-import { deleteModelAction } from '@admin';
+import { PointsBase } from '../points.base';
 
 @Component({
   selector: 'app-deleting-cause',

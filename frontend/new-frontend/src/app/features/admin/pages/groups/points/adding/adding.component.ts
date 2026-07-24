@@ -1,11 +1,9 @@
 import { Component, inject } from '@angular/core';
-import { PointsBase } from '../points.base';
-import { TableComponent } from '../../../../shared/table/table.component';
-import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
-import { PointsAddingList } from '@shared';
-import { UsersGroupsService } from '@shared';
 import { map } from 'rxjs';
-import { deleteModelAction } from '@admin';
+import { TableComponent, TableComponentConfig } from '@admin/components';
+import { deleteModelAction } from '@admin/helpers';
+import { PointsAddingList, UsersGroupsService } from '@shared';
+import { PointsBase } from '../points.base';
 
 @Component({
   selector: 'app-adding',
@@ -23,9 +21,7 @@ export class AddingComponent extends PointsBase {
     searchField: 'student_name', // here we added it like this because it will be converted to camelCase which will be converted to the right query param
     dataFunc: (options) => this.points.pointsAddingList(options),
     actions: [
-      deleteModelAction('الإضافات', (ids) =>
-        this.actions.actionsPointsAddingDeleteDelete({ ids }),
-      ),
+      deleteModelAction('الإضافات', (ids) => this.actions.actionsPointsAddingDeleteDelete({ ids })),
     ],
     columns: {
       cause: {

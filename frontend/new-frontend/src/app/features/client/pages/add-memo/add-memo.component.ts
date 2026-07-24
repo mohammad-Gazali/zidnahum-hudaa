@@ -9,7 +9,6 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
   LayoutService,
   MemoService,
-  MobileUtilsService,
   SnackbarService,
   StudentList,
   StudentsClientService,
@@ -31,6 +30,7 @@ import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { MemoFormComponent, MemoSubmit } from './memo-form/memo-form.component';
 import { TestFormComponent, TestSubmit } from './test-form/test-form.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MobileUtilsService } from '@client/services';
 
 @Component({
   selector: 'app-add-memo',

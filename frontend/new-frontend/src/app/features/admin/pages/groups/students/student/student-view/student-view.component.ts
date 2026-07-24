@@ -1,16 +1,15 @@
 import { Component, inject } from '@angular/core';
-import { ViewComponent } from '../../../../../shared/view/view.component';
-import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
+import { Validators } from '@angular/forms';
+import { ViewComponent, ViewComponentConfig } from '@admin/components';
 import {
   StudentDetails,
   StudentUpdate,
+  MasjedService,
+  LevelService,
+  ExtraService,
+  EXTRA_HADEETH_LIMIT,
 } from '@shared';
-import { MasjedService } from '@shared';
-import { LevelService } from '@shared';
-import { Validators } from '@angular/forms';
 import { StudentsBase } from '../../students.base';
-import { ExtraService } from '@shared';
-import { EXTRA_HADEETH_LIMIT } from '@shared';
 
 @Component({
   selector: 'app-student-view',

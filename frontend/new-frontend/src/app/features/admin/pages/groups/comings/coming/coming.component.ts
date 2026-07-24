@@ -1,11 +1,9 @@
 import { Component, inject } from '@angular/core';
-import { TableComponent } from '../../../../shared/table/table.component';
-import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
-import { ComingList } from '@shared';
-import { ComingsBase } from '../comings.base';
-import { UsersGroupsService } from '@shared';
 import { map } from 'rxjs';
-import { deleteModelAction } from '@admin';
+import { TableComponent, TableComponentConfig } from '@admin/components';
+import { deleteModelAction } from '@admin/helpers';
+import { ComingList, UsersGroupsService } from '@shared';
+import { ComingsBase } from '../comings.base';
 
 @Component({
   selector: 'app-coming',

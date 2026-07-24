@@ -1,9 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { deleteModelAction } from '@admin';
-import { NewsList } from '@shared';
-import { MasjedService } from '@shared';
-import { TableComponent } from '../../../../shared/table/table.component';
-import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
+import { TableComponent, TableComponentConfig } from '@admin/components';
+import { deleteModelAction } from '@admin/helpers';
+import { NewsList, MasjedService } from '@shared';
 import { GlobalsBase } from '../globals.base';
 
 @Component({

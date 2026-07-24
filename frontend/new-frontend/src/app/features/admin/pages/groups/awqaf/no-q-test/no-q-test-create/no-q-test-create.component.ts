@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { CreateComponent } from '../../../../../shared/create/create.component';
-import { CreateComponentConfig } from '../../../../../shared/create/create.component.interface';
-import { AwqafTestNoQCreate } from '@shared';
 import { Validators } from '@angular/forms';
+import { CreateComponent, CreateComponentConfig } from '@admin/components';
+import { AwqafTestNoQCreate } from '@shared';
 import { AwqafBase } from '../../awqaf.base';
 
 @Component({

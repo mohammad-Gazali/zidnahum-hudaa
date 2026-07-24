@@ -14,12 +14,12 @@ import {
   Group,
   LayoutService,
   MasjedPipe,
-  MobileUtilsService,
   StudentsClientService,
 } from '@shared';
 import { HomeStudentListService } from './home-student-list.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AddMemorizeNoteDialogComponent } from './add-memorize-note-dialog/add-memorize-note-dialog.component';
+import { MobileUtilsService } from '@client/services';
 
 @Component({
   selector: 'app-home',

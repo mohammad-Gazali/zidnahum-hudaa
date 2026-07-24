@@ -3,10 +3,10 @@ import {
   MemoPipe,
   MemorizeMessageForStudent,
   MessageType,
-  PagesSumService,
   TestPipe,
 } from '@shared';
 import { MatCard } from '@angular/material/card';
+import { PagesSumService } from '@client/services';
 
 @Component({
   selector: 'app-student-activities-messages-container',

@@ -1,13 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { map } from 'rxjs';
-import { TableComponent } from '../../../../shared/table/table.component';
+import { TableComponent, TableComponentConfig } from '@admin/components';
+import { deleteModelAction } from '@admin/helpers';
+import {
+  MemorizeMessageList,
+  UsersGroupsService,
+  MemorizeMessageTypeService,
+  LevelService,
+} from '@shared';
 import { StudentsBase } from '../students.base';
-import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
-import { MemorizeMessageList } from '@shared';
-import { UsersGroupsService } from '@shared';
-import { deleteModelAction } from '@admin';
-import { MemorizeMessageTypeService } from '@shared';
-import { LevelService } from '@shared';
 
 @Component({
   selector: 'app-memorize-message',

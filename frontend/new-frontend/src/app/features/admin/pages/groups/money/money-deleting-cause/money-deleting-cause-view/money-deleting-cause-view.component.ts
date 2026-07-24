@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { ViewComponent } from '../../../../../shared/view/view.component';
-import { MoneyBase } from '../../money.base';
-import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
+import { Validators } from '@angular/forms';
+import { ViewComponent, ViewComponentConfig } from '@admin/components';
 import {
   MoneyDeletingCauseList,
   MoneyDeletingCauseUpdate,
 } from '@shared';
-import { Validators } from '@angular/forms';
+import { MoneyBase } from '../../money.base';
 
 @Component({
   selector: 'app-money-deleting-cause-view',

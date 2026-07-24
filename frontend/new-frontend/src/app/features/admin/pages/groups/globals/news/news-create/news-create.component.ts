@@ -1,10 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { CreateComponent } from '../../../../../shared/create/create.component';
+import { CreateComponent, CreateComponentConfig } from '@admin/components';
+import { NewsCreate, MasjedService } from '@shared';
 import { GlobalsBase } from '../../globals.base';
-import { CreateComponentConfig } from '../../../../../shared/create/create.component.interface';
-import { NewsCreate } from '@shared';
-import { MasjedService } from '@shared';
 
 @Component({
   selector: 'app-news-create',

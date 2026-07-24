@@ -1,10 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { ViewComponent } from '../../../../../shared/view/view.component';
-import { ComingsBase } from '../../comings.base';
-import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
-import { ComingList } from '@shared';
-import { UsersGroupsService } from '@shared';
 import { map } from 'rxjs';
+import { ViewComponent, ViewComponentConfig } from '@admin/components';
+import { ComingList, UsersGroupsService } from '@shared';
+import { ComingsBase } from '../../comings.base';
 
 @Component({
   selector: 'app-coming-view',

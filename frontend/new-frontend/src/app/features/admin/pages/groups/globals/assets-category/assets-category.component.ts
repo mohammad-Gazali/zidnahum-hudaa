@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { TableComponent } from '../../../../shared/table/table.component';
-import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
+import { TableComponent, TableComponentConfig } from '@admin/components';
+import { deleteModelAction } from '@admin/helpers';
 import { AssetsCategoryList } from '@shared';
 import { GlobalsBase } from '../globals.base';
-import { deleteModelAction } from '@admin';
 
 @Component({
   selector: 'app-assets-category',

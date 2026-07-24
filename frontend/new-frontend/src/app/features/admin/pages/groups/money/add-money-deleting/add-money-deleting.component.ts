@@ -1,34 +1,33 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { MatCard } from '@angular/material/card';
-import {
-  MatRadioButton,
-  MatRadioChange,
-  MatRadioGroup,
-} from '@angular/material/radio';
-import { StudentSearchComponent } from '../../../../shared/student-search/student-search.component';
-import { SearchStudent } from '../../../../shared/student-search/search-student.interface';
-import {
-  ExtraService,
-  StudentsService,
-} from '@shared';
 import {
   NonNullableFormBuilder,
   FormGroupDirective,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatCard } from '@angular/material/card';
 import { MatFormField, MatOption, MatSelect } from '@angular/material/select';
 import { MatError, MatInput, MatLabel } from '@angular/material/input';
 import { MatChipRemove, MatChipRow } from '@angular/material/chips';
 import { MatIcon } from '@angular/material/icon';
-import { finalize } from 'rxjs';
-import { MoneyBase } from '../money.base';
-import { TranslatePipe } from '@shared';
+import {
+  MatRadioButton,
+  MatRadioChange,
+  MatRadioGroup,
+} from '@angular/material/radio';
 import { MatButton } from '@angular/material/button';
-import { MasjedService } from '@shared';
-import { SnackbarService } from '@shared';
-import { LOADING } from '@shared';
+import { finalize } from 'rxjs';
+import { StudentSearchComponent, SearchStudent } from '@admin/components';
+import {
+  ExtraService,
+  StudentsService,
+  MasjedService,
+  SnackbarService,
+  LOADING,
+  TranslatePipe,
+} from '@shared';
+import { MoneyBase } from '../money.base';
 
 @Component({
   selector: 'app-add-money-deleting',

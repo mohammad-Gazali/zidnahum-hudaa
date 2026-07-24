@@ -9,14 +9,14 @@ export const groupGuard: CanActivateFn = (route) => {
   const router = inject(Router);
 
   const groups = route.data ? Object.values(route.data) : [];
-  
+
   return toObservable(auth.currentUser).pipe(
     filter((user) => user !== undefined),
     map((user) => user?.isAdmin || user?.groups.some(g => groups.indexOf(g) !== -1)),
     map(Boolean),
     tap((res) => {
       if (!res) {
-        router.navigateByUrl('/');
+        router.navigateByUrl('/login');
       }
     }),
   );

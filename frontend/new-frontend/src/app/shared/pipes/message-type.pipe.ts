@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { MessageType } from '../types';
+import { MessageType } from '../enums';
 import { MESSAGE_TYPE_LABELS } from '../constants/labels.const';
 
 @Pipe({

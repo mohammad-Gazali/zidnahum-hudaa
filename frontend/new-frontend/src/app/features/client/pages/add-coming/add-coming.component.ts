@@ -9,7 +9,6 @@ import {
   LayoutService,
   MasjedPipe,
   MasjedService,
-  MobileUtilsService,
   SnackbarService,
   StudentsClientService,
 } from '@shared';
@@ -21,6 +20,7 @@ import { MatOption, MatSelect } from '@angular/material/select';
 import { DatePipe } from '@angular/common';
 import { MatCard } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
+import { MobileUtilsService } from '@client/services';
 
 @Component({
   selector: 'app-add-coming',

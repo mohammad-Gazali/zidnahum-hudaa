@@ -1,6 +1,4 @@
-import { StudentLevel } from '../types/student-level.enum';
-import { Masjed } from '../types/masjed.enum';
-import { MessageType } from '../types/message-type.enum';
+import { Masjed, MessageType, StudentLevel } from '../enums';
 import { EXTRA_HADEETH_LABEL } from './extra-hadeeth.const';
 
 export const STUDENT_LEVEL_LABELS: Record<StudentLevel, string> = {

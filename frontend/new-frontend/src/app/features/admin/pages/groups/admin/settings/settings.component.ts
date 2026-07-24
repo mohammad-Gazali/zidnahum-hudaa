@@ -20,10 +20,7 @@ import {
 } from '@angular/material/chips';
 import { MatIcon } from '@angular/material/icon';
 import { finalize } from 'rxjs';
-import { ExtraService } from '@shared';
-import { TranslatePipe } from '@shared';
-import { LOADING } from '@shared';
-import { SnackbarService } from '@shared';
+import { ExtraService, TranslatePipe, LOADING, SnackbarService } from '@shared';
 
 @Component({
   selector: 'app-settings',

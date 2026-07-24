@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { ViewComponent } from '../../../../../shared/view/view.component';
-import { GlobalsBase } from '../../globals.base';
-import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
+import { Validators } from '@angular/forms';
+import { ViewComponent, ViewComponentConfig } from '@admin/components';
 import {
   AssetsCategoryList,
   AssetsCategoryUpdate,
 } from '@shared';
-import { Validators } from '@angular/forms';
+import { GlobalsBase } from '../../globals.base';
 
 @Component({
   selector: 'app-assets-category-view',

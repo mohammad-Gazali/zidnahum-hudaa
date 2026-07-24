@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { StudentLevel } from '../types';
+import { StudentLevel } from '../enums';
 import { STUDENT_LEVEL_LABELS } from '../constants/labels.const';
 
 @Pipe({

@@ -1,11 +1,9 @@
 import { Component, inject } from '@angular/core';
-import { StudentsBase } from '../students.base';
-import { TableComponent } from '../../../../shared/table/table.component';
-import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
-import { MemorizeNotesList } from '@shared';
-import { UsersGroupsService } from '@shared';
 import { map } from 'rxjs';
-import { deleteModelAction } from '@admin';
+import { StudentsBase } from '../students.base';
+import { TableComponent, TableComponentConfig } from '@admin/components';
+import { deleteModelAction } from '@admin/helpers';
+import { MemorizeNotesList, UsersGroupsService } from '@shared';
 
 @Component({
   selector: 'app-memorize-notes',
@@ -26,10 +24,7 @@ export class MemorizeNotesComponent extends StudentsBase {
           ...res,
           results: res.results.map((note) => ({
             ...note,
-            content:
-              note.content.length >= 30
-                ? note.content.slice(0, 27) + '...'
-                : note.content,
+            content: note.content.length >= 30 ? note.content.slice(0, 27) + '...' : note.content,
           })),
         })),
       ),

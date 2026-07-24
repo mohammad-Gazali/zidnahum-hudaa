@@ -1,24 +1,16 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { StudentSearchComponent } from '../../../../shared/student-search/student-search.component';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormGroupDirective, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatCard } from '@angular/material/card';
 import { MatChip, MatChipRemove } from '@angular/material/chips';
-import { SearchStudent } from '../../../../shared/student-search/search-student.interface';
 import { MatIcon } from '@angular/material/icon';
-import {
-  FormGroupDirective,
-  NgForm,
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { QuranEliteTestService } from '@admin/services/quran/quran-elite-test.service';
-import { SnackbarService } from '@shared';
 import { MatButton } from '@angular/material/button';
 import { MatRipple } from '@angular/material/core';
-import { ExtraService } from '@shared';
-import { LOADING } from '@shared';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { finalize } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { finalize } from 'rxjs';
+import { StudentSearchComponent, SearchStudent } from '@admin/components';
+import { QuranEliteTestService } from '@admin/services';
+import { SnackbarService, ExtraService, LOADING } from '@shared';
 
 @Component({
   selector: 'app-add-elite-test',
@@ -85,9 +77,7 @@ export class AddEliteTestComponent {
         if (res.repeated_parts.length !== 0) {
           this.matSnackbar.open(
             ' تم التسجيل بنجاح, ولكن يوجد تكرار بـ:' +
-              res.repeated_parts
-                .map((item: number) => this.quranElite.transform(item))
-                .join(', '),
+              res.repeated_parts.map((item: number) => this.quranElite.transform(item)).join(', '),
             'إغلاق',
           );
         } else {

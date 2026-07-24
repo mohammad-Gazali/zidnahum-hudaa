@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
+import { HomeComponent } from './pages/home/home.component';
 import { routes as studentsRoutes } from './pages/groups/students/students.routes';
 import { routes as authRoutes } from './pages/groups/auth/auth.routes';
 import { routes as pointsRoutes } from './pages/groups/points/points.routes';
@@ -16,8 +17,7 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        loadComponent: () =>
-          import('./pages/home/home.component').then((m) => m.HomeComponent),
+        component: HomeComponent,
       },
       {
         path: 'students',

@@ -3,7 +3,6 @@ import {
   LayoutService,
   MasjedPipe,
   MasjedService,
-  MobileUtilsService,
   SnackbarService,
   StudentCategory,
   StudentGroup,
@@ -36,6 +35,7 @@ import {
   provideNativeDateAdapter,
 } from '@angular/material/core';
 import { formatDate } from '@angular/common';
+import { MobileUtilsService } from '@client/services';
 
 @Component({
   selector: 'app-add-student',

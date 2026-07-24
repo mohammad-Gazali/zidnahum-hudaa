@@ -1,3 +1,4 @@
+import re
 from typing import Any, Dict, List, Literal, Type
 
 from django.contrib.auth import get_user_model
@@ -124,6 +125,7 @@ def create_serializer(
 
   return Result
 
+
 def create_model_view_set(
   model: Type[Model],
   fields: List[str] | Literal["__all__"] = "__all__",
@@ -165,6 +167,7 @@ def create_model_view_set(
   - `no_pagination` removes the pagination if it is True
   """
 
+  @extend_schema(tags=[f"admin-{pascal_to_kebab(model.__name__)}"])
   class Result(BaseViewSet):
     permission_classes = [IsSuperUser if superuser else IsAdminUser]
     http_method_names = methods or ["get", "post", "put", "delete"]
@@ -301,3 +304,11 @@ def create_model_view_set(
       return super().perform_create(serializer)
 
   return Result
+
+
+def pascal_to_kebab(name):
+  """
+  PascalCase -> pascal-case
+  MyVariableName -> my-variable-name
+  """
+  return re.sub(r"(?<!^)(?=[A-Z])", "-", name).lower()

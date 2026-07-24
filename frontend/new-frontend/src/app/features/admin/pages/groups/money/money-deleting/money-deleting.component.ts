@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { TableComponent } from '../../../../shared/table/table.component';
-import { MoneyBase } from '../money.base';
-import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
+import { TableComponent, TableComponentConfig } from '@admin/components';
 import { MoneyDeletingList } from '@shared';
+import { MoneyBase } from '../money.base';
 
 @Component({
   selector: 'app-money-deleting',

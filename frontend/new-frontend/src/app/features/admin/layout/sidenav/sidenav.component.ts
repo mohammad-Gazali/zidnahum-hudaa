@@ -7,7 +7,7 @@ import {
   MatNavList,
 } from '@angular/material/list';
 import { MatIcon } from '@angular/material/icon';
-import { GroupsService } from '@admin';
+import { GroupsService } from '@admin/services/groups.service';
 import { MatDivider } from '@angular/material/divider';
 import { AuthService } from '@shared';
 

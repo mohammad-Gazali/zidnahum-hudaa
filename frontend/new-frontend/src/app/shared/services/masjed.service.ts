@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { Masjed } from '../types/masjed.enum';
+import { Masjed } from '../enums';
 import { MASJED_LABELS } from '../constants/labels.const';
 
 @Injectable({

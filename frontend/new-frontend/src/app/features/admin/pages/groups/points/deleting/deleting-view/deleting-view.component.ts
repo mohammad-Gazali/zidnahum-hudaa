@@ -1,9 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { PointsBase } from '../../points.base';
-import { UsersGroupsService } from '@shared';
-import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
-import { PointsDeletingList } from '@shared';
 import { map } from 'rxjs';
+import { ViewComponentConfig } from '@admin/components';
+import { PointsDeletingList, UsersGroupsService } from '@shared';
+import { PointsBase } from '../../points.base';
 
 @Component({
   selector: 'app-deleting-view',

@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { ViewComponent } from '../../../../../shared/view/view.component';
-import { ComingsBase } from '../../comings.base';
-import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
+import { Validators } from '@angular/forms';
+import { ViewComponent, ViewComponentConfig } from '@admin/components';
 import {
   ComingCategoryList,
   ComingCategoryUpdate,
 } from '@shared';
-import { Validators } from '@angular/forms';
+import { ComingsBase } from '../../comings.base';
 
 @Component({
   selector: 'app-coming-category-view',

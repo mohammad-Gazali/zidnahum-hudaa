@@ -1,4 +1,4 @@
-import { Group } from './group.enum';
+import { Group } from "../enums";
 
 export interface CurrentUser {
   id: number;

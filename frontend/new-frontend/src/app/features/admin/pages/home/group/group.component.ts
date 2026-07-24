@@ -8,7 +8,7 @@ import {
 } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
-import { GroupsService } from '@admin/services/groups.service';
+import { GroupsService } from '@admin/services';
 
 type Group = GroupsService['groups'][number];
 import { AuthService } from '@shared';

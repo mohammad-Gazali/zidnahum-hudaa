@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { CreateComponent } from '../../../../../shared/create/create.component';
-import { GlobalsBase } from '../../globals.base';
-import { CreateComponentConfig } from '../../../../../shared/create/create.component.interface';
+import { CreateComponent, CreateComponentConfig } from '@admin/components';
 import { AssetFileCreate } from '@shared';
+import { GlobalsBase } from '../../globals.base';
 
 @Component({
   selector: 'app-assets-file-create',

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { MemoItemType } from "./quran.constatns";
 import { FormControl } from "@angular/forms";
+import { MemoItemType } from "@shared";
 
 @Injectable({
     providedIn: 'root',
@@ -21,12 +21,12 @@ export class QuranTestService {
             const currentBigChunk = [];
 
             const chunk = array.slice(i, i + 8);
-            
+
             currentBigChunk.push(chunk.slice(0, 4));
             currentBigChunk.push(chunk.slice(4));
 
             result.push(currentBigChunk);
-        }        
+        }
 
         return result;
     }

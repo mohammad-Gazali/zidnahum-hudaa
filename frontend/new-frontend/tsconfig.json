@@ -19,8 +19,8 @@
     "useDefineForClassFields": false,
     "paths": {
       "@shared": ["./src/app/shared/index.ts"],
-      "@admin": ["./src/app/features/admin"],
-      "@admin/*": ["./src/app/features/admin/*"]
+      "@admin/*": ["./src/app/features/admin/*"],
+      "@client/*": ["./src/app/features/client/*"]
     }
   },
   "angularCompilerOptions": {

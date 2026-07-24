@@ -1,8 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { TableComponent } from '../../../../shared/table/table.component';
-import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
-import { MoneyTotal } from '@shared';
-import { ExtraService } from '@shared';
+import { TableComponent, TableComponentConfig } from '@admin/components';
+import { MoneyTotal, ExtraService } from '@shared';
 
 @Component({
   selector: 'app-money-total',

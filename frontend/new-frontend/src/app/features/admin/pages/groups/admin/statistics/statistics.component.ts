@@ -3,20 +3,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import {
-  MAT_DATE_LOCALE,
-  provideNativeDateAdapter,
-} from '@angular/material/core';
+import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { finalize } from 'rxjs';
-import { ExtraService } from '@shared';
-import { LOADING } from '@shared';
-import { StatisticsResponse } from '@shared';
-import { TranslatePipe } from '@shared';
-import { MasjedService } from '@shared';
+import { ExtraService, LOADING, StatisticsResponse, TranslatePipe, MasjedService } from '@shared';
 
 @Component({
   selector: 'app-statistics',

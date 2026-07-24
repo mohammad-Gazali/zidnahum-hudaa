@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { TableComponent } from '../../../../shared/table/table.component';
-import { MoneyBase } from '../money.base';
-import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
+import { TableComponent, TableComponentConfig } from '@admin/components';
+import { deleteModelAction } from '@admin/helpers';
 import { MoneyDeletingCauseList } from '@shared';
-import { deleteModelAction } from '@admin';
+import { MoneyBase } from '../money.base';
 
 @Component({
   selector: 'app-money-deleting-cause',

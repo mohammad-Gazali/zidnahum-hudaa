@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { PointsBase } from '../../points.base';
-import { ViewComponent } from '../../../../../shared/view/view.component';
-import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
+import { Validators } from '@angular/forms';
+import { ViewComponent, ViewComponentConfig } from '@admin/components';
 import {
   PointsAddingCauseList,
   PointsAddingCauseUpdate,
 } from '@shared';
-import { Validators } from '@angular/forms';
+import { PointsBase } from '../../points.base';
 
 @Component({
   selector: 'app-adding-cause-view',

@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
-import { ViewComponent } from '../../../../../shared/view/view.component';
-import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
-import { MemorizeMessageList } from '@shared';
 import { map } from 'rxjs';
+import { ViewComponent, ViewComponentConfig } from '@admin/components';
+import {
+  MemorizeMessageList,
+  UsersGroupsService,
+  MemorizeMessageTypeService,
+  LevelService,
+} from '@shared';
 import { StudentsBase } from '../../students.base';
-import { UsersGroupsService } from '@shared';
-import { MemorizeMessageTypeService } from '@shared';
-import { LevelService } from '@shared';
 
 @Component({
   selector: 'app-memorize-message-view',

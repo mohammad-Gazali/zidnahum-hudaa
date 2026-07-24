@@ -6,10 +6,7 @@ import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ActionsService } from '@shared';
-import { TranslatePipe } from '@shared';
-import { SnackbarService } from '@shared';
-import { LOADING } from '@shared';
+import { ActionsService, TranslatePipe, SnackbarService, LOADING } from '@shared';
 
 @Component({
   selector: 'app-user-update-password',

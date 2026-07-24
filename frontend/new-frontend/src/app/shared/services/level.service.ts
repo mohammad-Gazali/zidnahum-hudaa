@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { StudentLevel } from '../types/student-level.enum';
+import { StudentLevel } from '../enums';
 import { STUDENT_LEVEL_LABELS } from '../constants/labels.const';
 
 @Injectable({

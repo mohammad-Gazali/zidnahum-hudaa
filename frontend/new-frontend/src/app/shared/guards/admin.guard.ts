@@ -13,7 +13,7 @@ export const adminGuard: CanActivateFn = () => {
     map((user) => user?.isAdmin ?? false),
     tap((ok) => {
       if (!ok) {
-        router.navigateByUrl('/');
+        router.navigateByUrl('/login');
       }
     }),
   );

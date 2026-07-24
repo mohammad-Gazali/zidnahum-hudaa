@@ -10,7 +10,6 @@ import {
   LayoutService,
   MasjedPipe,
   MasjedService,
-  MobileUtilsService,
   PointsAddingCause,
   PointsClientService,
   SnackbarService,
@@ -26,6 +25,7 @@ import { MatSelect } from '@angular/material/select';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatChip, MatChipRemove, MatChipSet } from '@angular/material/chips';
 import { MatDivider } from '@angular/material/divider';
+import { MobileUtilsService } from '@client/services';
 
 @Component({
   selector: 'app-add-points',

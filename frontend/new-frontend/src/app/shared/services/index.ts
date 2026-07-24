@@ -9,3 +9,4 @@ export * from './test.service';
 export * from './masjed.service';
 export * from './level.service';
 export * from './memorize-message-type.service';
+export * from './layout.service';

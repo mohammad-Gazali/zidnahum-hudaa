@@ -57,6 +57,7 @@ param_student_name = OpenApiParameter(
 )
 
 
+@extend_schema(tags=["admin-extra"])
 class StudentUpdateView(UpdateAPIView):
   permission_classes = [IsAdminUser]
   queryset = Student.objects.all()
@@ -80,6 +81,7 @@ class StudentUpdateView(UpdateAPIView):
     )
 
 
+@extend_schema(tags=["admin-extra"])
 class AddAwqafNoQTestCreateView(CreateAPIView):
   permission_classes = [IsAdminUser]
   serializer_class = AddAwqafTestNoQRequestSerailizer
@@ -92,6 +94,7 @@ class AddAwqafNoQTestCreateView(CreateAPIView):
       )
 
 
+@extend_schema(tags=["admin-extra"])
 class AddAwqafQTestCreateView(CreateAPIView):
   permission_classes = [IsAdminUser]
   serializer_class = AddAwqafTestQRequestSerializer
@@ -121,6 +124,7 @@ class AddAwqafQTestCreateView(CreateAPIView):
       student.save()
 
 
+@extend_schema(tags=["admin-extra"])
 class AddMoneyDeletingNormalCreateView(CreateAPIView):
   permission_classes = [IsSuperUser]
   serializer_class = AddMoneyDeletingNormalRequestSerailizer
@@ -134,6 +138,7 @@ class AddMoneyDeletingNormalCreateView(CreateAPIView):
       )
 
 
+@extend_schema(tags=["admin-extra"])
 class AddMoneyDeletingCategoryCreateView(CreateAPIView):
   permission_classes = [IsSuperUser]
   serializer_class = AddMoneyDeletingCategoryRequestSerailizer
@@ -151,6 +156,7 @@ class AddMoneyDeletingCategoryCreateView(CreateAPIView):
       )
 
 
+@extend_schema(tags=["admin-extra"])
 class ControlSettingsReadUpdateView(APIView):
   permission_classes = [IsSuperUser]
   http_method_names = ["get", "put"]
@@ -180,6 +186,7 @@ class ControlSettingsReadUpdateView(APIView):
     return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(tags=["admin-extra"])
 class TotalMoneyListView(ListAPIView):
   permission_classes = [IsSuperUser]
   pagination_class = LimitOffsetPagination
@@ -218,6 +225,7 @@ class TotalMoneyListView(ListAPIView):
     return super().list(request, *args, **kwargs)
 
 
+@extend_schema(tags=["admin-extra"])
 class StatisticsView(APIView):
   permission_classes = [IsSuperUser]
   http_method_names = ["post"]
@@ -275,6 +283,7 @@ class StatisticsView(APIView):
     return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(tags=["admin-extra"])
 class AddEliteTestCreateView(APIView):
   permission_classes = [IsAdminUser]
   http_method_names = ["post"]

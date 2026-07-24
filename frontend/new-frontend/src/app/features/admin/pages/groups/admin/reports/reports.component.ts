@@ -28,8 +28,7 @@ import {
   ReportsStudentResponse,
 } from '@shared';
 import { MessageType } from '@shared';
-import { SearchStudent } from '../../../../shared/student-search/search-student.interface';
-import { StudentSearchComponent } from '../../../../shared/student-search/student-search.component';
+import { StudentSearchComponent, SearchStudent, ChangesFieldComponent } from '@admin/components';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MasjedService } from '@shared';
@@ -37,7 +36,6 @@ import { LOADING } from '@shared';
 import { MatTableModule } from '@angular/material/table';
 import { MemorizeMessageTypeService } from '@shared';
 import { DatePipe } from '@angular/common';
-import { ChangesFieldComponent } from '../../../../shared/changes-field/changes-field.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCard } from '@angular/material/card';
 

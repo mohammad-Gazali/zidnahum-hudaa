@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { CreateComponent } from '../../../../../shared/create/create.component';
-import { CreateComponentConfig } from '../../../../../shared/create/create.component.interface';
+import { Validators } from '@angular/forms';
+import { CreateComponent, CreateComponentConfig } from '@admin/components';
 import { StudentGroupCreate } from '@shared';
 import { StudentsBase } from '../../students.base';
-import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-student-group-create',

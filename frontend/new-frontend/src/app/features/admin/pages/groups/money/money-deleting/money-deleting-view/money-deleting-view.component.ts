@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { ViewComponent } from '../../../../../shared/view/view.component';
-import { ViewComponentConfig } from '../../../../../shared/view/view.component.interface';
+import { ViewComponent, ViewComponentConfig } from '@admin/components';
 import { MoneyDeletingList } from '@shared';
 import { MoneyBase } from '../../money.base';
 

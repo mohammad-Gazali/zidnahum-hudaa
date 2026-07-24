@@ -17,7 +17,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { AuthService } from '@shared';
 
 @Component({
-  selector: 'app-layout',
+  selector: 'app-admin-layout',
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
   imports: [

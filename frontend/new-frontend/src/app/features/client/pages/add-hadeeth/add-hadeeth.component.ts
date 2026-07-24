@@ -19,7 +19,6 @@ import {
   EXTRA_HADEETH_LABEL,
   EXTRA_HADEETH_LIMIT,
   LayoutService,
-  MobileUtilsService,
   SnackbarService,
   StudentList,
   StudentsClientService,
@@ -39,6 +38,7 @@ import {
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
+import { MobileUtilsService } from '@client/services';
 
 @Component({
   selector: 'app-add-hadeeth',

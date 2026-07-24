@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { CreateComponent } from '../../../../../shared/create/create.component';
-import { CreateComponentConfig } from '../../../../../shared/create/create.component.interface';
+import { CreateComponent, CreateComponentConfig } from '@admin/components';
 import { GroupCreate } from '@shared';
 import { AuthBase } from '../../auth.base';
 import { Validators } from '@angular/forms';

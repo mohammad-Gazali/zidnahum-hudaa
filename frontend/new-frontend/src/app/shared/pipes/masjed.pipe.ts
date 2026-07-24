@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Masjed } from '../types';
+import { Masjed } from '../enums';
 import { MASJED_LABELS } from '../constants/labels.const';
 
 @Pipe({

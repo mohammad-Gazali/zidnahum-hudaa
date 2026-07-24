@@ -6,10 +6,11 @@ import {
 } from '@angular/forms';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { MatButton } from '@angular/material/button';
-import { AuthService, SnackbarService, LOADING } from '@shared';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { AuthService, SnackbarService, LOADING, LayoutService } from '@shared';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatError,
     MatInput,
     MatButton,
+    MatIconButton,
+    MatIcon,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -31,6 +34,7 @@ export class LoginComponent {
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
   protected loading = inject(LOADING);
+  protected layout = inject(LayoutService);
 
   protected form = this.fb.group({
     username: this.fb.control('', [Validators.required]),
