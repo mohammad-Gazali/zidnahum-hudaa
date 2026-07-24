@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { ApiConfiguration } from '../api-configuration';
 import {
@@ -16,7 +16,8 @@ import {
 })
 export class ReportsService {
   private http = inject(HttpClient);
-  private rootUrl = '/api/v1/admin/reports';
+  private config = inject(ApiConfiguration);
+  private rootUrl = `${this.config.rootUrl}/admin/reports`;
 
   public createStudentReport(id: number, data: ReportsRequest) {
     return this.http.post<ReportsStudentResponse>(
@@ -33,7 +34,7 @@ export class ReportsService {
 
   public createAllStudentsReport(data: ReportsRequestWithMasjed) {
     return this.http.post<ReportsStudentCategoryOrGroupStudent[]>(
-      `${this.rootUrl}/student/all`, 
+      `${this.rootUrl}/student/all`,
       data,
     );
   }

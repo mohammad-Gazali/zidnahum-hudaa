@@ -1,4 +1,3 @@
 export const environment = {
-  baseApiUrl: '/api/v1',
-  appUrlPrefix: '',
+  baseApiUrl: 'http://127.0.0.1:8000/api/v1',
 };
