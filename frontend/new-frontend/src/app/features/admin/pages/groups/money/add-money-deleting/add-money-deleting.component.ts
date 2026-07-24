@@ -26,9 +26,9 @@ import { finalize } from 'rxjs';
 import { MoneyBase } from '../money.base';
 import { TranslatePipe } from '@shared';
 import { MatButton } from '@angular/material/button';
-import { MasjedService } from '@admin';
+import { MasjedService } from '@shared';
 import { SnackbarService } from '@shared';
-import { LOADING } from '@admin';
+import { LOADING } from '@shared';
 
 @Component({
   selector: 'app-add-money-deleting',

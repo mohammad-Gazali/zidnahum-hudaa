@@ -1,6 +1,6 @@
 @if (userDetails(); as details) {
   @if (
-    (group().superAdmin && details.is_superuser && details.is_staff) ||
+    (group().superAdmin && details.isSuperUser && details.isStaff) ||
     !group().superAdmin
   ) {
     <mat-card>
@@ -15,7 +15,7 @@
         <ul>
           @for (item of group().items; track item.name) {
             @if (
-              (item.superAdmin && details.is_superuser && details.is_staff) ||
+              (item.superAdmin && details.isSuperUser && details.isStaff) ||
               !item.superAdmin
             ) {
               <li>

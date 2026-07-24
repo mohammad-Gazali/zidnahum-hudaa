@@ -11,7 +11,7 @@ import { MatDivider } from '@angular/material/divider';
 import { GroupsService } from '@admin/services/groups.service';
 
 type Group = GroupsService['groups'][number];
-import { AccountsService } from '@admin/services/api/accounts/accounts.service';
+import { AuthService } from '@shared';
 
 @Component({
   selector: 'app-home-group',
@@ -28,6 +28,6 @@ import { AccountsService } from '@admin/services/api/accounts/accounts.service';
   styleUrl: './group.component.scss',
 })
 export class HomeGroupComponent {
-  protected userDetails = inject(AccountsService).details;
+  protected userDetails = inject(AuthService).currentUser;
   public group = input.required<Group>();
 }

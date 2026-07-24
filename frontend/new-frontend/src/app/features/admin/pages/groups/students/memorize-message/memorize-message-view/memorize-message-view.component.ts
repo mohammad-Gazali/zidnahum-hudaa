@@ -5,8 +5,8 @@ import { MemorizeMessageList } from '@shared';
 import { map } from 'rxjs';
 import { StudentsBase } from '../../students.base';
 import { UsersGroupsService } from '@shared';
-import { MemorizeMessageTypeService } from '@admin';
-import { LevelService } from '@admin';
+import { MemorizeMessageTypeService } from '@shared';
+import { LevelService } from '@shared';
 
 @Component({
   selector: 'app-memorize-message-view',

@@ -7,4 +7,6 @@ export interface CurrentUser {
   lastName: string;
   groups: Group[];
   isAdmin: boolean;
+  isSuperUser: boolean;
+  isStaff: boolean;
 }

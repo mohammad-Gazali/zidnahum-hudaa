@@ -13,10 +13,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { finalize } from 'rxjs';
 import { ExtraService } from '@shared';
-import { LOADING } from '@admin';
+import { LOADING } from '@shared';
 import { StatisticsResponse } from '@shared';
 import { TranslatePipe } from '@shared';
-import { MasjedService } from '@admin';
+import { MasjedService } from '@shared';
 
 @Component({
   selector: 'app-statistics',

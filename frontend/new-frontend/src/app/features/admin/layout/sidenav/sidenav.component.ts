@@ -9,7 +9,7 @@ import {
 import { MatIcon } from '@angular/material/icon';
 import { GroupsService } from '@admin';
 import { MatDivider } from '@angular/material/divider';
-import { AccountsService } from '@admin/services/api/accounts/accounts.service';
+import { AuthService } from '@shared';
 
 @Component({
   selector: 'app-sidenav',
@@ -29,7 +29,7 @@ import { AccountsService } from '@admin/services/api/accounts/accounts.service';
 export class SidenavComponent {
   public groupsService = inject(GroupsService);
   public onItemClick = output();
-  public userDetails = inject(AccountsService).details;
+  public userDetails = inject(AuthService).currentUser;
 
   close() {
     this.onItemClick.emit();

@@ -15,7 +15,7 @@ import { SnackbarService } from '@shared';
 import { MatButton } from '@angular/material/button';
 import { MatRipple } from '@angular/material/core';
 import { ExtraService } from '@shared';
-import { LOADING } from '@admin';
+import { LOADING } from '@shared';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';

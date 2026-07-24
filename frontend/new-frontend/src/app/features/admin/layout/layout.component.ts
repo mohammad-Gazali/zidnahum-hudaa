@@ -14,7 +14,7 @@ import {
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { AccountsService } from '@admin/services/api/accounts/accounts.service';
+import { AuthService } from '@shared';
 
 @Component({
   selector: 'app-layout',
@@ -30,11 +30,11 @@ import { AccountsService } from '@admin/services/api/accounts/accounts.service';
 })
 export class LayoutComponent {
   public breakpointObserver = inject(BreakpointObserver);
-  private userDetails = inject(AccountsService).details;
+  private auth = inject(AuthService);
 
   public mode = signal<'over' | 'side'>('side');
   public open = linkedSignal(() => {
-    const details = this.userDetails();
+    const details = this.auth.currentUser();
 
     if (!details) return false;
 

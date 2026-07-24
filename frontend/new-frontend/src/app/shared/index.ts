@@ -10,5 +10,4 @@ export * from './guards/non-auth.guard';
 export { LayoutService } from '../features/client/services/layout.service';
 export type { LayoutRoute } from '../features/client/services/layout.service';
 export { MobileUtilsService } from '../features/client/services/mobile-utils.service';
-export { MasjedService } from '../features/client/services/masjed.service';
 export { PagesSumService } from '../features/client/services/pages-sum.service';

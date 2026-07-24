@@ -29,7 +29,7 @@ import {
 import { SnackbarService } from '@shared';
 import { AwqafTestNoQList } from '@shared';
 import { QuranAwqafTestService } from '@admin/services/quran/quran-awqaf-test.service';
-import { LOADING } from '@admin';
+import { LOADING } from '@shared';
 
 @Component({
   selector: 'app-add-awqaf-test-student',

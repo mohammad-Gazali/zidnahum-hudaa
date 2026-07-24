@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ActionsService } from '@shared';
 import { TranslatePipe } from '@shared';
 import { SnackbarService } from '@shared';
-import { LOADING } from '@admin';
+import { LOADING } from '@shared';
 
 @Component({
   selector: 'app-user-update-password',

@@ -4,7 +4,7 @@ import { CreateComponent } from '../../../../../shared/create/create.component';
 import { GlobalsBase } from '../../globals.base';
 import { CreateComponentConfig } from '../../../../../shared/create/create.component.interface';
 import { NewsCreate } from '@shared';
-import { MasjedService } from '@admin';
+import { MasjedService } from '@shared';
 
 @Component({
   selector: 'app-news-create',

@@ -23,7 +23,7 @@ import { finalize } from 'rxjs';
 import { StudentsService } from '@shared';
 import { SearchStudent } from './search-student.interface';
 import { TranslatePipe } from '@admin';
-import { MasjedService } from '@admin';
+import { MasjedService } from '@shared';
 
 @Component({
   selector: 'app-student-search',

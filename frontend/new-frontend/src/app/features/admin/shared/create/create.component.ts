@@ -29,7 +29,7 @@ import {
   Field,
   FieldConfig,
 } from './create.component.interface';
-import { LOADING } from '@admin';
+import { LOADING } from '@shared';
 
 @Component({
   selector: 'app-create',

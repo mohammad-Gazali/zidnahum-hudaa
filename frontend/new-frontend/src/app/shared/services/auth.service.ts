@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { EMPTY, catchError, tap } from 'rxjs';
+import { EMPTY, catchError, switchMap, tap } from 'rxjs';
 import { AccountsService } from './api/services';
 import { SnackbarService } from './snackbar.service';
 import { Group } from '../types';
@@ -94,6 +94,8 @@ export class AuthService {
           firstName: res.first_name ?? '',
           lastName: res.last_name ?? '',
           isAdmin: Boolean(res.is_superuser || res.is_staff),
+          isSuperUser: Boolean(res.is_superuser),
+          isStaff: Boolean(res.is_staff),
           groups: res.groups ?? [],
         });
       });
@@ -110,10 +112,25 @@ export class AuthService {
           return EMPTY;
         }),
         tap((res: any) => {
-            this.token = res.access;
-            this.refreshToken = res.refresh;
-            this.initialize();
-        })
+          this.token = res.access;
+          this.refreshToken = res.refresh;
+        }),
+        switchMap(() =>
+          this.accounts.accountsDetailsList().pipe(
+            tap((res) => {
+              this._currentUser.set({
+                id: res.id!,
+                username: res.username,
+                firstName: res.first_name ?? '',
+                lastName: res.last_name ?? '',
+                isAdmin: Boolean(res.is_superuser || res.is_staff),
+                isSuperUser: Boolean(res.is_superuser),
+                isStaff: Boolean(res.is_staff),
+                groups: res.groups ?? [],
+              });
+            }),
+          ),
+        ),
       )
   }
 

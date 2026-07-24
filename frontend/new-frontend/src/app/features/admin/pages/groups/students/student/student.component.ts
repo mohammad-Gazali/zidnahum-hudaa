@@ -2,10 +2,10 @@ import { Component, inject } from '@angular/core';
 import { TableComponent } from '../../../../shared/table/table.component';
 import { TableComponentConfig } from '../../../../shared/table/table.component.interface';
 import { StudentList } from '@shared';
-import { MasjedService } from '@admin';
+import { MasjedService } from '@shared';
 import { StudentsBase } from '../students.base';
 import { deleteModelAction } from '@admin';
-import { LevelService } from '@admin';
+import { LevelService } from '@shared';
 
 @Component({
   selector: 'app-student',

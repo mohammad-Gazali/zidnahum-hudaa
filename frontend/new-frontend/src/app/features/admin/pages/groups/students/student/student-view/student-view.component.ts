@@ -5,12 +5,12 @@ import {
   StudentDetails,
   StudentUpdate,
 } from '@shared';
-import { MasjedService } from '@admin';
-import { LevelService } from '@admin';
+import { MasjedService } from '@shared';
+import { LevelService } from '@shared';
 import { Validators } from '@angular/forms';
 import { StudentsBase } from '../../students.base';
 import { ExtraService } from '@shared';
-import { EXTRA_HADEETH_LIMIT } from '@admin';
+import { EXTRA_HADEETH_LIMIT } from '@shared';
 
 @Component({
   selector: 'app-student-view',

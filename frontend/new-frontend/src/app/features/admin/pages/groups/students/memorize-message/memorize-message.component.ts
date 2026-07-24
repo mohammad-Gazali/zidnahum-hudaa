@@ -6,8 +6,8 @@ import { TableComponentConfig } from '../../../../shared/table/table.component.i
 import { MemorizeMessageList } from '@shared';
 import { UsersGroupsService } from '@shared';
 import { deleteModelAction } from '@admin';
-import { MemorizeMessageTypeService } from '@admin';
-import { LevelService } from '@admin';
+import { MemorizeMessageTypeService } from '@shared';
+import { LevelService } from '@shared';
 
 @Component({
   selector: 'app-memorize-message',

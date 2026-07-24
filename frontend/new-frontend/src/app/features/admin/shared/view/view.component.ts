@@ -45,8 +45,8 @@ import {
   ViewComponentConfig,
 } from './view.component.interface';
 import { ChangesFieldComponent } from '../changes-field/changes-field.component';
-import { LOADING } from '@admin';
-import { AccountsService } from '@admin/services/api/accounts/accounts.service';
+import { LOADING } from '@shared';
+import { AuthService } from '@shared';
 import { environment } from '../../../../../environments/environment.development';
 
 @Component({
@@ -94,13 +94,13 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
   private fb = inject(NonNullableFormBuilder);
   private dialog = inject(MatDialog);
   private destroyRef = inject(DestroyRef);
-  private accounts = inject(AccountsService);
+  private auth = inject(AuthService);
   public date = inject(DateService);
   public loading = inject(LOADING);
 
   public fields = signal<Field[]>([]);
   public editMode = signal(false);
-  public isSuperUser = computed(() => !!this.accounts.details()?.is_superuser);
+  public isSuperUser = computed(() => !!this.auth.currentUser()?.isSuperUser);
   public extraData = signal<ExtraData>({});
   public form = this.fb.group({});
   public viewId!: string;

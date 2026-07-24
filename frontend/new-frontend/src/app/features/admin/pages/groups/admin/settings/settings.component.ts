@@ -22,7 +22,7 @@ import { MatIcon } from '@angular/material/icon';
 import { finalize } from 'rxjs';
 import { ExtraService } from '@shared';
 import { TranslatePipe } from '@shared';
-import { LOADING } from '@admin';
+import { LOADING } from '@shared';
 import { SnackbarService } from '@shared';
 
 @Component({
