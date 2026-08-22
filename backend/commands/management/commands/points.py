@@ -26,8 +26,8 @@ SKIP_EMPTY_STUDENTS = False
 RING_CAUSE_ID = 14
 LEVEL_POINT_MAP = {
     StudentLevelChoice.ONE: 5,
-    StudentLevelChoice.TWO: 7,
-    StudentLevelChoice.THREE: 10,
+    StudentLevelChoice.TWO: 5,
+    StudentLevelChoice.THREE: 5,
 }
 
 class Command(BaseCommand):
@@ -53,7 +53,7 @@ class Command(BaseCommand):
             'نقاط التسميع',
             'كلي النقاط',
         ])
-        
+
         students = (
             Student.objects
                 .select_related("category")
@@ -128,7 +128,7 @@ class Command(BaseCommand):
                 ceil(memo_points),
                 ceil(total_points),
             ])
-        
+
 
         # Define output path (you can customize this)
         filename = "exported_points.xlsx"
@@ -146,23 +146,27 @@ def calc_memo_points(student: Student):
     q_memo = [index for (index, value) in enumerate(student.q_memorizing) if value == NEW]
     q_test = [index for (index, value) in enumerate(student.q_test) if value == NEW]
     q_elite_test = [index for (index, value) in enumerate(student.q_elite_test) if value == NEW]
+    q_viewing = [index for (index, value) in enumerate(student.q_viewing) if value == NEW]
 
-    messages_points = sum(_calc_message_points(message, q_memo, q_test, q_elite_test) for message in student.memorizemessage_set.all())
+    messages_points = sum(_calc_message_points(message, q_memo, q_test, q_elite_test, q_viewing) for message in student.memorizemessage_set.all())
 
     non_messages_memo_points = get_num_pages_memo(q_memo) * LEVEL_POINT_MAP[student.level]
     non_messages_test_points = get_num_pages_test(q_test) * LEVEL_POINT_MAP[student.level]
     non_messages_elite_test_points = len(q_elite_test) * ELITE_PART_POINTS
+    non_messages_viewing_points = get_num_pages_memo(q_viewing) * LEVEL_POINT_MAP[student.level]
 
-    return messages_points + non_messages_memo_points + non_messages_test_points + non_messages_elite_test_points
+    return messages_points + non_messages_memo_points + non_messages_test_points + non_messages_elite_test_points + non_messages_viewing_points
 
 def calc_hadeeth_points(student: Student):
     riad_alsaalihin_points = HADEETH_POINTS * (student.riad_alsaalihin_new - student.riad_alsaalihin_old)
     alarbaein_alnawawia_points = HADEETH_POINTS * (student.alarbaein_alnawawia_new - student.alarbaein_alnawawia_old)
+    extra_hadeeth_points = HADEETH_POINTS * student.extra_hadeeth
 
-    valid_riad_alsaalihin_points = riad_alsaalihin_points if riad_alsaalihin_points > 0 else 0
-    valid_alarbaein_alnawawia_points = alarbaein_alnawawia_points if alarbaein_alnawawia_points > 0 else 0
+    valid_riad_alsaalihin_points = max(0, riad_alsaalihin_points)
+    valid_alarbaein_alnawawia_points = max(0, alarbaein_alnawawia_points)
+    valid_extra_hadeeth_points = max(0, extra_hadeeth_points)
 
-    hadeeth_points = valid_riad_alsaalihin_points + valid_alarbaein_alnawawia_points
+    hadeeth_points = valid_riad_alsaalihin_points + valid_alarbaein_alnawawia_points + valid_extra_hadeeth_points
 
     allah_names_points = ALLAH_NAMES_POINTS if (student.allah_names_new and not student.allah_names_old) else 0
 
@@ -205,7 +209,7 @@ def calc_third_level_difference_points(student: Student):
 
 
 
-def _calc_message_points(message: MemorizeMessage, q_memo: List[int], q_test: List[int], q_elite_test: List[int]):
+def _calc_message_points(message: MemorizeMessage, q_memo: List[int], q_test: List[int], q_elite_test: List[int], q_viewing: List[int]):
     changes = [*message.changes]
     remove_from_changes = []
 
@@ -244,6 +248,18 @@ def _calc_message_points(message: MemorizeMessage, q_memo: List[int], q_test: Li
             changes.remove(item_to_remove)
 
         value = len(changes) * ELITE_PART_POINTS
+
+    elif message.message_type == MessageTypeChoice.VIEWING:
+        for item in changes:
+            if item in q_viewing:
+                q_viewing.remove(item)
+            else:
+                remove_from_changes.append(item)
+
+        for item_to_remove in remove_from_changes:
+            changes.remove(item_to_remove)
+
+        value = get_num_pages_memo(changes) * LEVEL_POINT_MAP[message.student_level]
 
     else:
         value = 0
