@@ -7,7 +7,7 @@ from students.models import Student, StudentLevelChoice, MemorizeMessage, Messag
 from students.utils import get_num_pages_memo, get_num_pages_test
 from students.constants import NEW
 from comings.models import Coming
-from points.models import PointsAdding, PointsDeleting
+from points.models import PointsAdding, PointsAddingCause, PointsDeleting
 from money.models import MoneyDeleting
 from awqaf.models import AwqafNoQStudentRelation
 from adminstration.models import ControlSettings
@@ -16,14 +16,13 @@ from typing import List
 
 
 AWQAF_PART_POINTS = 50
-AWQAF_LOOKING_PART_POINTS = 13
+AWQAF_LOOKING_PART_POINTS = 15
 AWQAF_EXPLAINING_PART_POINTS = 25
 HADEETH_POINTS = 3
 ALLAH_NAMES_POINTS = 15
 ELITE_PART_POINTS = 50
 POINT_VALUE = ControlSettings.get_point_value()
 SKIP_EMPTY_STUDENTS = False
-RING_CAUSE_ID = 14
 LEVEL_POINT_MAP = {
     StudentLevelChoice.ONE: 5,
     StudentLevelChoice.TWO: 5,
@@ -38,20 +37,26 @@ class Command(BaseCommand):
         ws = wb.active
         ws.title = "النقاط"
 
+        adding_causes = [(cause.id, cause.name) for cause in PointsAddingCause.objects.all()]
+        adding_causes_ids = [item[0] for item in adding_causes]
+        adding_causes_names = [item[1] for item in adding_causes]
+
         # Write the header
         ws.append([
-            'المعرف',
-            'الاسم',
-            'اسم الأم',
-            'المسجد',
-            'الفئة',
-            'مستوى التجويد',
-            'الغرامات بالليرة',
-            'الغرامات بالنقطة',
-            'نقاط المستوى الثالث',
-            'نقاط الحلقات',
-            'نقاط التسميع',
-            'كلي النقاط',
+        'المعرف',
+        'الاسم',
+        'اسم الأم',
+        'المسجد',
+        'الفئة',
+        'نقاط الحضور',
+        *adding_causes_names,
+        'نقاط التسميع',
+        'نقاط الحديث',
+        'نقاط سبر الأوقاف غيباً',
+        'نقاط سبر الأوقاف نظراً',
+        'نقاط سبر الأوقاف تفسيراً',
+        'نقاط سبر الأوقاف بغير القرآن',
+        'كلي النقاط',
         ])
 
         students = (
@@ -75,13 +80,23 @@ class Command(BaseCommand):
 
         )
 
+        # This is used to fill gaps between ids for students
+        last_id = 100
+
         for student in students:
             memo_points = calc_memo_points(student)
             hadeeth_points = calc_hadeeth_points(student)
 
             coming_points = sum(calc_coming_points(coming) for coming in student.coming_set.all())
 
-            adding_points = sum(calc_adding_points(adding) for adding in student.pointsadding_set.all())
+            adding_points_separated = []
+            for adding_cause_id in adding_causes_ids:
+              adding_points_separated.append(
+                sum(
+                  adding.value for adding in PointsAdding.objects.filter(student_id=student.id, cause_id=adding_cause_id)
+                )
+              )
+            adding_points_sum = sum(adding_points_separated)
 
             deleting_points = sum(calc_deleting_points(deleting) for deleting in student.pointsdeleting_set.all())
 
@@ -98,7 +113,7 @@ class Command(BaseCommand):
                 awqaf_test_points +
                 awqaf_looking_test_points +
                 awqaf_explaining_test_points +
-                adding_points +
+                adding_points_sum +
                 coming_points +
                 memo_points +
                 awqaf_no_q_points +
@@ -107,12 +122,14 @@ class Command(BaseCommand):
                 deleting_points
             )
 
-            rings_points = sum(calc_adding_points(adding) for adding in student.pointsadding_set.filter(cause_id=RING_CAUSE_ID))
-
-            student_third_level_difference = calc_third_level_difference_points(student)
-
             if SKIP_EMPTY_STUDENTS and total_points == 0 and money_deleted == 0:
                 continue
+
+            while student.pk != last_id + 1:
+              ws.append([last_id + 1])
+              last_id += 1
+
+            last_id = student.pk
 
             ws.append([
                 student.pk,
@@ -120,12 +137,14 @@ class Command(BaseCommand):
                 student.mother_name,
                 student.get_masjed_display(),
                 str(student.category) if student.category else "-",
-                student.get_level_display(),
-                int(money_deleted),
-                int(money_deleted_points),
-                int(student_third_level_difference),
-                ceil(rings_points),
+                coming_points,
+                *adding_points_separated,
                 ceil(memo_points),
+                int(hadeeth_points),
+                awqaf_test_points,
+                awqaf_looking_test_points,
+                awqaf_explaining_test_points,
+                awqaf_no_q_points,
                 ceil(total_points),
             ])
 
@@ -185,29 +204,11 @@ def calc_awqaf_no_q_points(relation: AwqafNoQStudentRelation):
 
     return relation.test.points
 
-def calc_adding_points(adding: PointsAdding):
-    return adding.value
-
 def calc_deleting_points(deleting: PointsDeleting):
     return deleting.value
 
 def calc_money_deleting(deleting: MoneyDeleting):
     return deleting.value if deleting.active_to_points else 0
-
-def calc_third_level_difference_points(student: Student):
-    DIFFERENCE = LEVEL_POINT_MAP[StudentLevelChoice.THREE] - LEVEL_POINT_MAP[StudentLevelChoice.TWO]
-
-    memo_points = sum(
-        get_num_pages_memo(message.changes) * (message.is_doubled + 1) for message in student.memorizemessage_set.filter(message_type=MessageTypeChoice.MEMO, student_level=StudentLevelChoice.THREE)
-    ) * DIFFERENCE
-
-    test_points = sum(
-        get_num_pages_test(message.changes) * (message.is_doubled + 1) for message in student.memorizemessage_set.filter(message_type=MessageTypeChoice.TEST, student_level=StudentLevelChoice.THREE)
-    ) * DIFFERENCE
-
-    return memo_points + test_points
-
-
 
 def _calc_message_points(message: MemorizeMessage, q_memo: List[int], q_test: List[int], q_elite_test: List[int], q_viewing: List[int]):
     changes = [*message.changes]
