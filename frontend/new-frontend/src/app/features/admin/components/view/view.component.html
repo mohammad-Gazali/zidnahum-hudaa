@@ -36,7 +36,7 @@
                         </span>
                     } @else if (field.type === 'relation') {
                         @if (extraData()[field.name].getUrlFunc !== undefined && field.value !== null) {
-                            <a class="primary" routerLink="{{ extraData()[field.name].getUrlFunc!(field.value) }}">
+                            <a class="primary" routerLink="{{ '/admin' + extraData()[field.name].getUrlFunc!(field.value) }}">
                                 {{ extraData()[field.name].map.get(field.value) ?? '-' }}
                             </a>
                         } @else {
@@ -45,7 +45,7 @@
                             </span>
                         }
                     } @else if (field.type === 'link') {
-                        <a class="primary" [routerLink]="field.url">
+                        <a class="primary" [routerLink]="'/admin' + field.url">
                             {{ field.stringFieldValue }}
                         </a>
                     } @else {
@@ -103,7 +103,7 @@
                     @if (extraData()[field.name].getUrlFunc !== undefined && field.value !== null) {
                         @if (field.relationType === 'multiple') {
                             @for (item of field.value; track item) {
-                                <a class="primary" [class.hidden]="editMode()" routerLink="{{ extraData()[field.name].getUrlFunc!(item) }}">
+                                <a class="primary" [class.hidden]="editMode()" routerLink="{{ '/admin' + extraData()[field.name].getUrlFunc!(item) }}">
                                     {{ extraData()[field.name].map.get(item) ?? '-' }}
                                 </a>
                                 <span [class.hidden]="editMode()">@if (!$last) {&nbsp;,&nbsp;}</span>
@@ -111,7 +111,7 @@
                                 <span [class.hidden]="editMode()">-</span>
                             }
                         } @else {
-                            <a class="primary" [class.hidden]="editMode()" routerLink="{{ extraData()[field.name].getUrlFunc!(field.value) }}">
+                            <a class="primary" [class.hidden]="editMode()" routerLink="{{ '/admin' + extraData()[field.name].getUrlFunc!(field.value) }}">
                                 {{ extraData()[field.name].map.get(field.value) ?? '-' }}
                             </a>
                         }
@@ -166,7 +166,7 @@
                         <app-quran-awqaf-test [name]="field.name" [array]="$any(form.get(field.name))" [editMode]="isSuperUser() ? editMode(): false" />
                     </mat-expansion-panel>
                 } @else if (field.type === 'link') {
-                    <a class="primary" [routerLink]="field.url">
+                    <a class="primary" [routerLink]="'/admin' + field.url">
                         {{ field.stringFieldValue }}
                     </a>
                 } @else if (field.type === 'changes') {
