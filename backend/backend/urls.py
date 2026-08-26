@@ -33,12 +33,13 @@ if settings.DEBUG:
   ]
   urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-client_view = TemplateView.as_view(template_name="client.html")
-admin_view = TemplateView.as_view(template_name="admin.html")
 
-urlpatterns += [
-  path("admin/", admin_view),
-  re_path(r"^admin/(?P<path>.*)/$", admin_view),
-  path("", client_view),
-  re_path(r"^(?P<path>.*)/$", client_view),
-]
+# client_view = TemplateView.as_view(template_name="client.html")
+# admin_view = TemplateView.as_view(template_name="admin.html")
+
+# urlpatterns += [
+#   path("admin/", admin_view),
+#   re_path(r"^admin/(?P<path>.*)/$", admin_view),
+#   path("", client_view),
+#   re_path(r"^(?P<path>.*)/$", client_view),
+# ]

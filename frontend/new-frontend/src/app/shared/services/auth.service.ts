@@ -63,7 +63,7 @@ export class AuthService {
             this.refreshToken !== null &&
             !afterRefresh
           ) {
-            this.accounts
+            return this.accounts
               .accountsTokenRefreshCreate({
                 refresh: this.refreshToken,
               })
@@ -71,16 +71,18 @@ export class AuthService {
                 catchError(() => {
                   this.token = null;
                   this.refreshToken = null;
+                  this._currentUser.set(null);
 
+                  return EMPTY;
+                }),
+                switchMap((res) => {
+                  this.token = res.access!;
+                  this.refreshToken = res.refresh;
+
+                  this.initialize(true);
                   return EMPTY;
                 })
               )
-              .subscribe((res) => {
-                this.token = res.access!;
-                this.refreshToken = res.refresh;
-
-                this.initialize(true);
-              });
           }
 
           return EMPTY;

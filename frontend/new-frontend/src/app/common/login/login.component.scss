@@ -9,7 +9,14 @@
 }
 
 img {
+  display: block;
   width: 5rem;
+  margin: 1rem auto 3rem;
+}
+
+mat-card {
+  width: 100%;
+  max-width: 400px;
 }
 
 form {
@@ -19,10 +26,20 @@ form {
   align-items: center;
   gap: 1rem;
   margin: 0 auto 4rem;
-  width: 100%;
-  max-width: 400px;
 
   mat-form-field {
     width: 100%;
   }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #0000006A;
+  display: grid;
+  place-items: center;
+  z-index: 100;
 }

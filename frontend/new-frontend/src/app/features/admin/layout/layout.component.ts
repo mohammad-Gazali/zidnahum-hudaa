@@ -15,6 +15,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AuthService } from '@shared';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-admin-layout',
@@ -26,6 +27,7 @@ import { AuthService } from '@shared';
     MatSidenavContainer,
     MatSidenavContent,
     MatSidenav,
+    RouterOutlet,
   ],
 })
 export class LayoutComponent {

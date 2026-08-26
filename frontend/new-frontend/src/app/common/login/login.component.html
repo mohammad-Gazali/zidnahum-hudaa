@@ -1,24 +1,32 @@
-<!-- TODO: handle this button -->
-<button mat-icon-button>
-  <mat-icon>arrow_back</mat-icon>
-</button>
-<img class="logo" [src]="layout.isDarkMode() ? 'assets/logo-dark.svg' : 'assets/logo.svg'" alt="logo">
-<form [formGroup]="form" (ngSubmit)="submit()">
-    <mat-form-field>
-        <mat-label>اسم المستخدم</mat-label>
-        <input matInput [formControl]="form.controls.username">
-        <mat-error>
-            هذا الحقل مطلوب
-        </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>كلمة المرور</mat-label>
-        <input matInput [formControl]="form.controls.password" type="password">
-        <mat-error>
-            هذا الحقل مطلوب
-        </mat-error>
-    </mat-form-field>
-    <button [disabled]="loading()" mat-flat-button>
-        تسجيل الدخول
-    </button>
-</form>
+<mat-card>
+  <mat-card-content>
+    <img class="logo" [src]="layout.isDarkMode() ? 'assets/logo-dark.svg' : 'assets/logo.svg'" alt="logo">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field>
+            <mat-label>اسم المستخدم</mat-label>
+            <input matInput [formControl]="form.controls.username">
+            <mat-error>
+                هذا الحقل مطلوب
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>كلمة المرور</mat-label>
+            <input matInput [formControl]="form.controls.password" type="password">
+            <mat-error>
+                هذا الحقل مطلوب
+            </mat-error>
+        </mat-form-field>
+        <button [disabled]="loading()" mat-flat-button>
+            تسجيل الدخول
+        </button>
+    </form>
+  </mat-card-content>
+</mat-card>
+<a routerLink="/" matButton="tonal">
+  العودة للصفحة الرئيسية
+</a>
+@if (loading()) {
+  <div class="overlay">
+    <mat-progress-spinner mode="indeterminate" />
+  </div>
+}

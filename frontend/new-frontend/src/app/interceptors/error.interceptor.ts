@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, of } from 'rxjs';
+import { catchError, throwError } from 'rxjs';
 import { SnackbarService } from '@shared';
 import { LOADING } from '@shared';
 
@@ -16,7 +16,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         snackbar.error(err.error.detail);
         loading.set(false);
       }
-      return of(err as any);
+      return throwError(() => err);
     })
   );
 };
