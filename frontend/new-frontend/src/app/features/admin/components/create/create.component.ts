@@ -146,7 +146,7 @@ export class CreateComponent<T> implements OnInit {
   }
 
   goToTable() {
-    this.router.navigateByUrl(this.config().tableRoute);
+    this.router.navigateByUrl('/admin' + this.config().tableRoute);
   }
 
   // file specific

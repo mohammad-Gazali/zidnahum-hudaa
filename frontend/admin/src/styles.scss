@@ -65,7 +65,7 @@ a {
   color: mat.get-theme-color($admin-theme, on-primary-fixed) !important;
 }
 
-.bg-tertiary-container {
+.bg-secondary-container {
   background-color: mat.get-theme-color($admin-theme, tertiary-container) !important;
   color: mat.get-theme-color($admin-theme, on-tertiary-container) !important;
 }

@@ -10,7 +10,7 @@ import {
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@shared';
 import { AuthService } from '@shared';
 import { LOADING } from '@shared';
@@ -33,7 +33,6 @@ import { LOADING } from '@shared';
 })
 export class NavbarComponent {
   private auth = inject(AuthService);
-  private router = inject(Router);
   public breakpointObserver = inject(BreakpointObserver);
   public loading = inject(LOADING);
 
@@ -47,9 +46,6 @@ export class NavbarComponent {
     return 'Zidnahum Hudaa Dashboard';
   });
   public isSmall = signal(false);
-  public isAuth = computed(() => {
-    return this.auth.currentUser() !== null;
-  });
 
   constructor() {
     this.breakpointObserver

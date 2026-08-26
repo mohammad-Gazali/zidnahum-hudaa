@@ -267,7 +267,7 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
         this.snackbar.success('تم التعديل بنجاح');
         this.loading.set(false);
         this.router.navigateByUrl(
-          `/${this.config().groupName}/${this.config().itemNameAndRouteName}`,
+          `/admin/${this.config().groupName}/${this.config().itemNameAndRouteName}`,
         );
       });
     }
