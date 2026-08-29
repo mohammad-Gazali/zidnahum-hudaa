@@ -12,7 +12,7 @@
     </div>
     <mat-nav-list>
       @if (currentUser()?.isAdmin) {
-        <a href="/admin" target="_blank" mat-list-item>
+        <a routerLink="/admin" mat-list-item>
           <span>لوحة التحكم</span>
           <mat-icon matListItemIcon>settings</mat-icon>
         </a>
@@ -74,7 +74,7 @@
       } @else {
         <ul>
           @if (currentUser()?.isAdmin) {
-            <a mat-flat-button href="/admin" target="_blank">
+            <a mat-flat-button routerLink="/admin">
               <mat-icon iconPositionEnd>settings</mat-icon>
               لوحة التحكم
             </a>

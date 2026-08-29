@@ -1,13 +1,15 @@
+from typing import List
+
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import include, path, re_path
+from django.urls import URLPattern, URLResolver, include, path, re_path
 from django.views.generic import TemplateView
 from drf_spectacular.views import (
   SpectacularAPIView,
   SpectacularSwaggerView,
 )
 
-urlpatterns = [
+urlpatterns: List[URLResolver | URLPattern] = [
   # project's apps urls
   path("api/v1/accounts/", include("accounts.urls")),
   path("api/v1/awqaf/", include("awqaf.urls")),
@@ -34,12 +36,9 @@ if settings.DEBUG:
   urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
-# client_view = TemplateView.as_view(template_name="client.html")
-# admin_view = TemplateView.as_view(template_name="admin.html")
+app_view = TemplateView.as_view(template_name="index.html")
 
-# urlpatterns += [
-#   path("admin/", admin_view),
-#   re_path(r"^admin/(?P<path>.*)/$", admin_view),
-#   path("", client_view),
-#   re_path(r"^(?P<path>.*)/$", client_view),
-# ]
+urlpatterns += [
+  path("", app_view),
+  re_path(r"^(?P<path>.*)/$", app_view),
+]

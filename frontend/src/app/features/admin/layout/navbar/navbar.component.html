@@ -9,14 +9,14 @@
   </a>
   <div class="spacer"></div>
   @if (isSmall()) {
-    <a mat-icon-button href="/" target="_blank">
+    <a mat-icon-button routerLink="/">
       <mat-icon>language</mat-icon>
     </a>
     <button mat-icon-button (click)="logout()">
       <mat-icon>logout</mat-icon>
     </button>
   } @else {
-    <a mat-button href="/" target="_blank">
+    <a mat-button routerLink="/">
       العودة للموقع
     </a>
     <button mat-button (click)="logout()">

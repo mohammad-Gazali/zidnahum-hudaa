@@ -20,12 +20,12 @@ class Command(BaseCommand):
         os.chdir(Path.cwd() / "..")
 
         shutil.move(
-            Path.cwd() / "frontend" / "dist" / "browser" / "index.html",
+            Path.cwd() / "frontend" / "dist" / "frontend" / "browser" / "index.html",
             Path.cwd() / "backend" / "templates" / "index.html",
         )
 
         shutil.copytree(
-            Path.cwd() / "frontend" / "dist" / "browser",
+            Path.cwd() / "frontend" / "dist" / "frontend" / "browser",
             Path.cwd() / "backend" / "static",
             dirs_exist_ok=True,
         )
@@ -40,7 +40,7 @@ class Command(BaseCommand):
             file.write(new_content)
 
         for filename in os.listdir(Path.cwd() / "backend" / "static"):
-            if filename.startswith("main"):
+            if filename.endswith(".js"):
                 with open(Path.cwd() / "backend" / "static" / filename, "r+") as file:
                     new_content = (
                         file.read()
