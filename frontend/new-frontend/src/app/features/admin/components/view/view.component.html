@@ -196,10 +196,10 @@
             </button>
         }
         @if (config().extraAction; as extraAction) {
-            <button [disabled]="loading()" mat-flat-button color="accent" type="button" [routerLink]="extraAction.link(viewId)">
-                <mat-icon>{{ config().extraAction?.icon }}</mat-icon>
-                {{ (config().extraAction?.name ?? '') | translate }}
-            </button>
+          <button [disabled]="loading()" mat-flat-button color="accent" type="button" [routerLink]="'/admin' + extraAction.link(viewId)">
+            <mat-icon>{{ config().extraAction?.icon }}</mat-icon>
+            {{ (config().extraAction?.name ?? '') | translate }}
+          </button>
         }
         @if (editMode()) {
             <button [disabled]="loading()" mat-flat-button color="primary" type="submit">
