@@ -1,7 +1,9 @@
-from django.core.management.base import BaseCommand
-from pathlib import Path
 import os
 import shutil
+from pathlib import Path
+
+from django.core.management.base import BaseCommand
+
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
@@ -12,18 +14,18 @@ class Command(BaseCommand):
         os.makedirs(Path.cwd() / "backend" / "templates")
         os.makedirs(Path.cwd() / "backend" / "static")
 
-        os.chdir(Path.cwd() / "frontend" / "new-frontend")
+        os.chdir(Path.cwd() / "frontend")
         os.system("ng build")
 
-        os.chdir(Path.cwd() / ".." / "..")
+        os.chdir(Path.cwd() / "..")
 
         shutil.move(
-            Path.cwd() / "frontend" / "new-frontend" / "dist" / "browser" / "index.html",
+            Path.cwd() / "frontend" / "dist" / "browser" / "index.html",
             Path.cwd() / "backend" / "templates" / "index.html",
         )
 
         shutil.copytree(
-            Path.cwd() / "frontend" / "new-frontend" / "dist" / "browser",
+            Path.cwd() / "frontend" / "dist" / "browser",
             Path.cwd() / "backend" / "static",
             dirs_exist_ok=True,
         )
@@ -31,7 +33,7 @@ class Command(BaseCommand):
         with open(Path.cwd() / "backend" / "templates" / "index.html", "r+") as file:
             new_content = (
                 file.read()
-                .replace("assets/fonts/fonts.css", "static/assets/fonts/fonts.css")
+                .replace("fonts/fonts.css", "static/fonts/fonts.css")
                 .replace("favicon.ico", "static/favicon.ico")
             )
             file.seek(0)
@@ -42,8 +44,8 @@ class Command(BaseCommand):
                 with open(Path.cwd() / "backend" / "static" / filename, "r+") as file:
                     new_content = (
                         file.read()
-                        .replace("assets/logo.svg", "static/assets/logo.svg")
-                        .replace("assets/logo-dark.svg", "static/assets/logo-dark.svg")
+                        .replace("logo.svg", "static/logo.svg")
+                        .replace("logo-dark.svg", "static/logo-dark.svg")
                     )
                     file.seek(0)
                     file.write(new_content)

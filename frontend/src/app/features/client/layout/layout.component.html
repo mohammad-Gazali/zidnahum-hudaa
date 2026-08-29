@@ -1,0 +1,134 @@
+<mat-sidenav-container>
+  <mat-sidenav fixedInViewport #sidenav [hidden]="layout.isSmall$ | async" mode="over" position="end">
+    <div class="top-section">
+      <button (click)="layout.toggleTheme()" mat-icon-button>
+        <mat-icon>
+          {{ layout.isDarkMode() ? "wb_sunny" : "nights_stay" }}
+        </mat-icon>
+      </button>
+      <button (click)="sidenav.close()" mat-icon-button>
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <mat-nav-list>
+      @if (currentUser()?.isAdmin) {
+        <a href="/admin" target="_blank" mat-list-item>
+          <span>لوحة التحكم</span>
+          <mat-icon matListItemIcon>settings</mat-icon>
+        </a>
+      }
+      @for (route of routes(); track route.name) {
+        @if (route.routes) {
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon>{{ route.icon }}</mat-icon>
+                {{ route.name }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            @for (route of route.routes; track route.name) {
+              <mat-list-item
+                (click)="sidenav.close()"
+                [routerLink]="route.link"
+                [routerLinkActiveOptions]="route.link === '/' ? { exact: true } : { exact: false }"
+                routerLinkActive="mdc-list-item--activated"
+              >
+                <span>{{ route.name }}</span>
+                <mat-icon matListItemIcon>{{ route.icon }}</mat-icon>
+              </mat-list-item>
+            }
+          </mat-expansion-panel>
+        } @else {
+          <mat-list-item
+            (click)="sidenav.close()"
+            [routerLink]="route.link"
+            [routerLinkActiveOptions]="route.link === '/' ? { exact: true } : { exact: false }"
+            routerLinkActive="mdc-list-item--activated"
+          >
+            <span>{{ route.name }}</span>
+            <mat-icon matListItemIcon>{{ route.icon }}</mat-icon>
+          </mat-list-item>
+        }
+      }
+      @if (currentUser()) {
+        <mat-list-item
+          (click)="sidenav.close(); logout()"
+        >
+          <span matListItemTitle>تسجيل خروج</span>
+          <mat-icon matListItemIcon>logout</mat-icon>
+        </mat-list-item>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar class="bg-surface mat-elevation-z8">
+      <img (click)="clickLogo()" class="logo" [src]="layout.isDarkMode() ? 'logo-dark.svg' : 'logo.svg'" alt="logo">
+      @if (currentUser(); as user) {
+        <p class="user">أهلاً {{ user.firstName }}</p>
+      }
+      <div class="spacer"></div>
+      @if (layout.isSmall$ | async) {
+        <button class="menu-button" (click)="sidenav.toggle()" mat-icon-button>
+          <mat-icon>menu</mat-icon>
+        </button>
+      } @else {
+        <ul>
+          @if (currentUser()?.isAdmin) {
+            <a mat-flat-button href="/admin" target="_blank">
+              <mat-icon iconPositionEnd>settings</mat-icon>
+              لوحة التحكم
+            </a>
+          }
+          @for (route of routes(); track route.name) {
+            @if (route.routes) {
+              <li>
+                <button mat-flat-button [matMenuTriggerFor]="menu">
+                  <mat-icon iconPositionEnd>{{ route.icon }}</mat-icon>
+                  {{ route.name }}
+                </button>
+                <mat-menu #menu>
+                  @for (route of route.routes; track route.name) {
+                    <a mat-menu-item [routerLink]="route.link">
+                      {{ route.name }}
+                    </a>
+                  }
+                </mat-menu>
+              </li>
+            } @else {
+              <li>
+                <button [routerLink]="route.link" mat-flat-button>
+                  <mat-icon iconPositionEnd>{{ route.icon }}</mat-icon>
+                  {{ route.name }}
+                </button>
+              </li>
+            }
+          }
+          @if (currentUser()) {
+            <li>
+              <button (click)="logout()" mat-flat-button>
+                <mat-icon iconPositionEnd>logout</mat-icon>
+                تسجيل الخروج
+              </button>
+            </li>
+          }
+          <li>
+            <button mat-icon-button (click)="layout.toggleTheme()">
+              <mat-icon>
+                {{ layout.isDarkMode() ? "wb_sunny" : "nights_stay" }}
+              </mat-icon>
+            </button>
+          </li>
+        </ul>
+      }
+    </mat-toolbar>
+    @if (layout.loading()) {
+      <mat-progress-bar mode="indeterminate" />
+    }
+    <main>
+      <router-outlet />
+    </main>
+    <footer class="text-outline bg-surface">
+      جميع الحقوق محفوظة 2024 - 2026 &copy; وزدناهم هدى
+    </footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>
