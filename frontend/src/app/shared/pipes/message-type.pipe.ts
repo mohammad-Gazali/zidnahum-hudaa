@@ -7,7 +7,7 @@ import { MESSAGE_TYPE_LABELS } from '../constants/labels.const';
   standalone: true,
 })
 export class MessageTypePipe implements PipeTransform {
-  transform(value: MessageTypeEnum | undefined): string {
-    return MESSAGE_TYPE_LABELS[value as MessageTypeEnum] ?? '';
+  transform(value: MessageTypeEnum): string {
+    return MESSAGE_TYPE_LABELS[value] ?? '';
   }
 }

@@ -7,7 +7,7 @@ import { MASJED_LABELS } from '../constants/labels.const';
   name: 'masjed',
 })
 export class MasjedPipe implements PipeTransform {
-  transform(value: MasjedEnum | undefined): string {
-    return MASJED_LABELS[value as MasjedEnum] ?? '';
+  transform(value: MasjedEnum): string {
+    return MASJED_LABELS[value] ?? '';
   }
 }

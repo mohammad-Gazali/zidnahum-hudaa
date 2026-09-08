@@ -7,7 +7,7 @@ import { STUDENT_LEVEL_LABELS } from '../constants/labels.const';
   standalone: true,
 })
 export class LevelPipe implements PipeTransform {
-  transform(value: StudentLevelEnum | undefined): string {
-    return STUDENT_LEVEL_LABELS[value as StudentLevelEnum] ?? '';
+  transform(value: StudentLevelEnum): string {
+    return STUDENT_LEVEL_LABELS[value] ?? '';
   }
 }

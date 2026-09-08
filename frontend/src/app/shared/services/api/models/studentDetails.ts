@@ -15,6 +15,7 @@ import type { StudentLevelEnum } from './studentLevelEnum';
 
 export interface StudentDetails {
   readonly id: number;
+  level: StudentLevelEnum;
   category: StudentCategory | null;
   group: StudentGroup | null;
   memo_notes: MemorizeNotesGet[];
@@ -115,5 +116,4 @@ export interface StudentDetails {
      */
   extra_hadeeth?: number;
   masjed: MasjedEnum;
-  level?: StudentLevelEnum;
 }

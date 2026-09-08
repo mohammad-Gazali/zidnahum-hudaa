@@ -12,8 +12,8 @@ export interface MemorizeMessage {
   readonly id: number;
   student: string;
   masjed: MasjedEnum;
+  message_type: MessageTypeEnum;
   changes?: number[];
   readonly sended_at: string;
   student_level: StudentLevelEnum;
-  message_type?: MessageTypeEnum;
 }

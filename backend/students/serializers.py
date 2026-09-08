@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from students.models import StudentCategory, StudentGroup, MemorizeNotes, Student, MemorizeMessage, StudentMasjedChoice
+from students.models import StudentCategory, StudentGroup, MemorizeNotes, Student, MemorizeMessage, StudentMasjedChoice, StudentLevelChoice, MessageTypeChoice
 from students.constants import EXTRA_HADEETH_LIMIT
 from awqaf.serializers import AwqafRelationSerializer
 from comings.serializers import ComingListForStudentSerializer
@@ -68,6 +68,7 @@ class MemorizeMessageForStudentSerializer(serializers.ModelSerializer):
 
 
 class StudentDetailsSerializer(serializers.ModelSerializer):
+    level = serializers.ChoiceField(choices=StudentLevelChoice.choices, required=True)
     category = StudentCategorySerializer(allow_null=True)
     group = StudentGroupSerializer(allow_null=True)
     memo_notes = MemorizeNotesGetSerializer(many=True)
@@ -127,6 +128,7 @@ class StudentUpdateExtraHadeethSerializer(serializers.Serializer):
 class MemorizeMessageSerializer(serializers.ModelSerializer):
     student = serializers.CharField(source="student.name")
     masjed = serializers.ChoiceField(choices=StudentMasjedChoice.choices, source="student.masjed")
+    message_type = serializers.ChoiceField(choices=MessageTypeChoice.choices, required=True)
     changes = serializers.ListField(child=serializers.IntegerField(), required=False)
 
     class Meta:
