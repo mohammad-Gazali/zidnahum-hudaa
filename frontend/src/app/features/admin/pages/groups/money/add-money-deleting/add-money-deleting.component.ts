@@ -20,8 +20,7 @@ import { MatButton } from '@angular/material/button';
 import { finalize } from 'rxjs';
 import { StudentSearchComponent, SearchStudent } from '@admin/components';
 import {
-  ExtraService,
-  StudentsService,
+  AdminStudentCategoryService,
   MasjedService,
   SnackbarService,
   LOADING,
@@ -53,8 +52,7 @@ import { MoneyBase } from '../money.base';
   ],
 })
 export class AddMoneyDeletingComponent extends MoneyBase {
-  private extra = inject(ExtraService);
-  private students = inject(StudentsService);
+  private studentCategory = inject(AdminStudentCategoryService);
   private fb = inject(NonNullableFormBuilder);
   private masjed = inject(MasjedService);
   private snackbar = inject(SnackbarService);
@@ -63,8 +61,10 @@ export class AddMoneyDeletingComponent extends MoneyBase {
 
   public selectedStudents = signal<Set<SearchStudent>>(new Set());
   public mode = signal<'normal' | 'category'>('normal');
-  public causes = toSignal(this.money.moneyDeletingCauseList());
-  public categories = toSignal(this.students.studentsCategoryList());
+  public causes = toSignal(
+    this.moneyDeletingCause.adminMoneyDeletingCauseList(),
+  );
+  public categories = toSignal(this.studentCategory.adminStudentsCategoryList());
   public masjeds = toSignal(this.masjed.getMasjeds());
 
   public normalForm = this.fb.group({
@@ -110,8 +110,8 @@ export class AddMoneyDeletingComponent extends MoneyBase {
 
     this.loading.set(true);
 
-    this.extra
-      .extraAddMoneyDeletingNormalCreate({
+    this.money
+      .adminExtraAddMoneyDeletingNormalCreate({
         students: [...this.selectedStudents()].map((s) => s.id),
         value: this.normalForm.value.value ?? 0,
         cause: this.normalForm.value.cause ?? -1,
@@ -132,8 +132,8 @@ export class AddMoneyDeletingComponent extends MoneyBase {
 
     this.loading.set(true);
 
-    this.extra
-      .extraAddMoneyDeletingCategoryCreate({
+    this.money
+      .adminExtraAddMoneyDeletingCategoryCreate({
         masjed: this.categoryForm.value.masjed ?? 1,
         category: this.categoryForm.value.category ?? -1,
         value: this.categoryForm.value.value ?? 0,

@@ -14,11 +14,11 @@ export class ComingCategoryComponent extends ComingsBase {
   public config: TableComponentConfig<ComingCategoryList> = {
     createUrl: '/comings/coming-category/create',
     getUrlFunc: (id) => `/comings/coming-category/view/${id}`,
-    dataFunc: (options) => this.comings.comingsCategoryList(options),
+    dataFunc: (options) => this.category.adminComingsCategoryList(options),
     hasPagination: false,
     actions: [
       deleteModelAction('أسباب الحضور', (ids) =>
-        this.actions.actionsComingCategoryDeleteDelete({ ids }),
+        this.category.adminActionsComingCategoryDeleteCreate({ ids }),
       ),
     ],
     columns: {

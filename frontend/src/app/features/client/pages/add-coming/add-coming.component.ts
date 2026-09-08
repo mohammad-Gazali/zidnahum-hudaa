@@ -5,12 +5,13 @@ import { MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import {
   ComingCategory,
-  ComingsClientService,
+  ComingsService,
   LayoutService,
   MasjedPipe,
   MasjedService,
   SnackbarService,
-  StudentsClientService,
+  StudentsService,
+  StudentsWithComingRegistrationListParams,
 } from '@shared';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
@@ -42,8 +43,8 @@ import { MobileUtilsService } from '@client/services';
   styleUrl: './add-coming.component.scss',
 })
 export class AddComingComponent {
-  private students = inject(StudentsClientService);
-  private comings = inject(ComingsClientService);
+  private students = inject(StudentsService);
+  private comings = inject(ComingsService);
   private destroyRef = inject(DestroyRef);
   private list = inject(AddComingStudentListService);
   private snackbar = inject(SnackbarService);
@@ -84,12 +85,11 @@ export class AddComingComponent {
     this.loading.set(true);
 
     this.students
-      .studentsWithComingRegistrationList({
-        comingCategoryId,
+      .studentsWithComingRegistrationList(Number(comingCategoryId), {
         query,
         page,
         masjed,
-      })
+      } as StudentsWithComingRegistrationListParams)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         error: () => {

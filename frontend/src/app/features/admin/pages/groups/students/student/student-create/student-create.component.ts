@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { CreateComponent, CreateComponentConfig } from '@admin/components';
-import { MasjedService, StudentCreate } from '@shared';
+import { MasjedService, LevelService, StudentCreate } from '@shared';
 import { StudentsBase } from '../../students.base';
 
 @Component({
@@ -12,10 +12,11 @@ import { StudentsBase } from '../../students.base';
 })
 export class StudentCreateComponent extends StudentsBase {
   private masjed = inject(MasjedService);
+  private level = inject(LevelService);
 
   public config: CreateComponentConfig<StudentCreate> = {
     createFunc: (body) => {
-      return this.students.studentsStudentCreate(body);
+      return this.students.adminStudentsStudentCreate(body);
     },
     tableRoute: '/students/student',
     fields: {
@@ -57,7 +58,14 @@ export class StudentCreateComponent extends StudentsBase {
         type: 'relation',
         relationType: 'nullable',
         getFieldValueFunc: () => {
-          return this.students.studentsCategoryList();
+          return this.studentsCategory.adminStudentsCategoryList();
+        },
+      },
+      level: {
+        type: 'relation',
+        relationType: 'normal',
+        getFieldValueFunc: () => {
+          return this.level.getLevels();
         },
       },
       father_work: {
@@ -73,11 +81,17 @@ export class StudentCreateComponent extends StudentsBase {
         type: 'relation',
         relationType: 'nullable',
         getFieldValueFunc: () => {
-          return this.students.studentsGroupList();
+          return this.studentsGroup.adminStudentsGroupList();
         },
       },
       parts_received: {
         type: 'string',
+      },
+      q_viewing: {
+        type: 'string',
+      },
+      extra_hadeeth: {
+        type: 'number',
       },
     },
   };

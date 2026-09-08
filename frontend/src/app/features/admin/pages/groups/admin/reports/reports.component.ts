@@ -18,7 +18,7 @@ import { finalize } from 'rxjs';
 import { SnackbarService } from '@shared';
 import { TranslatePipe } from '@shared';
 import {
-  UsersGroupsService,
+  AdminUserService,
   StudentsService,
 } from '@shared';
 import { ReportsService } from '@shared';
@@ -26,8 +26,8 @@ import {
   ReportsStudentCategoryOrGroupResponse,
   ReportsStudentCategoryOrGroupStudent,
   ReportsStudentResponse,
+  ReportsCategoryOrGroupSpecificResponse,
 } from '@shared';
-import { MessageType } from '@shared';
 import { StudentSearchComponent, SearchStudent, ChangesFieldComponent } from '@admin/components';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
@@ -74,7 +74,7 @@ export class ReportsComponent {
   private students = inject(StudentsService);
   private snackbar = inject(SnackbarService);
   private destroyRef = inject(DestroyRef);
-  private auth = inject(UsersGroupsService);
+  private auth = inject(AdminUserService);
   private messageType = inject(MemorizeMessageTypeService);
   public masjed = inject(MasjedService);
   public loading = inject(LOADING);
@@ -83,7 +83,7 @@ export class ReportsComponent {
   public categories = toSignal(this.students.studentsCategoryList());
   public groups = toSignal(this.students.studentsGroupList());
   public masjeds = toSignal(this.masjed.getMasjeds());
-  private masters = toSignal(this.auth.authUserList());
+  private masters = toSignal(this.auth.adminAuthUserList());
   private messageTypes = toSignal(this.messageType.getTypes());
 
   public masterMap = computed(() => {
@@ -119,10 +119,10 @@ export class ReportsComponent {
     return map;
   });
   public messageTypeMap = computed(() => {
-    const map = new Map<MessageType, string>();
+    const map = new Map<number, string>();
 
     this.messageTypes()?.forEach((type) => {
-      map.set(type.id as MessageType, type.name);
+      map.set(type.id, type.name);
     });
 
     return map;
@@ -197,15 +197,15 @@ export class ReportsComponent {
     const id = this.selectedStudent()!.id;
     if (excel) {
       this.reports
-        .createStudentReportExcel(id, this.getDurationData())
+        .reportsStudentCreate(id, this.getDurationData())
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
         )
-        .subscribe((res) => this.downloadBlob(res));
+        .subscribe();
     } else {
       this.reports
-        .createStudentReport(id, this.getDurationData())
+        .reportsStudentCreate(id, this.getDurationData())
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
@@ -222,15 +222,15 @@ export class ReportsComponent {
 
     if (excel) {
       this.reports
-        .createAllStudentsReportExcel(data)
+        .reportsStudentAllCreate(data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
         )
-        .subscribe((res) => this.downloadBlob(res));
+        .subscribe();
     } else {
       this.reports
-        .createAllStudentsReport(data)
+        .reportsStudentAllCreate(data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
@@ -250,15 +250,15 @@ export class ReportsComponent {
 
     if (excel) {
       this.reports
-        .createCategoryReportExcel(id, data)
+        .reportsCategoryCreate(id, data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
         )
-        .subscribe((res) => this.downloadBlob(res));
+        .subscribe();
     } else {
       this.reports
-        .createCategoryReport(id, data)
+        .reportsCategoryCreate(id, data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
@@ -275,15 +275,15 @@ export class ReportsComponent {
     };
     if (excel) {
       this.reports
-        .createGroupReportExcel(id, data)
+        .reportsGroupCreate(id, data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
         )
-        .subscribe((res) => this.downloadBlob(res));
+        .subscribe();
     } else {
       this.reports
-        .createGroupReport(id, data)
+        .reportsGroupCreate(id, data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
@@ -300,15 +300,15 @@ export class ReportsComponent {
 
     if (excel) {
       this.reports
-        .createAllCategoriesReportExcel(data)
+        .reportsCategoryAllCreate(data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
         )
-        .subscribe((res) => this.downloadBlob(res));
+        .subscribe();
     } else {
       this.reports
-        .createAllCategoriesReport(data)
+        .reportsCategoryAllCreate(data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
@@ -333,26 +333,32 @@ export class ReportsComponent {
 
     if (excel) {
       this.reports
-        .createAllGroupsReportExcel(data)
+        .reportsGroupAllCreate(data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
         )
-        .subscribe((res) => this.downloadBlob(res));
+        .subscribe();
     } else {
       this.reports
-        .createAllGroupsReport(data)
+        .reportsGroupAllCreate(data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
         )
         .subscribe((res) => {
           this.allResponse.set(
-            res.map((item) => ({
-              ...item,
-              id: item.group_id,
-              name: item.group_name,
-            })),
+            res.map((item) => {
+              const groupItem = item as ReportsCategoryOrGroupSpecificResponse & {
+                group_id: number;
+                group_name: string;
+              };
+              return {
+                ...item,
+                id: groupItem.group_id,
+                name: groupItem.group_name,
+              };
+            }),
           );
         });
     }

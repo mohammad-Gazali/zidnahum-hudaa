@@ -11,7 +11,7 @@ import {
   MemoService,
   SnackbarService,
   StudentList,
-  StudentsClientService,
+  StudentsService,
   TestService,
 } from '@shared';
 import {
@@ -54,7 +54,7 @@ import { MobileUtilsService } from '@client/services';
 export class AddMemoComponent {
   private fb = inject(NonNullableFormBuilder);
   private route = inject(ActivatedRoute);
-  private studentsService = inject(StudentsClientService);
+  private studentsService = inject(StudentsService);
   private destroyRef = inject(DestroyRef);
   private loading = inject(LayoutService).loading;
   private snackbar = inject(SnackbarService);
@@ -129,12 +129,12 @@ export class AddMemoComponent {
     this.loading.set(true);
 
     this.studentsService
-      .studentsUpdateQmemoUpdate({
-        id: selectedStudent.id.toString(),
-        data: {
+      .studentsUpdateQmemoUpdate(
+        selectedStudent.id,
+        {
           q_memo: q_memo.map((n) => n - 1),
         },
-      })
+      )
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         error: ({ error }) => {
@@ -143,12 +143,11 @@ export class AddMemoComponent {
         },
         next: (res) => {
           this.loading.set(false);
-          if (res.repeated_memo.length !== 0) {
+          const repeated = (res as { repeated_memo: number[] }).repeated_memo;
+          if (repeated.length !== 0) {
             this.matSnackbar.open(
               ' تم تسجيل التسميع بنجاح, ولكن يوجد تكرار بـ:' +
-                res.repeated_memo
-                  .map((item: number) => this.memo.transform(item))
-                  .join(', '),
+                repeated.map((item: number) => this.memo.transform(item)).join(', '),
               'إغلاق',
             );
           } else {
@@ -182,12 +181,12 @@ export class AddMemoComponent {
     this.loading.set(true);
 
     this.studentsService
-      .studentsUpdateQtestUpdate({
-        id: selectedStudent.id.toString(),
-        data: {
+      .studentsUpdateQtestUpdate(
+        selectedStudent.id,
+        {
           q_test: q_test.map((n) => n - 1),
         },
-      })
+      )
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         error: ({ error }) => {
@@ -196,12 +195,11 @@ export class AddMemoComponent {
         },
         next: (res) => {
           this.loading.set(false);
-          if (res.repeated_test.length !== 0) {
+          const repeated = (res as { repeated_test: number[] }).repeated_test;
+          if (repeated.length !== 0) {
             this.matSnackbar.open(
               ' تم تسجيل التسميع بنجاح, ولكن يوجد تكرار بـ:' +
-                res.repeated_test
-                  .map((item: number) => this.test.transform(item))
-                  .join(', '),
+                repeated.map((item: number) => this.test.transform(item)).join(', '),
               'إغلاق',
             );
           } else {
@@ -231,12 +229,12 @@ export class AddMemoComponent {
     this.loading.set(true);
 
     this.studentsService
-      .studentsUpdateQviewingUpdate({
-        id: selectedStudent.id.toString(),
-        data: {
+      .studentsUpdateQviewingUpdate(
+        selectedStudent.id,
+        {
           q_viewing: q_viewing.map((n) => n - 1),
         },
-      })
+      )
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         error: ({ error }) => {
@@ -245,12 +243,11 @@ export class AddMemoComponent {
         },
         next: (res) => {
           this.loading.set(false);
-          if (res.repeated_viewing.length !== 0) {
+          const repeated = (res as { repeated_viewing: number[] }).repeated_viewing;
+          if (repeated.length !== 0) {
             this.matSnackbar.open(
               ' تم تسجيل القراءة بنجاح, ولكن يوجد تكرار بـ:' +
-                res.repeated_viewing
-                  .map((item: number) => this.memo.transform(item))
-                  .join(', '),
+                repeated.map((item: number) => this.memo.transform(item)).join(', '),
               'إغلاق',
             );
           } else {

@@ -3,7 +3,12 @@ import { StudentComponent } from '../student.component';
 import { MatCard } from '@angular/material/card';
 import { DatePipe } from '@angular/common';
 import { MatDivider } from '@angular/material/divider';
+import { StudentDetails } from '@shared';
 import { StudentActivitiesMessagesContainerComponent } from './student-activities-messages-container/student-activities-messages-container.component';
+
+interface StudentWithCurrentDate extends StudentDetails {
+  current_date: string;
+}
 
 @Component({
   selector: 'app-student-activities',
@@ -19,15 +24,23 @@ import { StudentActivitiesMessagesContainerComponent } from './student-activitie
 export class StudentActivitiesComponent {
   protected student = inject(StudentComponent).student;
 
+  private studentWithCurrentDate = computed(
+    () => this.student() as StudentWithCurrentDate | undefined,
+  );
+
   protected swapHalves = computed(
-    () => Number(this.student()!.current_date.slice(8)) <= 15,
+    () => Number(this.studentWithCurrentDate()!.current_date.slice(8)) <= 15,
   );
   protected firstHalf = computed(() => {
-    const month = Number(this.student()!.current_date.split('-')[1]);
+    const month = Number(
+      this.studentWithCurrentDate()!.current_date.split('-')[1],
+    );
     return 'التسميعات من ' + `${month}/1 ` + 'إلى ' + `${month}/15`;
   });
   protected secondHalf = computed(() => {
-    const month = Number(this.student()!.current_date.split('-')[1]);
+    const month = Number(
+      this.studentWithCurrentDate()!.current_date.split('-')[1],
+    );
     const previousMonth = month === 1 ? 12 : month - 1;
 
     return this.swapHalves()

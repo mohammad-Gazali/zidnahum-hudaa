@@ -13,8 +13,9 @@ export class StudentNoQTestRelationViewComponent extends AwqafBase {
   public config: ViewComponentConfig<AwqafNoQStudentRelationList> = {
     groupName: 'awqaf',
     itemNameAndRouteName: 'student-no-q-test-relation',
-    viewFunc: (id) => this.awqaf.awqafStudentNoQRelationRead(id),
-    deleteFunc: (id) => this.awqaf.awqafStudentNoQRelationDelete(id),
+    viewFunc: (id) => this.studentNoQRelation.adminAwqafStudentNoQRelationRetrieve(Number(id)),
+    deleteFunc: (id) =>
+      this.studentNoQRelation.adminAwqafStudentNoQRelationDestroy(Number(id)),
     fieldsInfo: {
       student: {
         type: 'link',
@@ -28,7 +29,7 @@ export class StudentNoQTestRelationViewComponent extends AwqafBase {
         type: 'relation',
         relationType: 'normal',
         getUrlFunc: (id) => `/awqaf/no-q-test/view/${id}`,
-        getFieldValueFunc: () => this.awqaf.awqafTestNoQList(),
+        getFieldValueFunc: () => this.awqaf.adminAwqafTestNoQList(),
       },
       is_old: {
         type: 'boolean',

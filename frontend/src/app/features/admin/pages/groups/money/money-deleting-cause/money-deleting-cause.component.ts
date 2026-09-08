@@ -14,11 +14,14 @@ export class MoneyDeletingCauseComponent extends MoneyBase {
   public config: TableComponentConfig<MoneyDeletingCauseList> = {
     hasPagination: false,
     createUrl: '/money/money-deleting-cause/create',
-    dataFunc: (options) => this.money.moneyDeletingCauseList(options),
+    dataFunc: (options) =>
+      this.moneyDeletingCause.adminMoneyDeletingCauseList(options),
     getUrlFunc: (id) => `/money/money-deleting-cause/view/${id}`,
     actions: [
       deleteModelAction('أسباب الغرامات المالية', (ids) =>
-        this.actions.actionsMoneyDeletingCauseDeleteDelete({ ids }),
+        this.moneyDeletingCause.adminActionsMoneyDeletingCauseDeleteCreate({
+          ids,
+        }),
       ),
     ],
     columns: {

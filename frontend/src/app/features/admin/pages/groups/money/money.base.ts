@@ -1,10 +1,12 @@
 import { inject } from '@angular/core';
 import {
-  ActionsService,
-  MoneyService,
+  AdminMoneyDeletingService,
+  AdminMoneyDeletingCauseService,
+  AdminMoneyTotalService,
 } from '@shared';
 
 export abstract class MoneyBase {
-  protected money = inject(MoneyService);
-  protected actions = inject(ActionsService);
+  protected money = inject(AdminMoneyDeletingService);
+  protected moneyDeletingCause = inject(AdminMoneyDeletingCauseService);
+  protected moneyTotal = inject(AdminMoneyTotalService);
 }

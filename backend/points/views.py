@@ -51,3 +51,4 @@ class PointsAddingListCreateView(ListCreateAPIView):
 class PointsAddingDeleteView(DestroyAPIView):
     permission_classes = [IsPointsGroup, IsMasterForPointsAdding]
     queryset = PointsAdding.objects.all()
+    serializer_class = PointsAddingListSerializer

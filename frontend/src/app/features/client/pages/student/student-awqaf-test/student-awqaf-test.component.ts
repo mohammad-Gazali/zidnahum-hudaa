@@ -2,7 +2,12 @@ import { Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatCard } from '@angular/material/card';
 import { MatDivider } from '@angular/material/divider';
-import { MemoItemType, AwqafClientService, AwqafRelation } from '@shared';
+import {
+  AwqafRelation,
+  AwqafService,
+  AwqafTestNoQ,
+  MemoItemType,
+} from '@shared';
 import { StudentComponent } from '../student.component';
 
 @Component({
@@ -12,10 +17,12 @@ import { StudentComponent } from '../student.component';
   styleUrl: './student-awqaf-test.component.scss',
 })
 export class StudentAwqafTestComponent {
-  private awqaf = inject(AwqafClientService);
+  private awqaf = inject(AwqafService);
   protected student = inject(StudentComponent).student;
 
-  protected awqafTestNoQ = toSignal(this.awqaf.awqafTestNoQList());
+  protected awqafTestNoQ = toSignal(
+    this.awqaf.awqafTestNoQList<AwqafTestNoQ[]>(),
+  );
 
   MemoItemType = MemoItemType;
 

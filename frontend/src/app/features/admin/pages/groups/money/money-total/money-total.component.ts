@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { TableComponent, TableComponentConfig } from '@admin/components';
-import { MoneyTotal, ExtraService } from '@shared';
+import { TotalMoneyList } from '@shared';
+import { MoneyBase } from '../money.base';
 
 @Component({
   selector: 'app-money-total',
@@ -8,12 +9,10 @@ import { MoneyTotal, ExtraService } from '@shared';
   templateUrl: './money-total.component.html',
   styleUrl: './money-total.component.scss',
 })
-export class MoneyTotalComponent {
-  private extra = inject(ExtraService);
-
-  protected config: TableComponentConfig<MoneyTotal> = {
+export class MoneyTotalComponent extends MoneyBase {
+  protected config: TableComponentConfig<TotalMoneyList> = {
     hasPagination: true,
-    dataFunc: (options) => this.extra.extraMoneyTotalList(options),
+    dataFunc: (options) => this.moneyTotal.adminExtraTotalMoneyList(options),
     getUrlFunc: (id) => `/students/student/view/${id}`,
     searchField: 'student_name',
     useStudentMasjedFilter: true,

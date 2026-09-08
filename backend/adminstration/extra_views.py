@@ -27,6 +27,7 @@ from students.models import MemorizeMessage, MessageTypeChoice, Student
 from adminstration.extra_serializers import (
   AddAwqafTestNoQRequestSerailizer,
   AddAwqafTestQRequestSerializer,
+  AddEliteTestResponseSerializer,
   AddEliteTestSerializer,
   AddMoneyDeletingCategoryRequestSerailizer,
   AddMoneyDeletingNormalRequestSerailizer,
@@ -57,7 +58,7 @@ param_student_name = OpenApiParameter(
 )
 
 
-@extend_schema(tags=["admin-extra"])
+@extend_schema(tags=["admin-student"])
 class StudentUpdateView(UpdateAPIView):
   permission_classes = [IsAdminUser]
   queryset = Student.objects.all()
@@ -81,7 +82,7 @@ class StudentUpdateView(UpdateAPIView):
     )
 
 
-@extend_schema(tags=["admin-extra"])
+@extend_schema(tags=["admin-awqaf-test-no-q"])
 class AddAwqafNoQTestCreateView(CreateAPIView):
   permission_classes = [IsAdminUser]
   serializer_class = AddAwqafTestNoQRequestSerailizer
@@ -94,7 +95,7 @@ class AddAwqafNoQTestCreateView(CreateAPIView):
       )
 
 
-@extend_schema(tags=["admin-extra"])
+@extend_schema(tags=["admin-awqaf-test-no-q"])
 class AddAwqafQTestCreateView(CreateAPIView):
   permission_classes = [IsAdminUser]
   serializer_class = AddAwqafTestQRequestSerializer
@@ -124,7 +125,7 @@ class AddAwqafQTestCreateView(CreateAPIView):
       student.save()
 
 
-@extend_schema(tags=["admin-extra"])
+@extend_schema(tags=["admin-money-deleting"])
 class AddMoneyDeletingNormalCreateView(CreateAPIView):
   permission_classes = [IsSuperUser]
   serializer_class = AddMoneyDeletingNormalRequestSerailizer
@@ -138,7 +139,7 @@ class AddMoneyDeletingNormalCreateView(CreateAPIView):
       )
 
 
-@extend_schema(tags=["admin-extra"])
+@extend_schema(tags=["admin-money-deleting"])
 class AddMoneyDeletingCategoryCreateView(CreateAPIView):
   permission_classes = [IsSuperUser]
   serializer_class = AddMoneyDeletingCategoryRequestSerailizer
@@ -156,17 +157,21 @@ class AddMoneyDeletingCategoryCreateView(CreateAPIView):
       )
 
 
-@extend_schema(tags=["admin-extra"])
+@extend_schema(tags=["admin-settings"])
 class ControlSettingsReadUpdateView(APIView):
   permission_classes = [IsSuperUser]
   http_method_names = ["get", "put"]
+  serializer_class = ControlSettingsSerializer
 
   @extend_schema(responses={HTTP_200_OK: ControlSettingsSerializer})
   def get(self, *args, **kwargs):
     serializer = ControlSettingsSerializer(ControlSettings.objects.first())
     return Response(data=serializer.data, status=HTTP_200_OK)
 
-  @extend_schema(request=ControlSettingsSerializer)
+  @extend_schema(
+    request=ControlSettingsSerializer,
+    responses={HTTP_204_NO_CONTENT: None},
+  )
   @transaction.atomic
   def put(self, *args, **kwargs):
     serializer = ControlSettingsSerializer(data=self.request.data)
@@ -186,7 +191,7 @@ class ControlSettingsReadUpdateView(APIView):
     return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
 
 
-@extend_schema(tags=["admin-extra"])
+@extend_schema(tags=["admin-money-total"])
 class TotalMoneyListView(ListAPIView):
   permission_classes = [IsSuperUser]
   pagination_class = LimitOffsetPagination
@@ -225,7 +230,7 @@ class TotalMoneyListView(ListAPIView):
     return super().list(request, *args, **kwargs)
 
 
-@extend_schema(tags=["admin-extra"])
+@extend_schema(tags=["admin-statistics"])
 class StatisticsView(APIView):
   permission_classes = [IsSuperUser]
   http_method_names = ["post"]
@@ -283,12 +288,16 @@ class StatisticsView(APIView):
     return Response({"detail": serializer.errors}, HTTP_400_BAD_REQUEST)
 
 
-@extend_schema(tags=["admin-extra"])
+@extend_schema(tags=["admin-elite-test"])
 class AddEliteTestCreateView(APIView):
   permission_classes = [IsAdminUser]
   http_method_names = ["post"]
+  serializer_class = AddEliteTestSerializer
 
-  @extend_schema(request=AddEliteTestSerializer)
+  @extend_schema(
+    request=AddEliteTestSerializer,
+    responses={HTTP_201_CREATED: AddEliteTestResponseSerializer},
+  )
   def post(self, *args, **kwargs):
     serializer = AddEliteTestSerializer(data=self.request.data)
 

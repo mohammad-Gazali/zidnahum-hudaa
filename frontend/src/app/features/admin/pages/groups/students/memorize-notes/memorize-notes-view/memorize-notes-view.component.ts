@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { map } from 'rxjs';
 import { ViewComponent, ViewComponentConfig } from '@admin/components';
-import { MemorizeNotesList, UsersGroupsService } from '@shared';
+import { MemorizeNotesList, AdminUserService } from '@shared';
 import { StudentsBase } from '../../students.base';
 
 @Component({
@@ -11,13 +11,14 @@ import { StudentsBase } from '../../students.base';
   styleUrl: './memorize-notes-view.component.scss',
 })
 export class MemorizeNotesViewComponent extends StudentsBase {
-  private auth = inject(UsersGroupsService);
+  private auth = inject(AdminUserService);
 
   public config: ViewComponentConfig<MemorizeNotesList> = {
     groupName: 'students',
     itemNameAndRouteName: 'memorize-notes',
-    viewFunc: (id) => this.students.studentsMemorizeNotesRead(id),
-    deleteFunc: (id) => this.students.studentsMemorizeNotesDelete(id),
+    viewFunc: (id) => this.memorizeNotes.adminStudentsMemorizeNotesRetrieve(Number(id)),
+    deleteFunc: (id) =>
+      this.memorizeNotes.adminActionsMemorizeNotesDeleteCreate({ ids: [Number(id)] }),
     fieldsInfo: {
       sended_at: {
         type: 'datetime',
@@ -26,7 +27,7 @@ export class MemorizeNotesViewComponent extends StudentsBase {
         type: 'relation',
         relationType: 'nullable',
         getFieldValueFunc: () =>
-          this.auth.authUserList().pipe(
+          this.auth.adminAuthUserList().pipe(
             map((list) =>
               list.map((u) => ({
                 id: u.id,

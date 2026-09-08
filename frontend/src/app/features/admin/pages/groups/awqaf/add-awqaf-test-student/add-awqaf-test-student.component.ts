@@ -22,8 +22,7 @@ import { finalize } from 'rxjs';
 import { StudentSearchComponent, SearchStudent } from '@admin/components';
 import { QuranAwqafTestService } from '@admin/services';
 import {
-  AwqafService,
-  ExtraService,
+  AdminAwqafTestNoQService,
   TranslatePipe,
   SnackbarService,
   AwqafTestNoQList,
@@ -54,9 +53,8 @@ import {
   styleUrl: './add-awqaf-test-student.component.scss',
 })
 export class AddAwqafTestStudentComponent {
-  private awqaf = inject(AwqafService);
+  private awqaf = inject(AdminAwqafTestNoQService);
   private fb = inject(NonNullableFormBuilder);
-  private extra = inject(ExtraService);
   private snackbar = inject(SnackbarService);
   private destroyRef = inject(DestroyRef);
   public transform = inject(QuranAwqafTestService).transform;
@@ -85,7 +83,7 @@ export class AddAwqafTestStudentComponent {
 
   constructor() {
     this.awqaf
-      .awqafTestNoQList()
+      .adminAwqafTestNoQList()
       .pipe(takeUntilDestroyed())
       .subscribe((res) => this.awqafNoQTests.set(res));
   }
@@ -109,8 +107,8 @@ export class AddAwqafTestStudentComponent {
 
     this.loading.set(true);
 
-    this.extra
-      .extraAddAwqafNoQTestCreate({
+    this.awqaf
+      .adminExtraAddAwqafNoQTestCreate({
         students: [...this.selectedStudents()].map((s) => s.id),
         test: this.nonQuranForm.value.value ?? -1,
       })
@@ -134,8 +132,8 @@ export class AddAwqafTestStudentComponent {
 
     this.loading.set(true);
 
-    this.extra
-      .extraAddAwqafQTestCreate({
+    this.awqaf
+      .adminExtraAddAwqafQTestCreate({
         type: this.quranForm.value.type ?? 'normal',
         students: [...this.selectedStudents()].map((s) => s.id),
         parts:

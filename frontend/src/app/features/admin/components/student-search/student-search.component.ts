@@ -20,7 +20,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { finalize } from 'rxjs';
-import { StudentsService, MasjedService } from '@shared';
+import { AdminStudentService, MasjedService } from '@shared';
 import { TranslatePipe } from '@shared';
 import { SearchStudent } from './search-student.interface';
 
@@ -50,7 +50,7 @@ import { SearchStudent } from './search-student.interface';
   styleUrl: './student-search.component.scss',
 })
 export class StudentSearchComponent {
-  private studetns = inject(StudentsService);
+  private studetns = inject(AdminStudentService);
   private destroyRef = inject(DestroyRef);
   private fb = inject(NonNullableFormBuilder);
   public masjed = inject(MasjedService);
@@ -76,7 +76,7 @@ export class StudentSearchComponent {
       this.form.controls.search.disable();
 
       this.studetns
-        .studentsStudentList({
+        .adminStudentsStudentList({
           name: this.form.value.search,
         })
         .pipe(

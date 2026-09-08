@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { map } from 'rxjs';
 import { TableComponent, TableComponentConfig } from '@admin/components';
 import { deleteModelAction } from '@admin/helpers';
-import { ComingList, UsersGroupsService } from '@shared';
+import { ComingList, AdminUserService } from '@shared';
 import { ComingsBase } from '../comings.base';
 
 @Component({
@@ -12,17 +12,17 @@ import { ComingsBase } from '../comings.base';
   styleUrl: './coming.component.scss',
 })
 export class ComingComponent extends ComingsBase {
-  private auth = inject(UsersGroupsService);
+  private auth = inject(AdminUserService);
 
   public config: TableComponentConfig<ComingList> = {
     hasPagination: true,
     useStudentMasjedFilter: true,
     getUrlFunc: (id) => `/comings/coming/view/${id}`,
-    dataFunc: (options) => this.comings.comingsComingList(options),
+    dataFunc: (options) => this.comings.adminComingsComingList(options),
     searchField: 'student_name', // here we added it like this because it will be converted to camelCase which will be converted to the right query param
     actions: [
       deleteModelAction('تسجيلات الحضور', (ids) =>
-        this.actions.actionsComingDeleteDelete({ ids }),
+        this.comings.adminActionsComingDeleteCreate({ ids }),
       ),
     ],
     columns: {
@@ -37,7 +37,7 @@ export class ComingComponent extends ComingsBase {
       category: {
         display: 'relation',
         filterType: 'exact',
-        getFieldValueFunc: () => this.comings.comingsCategoryList(),
+        getFieldValueFunc: () => this.category.adminComingsCategoryList(),
       },
       masjed: {
         display: 'ignore',
@@ -51,7 +51,7 @@ export class ComingComponent extends ComingsBase {
         display: 'relation',
         filterType: 'exact_null',
         getFieldValueFunc: () =>
-          this.auth.authUserList().pipe(
+          this.auth.adminAuthUserList().pipe(
             map((list) =>
               list.map((u) => ({
                 id: u.id,

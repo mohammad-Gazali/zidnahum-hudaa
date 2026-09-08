@@ -14,13 +14,16 @@ export class MoneyDeletingComponent extends MoneyBase {
     hasPagination: true,
     useStudentMasjedFilter: true,
     searchField: 'student_name',
-    dataFunc: (options) => this.money.moneyDeletingList(options),
+    dataFunc: (options) => this.money.adminMoneyDeletingList(options),
     getUrlFunc: (id) => `/money/money-deleting/view/${id}`,
     actions: [
       {
         name: 'active-to-points-true',
         delegateFunc: (ids) =>
-          this.actions.actionsMoneyDeletingActiveUpdate({ ids, value: true }),
+          this.money.adminActionsMoneyDeletingActiveUpdate({
+            ids,
+            value: true,
+          }),
         confirmation: {
           message: 'هل أنت متأكد من جعل الغرامات مخصومة من النقاط ؟',
         },
@@ -28,7 +31,10 @@ export class MoneyDeletingComponent extends MoneyBase {
       {
         name: 'active-to-points-false',
         delegateFunc: (ids) =>
-          this.actions.actionsMoneyDeletingActiveUpdate({ ids, value: false }),
+          this.money.adminActionsMoneyDeletingActiveUpdate({
+            ids,
+            value: false,
+          }),
         confirmation: {
           message: 'هل أنت متأكد من جعل الغرامات غير مخصومة من النقاط ؟',
         },
@@ -46,7 +52,8 @@ export class MoneyDeletingComponent extends MoneyBase {
       cause: {
         display: 'relation',
         filterType: 'exact',
-        getFieldValueFunc: () => this.money.moneyDeletingCauseList(),
+        getFieldValueFunc: () =>
+          this.moneyDeletingCause.adminMoneyDeletingCauseList(),
       },
       value: {
         display: 'normal',

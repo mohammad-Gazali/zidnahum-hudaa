@@ -11,8 +11,8 @@ export class PagesSumService {
         messages
         .filter(message => message.message_type === MessageType.Memo || message.message_type === MessageType.Test)
         .map(message => message.message_type === MessageType.Memo
-            ? this.getNumPagesMemo(message.changes)
-            : this.getNumPagesTest(message.changes)
+            ? this.getNumPagesMemo(message.changes as number[])
+            : this.getNumPagesTest(message.changes as number[])
         )
         .reduce((pre, curr) => pre + curr, 0)
     )

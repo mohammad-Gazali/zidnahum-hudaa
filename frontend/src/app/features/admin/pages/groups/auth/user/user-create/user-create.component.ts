@@ -13,7 +13,7 @@ import { Validators } from '@angular/forms';
 export class UserCreateComponent extends AuthBase {
   public config: CreateComponentConfig<UserCreate> = {
     tableRoute: '/auth/user',
-    createFunc: (body) => this.auth.authUserCreate(body),
+    createFunc: (body) => this.auth.adminAuthUserCreate(body),
     fields: {
       username: {
         type: 'string',
@@ -34,7 +34,7 @@ export class UserCreateComponent extends AuthBase {
       groups: {
         type: 'relation',
         relationType: 'multiple',
-        getFieldValueFunc: () => this.auth.authGroupList(),
+        getFieldValueFunc: () => this.groups.adminAuthGroupList(),
       },
       is_active: {
         type: 'boolean',

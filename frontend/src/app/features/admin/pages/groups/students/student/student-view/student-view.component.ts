@@ -6,7 +6,7 @@ import {
   StudentUpdate,
   MasjedService,
   LevelService,
-  ExtraService,
+  AdminStudentService,
   EXTRA_HADEETH_LIMIT,
 } from '@shared';
 import { StudentsBase } from '../../students.base';
@@ -20,7 +20,7 @@ import { StudentsBase } from '../../students.base';
 export class StudentViewComponent extends StudentsBase {
   private masjed = inject(MasjedService);
   private level = inject(LevelService);
-  private extra = inject(ExtraService);
+  private extra = inject(AdminStudentService);
 
   public config: ViewComponentConfig<StudentDetails, StudentUpdate> = {
     fieldsInfo: {
@@ -57,7 +57,7 @@ export class StudentViewComponent extends StudentsBase {
         type: 'relation',
         relationType: 'nullable',
         getFieldValueFunc: () => {
-          return this.students.studentsCategoryList();
+          return this.studentsCategory.adminStudentsCategoryList();
         },
         getUrlFunc: (id) => {
           return id !== null ? `/students/student-category/view/${id}` : '';
@@ -67,7 +67,7 @@ export class StudentViewComponent extends StudentsBase {
         type: 'relation',
         relationType: 'nullable',
         getFieldValueFunc: () => {
-          return this.students.studentsGroupList();
+          return this.studentsGroup.adminStudentsGroupList();
         },
         getUrlFunc: (id) => {
           return id !== null ? `/students/student-group/view/${id}` : '';
@@ -124,16 +124,13 @@ export class StudentViewComponent extends StudentsBase {
     groupName: 'students',
     itemNameAndRouteName: 'student',
     viewFunc: (id) => {
-      return this.students.studentsStudentRead(id);
+      return this.students.adminStudentsStudentRetrieve(Number(id));
     },
     deleteFunc: (id) => {
-      return this.students.studentsStudentDelete(id);
+      return this.students.adminActionsStudentDeleteCreate({ ids: [Number(id)] });
     },
     updateFunc: (id, data) => {
-      return this.extra.extraStudentUpdate({
-        id,
-        data,
-      });
+      return this.extra.adminExtraStudentUpdateUpdate(Number(id), data);
     },
   };
 }

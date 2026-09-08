@@ -19,3 +19,4 @@ class MemorizeNotesCreateView(CreateAPIView):
 class MemorizeNotesDeleteView(DestroyAPIView):
     permission_classes = [IsMemoGroup]
     queryset = MemorizeNotes.objects.all()
+    serializer_class = MemorizeNotesCreateSerializer

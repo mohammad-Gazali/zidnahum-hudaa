@@ -15,12 +15,12 @@ export class CategoryComponent extends StudentsBase {
     createUrl: '/students/student-category/create',
     hasPagination: false,
     dataFunc: (options) => {
-      return this.students.studentsCategoryList(options);
+      return this.studentsCategory.adminStudentsCategoryList(options);
     },
     getUrlFunc: (id) => `/students/student-category/view/${id}`,
     actions: [
       deleteModelAction('فئات الطلاب', (ids) =>
-        this.actions.actionsStudentCategoryDeleteDelete({ ids }),
+        this.studentsCategory.adminActionsStudentCategoryDeleteCreate({ ids }),
       ),
     ],
     columns: {

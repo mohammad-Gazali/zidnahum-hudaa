@@ -9,7 +9,7 @@ import {
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
-import { StudentDetails, StudentsClientService } from '@shared';
+import { StudentDetails, StudentsService } from '@shared';
 import { StudentInfoComponent } from './student-info/student-info.component';
 import { StudentActivitiesComponent } from './student-activities/student-activities.component';
 import { StudentMemoComponent } from './student-memo/student-memo.component';
@@ -41,13 +41,13 @@ import { StudentEliteTestComponent } from './student-elite-test/student-elite-te
   ],
 })
 export class StudentComponent {
-  private students = inject(StudentsClientService);
+  private students = inject(StudentsService);
   private route = inject(ActivatedRoute);
   public student = signal<StudentDetails | undefined>(undefined);
 
   constructor() {
     this.students
-      .studentsRead(this.route.snapshot.params['id'])
+      .studentsRetrieve(this.route.snapshot.params['id'])
       .pipe(takeUntilDestroyed())
       .subscribe(this.student.set);
   }

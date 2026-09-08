@@ -18,14 +18,14 @@ export class StudentComponent extends StudentsBase {
   public config: TableComponentConfig<StudentList> = {
     searchField: 'name',
     hasPagination: true,
-    dataFunc: (params) => this.students.studentsStudentList(params),
+    dataFunc: (params) => this.students.adminStudentsStudentList(params),
     getUrlFunc: (id) => {
       return `/students/student/view/${id}`;
     },
     createUrl: '/students/student/create',
     actions: [
       deleteModelAction('الطلاب', (ids) =>
-        this.actions.actionsStudentDeleteDelete({ ids }),
+        this.students.adminActionsStudentDeleteCreate({ ids }),
       ),
     ],
     columns: {
@@ -53,14 +53,14 @@ export class StudentComponent extends StudentsBase {
         display: 'relation',
         filterType: 'exact_null',
         getFieldValueFunc: () => {
-          return this.students.studentsCategoryList();
+          return this.studentsCategory.adminStudentsCategoryList();
         },
       },
       group: {
         display: 'relation',
         filterType: 'exact_null',
         getFieldValueFunc: () => {
-          return this.students.studentsGroupList();
+          return this.studentsGroup.adminStudentsGroupList();
         },
       },
       registered_at: {

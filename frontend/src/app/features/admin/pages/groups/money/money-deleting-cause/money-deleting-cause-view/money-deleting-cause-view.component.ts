@@ -20,9 +20,17 @@ export class MoneyDeletingCauseViewComponent extends MoneyBase {
   > = {
     groupName: 'money',
     itemNameAndRouteName: 'money-deleting-cause',
-    viewFunc: (id) => this.money.moneyDeletingCauseRead(id),
-    deleteFunc: (id) => this.money.moneyDeletingCauseDelete(id),
-    updateFunc: (id, data) => this.money.moneyDeletingCauseUpdate({ id, data }),
+viewFunc: (id) =>
+        this.moneyDeletingCause.adminMoneyDeletingCauseRetrieve(Number(id)),
+      deleteFunc: (id) =>
+        this.moneyDeletingCause.adminActionsMoneyDeletingCauseDeleteCreate({
+          ids: [Number(id)],
+        }),
+      updateFunc: (id, data) =>
+        this.moneyDeletingCause.adminMoneyDeletingCauseUpdate(
+          Number(id),
+          data,
+        ),
     fieldsInfo: {
       name: {
         type: 'string',

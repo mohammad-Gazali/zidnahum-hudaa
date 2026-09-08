@@ -15,10 +15,10 @@ export class DeletingCauseComponent extends PointsBase {
     hasPagination: false,
     createUrl: `/points/deleting-cause/create`,
     getUrlFunc: (id) => `/points/deleting-cause/view/${id}`,
-    dataFunc: (options) => this.points.pointsDeletingCauseList(options),
+    dataFunc: (options) => this.pointsDeletingCause.adminPointsDeletingCauseList(options),
     actions: [
       deleteModelAction('أسباب الإضافات', (ids) =>
-        this.actions.actionsPointsDeletingCauseDeleteDelete({ ids }),
+        this.pointsDeletingCause.adminActionsPointsDeletingCauseDeleteCreate({ ids }),
       ),
     ],
     columns: {

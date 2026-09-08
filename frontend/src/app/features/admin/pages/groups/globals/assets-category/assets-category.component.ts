@@ -13,12 +13,15 @@ import { GlobalsBase } from '../globals.base';
 export class AssetsCategoryComponent extends GlobalsBase {
   public config: TableComponentConfig<AssetsCategoryList> = {
     hasPagination: false,
-    dataFunc: (options) => this.globals.globalsAssetsCategoryList(options),
+    dataFunc: (options) =>
+      this.globalsAssetsCategory.adminGlobalsAssetsCategoryList(options),
     createUrl: '/globals/assets-category/create',
     getUrlFunc: (id) => `/globals/assets-category/view/${id}`,
     actions: [
       deleteModelAction('فئات الملفات', (ids) =>
-        this.actions.actionsAssetsCategoryDeleteDelete({ ids }),
+        this.globalsAssetsCategory.adminActionsAssetsCategoryDeleteCreate({
+          ids,
+        }),
       ),
     ],
     columns: {

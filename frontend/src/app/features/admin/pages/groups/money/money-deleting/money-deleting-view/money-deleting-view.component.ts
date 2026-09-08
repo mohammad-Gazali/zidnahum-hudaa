@@ -13,7 +13,7 @@ export class MoneyDeletingViewComponent extends MoneyBase {
   public config: ViewComponentConfig<MoneyDeletingList> = {
     groupName: 'money',
     itemNameAndRouteName: 'money-deleting',
-    viewFunc: (id) => this.money.moneyDeletingRead(id),
+    viewFunc: (id) => this.money.adminMoneyDeletingRetrieve(Number(id)),
     fieldsInfo: {
       student: {
         type: 'link',
@@ -26,7 +26,8 @@ export class MoneyDeletingViewComponent extends MoneyBase {
       cause: {
         type: 'relation',
         relationType: 'normal',
-        getFieldValueFunc: () => this.money.moneyDeletingCauseList(),
+        getFieldValueFunc: () =>
+          this.moneyDeletingCause.adminMoneyDeletingCauseList(),
         getUrlFunc: (id) => `/money/money-deleting-cause/view/${id}`,
       },
       value: {

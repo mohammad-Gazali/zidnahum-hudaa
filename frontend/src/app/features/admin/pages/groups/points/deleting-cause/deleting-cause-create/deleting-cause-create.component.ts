@@ -13,7 +13,7 @@ import { PointsBase } from '../../points.base';
 export class DeletingCauseCreateComponent extends PointsBase {
   public config: CreateComponentConfig<PointsDeletingCauseCreate> = {
     tableRoute: '/points/deleting-cause',
-    createFunc: (body) => this.points.pointsDeletingCauseCreate(body),
+    createFunc: (body) => this.pointsDeletingCause.adminPointsDeletingCauseCreate(body),
     fields: {
       name: {
         type: 'string',

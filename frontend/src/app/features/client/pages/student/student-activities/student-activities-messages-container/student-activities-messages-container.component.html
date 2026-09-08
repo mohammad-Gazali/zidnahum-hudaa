@@ -17,20 +17,20 @@
     @case (messageType.AlNawawia) {
       <mat-card class="small-flex-card bg-primary-fixed-dim">
         الأربعين النووية:
-        @if (message.changes[1] + 1 === message.changes[2]) {
-          الحديث {{ message.changes[0] + message.changes[2] }}
+        @if (message.changes![1] + 1 === message.changes![2]) {
+          الحديث {{ message.changes![0] + message.changes![2] }}
         } @else {
-          من الحديث {{ message.changes[0] + message.changes[1] + 1 }} إلى {{ message.changes[0] + message.changes[2] }}
+          من الحديث {{ message.changes![0] + message.changes![1] + 1 }} إلى {{ message.changes![0] + message.changes![2] }}
         }
       </mat-card>
     }
     @case (messageType.AlSaalihin) {
       <mat-card class="small-flex-card bg-primary-fixed-dim">
         رياض الصالحين:
-        @if (message.changes[1] + 1 === message.changes[2]) {
-          الحديث {{ message.changes[0] + message.changes[2] }}
+        @if (message.changes![1] + 1 === message.changes![2]) {
+          الحديث {{ message.changes![0] + message.changes![2] }}
         } @else {
-          من الحديث {{ message.changes[0] + message.changes[1] + 1 }} إلى {{ message.changes[0] + message.changes[2] }}
+          من الحديث {{ message.changes![0] + message.changes![1] + 1 }} إلى {{ message.changes![0] + message.changes![2] }}
         }
       </mat-card>
     }

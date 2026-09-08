@@ -13,7 +13,7 @@ import { Validators } from '@angular/forms';
 export class GroupCreateComponent extends AuthBase {
   public config: CreateComponentConfig<GroupCreate> = {
     tableRoute: '/auth/group',
-    createFunc: (body) => this.auth.authGroupCreate(body),
+    createFunc: (body) => this.groups.adminAuthGroupCreate(body),
     fields: {
       name: {
         type: 'string',

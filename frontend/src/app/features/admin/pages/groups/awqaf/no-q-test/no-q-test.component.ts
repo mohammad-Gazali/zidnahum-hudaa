@@ -13,12 +13,12 @@ import { AwqafBase } from '../awqaf.base';
 export class NoQTestComponent extends AwqafBase {
   public config: TableComponentConfig<AwqafTestNoQList> = {
     hasPagination: false,
-    dataFunc: (options) => this.awqaf.awqafTestNoQList(options),
+    dataFunc: (options) => this.awqaf.adminAwqafTestNoQList(options),
     getUrlFunc: (id) => `/awqaf/no-q-test/view/${id}`,
     createUrl: `/awqaf/no-q-test/create`,
     actions: [
       deleteModelAction('أسبار الأوقاف بغير القرآن', (ids) =>
-        this.actions.actionsAwqafTestNoQDeleteDelete({ ids }),
+        this.awqaf.adminActionsAwqafTestNoQDeleteCreate({ ids }),
       ),
     ],
     columns: {

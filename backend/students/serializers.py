@@ -60,6 +60,8 @@ class StudentListWithComingRegistrationSerializer(serializers.ModelSerializer):
 
 
 class MemorizeMessageForStudentSerializer(serializers.ModelSerializer):
+    changes = serializers.ListField(child=serializers.IntegerField(), required=False)
+
     class Meta:
         model = MemorizeMessage
         fields = ["id", "message_type", "changes"]
@@ -125,6 +127,7 @@ class StudentUpdateExtraHadeethSerializer(serializers.Serializer):
 class MemorizeMessageSerializer(serializers.ModelSerializer):
     student = serializers.CharField(source="student.name")
     masjed = serializers.IntegerField(source="student.masjed")
+    changes = serializers.ListField(child=serializers.IntegerField(), required=False)
 
     class Meta:
         model = MemorizeMessage

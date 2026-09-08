@@ -13,7 +13,8 @@ import { GlobalsBase } from '../../globals.base';
 export class AssetsCategoryCreateComponent extends GlobalsBase {
   public config: CreateComponentConfig<AssetsCategoryCreate> = {
     tableRoute: '/globals/assets-category',
-    createFunc: (body) => this.globals.globalsAssetsCategoryCreate(body),
+    createFunc: (body) =>
+      this.globalsAssetsCategory.adminGlobalsAssetsCategoryCreate(body),
     fields: {
       name: {
         type: 'string',

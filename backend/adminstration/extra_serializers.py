@@ -77,3 +77,6 @@ class TotalMoneyListSerializer(serializers.Serializer):
 class AddEliteTestSerializer(serializers.Serializer):
     student = serializers.IntegerField()
     parts = serializers.ListField(child=serializers.IntegerField(min_value=0, max_value=59))
+
+class AddEliteTestResponseSerializer(serializers.Serializer):
+    repeated_parts = serializers.ListField(child=serializers.IntegerField())

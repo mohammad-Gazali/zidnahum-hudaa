@@ -13,8 +13,11 @@ export class AssetsFileViewComponent extends GlobalsBase {
   public config: ViewComponentConfig<AssetFileList> = {
     groupName: 'globals',
     itemNameAndRouteName: 'assets-file',
-    viewFunc: (id) => this.globals.globalsAssetFileRead(id),
-    deleteFunc: (id) => this.globals.globalsAssetFileDelete(id),
+    viewFunc: (id) => this.globalsAssetFile.adminGlobalsAssetFileRetrieve(Number(id)),
+    deleteFunc: (id) =>
+      this.globalsAssetFile.adminActionsAssetFileDeleteCreate({
+        ids: [Number(id)],
+      }),
     fieldsInfo: {
       name: {
         type: 'string',
@@ -26,7 +29,8 @@ export class AssetsFileViewComponent extends GlobalsBase {
         type: 'relation',
         relationType: 'normal',
         getUrlFunc: (id) => `/globals/assets-category/view/${id}`,
-        getFieldValueFunc: () => this.globals.globalsAssetsCategoryList(),
+        getFieldValueFunc: () =>
+          this.globalsAssetsCategory.adminGlobalsAssetsCategoryList(),
       },
     },
   };

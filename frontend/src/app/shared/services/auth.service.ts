@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EMPTY, catchError, switchMap, tap } from 'rxjs';
-import { AccountsService } from './api/services';
+import { AccountsService } from './api/accounts/accounts.service';
 import { SnackbarService } from './snackbar.service';
 import { CurrentUser } from '../types';
 import { Router } from '@angular/router';
@@ -55,7 +55,7 @@ export class AuthService {
     }
 
     this.accounts
-      .accountsDetailsList()
+      .accountsDetailsRetrieve()
       .pipe(
         catchError((err: HttpErrorResponse) => {
           if (
@@ -117,7 +117,7 @@ export class AuthService {
           this.refreshToken = res.refresh;
         }),
         switchMap(() =>
-          this.accounts.accountsDetailsList().pipe(
+          this.accounts.accountsDetailsRetrieve().pipe(
             tap((res) => {
               this._currentUser.set({
                 id: res.id!,

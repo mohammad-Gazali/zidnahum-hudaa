@@ -1,4 +1,5 @@
 import re
+from functools import lru_cache
 from typing import Any, Dict, List, Literal, Type
 
 from django.contrib.auth import get_user_model
@@ -83,6 +84,24 @@ def create_serializer(
   `ref_name`.
   """
 
+  cache_fields = (
+    serializer_fields
+    if isinstance(serializer_fields, str)
+    else tuple(serializer_fields)
+  )
+
+  return _create_serializer_cached(
+    model_class, cache_fields, exclude_fields, extra_ref
+  )
+
+
+@lru_cache(maxsize=None)
+def _create_serializer_cached(
+  model_class: Type[Model],
+  serializer_fields: List[str] | Literal["__all__"],
+  exclude_fields: bool,
+  extra_ref: Any,
+) -> Type[ModelSerializer]:
   if exclude_fields:
 
     class Result(ModelSerializer):

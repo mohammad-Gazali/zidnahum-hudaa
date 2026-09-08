@@ -6,7 +6,7 @@ import {
   SnackbarService,
   StudentCategory,
   StudentGroup,
-  StudentsClientService,
+  StudentsService,
 } from '@shared';
 import {
   FormGroupDirective,
@@ -67,7 +67,7 @@ import { MobileUtilsService } from '@client/services';
 })
 export class AddStudentComponent {
   private fb = inject(NonNullableFormBuilder);
-  private students = inject(StudentsClientService);
+  private students = inject(StudentsService);
   private destroyRef = inject(DestroyRef);
   private snackbar = inject(SnackbarService);
   private masjed = inject(MasjedService);

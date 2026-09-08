@@ -13,7 +13,8 @@ import { GlobalsBase } from '../../globals.base';
 export class AssetsFileCreateComponent extends GlobalsBase {
   public config: CreateComponentConfig<AssetFileCreate> = {
     tableRoute: '/globals/assets-file',
-    createFunc: (body) => this.globals.globalsAssetFileCreate(body as any),
+    createFunc: (body) =>
+      this.globalsAssetFile.adminGlobalsAssetFileCreate(body as any),
     fields: {
       name: {
         type: 'string',
@@ -23,7 +24,8 @@ export class AssetsFileCreateComponent extends GlobalsBase {
         type: 'relation',
         relationType: 'normal',
         validators: [Validators.required],
-        getFieldValueFunc: () => this.globals.globalsAssetsCategoryList(),
+        getFieldValueFunc: () =>
+          this.globalsAssetsCategory.adminGlobalsAssetsCategoryList(),
       },
       file: {
         type: 'file',

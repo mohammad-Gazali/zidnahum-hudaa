@@ -17,10 +17,10 @@ export class NewsComponent extends GlobalsBase {
     hasPagination: true,
     createUrl: '/globals/news/create',
     getUrlFunc: (id) => `/globals/news/view/${id}`,
-    dataFunc: (options) => this.globals.globalsNewsList(options),
+    dataFunc: (options) => this.globalsNews.adminGlobalsNewsList(options),
     actions: [
       deleteModelAction('الإعلانات', (ids) =>
-        this.actions.actionsNewsDeleteDelete({ ids }),
+        this.globalsNews.adminActionsNewsDeleteCreate({ ids }),
       ),
     ],
     columns: {

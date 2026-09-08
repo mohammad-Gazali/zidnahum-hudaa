@@ -165,11 +165,11 @@
                             <td class="mat-mdc-cell mdc-data-table__cell">{{ masterMap().get(message.master) }}</td>
                             <td [hidden]="changesColumnHidden()" class="mat-mdc-cell mdc-data-table__cell">
                                 <app-changes-field
-                                [content]="message.changes"
-                                [type]="message.message_type"
+                                [content]="message.changes!"
+                                [type]="message.message_type!"
                                 ></app-changes-field>
                             </td>
-                            <td class="mat-mdc-cell mdc-data-table__cell">{{ messageTypeMap().get(message.message_type) }}</td>
+                            <td class="mat-mdc-cell mdc-data-table__cell">{{ messageTypeMap().get(message.message_type!) }}</td>
                             <td class="mat-mdc-cell mdc-data-table__cell">{{ message.sended_at | date: 'yyyy/MM/dd hh:mm a' }}</td>
                             <td class="mat-mdc-cell mdc-data-table__cell">
                                 @if (message.is_doubled) {

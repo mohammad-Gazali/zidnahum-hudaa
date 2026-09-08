@@ -15,6 +15,7 @@ from rest_framework.views import APIView
 
 from adminstration.actions_serializers import IdsActionSerializer
 from adminstration.permissions import IsSuperUser
+from adminstration.utils import pascal_to_kebab
 
 
 def create_delete_model_action_view(
@@ -22,7 +23,8 @@ def create_delete_model_action_view(
 ) -> Type[APIView]:
   class Result(APIView):
     permission_classes = [IsSuperUser if superuser else IsAdminUser]
-    http_method_names = ["delete"]
+    http_method_names = ["post"]
+    serializer_class = IdsActionSerializer
 
     def handle_exception(self, exc):
       if isinstance(exc, ProtectedError):
@@ -38,10 +40,11 @@ def create_delete_model_action_view(
 
     @extend_schema(
       request=IdsActionSerializer,
-      tags=["admin-actions"]
+      responses={HTTP_204_NO_CONTENT: None},
+      tags=[f"admin-{pascal_to_kebab(model.__name__)}"]
     )
     @transaction.atomic
-    def delete(self, *args, **kwargs):
+    def post(self, *args, **kwargs):
       serializer = IdsActionSerializer(data=self.request.data)
 
       if serializer.is_valid():

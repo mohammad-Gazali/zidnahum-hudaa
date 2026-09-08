@@ -15,10 +15,10 @@ export class AssetsFileComponent extends GlobalsBase {
     hasPagination: true,
     createUrl: '/globals/assets-file/create',
     getUrlFunc: (id) => `/globals/assets-file/view/${id}`,
-    dataFunc: (options) => this.globals.globalsAssetFileList(options),
+    dataFunc: (options) => this.globalsAssetFile.adminGlobalsAssetFileList(options),
     actions: [
       deleteModelAction('الملفات', (ids) =>
-        this.actions.actionsAssetFileDeleteDelete({ ids }),
+        this.globalsAssetFile.adminActionsAssetFileDeleteCreate({ ids }),
       ),
     ],
     columns: {
@@ -31,7 +31,8 @@ export class AssetsFileComponent extends GlobalsBase {
       category: {
         display: 'relation',
         filterType: 'exact',
-        getFieldValueFunc: () => this.globals.globalsAssetsCategoryList(),
+        getFieldValueFunc: () =>
+          this.globalsAssetsCategory.adminGlobalsAssetsCategoryList(),
       },
     },
   };

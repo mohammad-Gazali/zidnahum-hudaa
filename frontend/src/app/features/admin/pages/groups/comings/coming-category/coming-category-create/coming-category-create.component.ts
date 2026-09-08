@@ -13,7 +13,7 @@ import { ComingsBase } from '../../comings.base';
 export class ComingCategoryCreateComponent extends ComingsBase {
   public config: CreateComponentConfig<ComingCategoryCreate> = {
     tableRoute: '/comings/coming-category',
-    createFunc: (body) => this.comings.comingsCategoryCreate(body),
+    createFunc: (body) => this.category.adminComingsCategoryCreate(body),
     fields: {
       name: {
         type: 'string',

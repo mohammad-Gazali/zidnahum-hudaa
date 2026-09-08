@@ -12,13 +12,13 @@ import { AuthBase } from '../auth.base';
 })
 export class GroupComponent extends AuthBase {
   public config: TableComponentConfig<GroupList> = {
-    dataFunc: (options) => this.auth.authGroupList(options),
+    dataFunc: (options) => this.groups.adminAuthGroupList(options),
     getUrlFunc: (id) => `/auth/group/view/${id}`,
     hasPagination: false,
     createUrl: '/auth/group/create',
     actions: [
       deleteModelAction('المجموعات', (ids) =>
-        this.actions.actionsGroupDeleteDelete({ ids }),
+        this.groups.adminActionsGroupDeleteCreate({ ids }),
       ),
     ],
     columns: {

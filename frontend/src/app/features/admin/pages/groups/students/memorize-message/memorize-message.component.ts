@@ -4,7 +4,7 @@ import { TableComponent, TableComponentConfig } from '@admin/components';
 import { deleteModelAction } from '@admin/helpers';
 import {
   MemorizeMessageList,
-  UsersGroupsService,
+  AdminUserService,
   MemorizeMessageTypeService,
   LevelService,
 } from '@shared';
@@ -18,18 +18,18 @@ import { StudentsBase } from '../students.base';
 })
 export class MemorizeMessageComponent extends StudentsBase {
   private types = inject(MemorizeMessageTypeService);
-  private auth = inject(UsersGroupsService);
+  private auth = inject(AdminUserService);
   private level = inject(LevelService);
 
   public config: TableComponentConfig<MemorizeMessageList> = {
     hasPagination: true,
     useStudentMasjedFilter: true,
-    dataFunc: (options) => this.students.studentsMemorizeMessageList(options),
+    dataFunc: (options) => this.memorizeMessage.adminStudentsMemorizeMessageList(options),
     getUrlFunc: (id) => `/students/memorize-message/view/${id}`,
     searchField: 'student_name',
     actions: [
       deleteModelAction('رسائل التسميع', (ids) =>
-        this.actions.actionsMemorizeMessageDeleteDelete({ ids }),
+        this.memorizeMessage.adminActionsMemorizeMessageDeleteCreate({ ids }),
       ),
     ],
     columns: {
@@ -52,7 +52,7 @@ export class MemorizeMessageComponent extends StudentsBase {
         display: 'relation',
         filterType: 'exact_null',
         getFieldValueFunc: () =>
-          this.auth.authUserList().pipe(
+          this.auth.adminAuthUserList().pipe(
             map((list) =>
               list.map((u) => ({
                 id: u.id,

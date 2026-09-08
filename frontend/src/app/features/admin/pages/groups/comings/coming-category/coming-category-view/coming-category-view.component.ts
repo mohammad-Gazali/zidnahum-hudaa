@@ -18,10 +18,10 @@ export class ComingCategoryViewComponent extends ComingsBase {
     {
       groupName: 'comings',
       itemNameAndRouteName: 'coming-category',
-      viewFunc: (id) => this.comings.comingsCategoryRead(id),
-      deleteFunc: (id) => this.comings.comingsCategoryDelete(id),
+      viewFunc: (id) => this.category.adminComingsCategoryRetrieve(Number(id)),
+      deleteFunc: (id) => this.category.adminComingsCategoryDestroy(Number(id)),
       updateFunc: (id, data) =>
-        this.comings.comingsCategoryUpdate({ id, data }),
+        this.category.adminComingsCategoryUpdate(Number(id), data),
       fieldsInfo: {
         name: {
           type: 'string',

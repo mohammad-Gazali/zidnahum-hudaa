@@ -20,10 +20,11 @@ export class DeletingCauseViewComponent extends PointsBase {
   > = {
     groupName: 'points',
     itemNameAndRouteName: 'deleting-cause',
-    viewFunc: (id) => this.points.pointsDeletingCauseRead(id),
-    deleteFunc: (id) => this.points.pointsDeletingCauseDelete(id),
+    viewFunc: (id) => this.pointsDeletingCause.adminPointsDeletingCauseRetrieve(Number(id)),
+    deleteFunc: (id) =>
+      this.pointsDeletingCause.adminActionsPointsDeletingCauseDeleteCreate({ ids: [Number(id)] }),
     updateFunc: (id, data) =>
-      this.points.pointsDeletingCauseUpdate({ id, data }),
+      this.pointsDeletingCause.adminPointsDeletingCauseUpdate(Number(id), data),
     fieldsInfo: {
       name: {
         type: 'string',

@@ -20,9 +20,11 @@ export class AddingCauseViewComponent extends PointsBase {
   > = {
     groupName: 'points',
     itemNameAndRouteName: 'adding-cause',
-    viewFunc: (id) => this.points.pointsAddingCauseRead(id),
-    deleteFunc: (id) => this.points.pointsAddingCauseDelete(id),
-    updateFunc: (id, data) => this.points.pointsAddingCauseUpdate({ id, data }),
+    viewFunc: (id) => this.pointsAddingCause.adminPointsAddingCauseRetrieve(Number(id)),
+    deleteFunc: (id) =>
+      this.pointsAddingCause.adminActionsPointsAddingCauseDeleteCreate({ ids: [Number(id)] }),
+    updateFunc: (id, data) =>
+      this.pointsAddingCause.adminPointsAddingCauseUpdate(Number(id), data),
     fieldsInfo: {
       name: {
         type: 'string',

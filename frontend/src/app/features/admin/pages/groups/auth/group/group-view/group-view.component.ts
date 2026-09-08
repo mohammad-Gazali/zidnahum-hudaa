@@ -17,9 +17,9 @@ export class GroupViewComponent extends AuthBase {
   public config: ViewComponentConfig<GroupList, GroupUpdate> = {
     groupName: 'auth',
     itemNameAndRouteName: 'group',
-    viewFunc: (id) => this.auth.authGroupRead(id),
-    deleteFunc: (id) => this.auth.authGroupDelete(id),
-    updateFunc: (id, data) => this.auth.authGroupUpdate({ id, data }),
+    viewFunc: (id) => this.groups.adminAuthGroupRetrieve(Number(id)),
+    deleteFunc: (id) => this.groups.adminAuthGroupDestroy(Number(id)),
+    updateFunc: (id, data) => this.groups.adminAuthGroupUpdate(Number(id), data),
     fieldsInfo: {
       name: {
         type: 'string',

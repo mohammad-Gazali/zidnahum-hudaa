@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { map } from 'rxjs';
 import { ViewComponent, ViewComponentConfig } from '@admin/components';
-import { PointsAddingList, UsersGroupsService } from '@shared';
+import { AdminPointsaddingList, AdminUserService } from '@shared';
 import { PointsBase } from '../../points.base';
 
 @Component({
@@ -11,13 +11,14 @@ import { PointsBase } from '../../points.base';
   styleUrl: './adding-view.component.scss',
 })
 export class AddingViewComponent extends PointsBase {
-  private auth = inject(UsersGroupsService);
+  private auth = inject(AdminUserService);
 
-  public config: ViewComponentConfig<PointsAddingList> = {
+  public config: ViewComponentConfig<AdminPointsaddingList> = {
     groupName: 'points',
     itemNameAndRouteName: 'adding',
-    viewFunc: (id) => this.points.pointsAddingRead(id),
-    deleteFunc: (id) => this.points.pointsAddingDelete(id),
+    viewFunc: (id) => this.pointsAdding.adminPointsAddingRetrieve(Number(id)),
+    deleteFunc: (id) =>
+      this.pointsAdding.adminActionsPointsAddingDeleteCreate({ ids: [Number(id)] }),
     fieldsInfo: {
       student: {
         type: 'link',
@@ -31,14 +32,14 @@ export class AddingViewComponent extends PointsBase {
         type: 'relation',
         relationType: 'normal',
         getUrlFunc: (id) => `/points/adding-cause/view/${id}`,
-        getFieldValueFunc: () => this.points.pointsAddingCauseList(),
+        getFieldValueFunc: () => this.pointsAddingCause.adminPointsAddingCauseList(),
       },
       master: {
         type: 'relation',
         relationType: 'nullable',
         getUrlFunc: (id) => `/auth/user/view/${id}`,
         getFieldValueFunc: () =>
-          this.auth.authUserList().pipe(
+          this.auth.adminAuthUserList().pipe(
             map((list) =>
               list.map((user) => ({
                 id: user.id,

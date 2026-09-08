@@ -1,10 +1,12 @@
 import { inject } from '@angular/core';
 import {
-  ActionsService,
-  GlobalsService,
+  AdminAssetsCategoryService,
+  AdminAssetFileService,
+  AdminNewsService,
 } from '@shared';
 
 export abstract class GlobalsBase {
-  protected globals = inject(GlobalsService);
-  protected actions = inject(ActionsService);
+  protected globalsAssetsCategory = inject(AdminAssetsCategoryService);
+  protected globalsAssetFile = inject(AdminAssetFileService);
+  protected globalsNews = inject(AdminNewsService);
 }

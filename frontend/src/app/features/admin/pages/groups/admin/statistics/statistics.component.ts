@@ -9,7 +9,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { finalize } from 'rxjs';
-import { ExtraService, LOADING, StatisticsResponse, TranslatePipe, MasjedService } from '@shared';
+import { AdminStatisticsService, LOADING, StatisticsResponse, TranslatePipe, MasjedService } from '@shared';
 
 @Component({
   selector: 'app-statistics',
@@ -34,7 +34,7 @@ import { ExtraService, LOADING, StatisticsResponse, TranslatePipe, MasjedService
   ],
 })
 export class StatisticsComponent {
-  private extra = inject(ExtraService);
+  private extra = inject(AdminStatisticsService);
   private fb = inject(NonNullableFormBuilder);
   private destroyRef = inject(DestroyRef);
   public loading = inject(LOADING);
@@ -68,7 +68,7 @@ export class StatisticsComponent {
     }
 
     this.extra
-      .extraStatisticsCreate({
+      .adminExtraStatisticsCreate({
         ...value,
         start_date: value.start_date as any,
         end_date: value.end_date as any,

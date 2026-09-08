@@ -3,7 +3,7 @@ import { map } from 'rxjs';
 import { ViewComponent, ViewComponentConfig } from '@admin/components';
 import {
   MemorizeMessageList,
-  UsersGroupsService,
+  AdminUserService,
   MemorizeMessageTypeService,
   LevelService,
 } from '@shared';
@@ -16,15 +16,16 @@ import { StudentsBase } from '../../students.base';
   styleUrl: './memorize-message-view.component.scss',
 })
 export class MemorizeMessageViewComponent extends StudentsBase {
-  private auth = inject(UsersGroupsService);
+  private auth = inject(AdminUserService);
   private types = inject(MemorizeMessageTypeService);
   private level = inject(LevelService);
 
   public config: ViewComponentConfig<MemorizeMessageList> = {
     groupName: 'students',
     itemNameAndRouteName: 'memorize-message',
-    viewFunc: (id) => this.students.studentsMemorizeMessageRead(id),
-    deleteFunc: (id) => this.students.studentsMemorizeMessageDelete(id),
+    viewFunc: (id) => this.memorizeMessage.adminStudentsMemorizeMessageRetrieve(Number(id)),
+    deleteFunc: (id) =>
+      this.memorizeMessage.adminActionsMemorizeMessageDeleteCreate({ ids: [Number(id)] }),
     fieldsInfo: {
       student: {
         type: 'link',
@@ -44,7 +45,7 @@ export class MemorizeMessageViewComponent extends StudentsBase {
         type: 'relation',
         relationType: 'nullable',
         getFieldValueFunc: () =>
-          this.auth.authUserList().pipe(
+          this.auth.adminAuthUserList().pipe(
             map((list) =>
               list.map((u) => ({
                 id: u.id,

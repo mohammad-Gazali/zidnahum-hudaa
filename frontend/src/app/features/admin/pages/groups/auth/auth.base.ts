@@ -1,10 +1,10 @@
 import { inject } from '@angular/core';
 import {
-  ActionsService,
-  UsersGroupsService,
+  AdminGroupService,
+  AdminUserService,
 } from '@shared';
 
 export abstract class AuthBase {
-  protected auth = inject(UsersGroupsService);
-  protected actions = inject(ActionsService);
+  protected auth = inject(AdminUserService);
+  protected groups = inject(AdminGroupService);
 }

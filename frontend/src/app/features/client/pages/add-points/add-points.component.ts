@@ -11,10 +11,11 @@ import {
   MasjedPipe,
   MasjedService,
   PointsAddingCause,
-  PointsClientService,
+  PointsService,
   SnackbarService,
   StudentList,
-  StudentsClientService,
+  StudentsListParams,
+  StudentsService,
 } from '@shared';
 import { MatButton } from '@angular/material/button';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
@@ -52,10 +53,10 @@ import { MobileUtilsService } from '@client/services';
 })
 export class AddPointsComponent {
   private fb = inject(NonNullableFormBuilder);
-  private students = inject(StudentsClientService);
+  private students = inject(StudentsService);
   private destroyRef = inject(DestroyRef);
   private masjed = inject(MasjedService);
-  private points = inject(PointsClientService);
+  private points = inject(PointsService);
   private snackbar = inject(SnackbarService);
   private mobileUtils = inject(MobileUtilsService);
   private loading = inject(LayoutService).loading;
@@ -95,7 +96,7 @@ export class AddPointsComponent {
       .studentsList({
         query: this.searchForm.getRawValue().search,
         masjed: this.searchForm.getRawValue().masjed,
-      })
+      } as StudentsListParams)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         error: () => {

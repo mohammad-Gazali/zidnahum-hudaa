@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
-import { GlobalsClientService } from '@shared';
+import { GlobalsService } from '@shared';
 import { NewsCardComponent } from './news-card/news-card.component';
 
 @Component({
@@ -11,9 +11,9 @@ import { NewsCardComponent } from './news-card/news-card.component';
   styleUrl: './news.component.scss',
 })
 export class NewsComponent {
-  private globals = inject(GlobalsClientService);
+  private globals = inject(GlobalsService);
 
-  private news = toSignal(this.globals.globalsNews(), {
+  private news = toSignal(this.globals.globalsNewsList(), {
     initialValue: [],
   });
 

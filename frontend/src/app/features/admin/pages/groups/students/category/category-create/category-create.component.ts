@@ -13,7 +13,7 @@ import { StudentsBase } from '../../students.base';
 export class CategoryCreateComponent extends StudentsBase {
   public config: CreateComponentConfig<StudentCategoryCreate> = {
     tableRoute: '/students/student-category',
-    createFunc: (body) => this.students.studentsCategoryCreate(body),
+    createFunc: (body) => this.studentsCategory.adminStudentsCategoryCreate(body),
     fields: {
       name: {
         type: 'string',

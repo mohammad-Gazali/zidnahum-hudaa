@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { map } from 'rxjs';
 import { ViewComponentConfig } from '@admin/components';
-import { PointsDeletingList, UsersGroupsService } from '@shared';
+import { PointsDeletingList, AdminUserService } from '@shared';
 import { PointsBase } from '../../points.base';
 
 @Component({
@@ -11,13 +11,14 @@ import { PointsBase } from '../../points.base';
   styleUrl: './deleting-view.component.scss',
 })
 export class DeletingViewComponent extends PointsBase {
-  private auth = inject(UsersGroupsService);
+  private auth = inject(AdminUserService);
 
   public config: ViewComponentConfig<PointsDeletingList> = {
     groupName: 'points',
     itemNameAndRouteName: 'deleting',
-    viewFunc: (id) => this.points.pointsDeletingRead(id),
-    deleteFunc: (id) => this.points.pointsDeletingDelete(id),
+    viewFunc: (id) => this.pointsDeleting.adminPointsDeletingRetrieve(Number(id)),
+    deleteFunc: (id) =>
+      this.pointsDeleting.adminActionsPointsDeletingDeleteCreate({ ids: [Number(id)] }),
     fieldsInfo: {
       student: {
         type: 'link',
@@ -31,14 +32,14 @@ export class DeletingViewComponent extends PointsBase {
         type: 'relation',
         relationType: 'normal',
         getUrlFunc: (id) => `/points/deleting-cause/view/${id}`,
-        getFieldValueFunc: () => this.points.pointsDeletingCauseList(),
+        getFieldValueFunc: () => this.pointsDeletingCause.adminPointsDeletingCauseList(),
       },
       master: {
         type: 'relation',
         relationType: 'nullable',
         getUrlFunc: (id) => `/auth/user/view/${id}`,
         getFieldValueFunc: () =>
-          this.auth.authUserList().pipe(
+          this.auth.adminAuthUserList().pipe(
             map((list) =>
               list.map((user) => ({
                 id: user.id,

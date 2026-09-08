@@ -3,7 +3,7 @@ import { map } from 'rxjs';
 import { StudentsBase } from '../students.base';
 import { TableComponent, TableComponentConfig } from '@admin/components';
 import { deleteModelAction } from '@admin/helpers';
-import { MemorizeNotesList, UsersGroupsService } from '@shared';
+import { MemorizeNotesList, AdminUserService } from '@shared';
 
 @Component({
   selector: 'app-memorize-notes',
@@ -12,13 +12,13 @@ import { MemorizeNotesList, UsersGroupsService } from '@shared';
   styleUrl: './memorize-notes.component.scss',
 })
 export class MemorizeNotesComponent extends StudentsBase {
-  private auth = inject(UsersGroupsService);
+  private auth = inject(AdminUserService);
 
   public config: TableComponentConfig<MemorizeNotesList> = {
     hasPagination: true,
     useStudentMasjedFilter: true,
     dataFunc: (options) =>
-      this.students.studentsMemorizeNotesList(options).pipe(
+      this.memorizeNotes.adminStudentsMemorizeNotesList(options).pipe(
         // here we reduce the content displayed size
         map((res) => ({
           ...res,
@@ -32,7 +32,7 @@ export class MemorizeNotesComponent extends StudentsBase {
     searchField: 'student_name', // here we added it like this because it will be converted to camelCase which will be converted to the right query param
     actions: [
       deleteModelAction('ملاحظات التسميع', (ids) =>
-        this.actions.actionsMemorizeNotesDeleteDelete({ ids }),
+        this.memorizeNotes.adminActionsMemorizeNotesDeleteCreate({ ids }),
       ),
     ],
     columns: {
@@ -56,7 +56,7 @@ export class MemorizeNotesComponent extends StudentsBase {
         display: 'relation',
         filterType: 'exact_null',
         getFieldValueFunc: () =>
-          this.auth.authUserList().pipe(
+          this.auth.adminAuthUserList().pipe(
             map((list) =>
               list.map((u) => ({
                 id: u.id,

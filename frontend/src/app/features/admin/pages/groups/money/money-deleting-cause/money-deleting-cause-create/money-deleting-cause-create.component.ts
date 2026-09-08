@@ -13,7 +13,8 @@ import { MoneyBase } from '../../money.base';
 export class MoneyDeletingCauseCreateComponent extends MoneyBase {
   public config: CreateComponentConfig<MoneyDeletingCauseCreate> = {
     tableRoute: '/money/money-deleting-cause',
-    createFunc: (body) => this.money.moneyDeletingCauseCreate(body),
+    createFunc: (body) =>
+      this.moneyDeletingCause.adminMoneyDeletingCauseCreate(body),
     fields: {
       name: {
         type: 'string',

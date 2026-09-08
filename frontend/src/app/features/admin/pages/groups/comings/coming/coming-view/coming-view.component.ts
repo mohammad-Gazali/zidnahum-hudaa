@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { map } from 'rxjs';
 import { ViewComponent, ViewComponentConfig } from '@admin/components';
-import { ComingList, UsersGroupsService } from '@shared';
+import { AdminComingList, AdminUserService } from '@shared';
 import { ComingsBase } from '../../comings.base';
 
 @Component({
@@ -11,13 +11,13 @@ import { ComingsBase } from '../../comings.base';
   styleUrl: './coming-view.component.scss',
 })
 export class ComingViewComponent extends ComingsBase {
-  private auth = inject(UsersGroupsService);
+  private auth = inject(AdminUserService);
 
-  public config: ViewComponentConfig<ComingList> = {
+  public config: ViewComponentConfig<AdminComingList> = {
     groupName: 'comings',
     itemNameAndRouteName: 'coming',
-    viewFunc: (id) => this.comings.comingsComingRead(id),
-    deleteFunc: (id) => this.comings.comingsComingDelete(id),
+    viewFunc: (id) => this.comings.adminComingsComingRetrieve(Number(id)),
+    deleteFunc: (id) => this.comings.adminComingsComingDestroy(Number(id)),
     fieldsInfo: {
       student: {
         type: 'link',
@@ -35,7 +35,7 @@ export class ComingViewComponent extends ComingsBase {
         relationType: 'nullable',
         getUrlFunc: (id) => `/auth/user/view/${id}`,
         getFieldValueFunc: () =>
-          this.auth.authUserList().pipe(
+          this.auth.adminAuthUserList().pipe(
             map((list) =>
               list.map((user) => ({
                 id: user.id,
@@ -50,7 +50,7 @@ export class ComingViewComponent extends ComingsBase {
       category: {
         type: 'relation',
         relationType: 'normal',
-        getFieldValueFunc: () => this.comings.comingsCategoryList(),
+        getFieldValueFunc: () => this.category.adminComingsCategoryList(),
         getUrlFunc: (id) => `/comings/coming-category/view/${id}`,
       },
     },

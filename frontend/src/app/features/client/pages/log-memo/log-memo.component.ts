@@ -8,7 +8,7 @@ import {
   MessageType,
   MessageTypePipe,
   SnackbarService,
-  StudentsClientService,
+  StudentsService,
   TestPipe,
 } from '@shared';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
@@ -49,7 +49,7 @@ import { MatIcon } from '@angular/material/icon';
   styleUrl: './log-memo.component.scss',
 })
 export class LogMemoComponent {
-  private students = inject(StudentsClientService);
+  private students = inject(StudentsService);
   private confirmation = inject(ConfirmationService);
   private destroyRef = inject(DestroyRef);
   private snackbar = inject(SnackbarService);
@@ -60,7 +60,7 @@ export class LogMemoComponent {
   private messages$ = combineLatest([this.refresh$, this.page$]).pipe(
     tap(() => this.loading.set(true)),
     switchMap(([_, page]) => {
-      return this.students.studentsMemorizeMessageList(page);
+      return this.students.studentsMemorizeMessageList({ page });
     }),
     tap((res) => {
       this.hasPrevious.set(Boolean(res.previous));
@@ -94,7 +94,7 @@ export class LogMemoComponent {
       onConfirm: () => {
         this.loadingIds.update((pre) => [...pre, studentId]);
         this.students
-          .studentsMemorizeMessageDelete(studentId)
+          .studentsMemorizeMessageDestroy(studentId)
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe({
             error: ({ error }) => {

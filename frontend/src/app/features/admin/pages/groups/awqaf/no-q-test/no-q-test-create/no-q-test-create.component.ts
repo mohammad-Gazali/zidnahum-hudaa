@@ -13,7 +13,7 @@ import { AwqafBase } from '../../awqaf.base';
 export class NoQTestCreateComponent extends AwqafBase {
   public config: CreateComponentConfig<AwqafTestNoQCreate> = {
     tableRoute: '/awqaf/no-q-test',
-    createFunc: (body) => this.awqaf.awqafTestNoQCreate(body),
+    createFunc: (body) => this.awqaf.adminAwqafTestNoQCreate(body),
     fields: {
       name: {
         type: 'string',

@@ -18,10 +18,19 @@ export class AssetsCategoryViewComponent extends GlobalsBase {
     {
       groupName: 'globals',
       itemNameAndRouteName: 'assets-category',
-      viewFunc: (id) => this.globals.globalsAssetsCategoryRead(id),
-      deleteFunc: (id) => this.globals.globalsAssetsCategoryDelete(id),
+      viewFunc: (id) =>
+        this.globalsAssetsCategory.adminGlobalsAssetsCategoryRetrieve(
+          Number(id),
+        ),
+      deleteFunc: (id) =>
+        this.globalsAssetsCategory.adminActionsAssetsCategoryDeleteCreate({
+          ids: [Number(id)],
+        }),
       updateFunc: (id, data) =>
-        this.globals.globalsAssetsCategoryUpdate({ id, data }),
+        this.globalsAssetsCategory.adminGlobalsAssetsCategoryUpdate(
+          Number(id),
+          data,
+        ),
       fieldsInfo: {
         name: {
           type: 'string',

@@ -49,28 +49,28 @@
           }
           @case (messageType.AlNawawia) {
             <p>
-              @if (message.changes[1] + 1 === message.changes[2]) {
-                الحديث {{ message.changes[0] + message.changes[2] }}
+              @if (message.changes![1] + 1 === message.changes![2]) {
+                الحديث {{ message.changes![0] + message.changes![2] }}
               } @else {
-                من الحديث {{ message.changes[0] + message.changes[1] + 1 }} إلى {{ message.changes[0] + message.changes[2] }}
+                من الحديث {{ message.changes![0] + message.changes![1] + 1 }} إلى {{ message.changes![0] + message.changes![2] }}
               }
             </p>
           }
           @case (messageType.AlSaalihin) {
             <p>
-              @if (message.changes[1] + 1 === message.changes[2]) {
-                الحديث {{ message.changes[0] + message.changes[2] }}
+              @if (message.changes![1] + 1 === message.changes![2]) {
+                الحديث {{ message.changes![0] + message.changes![2] }}
               } @else {
-                من الحديث {{ message.changes[0] + message.changes[1] + 1 }} إلى {{ message.changes[0] + message.changes[2] }}
+                من الحديث {{ message.changes![0] + message.changes![1] + 1 }} إلى {{ message.changes![0] + message.changes![2] }}
               }
             </p>
           }
           @case (messageType.ExtraHadeeth) {
             <p>
-              @if (message.changes[0] + 1 === message.changes[1]) {
-                الحديث {{ message.changes[1] }}
+              @if (message.changes![0] + 1 === message.changes![1]) {
+                الحديث {{ message.changes![1] }}
               } @else {
-                من الحديث {{ message.changes[0] + 1 }} إلى {{ message.changes[1] }}
+                من الحديث {{ message.changes![0] + 1 }} إلى {{ message.changes![1] }}
               }
             </p>
           }

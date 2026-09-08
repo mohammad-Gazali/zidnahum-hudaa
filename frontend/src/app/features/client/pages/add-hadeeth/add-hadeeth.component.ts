@@ -21,7 +21,7 @@ import {
   LayoutService,
   SnackbarService,
   StudentList,
-  StudentsClientService,
+  StudentsService,
 } from '@shared';
 import {
   catchError,
@@ -62,7 +62,7 @@ import { MobileUtilsService } from '@client/services';
 export class AddHadeethComponent {
   private fb = inject(NonNullableFormBuilder);
   private route = inject(ActivatedRoute);
-  private studentsService = inject(StudentsClientService);
+  private studentsService = inject(StudentsService);
   private destroyRef = inject(DestroyRef);
   private loading = inject(LayoutService).loading;
   private snackbar = inject(SnackbarService);
@@ -173,28 +173,28 @@ export class AddHadeethComponent {
 
     const observable: Observable<any> =
       type === 'alarbaein-alnawawia'
-        ? this.studentsService.studentsUpdateAlarbaeinAlnawawiaUpdate({
-            id: student.id.toString(),
-            data: {
+        ? this.studentsService.studentsUpdateAlarbaeinAlnawawiaUpdate(
+            student.id,
+            {
               value: value.hadeethNumber!,
             },
-          })
+          )
         : type === 'riad-alsaalihin'
-          ? this.studentsService.studentsUpdateRiadAlsaalihinUpdate({
-              id: student.id.toString(),
-              data: {
+          ? this.studentsService.studentsUpdateRiadAlsaalihinUpdate(
+              student.id,
+              {
                 value: value.hadeethNumber!,
               },
-            })
+            )
           : type === 'extra-hadeeth'
-            ? this.studentsService.studentsUpdateExtraHadeethUpdate({
-                id: student.id.toString(),
-                data: {
+            ? this.studentsService.studentsUpdateExtraHadeethUpdate(
+                student.id,
+                {
                   value: value.hadeethNumber!,
                 },
-              })
+              )
             : this.studentsService.studentsUpdateAllahNamesUpdate(
-                student.id.toString(),
+                student.id,
               );
 
     this.loading.set(true);

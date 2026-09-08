@@ -1,10 +1,16 @@
 import { inject } from '@angular/core';
 import {
-  ActionsService,
-  StudentsService,
+  AdminStudentService,
+  AdminStudentCategoryService,
+  AdminStudentGroupService,
+  AdminMemorizeMessageService,
+  AdminMemorizeNotesService,
 } from '@shared';
 
 export abstract class StudentsBase {
-  protected students = inject(StudentsService);
-  protected actions = inject(ActionsService);
+  protected students = inject(AdminStudentService);
+  protected studentsCategory = inject(AdminStudentCategoryService);
+  protected studentsGroup = inject(AdminStudentGroupService);
+  protected memorizeMessage = inject(AdminMemorizeMessageService);
+  protected memorizeNotes = inject(AdminMemorizeNotesService);
 }

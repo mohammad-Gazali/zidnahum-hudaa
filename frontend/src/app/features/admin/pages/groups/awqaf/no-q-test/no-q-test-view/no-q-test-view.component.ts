@@ -17,9 +17,9 @@ export class NoQTestViewComponent extends AwqafBase {
   public config: ViewComponentConfig<AwqafTestNoQList, AwqafTestNoQUpdate> = {
     groupName: 'awqaf',
     itemNameAndRouteName: 'no-q-test',
-    viewFunc: (id) => this.awqaf.awqafTestNoQRead(id),
-    deleteFunc: (id) => this.awqaf.awqafTestNoQDelete(id),
-    updateFunc: (id, data) => this.awqaf.awqafTestNoQUpdate({ id, data }),
+    viewFunc: (id) => this.awqaf.adminAwqafTestNoQRetrieve(Number(id)),
+    deleteFunc: (id) => this.awqaf.adminAwqafTestNoQDestroy(Number(id)),
+    updateFunc: (id, data) => this.awqaf.adminAwqafTestNoQUpdate(Number(id), data),
     fieldsInfo: {
       name: {
         type: 'string',

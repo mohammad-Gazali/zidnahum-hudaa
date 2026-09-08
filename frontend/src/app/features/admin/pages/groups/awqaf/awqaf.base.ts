@@ -1,10 +1,10 @@
 import { inject } from '@angular/core';
 import {
-  ActionsService,
-  AwqafService,
+  AdminAwqafNoQStudentRelationService,
+  AdminAwqafTestNoQService,
 } from '@shared';
 
 export abstract class AwqafBase {
-  protected awqaf = inject(AwqafService);
-  protected actions = inject(ActionsService);
+  protected awqaf = inject(AdminAwqafTestNoQService);
+  protected studentNoQRelation = inject(AdminAwqafNoQStudentRelationService);
 }

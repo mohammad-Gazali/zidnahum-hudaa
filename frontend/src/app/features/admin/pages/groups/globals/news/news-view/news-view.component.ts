@@ -15,8 +15,9 @@ export class NewsViewComponent extends GlobalsBase {
   public config: ViewComponentConfig<NewsList> = {
     groupName: 'globals',
     itemNameAndRouteName: 'news',
-    viewFunc: (id) => this.globals.globalsNewsRead(id),
-    deleteFunc: (id) => this.globals.globalsNewsDelete(id),
+    viewFunc: (id) => this.globalsNews.adminGlobalsNewsRetrieve(Number(id)),
+    deleteFunc: (id) =>
+      this.globalsNews.adminActionsNewsDeleteCreate({ ids: [Number(id)] }),
     fieldsInfo: {
       title: {
         type: 'string',

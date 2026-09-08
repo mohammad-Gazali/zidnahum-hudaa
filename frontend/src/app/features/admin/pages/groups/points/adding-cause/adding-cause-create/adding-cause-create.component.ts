@@ -13,7 +13,7 @@ import { PointsBase } from '../../points.base';
 export class AddingCauseCreateComponent extends PointsBase {
   public config: CreateComponentConfig<PointsAddingCauseCreate> = {
     tableRoute: '/points/adding-cause',
-    createFunc: (body) => this.points.pointsAddingCauseCreate(body),
+    createFunc: (body) => this.pointsAddingCause.adminPointsAddingCauseCreate(body),
     fields: {
       name: {
         type: 'string',

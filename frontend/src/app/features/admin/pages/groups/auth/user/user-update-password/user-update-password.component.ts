@@ -6,7 +6,7 @@ import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ActionsService, TranslatePipe, SnackbarService, LOADING } from '@shared';
+import { AdminUserService, TranslatePipe, SnackbarService, LOADING } from '@shared';
 
 @Component({
   selector: 'app-user-update-password',
@@ -24,7 +24,7 @@ import { ActionsService, TranslatePipe, SnackbarService, LOADING } from '@shared
   styleUrl: './user-update-password.component.scss',
 })
 export class UserUpdatePasswordComponent {
-  private actions = inject(ActionsService);
+  private actions = inject(AdminUserService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private snackbar = inject(SnackbarService);
@@ -42,7 +42,7 @@ export class UserUpdatePasswordComponent {
 
     this.loading.set(true);
     this.actions
-      .actionsUserPasswordUpdate({
+      .adminActionsUserPasswordUpdate({
         user: this.route.snapshot.params['id'],
         new_password: this.form.value.new_password,
       })

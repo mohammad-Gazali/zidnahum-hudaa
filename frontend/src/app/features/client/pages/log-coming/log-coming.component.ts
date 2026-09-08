@@ -2,7 +2,8 @@ import { Component, DestroyRef, inject, signal } from '@angular/core';
 import {
   ComingCategory,
   ComingList,
-  ComingsClientService,
+  ComingsListParams,
+  ComingsService,
   ConfirmationService,
   LayoutService,
   MasjedPipe,
@@ -90,7 +91,7 @@ import { MatInput } from '@angular/material/input';
   styleUrl: './log-coming.component.scss',
 })
 export class LogComingComponent {
-  private comings = inject(ComingsClientService);
+  private comings = inject(ComingsService);
   private confirmation = inject(ConfirmationService);
   private destroyRef = inject(DestroyRef);
   private snackbar = inject(SnackbarService);
@@ -127,16 +128,16 @@ export class LogComingComponent {
     switchMap(([searchValue, page]) => {
       return this.comings.comingsList({
         page,
-        registeredAtGt: searchValue.startDate
+        registered_at__gt: searchValue.startDate
           ? formatDate(searchValue.startDate, 'yyyy-MM-dd', 'en-Us')
           : undefined,
-        registeredAtLt: searchValue.endDate
+        registered_at__lt: searchValue.endDate
           ? formatDate(searchValue.endDate, 'yyyy-MM-dd', 'en-Us')
           : undefined,
-        category: searchValue.category?.toString(),
-        studentMasjed: searchValue.masjed?.toString() as any,
-        studentName: searchValue.studentName,
-      });
+        category: searchValue.category,
+        student__masjed: searchValue.masjed,
+        student__name: searchValue.studentName,
+      } as ComingsListParams);
     }),
     tap((res) => {
       this.hasPrevious.set(Boolean(res.previous));
@@ -180,7 +181,7 @@ export class LogComingComponent {
       onConfirm: () => {
         this.loadingIds.update((pre) => [...pre, id]);
         this.comings
-          .comingsDelete(id)
+          .comingsDestroy(id)
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe({
             error: ({ error }) => {

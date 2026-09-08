@@ -6,7 +6,7 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
-import { SnackbarService, StudentsClientService } from '@shared';
+import { SnackbarService, StudentsService } from '@shared';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import {
@@ -38,7 +38,7 @@ import { MatProgressBar } from '@angular/material/progress-bar';
   styleUrl: './add-memorize-note-dialog.component.scss',
 })
 export class AddMemorizeNoteDialogComponent {
-  private students = inject(StudentsClientService);
+  private students = inject(StudentsService);
   private studentId = inject<number>(MAT_DIALOG_DATA);
   private fb = inject(NonNullableFormBuilder);
   private snackbar = inject(SnackbarService);

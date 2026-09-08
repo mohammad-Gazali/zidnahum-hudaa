@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { map } from 'rxjs';
 import { TableComponent, TableComponentConfig } from '@admin/components';
 import { deleteModelAction } from '@admin/helpers';
-import { PointsAddingList, UsersGroupsService } from '@shared';
+import { PointsAddingList, AdminUserService } from '@shared';
 import { PointsBase } from '../points.base';
 
 @Component({
@@ -12,22 +12,24 @@ import { PointsBase } from '../points.base';
   styleUrl: './adding.component.scss',
 })
 export class AddingComponent extends PointsBase {
-  private auth = inject(UsersGroupsService);
+  private auth = inject(AdminUserService);
 
   public config: TableComponentConfig<PointsAddingList> = {
     hasPagination: true,
     useStudentMasjedFilter: true,
     getUrlFunc: (id) => `/points/adding/view/${id}`,
     searchField: 'student_name', // here we added it like this because it will be converted to camelCase which will be converted to the right query param
-    dataFunc: (options) => this.points.pointsAddingList(options),
+    dataFunc: (options) => this.pointsAdding.adminPointsAddingList(options),
     actions: [
-      deleteModelAction('الإضافات', (ids) => this.actions.actionsPointsAddingDeleteDelete({ ids })),
+      deleteModelAction('الإضافات', (ids) =>
+        this.pointsAdding.adminActionsPointsAddingDeleteCreate({ ids }),
+      ),
     ],
     columns: {
       cause: {
         display: 'relation',
         filterType: 'exact',
-        getFieldValueFunc: () => this.points.pointsAddingCauseList(),
+        getFieldValueFunc: () => this.pointsAddingCause.adminPointsAddingCauseList(),
       },
       created_at: {
         display: 'normal',
@@ -38,7 +40,7 @@ export class AddingComponent extends PointsBase {
         display: 'relation',
         filterType: 'exact_null',
         getFieldValueFunc: () =>
-          this.auth.authUserList().pipe(
+          this.auth.adminAuthUserList().pipe(
             map((list) =>
               list.map((u) => ({
                 id: u.id,

@@ -14,12 +14,15 @@ export class StudentNoQTestRelationComponent extends AwqafBase {
   public config: TableComponentConfig<AwqafNoQStudentRelationList> = {
     hasPagination: true,
     useStudentMasjedFilter: true,
-    dataFunc: (options) => this.awqaf.awqafStudentNoQRelationList(options),
+    dataFunc: (options) =>
+      this.studentNoQRelation.adminAwqafStudentNoQRelationList(options),
     getUrlFunc: (id) => `/awqaf/student-no-q-test-relation/view/${id}`,
     searchField: 'student_name',
     actions: [
       deleteModelAction('أسبار الطالب بالأوقاف بغير القرآن', (ids) =>
-        this.actions.actionsAwqafNoQStudentRelationDeleteDelete({ ids }),
+        this.studentNoQRelation.adminActionsAwqafNoQStudentRelationDeleteCreate({
+          ids,
+        }),
       ),
     ],
     columns: {
@@ -34,7 +37,7 @@ export class StudentNoQTestRelationComponent extends AwqafBase {
       test: {
         display: 'relation',
         filterType: 'exact',
-        getFieldValueFunc: () => this.awqaf.awqafTestNoQList(),
+        getFieldValueFunc: () => this.awqaf.adminAwqafTestNoQList(),
       },
       is_old: {
         display: 'boolean',

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { map } from 'rxjs';
-import { UsersGroupsService } from '@shared';
+import { AdminUserService } from '@shared';
 import { TableComponent, TableComponentConfig } from '@admin/components';
 import { deleteModelAction } from '@admin/helpers';
 import { PointsDeletingList } from '@shared';
@@ -13,24 +13,24 @@ import { PointsBase } from '../points.base';
   styleUrl: './deleting.component.scss',
 })
 export class DeletingComponent extends PointsBase {
-  private auth = inject(UsersGroupsService);
+  private auth = inject(AdminUserService);
 
   public config: TableComponentConfig<PointsDeletingList> = {
     hasPagination: true,
     useStudentMasjedFilter: true,
     getUrlFunc: (id) => `/points/deleting/view/${id}`,
     searchField: 'student_name', // here we added it like this because it will be converted to camelCase which will be converted to the right query param
-    dataFunc: (options) => this.points.pointsDeletingList(options),
+    dataFunc: (options) => this.pointsDeleting.adminPointsDeletingList(options),
     actions: [
       deleteModelAction('الخصومات', (ids) =>
-        this.actions.actionsPointsDeletingDeleteDelete({ ids }),
+        this.pointsDeleting.adminActionsPointsDeletingDeleteCreate({ ids }),
       ),
     ],
     columns: {
       cause: {
         display: 'relation',
         filterType: 'exact',
-        getFieldValueFunc: () => this.points.pointsDeletingCauseList(),
+        getFieldValueFunc: () => this.pointsDeletingCause.adminPointsDeletingCauseList(),
       },
       created_at: {
         display: 'normal',
@@ -41,7 +41,7 @@ export class DeletingComponent extends PointsBase {
         display: 'relation',
         filterType: 'exact_null',
         getFieldValueFunc: () =>
-          this.auth.authUserList().pipe(
+          this.auth.adminAuthUserList().pipe(
             map((list) =>
               list.map((u) => ({
                 id: u.id,

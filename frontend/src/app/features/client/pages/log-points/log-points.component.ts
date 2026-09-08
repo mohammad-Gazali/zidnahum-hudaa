@@ -5,7 +5,7 @@ import {
   LayoutService,
   MasjedPipe,
   PointsAddingList,
-  PointsClientService,
+  PointsService,
   SnackbarService,
 } from '@shared';
 import { MatButton, MatMiniFabButton } from '@angular/material/button';
@@ -42,7 +42,7 @@ import { MatDivider } from '@angular/material/divider';
   styleUrl: './log-points.component.scss',
 })
 export class LogPointsComponent {
-  private points = inject(PointsClientService);
+  private points = inject(PointsService);
   private confirmation = inject(ConfirmationService);
   private destroyRef = inject(DestroyRef);
   private snackbar = inject(SnackbarService);
@@ -53,7 +53,7 @@ export class LogPointsComponent {
   private messages$ = combineLatest([this.page$, this.refresh$]).pipe(
     tap(() => this.loading.set(true)),
     switchMap(([page, _]) => {
-      return this.points.pointsAddingList(page);
+      return this.points.pointsAddingList({ page });
     }),
     tap((res) => {
       this.hasPrevious.set(Boolean(res.previous));
@@ -95,7 +95,7 @@ export class LogPointsComponent {
       onConfirm: () => {
         this.loadingIds.update((pre) => [...pre, id]);
         this.points
-          .pointsAddingDelete(id)
+          .pointsAddingDestroy(id)
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe({
             error: ({ error }) => {

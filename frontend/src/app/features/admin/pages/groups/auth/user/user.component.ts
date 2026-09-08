@@ -15,20 +15,20 @@ export class UserComponent extends AuthBase {
     createUrl: '/auth/user/create',
     hasPagination: false,
     getUrlFunc: (id) => `/auth/user/view/${id}`,
-    dataFunc: (options) => this.auth.authUserList(options),
+    dataFunc: (options) => this.auth.adminAuthUserList(options),
     actions: [
       deleteModelAction('المستخدمين', (ids) =>
-        this.actions.actionsUserDeleteDelete({ ids }),
+        this.auth.adminActionsUserDeleteCreate({ ids }),
       ),
       {
         name: 'activate-users',
         delegateFunc: (ids) =>
-          this.actions.actionsUserActiveUpdate({ ids, value: true }),
+          this.auth.adminActionsUserActiveUpdate({ ids, value: true }),
       },
       {
         name: 'decativate-users',
         delegateFunc: (ids) =>
-          this.actions.actionsUserActiveUpdate({ ids, value: false }),
+          this.auth.adminActionsUserActiveUpdate({ ids, value: false }),
       },
     ],
     columns: {

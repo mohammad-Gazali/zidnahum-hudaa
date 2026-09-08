@@ -20,7 +20,7 @@ import {
 } from '@angular/material/chips';
 import { MatIcon } from '@angular/material/icon';
 import { finalize } from 'rxjs';
-import { ExtraService, TranslatePipe, LOADING, SnackbarService } from '@shared';
+import { AdminSettingsService, TranslatePipe, LOADING, SnackbarService } from '@shared';
 
 @Component({
   selector: 'app-settings',
@@ -44,13 +44,13 @@ import { ExtraService, TranslatePipe, LOADING, SnackbarService } from '@shared';
   ],
 })
 export class SettingsComponent {
-  private extra = inject(ExtraService);
+  private extra = inject(AdminSettingsService);
   private fb = inject(NonNullableFormBuilder);
   private snackbar = inject(SnackbarService);
   private destroyRef = inject(DestroyRef);
   public loading = inject(LOADING);
 
-  public settings = toSignal(this.extra.extraControlSettingsList());
+  public settings = toSignal(this.extra.adminExtraControlSettingsRetrieve());
   public form = this.fb.group({
     event_title: this.fb.control<string | undefined>(undefined),
     point_value: this.fb.control<number | undefined>(undefined, [
@@ -86,7 +86,7 @@ export class SettingsComponent {
     this.loading.set(true);
 
     this.extra
-      .extraControlSettingsUpdate(this.form.value as any)
+      .adminExtraControlSettingsUpdate(this.form.value as any)
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         finalize(() => this.loading.set(false)),

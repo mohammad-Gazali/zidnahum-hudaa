@@ -14,7 +14,7 @@ import {
   Group,
   LayoutService,
   MasjedPipe,
-  StudentsClientService,
+  StudentsService,
 } from '@shared';
 import { HomeStudentListService } from './home-student-list.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -39,7 +39,7 @@ import { MobileUtilsService } from '@client/services';
   ],
 })
 export class HomeComponent {
-  private students = inject(StudentsClientService);
+  private students = inject(StudentsService);
   private destroyRef = inject(DestroyRef);
   private list = inject(HomeStudentListService);
   private auth = inject(AuthService);

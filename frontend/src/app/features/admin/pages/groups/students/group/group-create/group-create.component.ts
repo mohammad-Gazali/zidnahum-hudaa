@@ -13,7 +13,7 @@ import { StudentsBase } from '../../students.base';
 export class StudentGroupCreateComponent extends StudentsBase {
   public config: CreateComponentConfig<StudentGroupCreate> = {
     tableRoute: '/students/student-group',
-    createFunc: (body) => this.students.studentsGroupCreate(body),
+    createFunc: (body) => this.studentsGroup.adminStudentsGroupCreate(body),
     fields: {
       name: {
         type: 'string',

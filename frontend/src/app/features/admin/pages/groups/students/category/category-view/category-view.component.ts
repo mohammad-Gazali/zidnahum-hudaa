@@ -17,9 +17,10 @@ export class CategoryViewComponent extends StudentsBase {
     fieldsInfo: {},
     groupName: 'students',
     itemNameAndRouteName: 'student-category',
-    viewFunc: (id) => this.students.studentsCategoryRead(id),
-    deleteFunc: (id) => this.students.studentsCategoryDelete(id),
+    viewFunc: (id) => this.studentsCategory.adminStudentsCategoryRetrieve(Number(id)),
+    deleteFunc: (id) =>
+      this.studentsCategory.adminActionsStudentCategoryDeleteCreate({ ids: [Number(id)] }),
     updateFunc: (id, data) =>
-      this.students.studentsCategoryUpdate({ id, data }),
+      this.studentsCategory.adminStudentsCategoryUpdate(Number(id), data),
   };
 }

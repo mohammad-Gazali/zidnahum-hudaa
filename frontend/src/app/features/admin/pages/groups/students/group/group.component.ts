@@ -15,12 +15,12 @@ export class StudentGroupComponent extends StudentsBase {
     createUrl: '/students/student-group/create',
     getUrlFunc: (id) => `/students/student-group/view/${id}`,
     dataFunc: (options) => {
-      return this.students.studentsGroupList(options);
+      return this.studentsGroup.adminStudentsGroupList(options);
     },
     hasPagination: false,
     actions: [
       deleteModelAction('مجموعات الطلاب', (ids) =>
-        this.actions.actionsStudentGroupDeleteDelete({ ids }),
+        this.studentsGroup.adminActionsStudentGroupDeleteCreate({ ids }),
       ),
     ],
     columns: {

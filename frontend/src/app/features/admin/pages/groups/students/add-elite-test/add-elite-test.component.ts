@@ -10,7 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { finalize } from 'rxjs';
 import { StudentSearchComponent, SearchStudent } from '@admin/components';
 import { QuranEliteTestService } from '@admin/services';
-import { SnackbarService, ExtraService, LOADING } from '@shared';
+import { SnackbarService, AdminEliteTestService, LOADING } from '@shared';
 
 @Component({
   selector: 'app-add-elite-test',
@@ -31,7 +31,7 @@ export class AddEliteTestComponent {
   private fb = inject(NonNullableFormBuilder);
   private snackbar = inject(SnackbarService);
   private matSnackbar = inject(MatSnackBar);
-  private extra = inject(ExtraService);
+  private extra = inject(AdminEliteTestService);
   private destroyRef = inject(DestroyRef);
   private loading = inject(LOADING);
   private quranElite = inject(QuranEliteTestService);
@@ -60,7 +60,7 @@ export class AddEliteTestComponent {
     this.loading.set(true);
 
     this.extra
-      .extraAddEliteTest({
+      .adminExtraAddEliteTestCreate({
         student: selectedStudent.id,
         parts: value.parts
           .map((value, index) => (value ? index : -1))

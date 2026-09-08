@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { NonNullableFormBuilder, Validators } from '@angular/forms';
-import { StudentWithComingRegistrationList } from '@shared';
+import { StudentListWithComingRegistration } from '@shared';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +18,7 @@ export class AddComingStudentListService {
     count: number;
     next?: string | null | undefined;
     previous?: string | null | undefined;
-    results: StudentWithComingRegistrationList[];
+    results: StudentListWithComingRegistration[];
   }
     | undefined
   >(undefined);

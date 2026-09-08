@@ -17,8 +17,10 @@ export class StudentGroupViewComponent extends StudentsBase {
     fieldsInfo: {},
     groupName: 'students',
     itemNameAndRouteName: 'student-group',
-    viewFunc: (id) => this.students.studentsGroupRead(id),
-    deleteFunc: (id) => this.students.studentsGroupDelete(id),
-    updateFunc: (id, data) => this.students.studentsGroupUpdate({ id, data }),
+    viewFunc: (id) => this.studentsGroup.adminStudentsGroupRetrieve(Number(id)),
+    deleteFunc: (id) =>
+      this.studentsGroup.adminActionsStudentGroupDeleteCreate({ ids: [Number(id)] }),
+    updateFunc: (id, data) =>
+      this.studentsGroup.adminStudentsGroupUpdate(Number(id), data),
   };
 }

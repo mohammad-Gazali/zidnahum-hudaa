@@ -16,7 +16,7 @@ import {
 } from '@angular/material/core';
 import { finalize } from 'rxjs';
 import {
-  ReportsClientService,
+  ReportsService,
   MasjedService,
   LayoutService,
   MasjedPipe,
@@ -57,7 +57,7 @@ import { MatDividerModule } from '@angular/material/divider';
 })
 export class ReportsComponent {
   private fb = inject(NonNullableFormBuilder);
-  private reports = inject(ReportsClientService);
+  private reports = inject(ReportsService);
   private destroyRef = inject(DestroyRef);
   public masjed = inject(MasjedService);
   public loading = inject(LayoutService).loading;
@@ -93,10 +93,7 @@ export class ReportsComponent {
 
     if (excel) {
       this.reports
-        .reportsStudentsAllCreate({
-          data,
-          excel: true,
-        })
+        .reportsStudentAllCreate(data, { excel: true })
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
@@ -104,10 +101,7 @@ export class ReportsComponent {
         .subscribe((res) => this.downloadBlob(res as any));
     } else {
       this.reports
-        .reportsStudentsAllCreate({
-          data,
-          excel: false,
-        })
+        .reportsStudentAllCreate(data, { excel: false })
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
@@ -126,10 +120,7 @@ export class ReportsComponent {
 
     if (excel) {
       this.reports
-        .reportsCategoryAllCreate({
-          data,
-          excel: true,
-        })
+        .reportsCategoryAllCreate(data, { excel: true })
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
@@ -137,10 +128,7 @@ export class ReportsComponent {
         .subscribe((res) => this.downloadBlob(res as any));
     } else {
       this.reports
-        .reportsCategoryAllCreate({
-          data,
-          excel: false,
-        })
+        .reportsCategoryAllCreate(data, { excel: false })
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
@@ -165,10 +153,7 @@ export class ReportsComponent {
 
     if (excel) {
       this.reports
-        .reportsGroupAllCreate({
-          data,
-          excel: true,
-        })
+        .reportsGroupAllCreate(data, { excel: true })
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
@@ -176,10 +161,7 @@ export class ReportsComponent {
         .subscribe((res) => this.downloadBlob(res as any));
     } else {
       this.reports
-        .reportsGroupAllCreate({
-          data,
-          excel: false,
-        })
+        .reportsGroupAllCreate(data, { excel: false })
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
@@ -188,8 +170,8 @@ export class ReportsComponent {
           this.allResponse.set(
             res.map((item) => ({
               ...item,
-              id: item.group_id,
-              name: item.group_name,
+              id: item.category_id,
+              name: item.category_name,
             })),
           );
         });
