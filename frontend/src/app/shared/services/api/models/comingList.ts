@@ -4,11 +4,12 @@
  * Zidnahum Hudaa Project API
  * OpenAPI spec version: 1.0.0
  */
+import type { MasjedEnum } from './masjedEnum';
 
 export interface ComingList {
   readonly id: number;
   student: string;
-  masjed: number;
+  masjed: MasjedEnum;
   readonly registered_at: string;
   category: number;
 }

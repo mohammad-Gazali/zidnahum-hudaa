@@ -12,8 +12,8 @@ export interface StudentListWithComingRegistration {
   readonly id: number;
   /** @maxLength 80 */
   name: string;
-  category: StudentCategory;
-  group: StudentGroup;
+  category: StudentCategory | null;
+  group: StudentGroup | null;
   /**
      * @maxLength 30
      * @nullable

@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EMPTY, catchError, switchMap, tap } from 'rxjs';
-import { AccountsService } from './api/accounts/accounts.service';
+import { AccountsService } from './api/accounts';
 import { SnackbarService } from './snackbar.service';
 import { CurrentUser } from '../types';
 import { Router } from '@angular/router';

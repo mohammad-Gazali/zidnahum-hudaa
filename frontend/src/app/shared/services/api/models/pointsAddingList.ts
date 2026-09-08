@@ -4,11 +4,12 @@
  * Zidnahum Hudaa Project API
  * OpenAPI spec version: 1.0.0
  */
+import type { MasjedEnum } from './masjedEnum';
 
 export interface PointsAddingList {
   readonly id: number;
   student: string;
-  masjed: number;
+  masjed: MasjedEnum;
   /**
      * @minimum 0
      * @maximum 9223372036854776000

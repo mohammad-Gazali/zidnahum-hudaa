@@ -1,26 +1,26 @@
-import { Masjed, MessageType, StudentLevel } from '../enums';
+import { MasjedEnum, MessageTypeEnum, StudentLevelEnum } from '../services/api/models';
 import { EXTRA_HADEETH_LABEL } from './extra-hadeeth.const';
 
-export const STUDENT_LEVEL_LABELS: Record<StudentLevel, string> = {
-  [StudentLevel.ONE]: 'المستوى الأول',
-  [StudentLevel.TWO]: 'المستوى الثاني',
-  [StudentLevel.THREE]: 'المستوى الثالث',
+export const STUDENT_LEVEL_LABELS: Record<StudentLevelEnum, string> = {
+  [StudentLevelEnum.ONE]: 'المستوى الأول',
+  [StudentLevelEnum.TWO]: 'المستوى الثاني',
+  [StudentLevelEnum.THREE]: 'المستوى الثالث',
 };
 
-export const MASJED_LABELS: Record<Masjed, string> = {
-  [Masjed.AlHussinin]: 'الحسنين',
-  [Masjed.AlSalam]: 'السلام',
-  [Masjed.AlQazzaz]: 'القزاز',
-  [Masjed.AlKhansaa]: 'الخنساء',
+export const MASJED_LABELS: Record<MasjedEnum, string> = {
+  [MasjedEnum.HASANIN]: 'الحسنين',
+  [MasjedEnum.SALAM]: 'السلام',
+  [MasjedEnum.QAZZAZ]: 'القزاز',
+  [MasjedEnum.KHANSAA]: 'الخنساء',
 };
 
-export const MESSAGE_TYPE_LABELS: Record<MessageType, string> = {
-  [MessageType.Memo]: 'تسميع غيباً',
-  [MessageType.Test]: 'سبر',
-  [MessageType.AlNawawia]: 'الأربعين النووية',
-  [MessageType.AlSaalihin]: 'رياض الصالحين',
-  [MessageType.AllahNames]: 'أسماء الله الحسنى',
-  [MessageType.Parts]: 'سبر الأحزاب',
-  [MessageType.Viewing]: 'قراءة القرآن نظراً',
-  [MessageType.ExtraHadeeth]: EXTRA_HADEETH_LABEL,
+export const MESSAGE_TYPE_LABELS: Record<MessageTypeEnum, string> = {
+  [MessageTypeEnum.MEMO]: 'تسميع غيباً',
+  [MessageTypeEnum.TEST]: 'سبر',
+  [MessageTypeEnum.ALNAWAWIA]: 'الأربعين النووية',
+  [MessageTypeEnum.ALSAALIHIN]: 'رياض الصالحين',
+  [MessageTypeEnum.ALLAH_NAMES]: 'أسماء الله الحسنى',
+  [MessageTypeEnum.ELITE_TEST]: 'سبر الأحزاب',
+  [MessageTypeEnum.VIEWING]: 'قراءة القرآن نظراً',
+  [MessageTypeEnum.EXTRA_HADEETH]: EXTRA_HADEETH_LABEL,
 };

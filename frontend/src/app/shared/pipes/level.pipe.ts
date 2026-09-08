@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { StudentLevel } from '../enums';
+import { StudentLevelEnum } from '../services/api/models';
 import { STUDENT_LEVEL_LABELS } from '../constants/labels.const';
 
 @Pipe({
@@ -7,7 +7,7 @@ import { STUDENT_LEVEL_LABELS } from '../constants/labels.const';
   standalone: true,
 })
 export class LevelPipe implements PipeTransform {
-  transform(value: number | undefined): string {
-    return STUDENT_LEVEL_LABELS[value as StudentLevel] ?? '';
+  transform(value: StudentLevelEnum | undefined): string {
+    return STUDENT_LEVEL_LABELS[value as StudentLevelEnum] ?? '';
   }
 }

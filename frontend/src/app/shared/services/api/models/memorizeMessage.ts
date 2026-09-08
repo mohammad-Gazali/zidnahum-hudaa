@@ -4,13 +4,14 @@
  * Zidnahum Hudaa Project API
  * OpenAPI spec version: 1.0.0
  */
+import type { MasjedEnum } from './masjedEnum';
 import type { MessageTypeEnum } from './messageTypeEnum';
 import type { StudentLevelEnum } from './studentLevelEnum';
 
 export interface MemorizeMessage {
   readonly id: number;
   student: string;
-  masjed: number;
+  masjed: MasjedEnum;
   changes?: number[];
   readonly sended_at: string;
   student_level: StudentLevelEnum;

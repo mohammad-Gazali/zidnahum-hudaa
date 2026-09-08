@@ -15,8 +15,8 @@ import type { StudentLevelEnum } from './studentLevelEnum';
 
 export interface StudentDetails {
   readonly id: number;
-  category: StudentCategory;
-  group: StudentGroup;
+  category: StudentCategory | null;
+  group: StudentGroup | null;
   memo_notes: MemorizeNotesGet[];
   awqaf_relations: AwqafRelation[];
   last_comings: ComingListForStudent[];

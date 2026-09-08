@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from students.models import StudentCategory, StudentGroup, MemorizeNotes, Student, MemorizeMessage
+from students.models import StudentCategory, StudentGroup, MemorizeNotes, Student, MemorizeMessage, StudentMasjedChoice
 from students.constants import EXTRA_HADEETH_LIMIT
 from awqaf.serializers import AwqafRelationSerializer
 from comings.serializers import ComingListForStudentSerializer
@@ -30,8 +30,8 @@ class MemorizeNotesCreateSerializer(serializers.ModelSerializer):
 
 
 class StudentListSerializer(serializers.ModelSerializer):
-    category = StudentCategorySerializer()
-    group = StudentGroupSerializer()
+    category = StudentCategorySerializer(allow_null=True)
+    group = StudentGroupSerializer(allow_null=True)
 
     class Meta:
         model = Student
@@ -50,8 +50,8 @@ class StudentCreateSerializer(serializers.ModelSerializer):
         ]
 
 class StudentListWithComingRegistrationSerializer(serializers.ModelSerializer):
-    category = StudentCategorySerializer()
-    group = StudentGroupSerializer()
+    category = StudentCategorySerializer(allow_null=True)
+    group = StudentGroupSerializer(allow_null=True)
     is_registered_today = serializers.BooleanField()
 
     class Meta:
@@ -68,8 +68,8 @@ class MemorizeMessageForStudentSerializer(serializers.ModelSerializer):
 
 
 class StudentDetailsSerializer(serializers.ModelSerializer):
-    category = StudentCategorySerializer()
-    group = StudentGroupSerializer()
+    category = StudentCategorySerializer(allow_null=True)
+    group = StudentGroupSerializer(allow_null=True)
     memo_notes = MemorizeNotesGetSerializer(many=True)
 
     awqaf_relations = AwqafRelationSerializer(many=True)
@@ -126,7 +126,7 @@ class StudentUpdateExtraHadeethSerializer(serializers.Serializer):
 
 class MemorizeMessageSerializer(serializers.ModelSerializer):
     student = serializers.CharField(source="student.name")
-    masjed = serializers.IntegerField(source="student.masjed")
+    masjed = serializers.ChoiceField(choices=StudentMasjedChoice.choices, source="student.masjed")
     changes = serializers.ListField(child=serializers.IntegerField(), required=False)
 
     class Meta:

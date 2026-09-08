@@ -24,12 +24,12 @@
         <mat-chip>
           {{ message.masjed | masjed }}
         </mat-chip>
-        @if (message.message_type !== messageType.AllahNames) {
+        @if (message.message_type !== messageType.ALLAH_NAMES) {
           <mat-divider/>
         }
         @switch (message.message_type) {
-          @case (messageType.Memo)
-          @case (messageType.Viewing) {
+          @case (messageType.MEMO)
+          @case (messageType.VIEWING) {
             <div class="inner-cards-container">
               @for (item of message.changes; track item) {
                 <mat-card class="small-card bg-primary-fixed-dim">
@@ -38,7 +38,7 @@
               }
             </div>
           }
-          @case (messageType.Test) {
+          @case (messageType.TEST) {
             <div class="inner-cards-container">
               @for (item of message.changes; track item) {
                 <mat-card class="small-flex-card bg-primary-fixed-dim">
@@ -47,7 +47,7 @@
               }
             </div>
           }
-          @case (messageType.AlNawawia) {
+          @case (messageType.ALNAWAWIA) {
             <p>
               @if (message.changes![1] + 1 === message.changes![2]) {
                 الحديث {{ message.changes![0] + message.changes![2] }}
@@ -56,7 +56,7 @@
               }
             </p>
           }
-          @case (messageType.AlSaalihin) {
+          @case (messageType.ALSAALIHIN) {
             <p>
               @if (message.changes![1] + 1 === message.changes![2]) {
                 الحديث {{ message.changes![0] + message.changes![2] }}
@@ -65,7 +65,7 @@
               }
             </p>
           }
-          @case (messageType.ExtraHadeeth) {
+          @case (messageType.EXTRA_HADEETH) {
             <p>
               @if (message.changes![0] + 1 === message.changes![1]) {
                 الحديث {{ message.changes![1] }}

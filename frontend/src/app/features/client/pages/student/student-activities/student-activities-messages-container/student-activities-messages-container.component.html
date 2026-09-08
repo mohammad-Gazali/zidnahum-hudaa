@@ -1,20 +1,20 @@
 @for (message of messages(); track message.id) {
   @switch (message.message_type) {
-    @case (messageType.Memo) {
+    @case (messageType.MEMO) {
       @for (item of message.changes; track item) {
         <mat-card class="small-card bg-primary-fixed-dim" [class.flex-width]="item >= 581">
           {{ item | memo }}
         </mat-card>
       }
     }
-    @case (messageType.Test) {
+    @case (messageType.TEST) {
       @for (item of message.changes; track item) {
         <mat-card class="small-flex-card bg-primary-fixed-dim">
           {{ item | test }}
         </mat-card>
       }
     }
-    @case (messageType.AlNawawia) {
+    @case (messageType.ALNAWAWIA) {
       <mat-card class="small-flex-card bg-primary-fixed-dim">
         الأربعين النووية:
         @if (message.changes![1] + 1 === message.changes![2]) {
@@ -24,7 +24,7 @@
         }
       </mat-card>
     }
-    @case (messageType.AlSaalihin) {
+    @case (messageType.ALSAALIHIN) {
       <mat-card class="small-flex-card bg-primary-fixed-dim">
         رياض الصالحين:
         @if (message.changes![1] + 1 === message.changes![2]) {
@@ -34,7 +34,7 @@
         }
       </mat-card>
     }
-    @case (messageType.AllahNames) {
+    @case (messageType.ALLAH_NAMES) {
       <mat-card class="small-flex-card bg-primary-fixed-dim">
         أسماء الله الحسنى
       </mat-card>

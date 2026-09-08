@@ -5,7 +5,7 @@ import {
   MasjedPipe,
   MemoPipe,
   MemorizeMessage,
-  MessageType,
+  MessageTypeEnum,
   MessageTypePipe,
   SnackbarService,
   StudentsService,
@@ -70,7 +70,7 @@ export class LogMemoComponent {
     map((res) => res.results),
   );
 
-  protected messageType = MessageType;
+  protected messageType = MessageTypeEnum;
   protected hasNext = signal(false);
   protected hasPrevious = signal(false);
   protected loadingIds = signal<number[]>([]);

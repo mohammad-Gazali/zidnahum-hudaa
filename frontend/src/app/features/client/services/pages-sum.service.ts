@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MemorizeMessageForStudent } from '@shared';
-import { MessageType } from '@shared';
+import { MessageTypeEnum } from '@shared';
 
 @Injectable({
   providedIn: 'root',
@@ -9,8 +9,8 @@ export class PagesSumService {
   public getMessagesPagesSum(messages: MemorizeMessageForStudent[]) {
     return Math.ceil(
         messages
-        .filter(message => message.message_type === MessageType.Memo || message.message_type === MessageType.Test)
-        .map(message => message.message_type === MessageType.Memo
+        .filter(message => message.message_type === MessageTypeEnum.MEMO || message.message_type === MessageTypeEnum.TEST)
+        .map(message => message.message_type === MessageTypeEnum.MEMO
             ? this.getNumPagesMemo(message.changes as number[])
             : this.getNumPagesTest(message.changes as number[])
         )

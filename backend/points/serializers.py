@@ -1,5 +1,6 @@
 from points.models import PointsAddingCause, PointsDeletingCause, PointsAdding, PointsDeleting
 from rest_framework import serializers
+from students.models import StudentMasjedChoice
 
 
 class PointsAddingCauseSerializer(serializers.ModelSerializer):
@@ -18,7 +19,7 @@ class PointsAddingCreateSerializer(serializers.ModelSerializer):
 
 class PointsAddingListSerializer(serializers.ModelSerializer):
     student = serializers.CharField(source="student.name")
-    masjed = serializers.IntegerField(source="student.masjed")
+    masjed = serializers.ChoiceField(choices=StudentMasjedChoice.choices, source="student.masjed")
 
     class Meta:
         model = PointsAdding
