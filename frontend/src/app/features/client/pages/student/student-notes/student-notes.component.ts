@@ -8,7 +8,7 @@ import {
   AuthService,
   ConfirmationService,
   Group,
-  LayoutService,
+  LOADING,
   MemorizeNotesGet,
   SnackbarService,
   StudentDetails,
@@ -33,7 +33,7 @@ export class StudentNotesComponent {
   private destroyRef = inject(DestroyRef);
   private confirmation = inject(ConfirmationService);
   private snackbar = inject(SnackbarService);
-  private loading = inject(LayoutService).loading;
+  private loading = inject(LOADING);
   protected student = inject(StudentComponent).student;
 
   removeNote(id: number) {

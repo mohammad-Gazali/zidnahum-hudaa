@@ -30,6 +30,7 @@ export * from './api/globals';
 export * from './api/points';
 export * from './api/reports';
 export * from './api/students';
+export * from './api/api.base-url';
 export * from './auth.service';
 export * from './snackbar.service';
 export * from './confirmation.service';

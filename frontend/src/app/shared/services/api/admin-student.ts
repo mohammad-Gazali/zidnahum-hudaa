@@ -4,25 +4,14 @@
  * Zidnahum Hudaa Project API
  * OpenAPI spec version: 1.0.0
  */
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpResponse as AngularHttpResponse
-} from '@angular/common/http';
-import type {
-  HttpContext,
-  HttpEvent,
-  HttpParams
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse as AngularHttpResponse } from '@angular/common/http';
+import type { HttpContext, HttpEvent, HttpParams } from '@angular/common/http';
 
-import {
-  Injectable,
-  inject
-} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
-import {
-  Observable
-} from 'rxjs';
+import { Observable } from 'rxjs';
+
+import { API_BASE_URL } from './api.base-url';
 
 import type {
   AdminPaginatedstudentListlist,
@@ -31,18 +20,14 @@ import type {
   AdminStudentsStudentListParams,
   IdsAction,
   PatchedStudentUpdate,
-  StudentUpdate
+  StudentUpdate,
 } from './models';
-
-
-
 
 interface HttpClientOptions {
   readonly headers?: HttpHeaders | Record<string, string | string[]>;
   readonly context?: HttpContext;
   readonly params?:
-        | HttpParams
-      | Record<string, string | number | boolean | Array<string | number | boolean>>;
+    HttpParams | Record<string, string | number | boolean | Array<string | number | boolean>>;
   readonly reportProgress?: boolean;
   readonly withCredentials?: boolean;
   readonly credentials?: RequestCredentials;
@@ -54,7 +39,7 @@ interface HttpClientOptions {
   readonly referrer?: string;
   readonly integrity?: string;
   readonly referrerPolicy?: ReferrerPolicy;
-  readonly transferCache?: {includeHeaders?: string[]} | boolean;
+  readonly transferCache?: { includeHeaders?: string[] } | boolean;
   readonly timeout?: number;
 }
 
@@ -113,9 +98,7 @@ function filterParams(
       const filtered = value.filter(
         (item) =>
           item != null &&
-          (typeof item === 'string' ||
-            typeof item === 'number' ||
-            typeof item === 'boolean'),
+          (typeof item === 'string' || typeof item === 'number' || typeof item === 'boolean'),
       ) as Array<string | number | boolean>;
       if (filtered.length) {
         filteredParams[key] = filtered;
@@ -128,9 +111,7 @@ function filterParams(
       filteredParams[key] = preserveRequiredNullables ? null : '';
     } else if (
       value != null &&
-      (typeof value === 'string' ||
-        typeof value === 'number' ||
-        typeof value === 'boolean')
+      (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean')
     ) {
       filteredParams[key] = value;
     }
@@ -138,260 +119,326 @@ function filterParams(
   return filteredParams;
 }
 
-
-
-
-
 @Injectable({ providedIn: 'root' })
 export class AdminStudentService {
   private readonly http = inject(HttpClient);
- adminActionsStudentDeleteCreate<TData = void>(idsAction: IdsAction, options?: HttpClientBodyOptions): Observable<TData>;
- adminActionsStudentDeleteCreate<TData = void>(idsAction: IdsAction, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminActionsStudentDeleteCreate<TData = void>(idsAction: IdsAction, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  private readonly baseUrl = inject(API_BASE_URL);
   adminActionsStudentDeleteCreate<TData = void>(
-    idsAction: IdsAction, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    idsAction: IdsAction,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminActionsStudentDeleteCreate<TData = void>(
+    idsAction: IdsAction,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminActionsStudentDeleteCreate<TData = void>(
+    idsAction: IdsAction,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminActionsStudentDeleteCreate<TData = void>(
+    idsAction: IdsAction,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.post<TData>(
-      `/api/v1/admin/actions/student/delete`,
-      idsAction,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/actions/student/delete`,
+        idsAction,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.post<TData>(
-      `/api/v1/admin/actions/student/delete`,
-      idsAction,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/actions/student/delete`,
+        idsAction,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
-    return this.http.post<TData>(
-      `/api/v1/admin/actions/student/delete`,
-      idsAction,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.post<TData>(`${this.baseUrl}/api/v1/admin/actions/student/delete`, idsAction, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
- adminExtraStudentUpdateUpdate<TData = StudentUpdate>(id: number,
-    studentUpdate: StudentUpdate, options?: HttpClientBodyOptions): Observable<TData>;
- adminExtraStudentUpdateUpdate<TData = StudentUpdate>(id: number,
-    studentUpdate: StudentUpdate, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminExtraStudentUpdateUpdate<TData = StudentUpdate>(id: number,
-    studentUpdate: StudentUpdate, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   adminExtraStudentUpdateUpdate<TData = StudentUpdate>(
     id: number,
-    studentUpdate: StudentUpdate, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    studentUpdate: StudentUpdate,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminExtraStudentUpdateUpdate<TData = StudentUpdate>(
+    id: number,
+    studentUpdate: StudentUpdate,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminExtraStudentUpdateUpdate<TData = StudentUpdate>(
+    id: number,
+    studentUpdate: StudentUpdate,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminExtraStudentUpdateUpdate<TData = StudentUpdate>(
+    id: number,
+    studentUpdate: StudentUpdate,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.put<TData>(
-      `/api/v1/admin/extra/student-update/${id}`,
-      studentUpdate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/extra/student-update/${id}`,
+        studentUpdate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.put<TData>(
-      `/api/v1/admin/extra/student-update/${id}`,
-      studentUpdate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/extra/student-update/${id}`,
+        studentUpdate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.put<TData>(
-      `/api/v1/admin/extra/student-update/${id}`,
-      studentUpdate,{
+      `${this.baseUrl}/api/v1/admin/extra/student-update/${id}`,
+      studentUpdate,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
- adminExtraStudentUpdatePartialUpdate<TData = StudentUpdate>(id: number,
-    patchedStudentUpdate?: PatchedStudentUpdate, options?: HttpClientBodyOptions): Observable<TData>;
- adminExtraStudentUpdatePartialUpdate<TData = StudentUpdate>(id: number,
-    patchedStudentUpdate?: PatchedStudentUpdate, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminExtraStudentUpdatePartialUpdate<TData = StudentUpdate>(id: number,
-    patchedStudentUpdate?: PatchedStudentUpdate, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   adminExtraStudentUpdatePartialUpdate<TData = StudentUpdate>(
     id: number,
-    patchedStudentUpdate?: PatchedStudentUpdate, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    patchedStudentUpdate?: PatchedStudentUpdate,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminExtraStudentUpdatePartialUpdate<TData = StudentUpdate>(
+    id: number,
+    patchedStudentUpdate?: PatchedStudentUpdate,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminExtraStudentUpdatePartialUpdate<TData = StudentUpdate>(
+    id: number,
+    patchedStudentUpdate?: PatchedStudentUpdate,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminExtraStudentUpdatePartialUpdate<TData = StudentUpdate>(
+    id: number,
+    patchedStudentUpdate?: PatchedStudentUpdate,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.patch<TData>(
-      `/api/v1/admin/extra/student-update/${id}`,
-      patchedStudentUpdate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/extra/student-update/${id}`,
+        patchedStudentUpdate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.patch<TData>(
-      `/api/v1/admin/extra/student-update/${id}`,
-      patchedStudentUpdate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/extra/student-update/${id}`,
+        patchedStudentUpdate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.patch<TData>(
-      `/api/v1/admin/extra/student-update/${id}`,
-      patchedStudentUpdate,{
+      `${this.baseUrl}/api/v1/admin/extra/student-update/${id}`,
+      patchedStudentUpdate,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminStudentsStudentList<TData = AdminPaginatedstudentListlist>(params?: AdminStudentsStudentListParams, options?: HttpClientBodyOptions): Observable<TData>;
- adminStudentsStudentList<TData = AdminPaginatedstudentListlist>(params?: AdminStudentsStudentListParams, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminStudentsStudentList<TData = AdminPaginatedstudentListlist>(params?: AdminStudentsStudentListParams, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminStudentsStudentList<TData = AdminPaginatedstudentListlist>(
-    params?: AdminStudentsStudentListParams, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
-    const filteredParams = filterParams({...params, ...options?.params}, new Set<string>([]));
+    params?: AdminStudentsStudentListParams,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminStudentsStudentList<TData = AdminPaginatedstudentListlist>(
+    params?: AdminStudentsStudentListParams,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminStudentsStudentList<TData = AdminPaginatedstudentListlist>(
+    params?: AdminStudentsStudentListParams,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminStudentsStudentList<TData = AdminPaginatedstudentListlist>(
+    params?: AdminStudentsStudentListParams,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    const filteredParams = filterParams({ ...params, ...options?.params }, new Set<string>([]));
 
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/admin/students/student/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/students/student/`, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/admin/students/student/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/students/student/`, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/admin/students/student/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-        params: filteredParams,}
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/students/student/`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+      params: filteredParams,
+    });
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminStudentsStudentCreate<TData = AdminStudentCreate>(adminStudentCreate: AdminStudentCreate, options?: HttpClientBodyOptions): Observable<TData>;
- adminStudentsStudentCreate<TData = AdminStudentCreate>(adminStudentCreate: AdminStudentCreate, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminStudentsStudentCreate<TData = AdminStudentCreate>(adminStudentCreate: AdminStudentCreate, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminStudentsStudentCreate<TData = AdminStudentCreate>(
-    adminStudentCreate: AdminStudentCreate, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    adminStudentCreate: AdminStudentCreate,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminStudentsStudentCreate<TData = AdminStudentCreate>(
+    adminStudentCreate: AdminStudentCreate,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminStudentsStudentCreate<TData = AdminStudentCreate>(
+    adminStudentCreate: AdminStudentCreate,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminStudentsStudentCreate<TData = AdminStudentCreate>(
+    adminStudentCreate: AdminStudentCreate,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.post<TData>(
-      `/api/v1/admin/students/student/`,
-      adminStudentCreate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/students/student/`,
+        adminStudentCreate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.post<TData>(
-      `/api/v1/admin/students/student/`,
-      adminStudentCreate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/students/student/`,
+        adminStudentCreate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.post<TData>(
-      `/api/v1/admin/students/student/`,
-      adminStudentCreate,{
+      `${this.baseUrl}/api/v1/admin/students/student/`,
+      adminStudentCreate,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminStudentsStudentRetrieve<TData = AdminStudentDetails>(id: number, options?: HttpClientBodyOptions): Observable<TData>;
- adminStudentsStudentRetrieve<TData = AdminStudentDetails>(id: number, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminStudentsStudentRetrieve<TData = AdminStudentDetails>(id: number, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminStudentsStudentRetrieve<TData = AdminStudentDetails>(
-    id: number, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    id: number,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminStudentsStudentRetrieve<TData = AdminStudentDetails>(
+    id: number,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminStudentsStudentRetrieve<TData = AdminStudentDetails>(
+    id: number,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminStudentsStudentRetrieve<TData = AdminStudentDetails>(
+    id: number,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/admin/students/student/${id}/`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/students/student/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/admin/students/student/${id}/`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/students/student/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/admin/students/student/${id}/`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/students/student/${id}/`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminStudentsStudentDestroy<TData = void>(id: number, options?: HttpClientBodyOptions): Observable<TData>;
- adminStudentsStudentDestroy<TData = void>(id: number, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminStudentsStudentDestroy<TData = void>(id: number, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminStudentsStudentDestroy<TData = void>(
-    id: number, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    id: number,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminStudentsStudentDestroy<TData = void>(
+    id: number,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminStudentsStudentDestroy<TData = void>(
+    id: number,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminStudentsStudentDestroy<TData = void>(
+    id: number,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.delete<TData>(
-      `/api/v1/admin/students/student/${id}/`,{
+      return this.http.delete<TData>(`${this.baseUrl}/api/v1/admin/students/student/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.delete<TData>(
-      `/api/v1/admin/students/student/${id}/`,{
+      return this.http.delete<TData>(`${this.baseUrl}/api/v1/admin/students/student/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.delete<TData>(
-      `/api/v1/admin/students/student/${id}/`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.delete<TData>(`${this.baseUrl}/api/v1/admin/students/student/${id}/`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
-};
-
+}

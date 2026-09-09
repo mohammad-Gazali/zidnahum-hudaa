@@ -4,25 +4,14 @@
  * Zidnahum Hudaa Project API
  * OpenAPI spec version: 1.0.0
  */
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpResponse as AngularHttpResponse
-} from '@angular/common/http';
-import type {
-  HttpContext,
-  HttpEvent,
-  HttpParams
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse as AngularHttpResponse } from '@angular/common/http';
+import type { HttpContext, HttpEvent, HttpParams } from '@angular/common/http';
 
-import {
-  Injectable,
-  inject
-} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
-import {
-  Observable
-} from 'rxjs';
+import { Observable } from 'rxjs';
+
+import { API_BASE_URL } from './api.base-url';
 
 import type {
   ReportsCategoryAllCreateParams,
@@ -36,18 +25,14 @@ import type {
   ReportsStudentCategoryOrGroupResponse,
   ReportsStudentCategoryOrGroupStudent,
   ReportsStudentCreateParams,
-  ReportsStudentResponse
+  ReportsStudentResponse,
 } from './models';
-
-
-
 
 interface HttpClientOptions {
   readonly headers?: HttpHeaders | Record<string, string | string[]>;
   readonly context?: HttpContext;
   readonly params?:
-        | HttpParams
-      | Record<string, string | number | boolean | Array<string | number | boolean>>;
+    HttpParams | Record<string, string | number | boolean | Array<string | number | boolean>>;
   readonly reportProgress?: boolean;
   readonly withCredentials?: boolean;
   readonly credentials?: RequestCredentials;
@@ -59,7 +44,7 @@ interface HttpClientOptions {
   readonly referrer?: string;
   readonly integrity?: string;
   readonly referrerPolicy?: ReferrerPolicy;
-  readonly transferCache?: {includeHeaders?: string[]} | boolean;
+  readonly transferCache?: { includeHeaders?: string[] } | boolean;
   readonly timeout?: number;
 }
 
@@ -118,9 +103,7 @@ function filterParams(
       const filtered = value.filter(
         (item) =>
           item != null &&
-          (typeof item === 'string' ||
-            typeof item === 'number' ||
-            typeof item === 'boolean'),
+          (typeof item === 'string' || typeof item === 'number' || typeof item === 'boolean'),
       ) as Array<string | number | boolean>;
       if (filtered.length) {
         filteredParams[key] = filtered;
@@ -133,9 +116,7 @@ function filterParams(
       filteredParams[key] = preserveRequiredNullables ? null : '';
     } else if (
       value != null &&
-      (typeof value === 'string' ||
-        typeof value === 'number' ||
-        typeof value === 'boolean')
+      (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean')
     ) {
       filteredParams[key] = value;
     }
@@ -143,258 +124,344 @@ function filterParams(
   return filteredParams;
 }
 
-
-
-
-
 @Injectable({ providedIn: 'root' })
 export class ReportsService {
   private readonly http = inject(HttpClient);
- reportsCategoryCreate<TData = ReportsStudentCategoryOrGroupResponse>(id: number,
-    reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsCategoryCreateParams, options?: HttpClientBodyOptions): Observable<TData>;
- reportsCategoryCreate<TData = ReportsStudentCategoryOrGroupResponse>(id: number,
-    reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsCategoryCreateParams, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- reportsCategoryCreate<TData = ReportsStudentCategoryOrGroupResponse>(id: number,
-    reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsCategoryCreateParams, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  private readonly baseUrl = inject(API_BASE_URL);
   reportsCategoryCreate<TData = ReportsStudentCategoryOrGroupResponse>(
     id: number,
     reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsCategoryCreateParams, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
-    const filteredParams = filterParams({...params, ...options?.params}, new Set<string>([]));
+    params?: ReportsCategoryCreateParams,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  reportsCategoryCreate<TData = ReportsStudentCategoryOrGroupResponse>(
+    id: number,
+    reportsRequestWithMasjed: ReportsRequestWithMasjed,
+    params?: ReportsCategoryCreateParams,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  reportsCategoryCreate<TData = ReportsStudentCategoryOrGroupResponse>(
+    id: number,
+    reportsRequestWithMasjed: ReportsRequestWithMasjed,
+    params?: ReportsCategoryCreateParams,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  reportsCategoryCreate<TData = ReportsStudentCategoryOrGroupResponse>(
+    id: number,
+    reportsRequestWithMasjed: ReportsRequestWithMasjed,
+    params?: ReportsCategoryCreateParams,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    const filteredParams = filterParams({ ...params, ...options?.params }, new Set<string>([]));
 
     if (options?.observe === 'events') {
       return this.http.post<TData>(
-      `/api/v1/reports/category/${id}`,
-      reportsRequestWithMasjed,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-        params: filteredParams,}
-    );
+        `${this.baseUrl}/api/v1/reports/category/${id}`,
+        reportsRequestWithMasjed,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+          params: filteredParams,
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.post<TData>(
-      `/api/v1/reports/category/${id}`,
-      reportsRequestWithMasjed,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-        params: filteredParams,}
-    );
+        `${this.baseUrl}/api/v1/reports/category/${id}`,
+        reportsRequestWithMasjed,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+          params: filteredParams,
+        },
+      );
     }
 
     return this.http.post<TData>(
-      `/api/v1/reports/category/${id}`,
-      reportsRequestWithMasjed,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      `${this.baseUrl}/api/v1/reports/category/${id}`,
+      reportsRequestWithMasjed,
+      {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-        params: filteredParams,}
+        params: filteredParams,
+      },
     );
   }
- reportsCategoryAllCreate<TData = ReportsCategoryOrGroupSpecificResponse[]>(reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsCategoryAllCreateParams, options?: HttpClientBodyOptions): Observable<TData>;
- reportsCategoryAllCreate<TData = ReportsCategoryOrGroupSpecificResponse[]>(reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsCategoryAllCreateParams, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- reportsCategoryAllCreate<TData = ReportsCategoryOrGroupSpecificResponse[]>(reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsCategoryAllCreateParams, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   reportsCategoryAllCreate<TData = ReportsCategoryOrGroupSpecificResponse[]>(
     reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsCategoryAllCreateParams, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
-    const filteredParams = filterParams({...params, ...options?.params}, new Set<string>([]));
+    params?: ReportsCategoryAllCreateParams,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  reportsCategoryAllCreate<TData = ReportsCategoryOrGroupSpecificResponse[]>(
+    reportsRequestWithMasjed: ReportsRequestWithMasjed,
+    params?: ReportsCategoryAllCreateParams,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  reportsCategoryAllCreate<TData = ReportsCategoryOrGroupSpecificResponse[]>(
+    reportsRequestWithMasjed: ReportsRequestWithMasjed,
+    params?: ReportsCategoryAllCreateParams,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  reportsCategoryAllCreate<TData = ReportsCategoryOrGroupSpecificResponse[]>(
+    reportsRequestWithMasjed: ReportsRequestWithMasjed,
+    params?: ReportsCategoryAllCreateParams,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    const filteredParams = filterParams({ ...params, ...options?.params }, new Set<string>([]));
 
     if (options?.observe === 'events') {
       return this.http.post<TData>(
-      `/api/v1/reports/category/all`,
-      reportsRequestWithMasjed,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-        params: filteredParams,}
-    );
+        `${this.baseUrl}/api/v1/reports/category/all`,
+        reportsRequestWithMasjed,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+          params: filteredParams,
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.post<TData>(
-      `/api/v1/reports/category/all`,
-      reportsRequestWithMasjed,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-        params: filteredParams,}
-    );
+        `${this.baseUrl}/api/v1/reports/category/all`,
+        reportsRequestWithMasjed,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+          params: filteredParams,
+        },
+      );
     }
 
     return this.http.post<TData>(
-      `/api/v1/reports/category/all`,
-      reportsRequestWithMasjed,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      `${this.baseUrl}/api/v1/reports/category/all`,
+      reportsRequestWithMasjed,
+      {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-        params: filteredParams,}
+        params: filteredParams,
+      },
     );
   }
- reportsGroupCreate<TData = ReportsStudentCategoryOrGroupResponse>(id: number,
-    reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsGroupCreateParams, options?: HttpClientBodyOptions): Observable<TData>;
- reportsGroupCreate<TData = ReportsStudentCategoryOrGroupResponse>(id: number,
-    reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsGroupCreateParams, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- reportsGroupCreate<TData = ReportsStudentCategoryOrGroupResponse>(id: number,
-    reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsGroupCreateParams, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   reportsGroupCreate<TData = ReportsStudentCategoryOrGroupResponse>(
     id: number,
     reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsGroupCreateParams, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
-    const filteredParams = filterParams({...params, ...options?.params}, new Set<string>([]));
+    params?: ReportsGroupCreateParams,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  reportsGroupCreate<TData = ReportsStudentCategoryOrGroupResponse>(
+    id: number,
+    reportsRequestWithMasjed: ReportsRequestWithMasjed,
+    params?: ReportsGroupCreateParams,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  reportsGroupCreate<TData = ReportsStudentCategoryOrGroupResponse>(
+    id: number,
+    reportsRequestWithMasjed: ReportsRequestWithMasjed,
+    params?: ReportsGroupCreateParams,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  reportsGroupCreate<TData = ReportsStudentCategoryOrGroupResponse>(
+    id: number,
+    reportsRequestWithMasjed: ReportsRequestWithMasjed,
+    params?: ReportsGroupCreateParams,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    const filteredParams = filterParams({ ...params, ...options?.params }, new Set<string>([]));
 
     if (options?.observe === 'events') {
       return this.http.post<TData>(
-      `/api/v1/reports/group/${id}`,
-      reportsRequestWithMasjed,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-        params: filteredParams,}
-    );
+        `${this.baseUrl}/api/v1/reports/group/${id}`,
+        reportsRequestWithMasjed,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+          params: filteredParams,
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.post<TData>(
-      `/api/v1/reports/group/${id}`,
-      reportsRequestWithMasjed,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-        params: filteredParams,}
-    );
+        `${this.baseUrl}/api/v1/reports/group/${id}`,
+        reportsRequestWithMasjed,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+          params: filteredParams,
+        },
+      );
     }
 
     return this.http.post<TData>(
-      `/api/v1/reports/group/${id}`,
-      reportsRequestWithMasjed,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      `${this.baseUrl}/api/v1/reports/group/${id}`,
+      reportsRequestWithMasjed,
+      {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-        params: filteredParams,}
+        params: filteredParams,
+      },
     );
   }
- reportsGroupAllCreate<TData = ReportsCategoryOrGroupSpecificResponse[]>(reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsGroupAllCreateParams, options?: HttpClientBodyOptions): Observable<TData>;
- reportsGroupAllCreate<TData = ReportsCategoryOrGroupSpecificResponse[]>(reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsGroupAllCreateParams, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- reportsGroupAllCreate<TData = ReportsCategoryOrGroupSpecificResponse[]>(reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsGroupAllCreateParams, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   reportsGroupAllCreate<TData = ReportsCategoryOrGroupSpecificResponse[]>(
     reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsGroupAllCreateParams, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
-    const filteredParams = filterParams({...params, ...options?.params}, new Set<string>([]));
+    params?: ReportsGroupAllCreateParams,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  reportsGroupAllCreate<TData = ReportsCategoryOrGroupSpecificResponse[]>(
+    reportsRequestWithMasjed: ReportsRequestWithMasjed,
+    params?: ReportsGroupAllCreateParams,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  reportsGroupAllCreate<TData = ReportsCategoryOrGroupSpecificResponse[]>(
+    reportsRequestWithMasjed: ReportsRequestWithMasjed,
+    params?: ReportsGroupAllCreateParams,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  reportsGroupAllCreate<TData = ReportsCategoryOrGroupSpecificResponse[]>(
+    reportsRequestWithMasjed: ReportsRequestWithMasjed,
+    params?: ReportsGroupAllCreateParams,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    const filteredParams = filterParams({ ...params, ...options?.params }, new Set<string>([]));
 
     if (options?.observe === 'events') {
       return this.http.post<TData>(
-      `/api/v1/reports/group/all`,
-      reportsRequestWithMasjed,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-        params: filteredParams,}
-    );
+        `${this.baseUrl}/api/v1/reports/group/all`,
+        reportsRequestWithMasjed,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+          params: filteredParams,
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.post<TData>(
-      `/api/v1/reports/group/all`,
-      reportsRequestWithMasjed,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-        params: filteredParams,}
-    );
+        `${this.baseUrl}/api/v1/reports/group/all`,
+        reportsRequestWithMasjed,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+          params: filteredParams,
+        },
+      );
     }
 
     return this.http.post<TData>(
-      `/api/v1/reports/group/all`,
-      reportsRequestWithMasjed,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      `${this.baseUrl}/api/v1/reports/group/all`,
+      reportsRequestWithMasjed,
+      {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-        params: filteredParams,}
+        params: filteredParams,
+      },
     );
   }
- reportsStudentCreate<TData = ReportsStudentResponse>(id: number,
-    reportsRequest: ReportsRequest,
-    params?: ReportsStudentCreateParams, options?: HttpClientBodyOptions): Observable<TData>;
- reportsStudentCreate<TData = ReportsStudentResponse>(id: number,
-    reportsRequest: ReportsRequest,
-    params?: ReportsStudentCreateParams, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- reportsStudentCreate<TData = ReportsStudentResponse>(id: number,
-    reportsRequest: ReportsRequest,
-    params?: ReportsStudentCreateParams, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   reportsStudentCreate<TData = ReportsStudentResponse>(
     id: number,
     reportsRequest: ReportsRequest,
-    params?: ReportsStudentCreateParams, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
-    const filteredParams = filterParams({...params, ...options?.params}, new Set<string>([]));
+    params?: ReportsStudentCreateParams,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  reportsStudentCreate<TData = ReportsStudentResponse>(
+    id: number,
+    reportsRequest: ReportsRequest,
+    params?: ReportsStudentCreateParams,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  reportsStudentCreate<TData = ReportsStudentResponse>(
+    id: number,
+    reportsRequest: ReportsRequest,
+    params?: ReportsStudentCreateParams,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  reportsStudentCreate<TData = ReportsStudentResponse>(
+    id: number,
+    reportsRequest: ReportsRequest,
+    params?: ReportsStudentCreateParams,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    const filteredParams = filterParams({ ...params, ...options?.params }, new Set<string>([]));
 
     if (options?.observe === 'events') {
-      return this.http.post<TData>(
-      `/api/v1/reports/student/${id}`,
-      reportsRequest,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.post<TData>(`${this.baseUrl}/api/v1/reports/student/${id}`, reportsRequest, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.post<TData>(
-      `/api/v1/reports/student/${id}`,
-      reportsRequest,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.post<TData>(`${this.baseUrl}/api/v1/reports/student/${id}`, reportsRequest, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
-    return this.http.post<TData>(
-      `/api/v1/reports/student/${id}`,
-      reportsRequest,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-        params: filteredParams,}
-    );
+    return this.http.post<TData>(`${this.baseUrl}/api/v1/reports/student/${id}`, reportsRequest, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+      params: filteredParams,
+    });
   }
- reportsStudentAllCreate<TData = ReportsStudentCategoryOrGroupStudent[]>(reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsStudentAllCreateParams, options?: HttpClientBodyOptions): Observable<TData>;
- reportsStudentAllCreate<TData = ReportsStudentCategoryOrGroupStudent[]>(reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsStudentAllCreateParams, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- reportsStudentAllCreate<TData = ReportsStudentCategoryOrGroupStudent[]>(reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsStudentAllCreateParams, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   reportsStudentAllCreate<TData = ReportsStudentCategoryOrGroupStudent[]>(
     reportsRequestWithMasjed: ReportsRequestWithMasjed,
-    params?: ReportsStudentAllCreateParams, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
-    const filteredParams = filterParams({...params, ...options?.params}, new Set<string>([]));
+    params?: ReportsStudentAllCreateParams,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  reportsStudentAllCreate<TData = ReportsStudentCategoryOrGroupStudent[]>(
+    reportsRequestWithMasjed: ReportsRequestWithMasjed,
+    params?: ReportsStudentAllCreateParams,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  reportsStudentAllCreate<TData = ReportsStudentCategoryOrGroupStudent[]>(
+    reportsRequestWithMasjed: ReportsRequestWithMasjed,
+    params?: ReportsStudentAllCreateParams,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  reportsStudentAllCreate<TData = ReportsStudentCategoryOrGroupStudent[]>(
+    reportsRequestWithMasjed: ReportsRequestWithMasjed,
+    params?: ReportsStudentAllCreateParams,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    const filteredParams = filterParams({ ...params, ...options?.params }, new Set<string>([]));
 
     if (options?.observe === 'events') {
       return this.http.post<TData>(
-      `/api/v1/reports/student/all`,
-      reportsRequestWithMasjed,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-        params: filteredParams,}
-    );
+        `${this.baseUrl}/api/v1/reports/student/all`,
+        reportsRequestWithMasjed,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+          params: filteredParams,
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.post<TData>(
-      `/api/v1/reports/student/all`,
-      reportsRequestWithMasjed,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-        params: filteredParams,}
-    );
+        `${this.baseUrl}/api/v1/reports/student/all`,
+        reportsRequestWithMasjed,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+          params: filteredParams,
+        },
+      );
     }
 
     return this.http.post<TData>(
-      `/api/v1/reports/student/all`,
-      reportsRequestWithMasjed,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      `${this.baseUrl}/api/v1/reports/student/all`,
+      reportsRequestWithMasjed,
+      {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-        params: filteredParams,}
+        params: filteredParams,
+      },
     );
   }
-};
-
+}

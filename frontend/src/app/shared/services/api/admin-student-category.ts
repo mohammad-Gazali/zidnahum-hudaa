@@ -4,43 +4,28 @@
  * Zidnahum Hudaa Project API
  * OpenAPI spec version: 1.0.0
  */
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpResponse as AngularHttpResponse
-} from '@angular/common/http';
-import type {
-  HttpContext,
-  HttpEvent,
-  HttpParams
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse as AngularHttpResponse } from '@angular/common/http';
+import type { HttpContext, HttpEvent, HttpParams } from '@angular/common/http';
 
-import {
-  Injectable,
-  inject
-} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
-import {
-  Observable
-} from 'rxjs';
+import { Observable } from 'rxjs';
+
+import { API_BASE_URL } from './api.base-url';
 
 import type {
   AdminStudentsCategoryListParams,
   IdsAction,
   StudentCategoryCreate,
   StudentCategoryList,
-  StudentCategoryUpdate
+  StudentCategoryUpdate,
 } from './models';
-
-
-
 
 interface HttpClientOptions {
   readonly headers?: HttpHeaders | Record<string, string | string[]>;
   readonly context?: HttpContext;
   readonly params?:
-        | HttpParams
-      | Record<string, string | number | boolean | Array<string | number | boolean>>;
+    HttpParams | Record<string, string | number | boolean | Array<string | number | boolean>>;
   readonly reportProgress?: boolean;
   readonly withCredentials?: boolean;
   readonly credentials?: RequestCredentials;
@@ -52,7 +37,7 @@ interface HttpClientOptions {
   readonly referrer?: string;
   readonly integrity?: string;
   readonly referrerPolicy?: ReferrerPolicy;
-  readonly transferCache?: {includeHeaders?: string[]} | boolean;
+  readonly transferCache?: { includeHeaders?: string[] } | boolean;
   readonly timeout?: number;
 }
 
@@ -111,9 +96,7 @@ function filterParams(
       const filtered = value.filter(
         (item) =>
           item != null &&
-          (typeof item === 'string' ||
-            typeof item === 'number' ||
-            typeof item === 'boolean'),
+          (typeof item === 'string' || typeof item === 'number' || typeof item === 'boolean'),
       ) as Array<string | number | boolean>;
       if (filtered.length) {
         filteredParams[key] = filtered;
@@ -126,9 +109,7 @@ function filterParams(
       filteredParams[key] = preserveRequiredNullables ? null : '';
     } else if (
       value != null &&
-      (typeof value === 'string' ||
-        typeof value === 'number' ||
-        typeof value === 'boolean')
+      (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean')
     ) {
       filteredParams[key] = value;
     }
@@ -136,227 +117,283 @@ function filterParams(
   return filteredParams;
 }
 
-
-
-
-
 @Injectable({ providedIn: 'root' })
 export class AdminStudentCategoryService {
   private readonly http = inject(HttpClient);
- adminActionsStudentCategoryDeleteCreate<TData = void>(idsAction: IdsAction, options?: HttpClientBodyOptions): Observable<TData>;
- adminActionsStudentCategoryDeleteCreate<TData = void>(idsAction: IdsAction, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminActionsStudentCategoryDeleteCreate<TData = void>(idsAction: IdsAction, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  private readonly baseUrl = inject(API_BASE_URL);
   adminActionsStudentCategoryDeleteCreate<TData = void>(
-    idsAction: IdsAction, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    idsAction: IdsAction,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminActionsStudentCategoryDeleteCreate<TData = void>(
+    idsAction: IdsAction,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminActionsStudentCategoryDeleteCreate<TData = void>(
+    idsAction: IdsAction,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminActionsStudentCategoryDeleteCreate<TData = void>(
+    idsAction: IdsAction,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.post<TData>(
-      `/api/v1/admin/actions/student-category/delete`,
-      idsAction,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/actions/student-category/delete`,
+        idsAction,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.post<TData>(
-      `/api/v1/admin/actions/student-category/delete`,
-      idsAction,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/actions/student-category/delete`,
+        idsAction,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.post<TData>(
-      `/api/v1/admin/actions/student-category/delete`,
-      idsAction,{
+      `${this.baseUrl}/api/v1/admin/actions/student-category/delete`,
+      idsAction,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminStudentsCategoryList<TData = StudentCategoryList[]>(params?: AdminStudentsCategoryListParams, options?: HttpClientBodyOptions): Observable<TData>;
- adminStudentsCategoryList<TData = StudentCategoryList[]>(params?: AdminStudentsCategoryListParams, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminStudentsCategoryList<TData = StudentCategoryList[]>(params?: AdminStudentsCategoryListParams, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminStudentsCategoryList<TData = StudentCategoryList[]>(
-    params?: AdminStudentsCategoryListParams, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
-    const filteredParams = filterParams({...params, ...options?.params}, new Set<string>([]));
+    params?: AdminStudentsCategoryListParams,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminStudentsCategoryList<TData = StudentCategoryList[]>(
+    params?: AdminStudentsCategoryListParams,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminStudentsCategoryList<TData = StudentCategoryList[]>(
+    params?: AdminStudentsCategoryListParams,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminStudentsCategoryList<TData = StudentCategoryList[]>(
+    params?: AdminStudentsCategoryListParams,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    const filteredParams = filterParams({ ...params, ...options?.params }, new Set<string>([]));
 
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/admin/students/category/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/students/category/`, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/admin/students/category/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/students/category/`, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/admin/students/category/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-        params: filteredParams,}
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/students/category/`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+      params: filteredParams,
+    });
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminStudentsCategoryCreate<TData = StudentCategoryCreate>(studentCategoryCreate: StudentCategoryCreate, options?: HttpClientBodyOptions): Observable<TData>;
- adminStudentsCategoryCreate<TData = StudentCategoryCreate>(studentCategoryCreate: StudentCategoryCreate, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminStudentsCategoryCreate<TData = StudentCategoryCreate>(studentCategoryCreate: StudentCategoryCreate, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminStudentsCategoryCreate<TData = StudentCategoryCreate>(
-    studentCategoryCreate: StudentCategoryCreate, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    studentCategoryCreate: StudentCategoryCreate,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminStudentsCategoryCreate<TData = StudentCategoryCreate>(
+    studentCategoryCreate: StudentCategoryCreate,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminStudentsCategoryCreate<TData = StudentCategoryCreate>(
+    studentCategoryCreate: StudentCategoryCreate,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminStudentsCategoryCreate<TData = StudentCategoryCreate>(
+    studentCategoryCreate: StudentCategoryCreate,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.post<TData>(
-      `/api/v1/admin/students/category/`,
-      studentCategoryCreate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/students/category/`,
+        studentCategoryCreate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.post<TData>(
-      `/api/v1/admin/students/category/`,
-      studentCategoryCreate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/students/category/`,
+        studentCategoryCreate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.post<TData>(
-      `/api/v1/admin/students/category/`,
-      studentCategoryCreate,{
+      `${this.baseUrl}/api/v1/admin/students/category/`,
+      studentCategoryCreate,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminStudentsCategoryRetrieve<TData = StudentCategoryList>(id: number, options?: HttpClientBodyOptions): Observable<TData>;
- adminStudentsCategoryRetrieve<TData = StudentCategoryList>(id: number, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminStudentsCategoryRetrieve<TData = StudentCategoryList>(id: number, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminStudentsCategoryRetrieve<TData = StudentCategoryList>(
-    id: number, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    id: number,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminStudentsCategoryRetrieve<TData = StudentCategoryList>(
+    id: number,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminStudentsCategoryRetrieve<TData = StudentCategoryList>(
+    id: number,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminStudentsCategoryRetrieve<TData = StudentCategoryList>(
+    id: number,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/admin/students/category/${id}/`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/students/category/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/admin/students/category/${id}/`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/students/category/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/admin/students/category/${id}/`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/students/category/${id}/`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminStudentsCategoryUpdate<TData = StudentCategoryUpdate>(id: number,
-    studentCategoryUpdate: StudentCategoryUpdate, options?: HttpClientBodyOptions): Observable<TData>;
- adminStudentsCategoryUpdate<TData = StudentCategoryUpdate>(id: number,
-    studentCategoryUpdate: StudentCategoryUpdate, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminStudentsCategoryUpdate<TData = StudentCategoryUpdate>(id: number,
-    studentCategoryUpdate: StudentCategoryUpdate, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminStudentsCategoryUpdate<TData = StudentCategoryUpdate>(
     id: number,
-    studentCategoryUpdate: StudentCategoryUpdate, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    studentCategoryUpdate: StudentCategoryUpdate,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminStudentsCategoryUpdate<TData = StudentCategoryUpdate>(
+    id: number,
+    studentCategoryUpdate: StudentCategoryUpdate,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminStudentsCategoryUpdate<TData = StudentCategoryUpdate>(
+    id: number,
+    studentCategoryUpdate: StudentCategoryUpdate,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminStudentsCategoryUpdate<TData = StudentCategoryUpdate>(
+    id: number,
+    studentCategoryUpdate: StudentCategoryUpdate,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.put<TData>(
-      `/api/v1/admin/students/category/${id}/`,
-      studentCategoryUpdate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/students/category/${id}/`,
+        studentCategoryUpdate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.put<TData>(
-      `/api/v1/admin/students/category/${id}/`,
-      studentCategoryUpdate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/students/category/${id}/`,
+        studentCategoryUpdate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.put<TData>(
-      `/api/v1/admin/students/category/${id}/`,
-      studentCategoryUpdate,{
+      `${this.baseUrl}/api/v1/admin/students/category/${id}/`,
+      studentCategoryUpdate,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminStudentsCategoryDestroy<TData = void>(id: number, options?: HttpClientBodyOptions): Observable<TData>;
- adminStudentsCategoryDestroy<TData = void>(id: number, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminStudentsCategoryDestroy<TData = void>(id: number, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminStudentsCategoryDestroy<TData = void>(
-    id: number, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    id: number,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminStudentsCategoryDestroy<TData = void>(
+    id: number,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminStudentsCategoryDestroy<TData = void>(
+    id: number,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminStudentsCategoryDestroy<TData = void>(
+    id: number,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.delete<TData>(
-      `/api/v1/admin/students/category/${id}/`,{
+      return this.http.delete<TData>(`${this.baseUrl}/api/v1/admin/students/category/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.delete<TData>(
-      `/api/v1/admin/students/category/${id}/`,{
+      return this.http.delete<TData>(`${this.baseUrl}/api/v1/admin/students/category/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.delete<TData>(
-      `/api/v1/admin/students/category/${id}/`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.delete<TData>(`${this.baseUrl}/api/v1/admin/students/category/${id}/`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
-};
-
+}

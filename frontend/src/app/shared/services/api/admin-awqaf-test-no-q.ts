@@ -4,25 +4,14 @@
  * Zidnahum Hudaa Project API
  * OpenAPI spec version: 1.0.0
  */
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpResponse as AngularHttpResponse
-} from '@angular/common/http';
-import type {
-  HttpContext,
-  HttpEvent,
-  HttpParams
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse as AngularHttpResponse } from '@angular/common/http';
+import type { HttpContext, HttpEvent, HttpParams } from '@angular/common/http';
 
-import {
-  Injectable,
-  inject
-} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
-import {
-  Observable
-} from 'rxjs';
+import { Observable } from 'rxjs';
+
+import { API_BASE_URL } from './api.base-url';
 
 import type {
   AddAwqafTestNoQRequestSerailizer,
@@ -31,18 +20,14 @@ import type {
   AwqafTestNoQCreate,
   AwqafTestNoQList,
   AwqafTestNoQUpdate,
-  IdsAction
+  IdsAction,
 } from './models';
-
-
-
 
 interface HttpClientOptions {
   readonly headers?: HttpHeaders | Record<string, string | string[]>;
   readonly context?: HttpContext;
   readonly params?:
-        | HttpParams
-      | Record<string, string | number | boolean | Array<string | number | boolean>>;
+    HttpParams | Record<string, string | number | boolean | Array<string | number | boolean>>;
   readonly reportProgress?: boolean;
   readonly withCredentials?: boolean;
   readonly credentials?: RequestCredentials;
@@ -54,7 +39,7 @@ interface HttpClientOptions {
   readonly referrer?: string;
   readonly integrity?: string;
   readonly referrerPolicy?: ReferrerPolicy;
-  readonly transferCache?: {includeHeaders?: string[]} | boolean;
+  readonly transferCache?: { includeHeaders?: string[] } | boolean;
   readonly timeout?: number;
 }
 
@@ -113,9 +98,7 @@ function filterParams(
       const filtered = value.filter(
         (item) =>
           item != null &&
-          (typeof item === 'string' ||
-            typeof item === 'number' ||
-            typeof item === 'boolean'),
+          (typeof item === 'string' || typeof item === 'number' || typeof item === 'boolean'),
       ) as Array<string | number | boolean>;
       if (filtered.length) {
         filteredParams[key] = filtered;
@@ -128,9 +111,7 @@ function filterParams(
       filteredParams[key] = preserveRequiredNullables ? null : '';
     } else if (
       value != null &&
-      (typeof value === 'string' ||
-        typeof value === 'number' ||
-        typeof value === 'boolean')
+      (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean')
     ) {
       filteredParams[key] = value;
     }
@@ -138,293 +119,377 @@ function filterParams(
   return filteredParams;
 }
 
-
-
-
-
 @Injectable({ providedIn: 'root' })
 export class AdminAwqafTestNoQService {
   private readonly http = inject(HttpClient);
- adminActionsAwqafTestNoQDeleteCreate<TData = void>(idsAction: IdsAction, options?: HttpClientBodyOptions): Observable<TData>;
- adminActionsAwqafTestNoQDeleteCreate<TData = void>(idsAction: IdsAction, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminActionsAwqafTestNoQDeleteCreate<TData = void>(idsAction: IdsAction, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  private readonly baseUrl = inject(API_BASE_URL);
   adminActionsAwqafTestNoQDeleteCreate<TData = void>(
-    idsAction: IdsAction, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    idsAction: IdsAction,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminActionsAwqafTestNoQDeleteCreate<TData = void>(
+    idsAction: IdsAction,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminActionsAwqafTestNoQDeleteCreate<TData = void>(
+    idsAction: IdsAction,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminActionsAwqafTestNoQDeleteCreate<TData = void>(
+    idsAction: IdsAction,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.post<TData>(
-      `/api/v1/admin/actions/awqaf-test-no-q/delete`,
-      idsAction,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/actions/awqaf-test-no-q/delete`,
+        idsAction,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.post<TData>(
-      `/api/v1/admin/actions/awqaf-test-no-q/delete`,
-      idsAction,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/actions/awqaf-test-no-q/delete`,
+        idsAction,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.post<TData>(
-      `/api/v1/admin/actions/awqaf-test-no-q/delete`,
-      idsAction,{
+      `${this.baseUrl}/api/v1/admin/actions/awqaf-test-no-q/delete`,
+      idsAction,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminAwqafTestNoQList<TData = AwqafTestNoQList[]>(params?: AdminAwqafTestNoQListParams, options?: HttpClientBodyOptions): Observable<TData>;
- adminAwqafTestNoQList<TData = AwqafTestNoQList[]>(params?: AdminAwqafTestNoQListParams, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminAwqafTestNoQList<TData = AwqafTestNoQList[]>(params?: AdminAwqafTestNoQListParams, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminAwqafTestNoQList<TData = AwqafTestNoQList[]>(
-    params?: AdminAwqafTestNoQListParams, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
-    const filteredParams = filterParams({...params, ...options?.params}, new Set<string>([]));
+    params?: AdminAwqafTestNoQListParams,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminAwqafTestNoQList<TData = AwqafTestNoQList[]>(
+    params?: AdminAwqafTestNoQListParams,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminAwqafTestNoQList<TData = AwqafTestNoQList[]>(
+    params?: AdminAwqafTestNoQListParams,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminAwqafTestNoQList<TData = AwqafTestNoQList[]>(
+    params?: AdminAwqafTestNoQListParams,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    const filteredParams = filterParams({ ...params, ...options?.params }, new Set<string>([]));
 
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/admin/awqaf/test-no-q/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/awqaf/test-no-q/`, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/admin/awqaf/test-no-q/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/awqaf/test-no-q/`, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/admin/awqaf/test-no-q/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-        params: filteredParams,}
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/awqaf/test-no-q/`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+      params: filteredParams,
+    });
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminAwqafTestNoQCreate<TData = AwqafTestNoQCreate>(awqafTestNoQCreate: AwqafTestNoQCreate, options?: HttpClientBodyOptions): Observable<TData>;
- adminAwqafTestNoQCreate<TData = AwqafTestNoQCreate>(awqafTestNoQCreate: AwqafTestNoQCreate, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminAwqafTestNoQCreate<TData = AwqafTestNoQCreate>(awqafTestNoQCreate: AwqafTestNoQCreate, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminAwqafTestNoQCreate<TData = AwqafTestNoQCreate>(
-    awqafTestNoQCreate: AwqafTestNoQCreate, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    awqafTestNoQCreate: AwqafTestNoQCreate,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminAwqafTestNoQCreate<TData = AwqafTestNoQCreate>(
+    awqafTestNoQCreate: AwqafTestNoQCreate,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminAwqafTestNoQCreate<TData = AwqafTestNoQCreate>(
+    awqafTestNoQCreate: AwqafTestNoQCreate,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminAwqafTestNoQCreate<TData = AwqafTestNoQCreate>(
+    awqafTestNoQCreate: AwqafTestNoQCreate,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.post<TData>(
-      `/api/v1/admin/awqaf/test-no-q/`,
-      awqafTestNoQCreate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/awqaf/test-no-q/`,
+        awqafTestNoQCreate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.post<TData>(
-      `/api/v1/admin/awqaf/test-no-q/`,
-      awqafTestNoQCreate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/awqaf/test-no-q/`,
+        awqafTestNoQCreate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.post<TData>(
-      `/api/v1/admin/awqaf/test-no-q/`,
-      awqafTestNoQCreate,{
+      `${this.baseUrl}/api/v1/admin/awqaf/test-no-q/`,
+      awqafTestNoQCreate,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminAwqafTestNoQRetrieve<TData = AwqafTestNoQList>(id: number, options?: HttpClientBodyOptions): Observable<TData>;
- adminAwqafTestNoQRetrieve<TData = AwqafTestNoQList>(id: number, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminAwqafTestNoQRetrieve<TData = AwqafTestNoQList>(id: number, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminAwqafTestNoQRetrieve<TData = AwqafTestNoQList>(
-    id: number, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    id: number,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminAwqafTestNoQRetrieve<TData = AwqafTestNoQList>(
+    id: number,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminAwqafTestNoQRetrieve<TData = AwqafTestNoQList>(
+    id: number,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminAwqafTestNoQRetrieve<TData = AwqafTestNoQList>(
+    id: number,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/admin/awqaf/test-no-q/${id}/`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/awqaf/test-no-q/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/admin/awqaf/test-no-q/${id}/`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/awqaf/test-no-q/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/admin/awqaf/test-no-q/${id}/`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/awqaf/test-no-q/${id}/`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminAwqafTestNoQUpdate<TData = AwqafTestNoQUpdate>(id: number,
-    awqafTestNoQUpdate: AwqafTestNoQUpdate, options?: HttpClientBodyOptions): Observable<TData>;
- adminAwqafTestNoQUpdate<TData = AwqafTestNoQUpdate>(id: number,
-    awqafTestNoQUpdate: AwqafTestNoQUpdate, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminAwqafTestNoQUpdate<TData = AwqafTestNoQUpdate>(id: number,
-    awqafTestNoQUpdate: AwqafTestNoQUpdate, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminAwqafTestNoQUpdate<TData = AwqafTestNoQUpdate>(
     id: number,
-    awqafTestNoQUpdate: AwqafTestNoQUpdate, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    awqafTestNoQUpdate: AwqafTestNoQUpdate,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminAwqafTestNoQUpdate<TData = AwqafTestNoQUpdate>(
+    id: number,
+    awqafTestNoQUpdate: AwqafTestNoQUpdate,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminAwqafTestNoQUpdate<TData = AwqafTestNoQUpdate>(
+    id: number,
+    awqafTestNoQUpdate: AwqafTestNoQUpdate,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminAwqafTestNoQUpdate<TData = AwqafTestNoQUpdate>(
+    id: number,
+    awqafTestNoQUpdate: AwqafTestNoQUpdate,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.put<TData>(
-      `/api/v1/admin/awqaf/test-no-q/${id}/`,
-      awqafTestNoQUpdate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/awqaf/test-no-q/${id}/`,
+        awqafTestNoQUpdate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.put<TData>(
-      `/api/v1/admin/awqaf/test-no-q/${id}/`,
-      awqafTestNoQUpdate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/awqaf/test-no-q/${id}/`,
+        awqafTestNoQUpdate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.put<TData>(
-      `/api/v1/admin/awqaf/test-no-q/${id}/`,
-      awqafTestNoQUpdate,{
+      `${this.baseUrl}/api/v1/admin/awqaf/test-no-q/${id}/`,
+      awqafTestNoQUpdate,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminAwqafTestNoQDestroy<TData = void>(id: number, options?: HttpClientBodyOptions): Observable<TData>;
- adminAwqafTestNoQDestroy<TData = void>(id: number, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminAwqafTestNoQDestroy<TData = void>(id: number, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminAwqafTestNoQDestroy<TData = void>(
-    id: number, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    id: number,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminAwqafTestNoQDestroy<TData = void>(
+    id: number,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminAwqafTestNoQDestroy<TData = void>(
+    id: number,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminAwqafTestNoQDestroy<TData = void>(
+    id: number,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.delete<TData>(
-      `/api/v1/admin/awqaf/test-no-q/${id}/`,{
+      return this.http.delete<TData>(`${this.baseUrl}/api/v1/admin/awqaf/test-no-q/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.delete<TData>(
-      `/api/v1/admin/awqaf/test-no-q/${id}/`,{
+      return this.http.delete<TData>(`${this.baseUrl}/api/v1/admin/awqaf/test-no-q/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.delete<TData>(
-      `/api/v1/admin/awqaf/test-no-q/${id}/`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.delete<TData>(`${this.baseUrl}/api/v1/admin/awqaf/test-no-q/${id}/`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
- adminExtraAddAwqafNoQTestCreate<TData = AddAwqafTestNoQRequestSerailizer>(addAwqafTestNoQRequestSerailizer: AddAwqafTestNoQRequestSerailizer, options?: HttpClientBodyOptions): Observable<TData>;
- adminExtraAddAwqafNoQTestCreate<TData = AddAwqafTestNoQRequestSerailizer>(addAwqafTestNoQRequestSerailizer: AddAwqafTestNoQRequestSerailizer, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminExtraAddAwqafNoQTestCreate<TData = AddAwqafTestNoQRequestSerailizer>(addAwqafTestNoQRequestSerailizer: AddAwqafTestNoQRequestSerailizer, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   adminExtraAddAwqafNoQTestCreate<TData = AddAwqafTestNoQRequestSerailizer>(
-    addAwqafTestNoQRequestSerailizer: AddAwqafTestNoQRequestSerailizer, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    addAwqafTestNoQRequestSerailizer: AddAwqafTestNoQRequestSerailizer,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminExtraAddAwqafNoQTestCreate<TData = AddAwqafTestNoQRequestSerailizer>(
+    addAwqafTestNoQRequestSerailizer: AddAwqafTestNoQRequestSerailizer,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminExtraAddAwqafNoQTestCreate<TData = AddAwqafTestNoQRequestSerailizer>(
+    addAwqafTestNoQRequestSerailizer: AddAwqafTestNoQRequestSerailizer,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminExtraAddAwqafNoQTestCreate<TData = AddAwqafTestNoQRequestSerailizer>(
+    addAwqafTestNoQRequestSerailizer: AddAwqafTestNoQRequestSerailizer,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.post<TData>(
-      `/api/v1/admin/extra/add-awqaf-no-q-test`,
-      addAwqafTestNoQRequestSerailizer,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/extra/add-awqaf-no-q-test`,
+        addAwqafTestNoQRequestSerailizer,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.post<TData>(
-      `/api/v1/admin/extra/add-awqaf-no-q-test`,
-      addAwqafTestNoQRequestSerailizer,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/extra/add-awqaf-no-q-test`,
+        addAwqafTestNoQRequestSerailizer,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.post<TData>(
-      `/api/v1/admin/extra/add-awqaf-no-q-test`,
-      addAwqafTestNoQRequestSerailizer,{
+      `${this.baseUrl}/api/v1/admin/extra/add-awqaf-no-q-test`,
+      addAwqafTestNoQRequestSerailizer,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
- adminExtraAddAwqafQTestCreate<TData = AddAwqafTestQRequest>(addAwqafTestQRequest: AddAwqafTestQRequest, options?: HttpClientBodyOptions): Observable<TData>;
- adminExtraAddAwqafQTestCreate<TData = AddAwqafTestQRequest>(addAwqafTestQRequest: AddAwqafTestQRequest, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminExtraAddAwqafQTestCreate<TData = AddAwqafTestQRequest>(addAwqafTestQRequest: AddAwqafTestQRequest, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   adminExtraAddAwqafQTestCreate<TData = AddAwqafTestQRequest>(
-    addAwqafTestQRequest: AddAwqafTestQRequest, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    addAwqafTestQRequest: AddAwqafTestQRequest,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminExtraAddAwqafQTestCreate<TData = AddAwqafTestQRequest>(
+    addAwqafTestQRequest: AddAwqafTestQRequest,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminExtraAddAwqafQTestCreate<TData = AddAwqafTestQRequest>(
+    addAwqafTestQRequest: AddAwqafTestQRequest,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminExtraAddAwqafQTestCreate<TData = AddAwqafTestQRequest>(
+    addAwqafTestQRequest: AddAwqafTestQRequest,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.post<TData>(
-      `/api/v1/admin/extra/add-awqaf-q-test`,
-      addAwqafTestQRequest,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/extra/add-awqaf-q-test`,
+        addAwqafTestQRequest,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.post<TData>(
-      `/api/v1/admin/extra/add-awqaf-q-test`,
-      addAwqafTestQRequest,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/extra/add-awqaf-q-test`,
+        addAwqafTestQRequest,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.post<TData>(
-      `/api/v1/admin/extra/add-awqaf-q-test`,
-      addAwqafTestQRequest,{
+      `${this.baseUrl}/api/v1/admin/extra/add-awqaf-q-test`,
+      addAwqafTestQRequest,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
-};
-
+}

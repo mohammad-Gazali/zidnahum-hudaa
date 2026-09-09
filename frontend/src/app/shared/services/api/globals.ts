@@ -4,40 +4,22 @@
  * Zidnahum Hudaa Project API
  * OpenAPI spec version: 1.0.0
  */
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpResponse as AngularHttpResponse
-} from '@angular/common/http';
-import type {
-  HttpContext,
-  HttpEvent,
-  HttpParams
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse as AngularHttpResponse } from '@angular/common/http';
+import type { HttpContext, HttpEvent, HttpParams } from '@angular/common/http';
 
-import {
-  Injectable,
-  inject
-} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
-import {
-  Observable
-} from 'rxjs';
+import { Observable } from 'rxjs';
 
-import type {
-  AssetCategory,
-  News
-} from './models';
+import { API_BASE_URL } from './api.base-url';
 
-
-
+import type { AssetCategory, News } from './models';
 
 interface HttpClientOptions {
   readonly headers?: HttpHeaders | Record<string, string | string[]>;
   readonly context?: HttpContext;
   readonly params?:
-        | HttpParams
-      | Record<string, string | number | boolean | Array<string | number | boolean>>;
+    HttpParams | Record<string, string | number | boolean | Array<string | number | boolean>>;
   readonly reportProgress?: boolean;
   readonly withCredentials?: boolean;
   readonly credentials?: RequestCredentials;
@@ -49,7 +31,7 @@ interface HttpClientOptions {
   readonly referrer?: string;
   readonly integrity?: string;
   readonly referrerPolicy?: ReferrerPolicy;
-  readonly transferCache?: {includeHeaders?: string[]} | boolean;
+  readonly transferCache?: { includeHeaders?: string[] } | boolean;
   readonly timeout?: number;
 }
 
@@ -69,74 +51,64 @@ type HttpClientObserveOptions = HttpClientOptions & {
   readonly observe?: 'body' | 'events' | 'response';
 };
 
-
-
-
-
-
-
 @Injectable({ providedIn: 'root' })
 export class GlobalsService {
   private readonly http = inject(HttpClient);
- globalsAssetList<TData = AssetCategory[]>( options?: HttpClientBodyOptions): Observable<TData>;
- globalsAssetList<TData = AssetCategory[]>( options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- globalsAssetList<TData = AssetCategory[]>( options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  private readonly baseUrl = inject(API_BASE_URL);
+  globalsAssetList<TData = AssetCategory[]>(options?: HttpClientBodyOptions): Observable<TData>;
   globalsAssetList<TData = AssetCategory[]>(
-     options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  globalsAssetList<TData = AssetCategory[]>(
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  globalsAssetList<TData = AssetCategory[]>(
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/globals/asset`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/globals/asset`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/globals/asset`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/globals/asset`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/globals/asset`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/globals/asset`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
- globalsNewsList<TData = News[]>( options?: HttpClientBodyOptions): Observable<TData>;
- globalsNewsList<TData = News[]>( options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- globalsNewsList<TData = News[]>( options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  globalsNewsList<TData = News[]>(options?: HttpClientBodyOptions): Observable<TData>;
+  globalsNewsList<TData = News[]>(options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
   globalsNewsList<TData = News[]>(
-     options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  globalsNewsList<TData = News[]>(
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/globals/news`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/globals/news`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/globals/news`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/globals/news`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/globals/news`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/globals/news`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
-};
-
+}

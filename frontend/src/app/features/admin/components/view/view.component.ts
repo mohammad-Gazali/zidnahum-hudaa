@@ -46,8 +46,6 @@ import {
 import { ChangesFieldComponent } from '../changes-field/changes-field.component';
 import { LOADING } from '@shared';
 import { AuthService } from '@shared';
-// TODO: handle it
-import { environment } from '../../../../../environments/environment.development';
 
 @Component({
   selector: 'app-view',

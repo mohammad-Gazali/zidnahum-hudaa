@@ -4,43 +4,28 @@
  * Zidnahum Hudaa Project API
  * OpenAPI spec version: 1.0.0
  */
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpResponse as AngularHttpResponse
-} from '@angular/common/http';
-import type {
-  HttpContext,
-  HttpEvent,
-  HttpParams
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse as AngularHttpResponse } from '@angular/common/http';
+import type { HttpContext, HttpEvent, HttpParams } from '@angular/common/http';
 
-import {
-  Injectable,
-  inject
-} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
-import {
-  Observable
-} from 'rxjs';
+import { Observable } from 'rxjs';
+
+import { API_BASE_URL } from './api.base-url';
 
 import type {
   AdminPointsDeletingCauseListParams,
   IdsAction,
   PointsDeletingCauseCreate,
   PointsDeletingCauseList,
-  PointsDeletingCauseUpdate
+  PointsDeletingCauseUpdate,
 } from './models';
-
-
-
 
 interface HttpClientOptions {
   readonly headers?: HttpHeaders | Record<string, string | string[]>;
   readonly context?: HttpContext;
   readonly params?:
-        | HttpParams
-      | Record<string, string | number | boolean | Array<string | number | boolean>>;
+    HttpParams | Record<string, string | number | boolean | Array<string | number | boolean>>;
   readonly reportProgress?: boolean;
   readonly withCredentials?: boolean;
   readonly credentials?: RequestCredentials;
@@ -52,7 +37,7 @@ interface HttpClientOptions {
   readonly referrer?: string;
   readonly integrity?: string;
   readonly referrerPolicy?: ReferrerPolicy;
-  readonly transferCache?: {includeHeaders?: string[]} | boolean;
+  readonly transferCache?: { includeHeaders?: string[] } | boolean;
   readonly timeout?: number;
 }
 
@@ -111,9 +96,7 @@ function filterParams(
       const filtered = value.filter(
         (item) =>
           item != null &&
-          (typeof item === 'string' ||
-            typeof item === 'number' ||
-            typeof item === 'boolean'),
+          (typeof item === 'string' || typeof item === 'number' || typeof item === 'boolean'),
       ) as Array<string | number | boolean>;
       if (filtered.length) {
         filteredParams[key] = filtered;
@@ -126,9 +109,7 @@ function filterParams(
       filteredParams[key] = preserveRequiredNullables ? null : '';
     } else if (
       value != null &&
-      (typeof value === 'string' ||
-        typeof value === 'number' ||
-        typeof value === 'boolean')
+      (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean')
     ) {
       filteredParams[key] = value;
     }
@@ -136,227 +117,283 @@ function filterParams(
   return filteredParams;
 }
 
-
-
-
-
 @Injectable({ providedIn: 'root' })
 export class AdminPointsDeletingCauseService {
   private readonly http = inject(HttpClient);
- adminActionsPointsDeletingCauseDeleteCreate<TData = void>(idsAction: IdsAction, options?: HttpClientBodyOptions): Observable<TData>;
- adminActionsPointsDeletingCauseDeleteCreate<TData = void>(idsAction: IdsAction, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminActionsPointsDeletingCauseDeleteCreate<TData = void>(idsAction: IdsAction, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  private readonly baseUrl = inject(API_BASE_URL);
   adminActionsPointsDeletingCauseDeleteCreate<TData = void>(
-    idsAction: IdsAction, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    idsAction: IdsAction,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminActionsPointsDeletingCauseDeleteCreate<TData = void>(
+    idsAction: IdsAction,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminActionsPointsDeletingCauseDeleteCreate<TData = void>(
+    idsAction: IdsAction,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminActionsPointsDeletingCauseDeleteCreate<TData = void>(
+    idsAction: IdsAction,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.post<TData>(
-      `/api/v1/admin/actions/points-deleting-cause/delete`,
-      idsAction,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/actions/points-deleting-cause/delete`,
+        idsAction,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.post<TData>(
-      `/api/v1/admin/actions/points-deleting-cause/delete`,
-      idsAction,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/actions/points-deleting-cause/delete`,
+        idsAction,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.post<TData>(
-      `/api/v1/admin/actions/points-deleting-cause/delete`,
-      idsAction,{
+      `${this.baseUrl}/api/v1/admin/actions/points-deleting-cause/delete`,
+      idsAction,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminPointsDeletingCauseList<TData = PointsDeletingCauseList[]>(params?: AdminPointsDeletingCauseListParams, options?: HttpClientBodyOptions): Observable<TData>;
- adminPointsDeletingCauseList<TData = PointsDeletingCauseList[]>(params?: AdminPointsDeletingCauseListParams, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminPointsDeletingCauseList<TData = PointsDeletingCauseList[]>(params?: AdminPointsDeletingCauseListParams, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminPointsDeletingCauseList<TData = PointsDeletingCauseList[]>(
-    params?: AdminPointsDeletingCauseListParams, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
-    const filteredParams = filterParams({...params, ...options?.params}, new Set<string>([]));
+    params?: AdminPointsDeletingCauseListParams,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminPointsDeletingCauseList<TData = PointsDeletingCauseList[]>(
+    params?: AdminPointsDeletingCauseListParams,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminPointsDeletingCauseList<TData = PointsDeletingCauseList[]>(
+    params?: AdminPointsDeletingCauseListParams,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminPointsDeletingCauseList<TData = PointsDeletingCauseList[]>(
+    params?: AdminPointsDeletingCauseListParams,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    const filteredParams = filterParams({ ...params, ...options?.params }, new Set<string>([]));
 
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/admin/points/deleting-cause/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/points/deleting-cause/`, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/admin/points/deleting-cause/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/points/deleting-cause/`, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/admin/points/deleting-cause/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-        params: filteredParams,}
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/points/deleting-cause/`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+      params: filteredParams,
+    });
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminPointsDeletingCauseCreate<TData = PointsDeletingCauseCreate>(pointsDeletingCauseCreate: PointsDeletingCauseCreate, options?: HttpClientBodyOptions): Observable<TData>;
- adminPointsDeletingCauseCreate<TData = PointsDeletingCauseCreate>(pointsDeletingCauseCreate: PointsDeletingCauseCreate, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminPointsDeletingCauseCreate<TData = PointsDeletingCauseCreate>(pointsDeletingCauseCreate: PointsDeletingCauseCreate, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminPointsDeletingCauseCreate<TData = PointsDeletingCauseCreate>(
-    pointsDeletingCauseCreate: PointsDeletingCauseCreate, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    pointsDeletingCauseCreate: PointsDeletingCauseCreate,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminPointsDeletingCauseCreate<TData = PointsDeletingCauseCreate>(
+    pointsDeletingCauseCreate: PointsDeletingCauseCreate,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminPointsDeletingCauseCreate<TData = PointsDeletingCauseCreate>(
+    pointsDeletingCauseCreate: PointsDeletingCauseCreate,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminPointsDeletingCauseCreate<TData = PointsDeletingCauseCreate>(
+    pointsDeletingCauseCreate: PointsDeletingCauseCreate,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.post<TData>(
-      `/api/v1/admin/points/deleting-cause/`,
-      pointsDeletingCauseCreate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/points/deleting-cause/`,
+        pointsDeletingCauseCreate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.post<TData>(
-      `/api/v1/admin/points/deleting-cause/`,
-      pointsDeletingCauseCreate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/points/deleting-cause/`,
+        pointsDeletingCauseCreate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.post<TData>(
-      `/api/v1/admin/points/deleting-cause/`,
-      pointsDeletingCauseCreate,{
+      `${this.baseUrl}/api/v1/admin/points/deleting-cause/`,
+      pointsDeletingCauseCreate,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminPointsDeletingCauseRetrieve<TData = PointsDeletingCauseList>(id: number, options?: HttpClientBodyOptions): Observable<TData>;
- adminPointsDeletingCauseRetrieve<TData = PointsDeletingCauseList>(id: number, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminPointsDeletingCauseRetrieve<TData = PointsDeletingCauseList>(id: number, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminPointsDeletingCauseRetrieve<TData = PointsDeletingCauseList>(
-    id: number, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    id: number,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminPointsDeletingCauseRetrieve<TData = PointsDeletingCauseList>(
+    id: number,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminPointsDeletingCauseRetrieve<TData = PointsDeletingCauseList>(
+    id: number,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminPointsDeletingCauseRetrieve<TData = PointsDeletingCauseList>(
+    id: number,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/admin/points/deleting-cause/${id}/`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/points/deleting-cause/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/admin/points/deleting-cause/${id}/`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/points/deleting-cause/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/admin/points/deleting-cause/${id}/`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/points/deleting-cause/${id}/`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminPointsDeletingCauseUpdate<TData = PointsDeletingCauseUpdate>(id: number,
-    pointsDeletingCauseUpdate: PointsDeletingCauseUpdate, options?: HttpClientBodyOptions): Observable<TData>;
- adminPointsDeletingCauseUpdate<TData = PointsDeletingCauseUpdate>(id: number,
-    pointsDeletingCauseUpdate: PointsDeletingCauseUpdate, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminPointsDeletingCauseUpdate<TData = PointsDeletingCauseUpdate>(id: number,
-    pointsDeletingCauseUpdate: PointsDeletingCauseUpdate, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminPointsDeletingCauseUpdate<TData = PointsDeletingCauseUpdate>(
     id: number,
-    pointsDeletingCauseUpdate: PointsDeletingCauseUpdate, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    pointsDeletingCauseUpdate: PointsDeletingCauseUpdate,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminPointsDeletingCauseUpdate<TData = PointsDeletingCauseUpdate>(
+    id: number,
+    pointsDeletingCauseUpdate: PointsDeletingCauseUpdate,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminPointsDeletingCauseUpdate<TData = PointsDeletingCauseUpdate>(
+    id: number,
+    pointsDeletingCauseUpdate: PointsDeletingCauseUpdate,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminPointsDeletingCauseUpdate<TData = PointsDeletingCauseUpdate>(
+    id: number,
+    pointsDeletingCauseUpdate: PointsDeletingCauseUpdate,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.put<TData>(
-      `/api/v1/admin/points/deleting-cause/${id}/`,
-      pointsDeletingCauseUpdate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/points/deleting-cause/${id}/`,
+        pointsDeletingCauseUpdate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.put<TData>(
-      `/api/v1/admin/points/deleting-cause/${id}/`,
-      pointsDeletingCauseUpdate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/points/deleting-cause/${id}/`,
+        pointsDeletingCauseUpdate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.put<TData>(
-      `/api/v1/admin/points/deleting-cause/${id}/`,
-      pointsDeletingCauseUpdate,{
+      `${this.baseUrl}/api/v1/admin/points/deleting-cause/${id}/`,
+      pointsDeletingCauseUpdate,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminPointsDeletingCauseDestroy<TData = void>(id: number, options?: HttpClientBodyOptions): Observable<TData>;
- adminPointsDeletingCauseDestroy<TData = void>(id: number, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminPointsDeletingCauseDestroy<TData = void>(id: number, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminPointsDeletingCauseDestroy<TData = void>(
-    id: number, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    id: number,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminPointsDeletingCauseDestroy<TData = void>(
+    id: number,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminPointsDeletingCauseDestroy<TData = void>(
+    id: number,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminPointsDeletingCauseDestroy<TData = void>(
+    id: number,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.delete<TData>(
-      `/api/v1/admin/points/deleting-cause/${id}/`,{
+      return this.http.delete<TData>(`${this.baseUrl}/api/v1/admin/points/deleting-cause/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.delete<TData>(
-      `/api/v1/admin/points/deleting-cause/${id}/`,{
+      return this.http.delete<TData>(`${this.baseUrl}/api/v1/admin/points/deleting-cause/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.delete<TData>(
-      `/api/v1/admin/points/deleting-cause/${id}/`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.delete<TData>(`${this.baseUrl}/api/v1/admin/points/deleting-cause/${id}/`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
-};
-
+}

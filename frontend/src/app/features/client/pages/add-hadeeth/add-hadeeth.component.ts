@@ -18,7 +18,7 @@ import { ActivatedRoute } from '@angular/router';
 import {
   EXTRA_HADEETH_LABEL,
   EXTRA_HADEETH_LIMIT,
-  LayoutService,
+  LOADING,
   SnackbarService,
   StudentList,
   StudentsService,
@@ -64,7 +64,7 @@ export class AddHadeethComponent {
   private route = inject(ActivatedRoute);
   private studentsService = inject(StudentsService);
   private destroyRef = inject(DestroyRef);
-  private loading = inject(LayoutService).loading;
+  private loading = inject(LOADING);
   private snackbar = inject(SnackbarService);
   private mobileUtils = inject(MobileUtilsService);
 

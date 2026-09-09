@@ -4,42 +4,27 @@
  * Zidnahum Hudaa Project API
  * OpenAPI spec version: 1.0.0
  */
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpResponse as AngularHttpResponse
-} from '@angular/common/http';
-import type {
-  HttpContext,
-  HttpEvent,
-  HttpParams
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse as AngularHttpResponse } from '@angular/common/http';
+import type { HttpContext, HttpEvent, HttpParams } from '@angular/common/http';
 
-import {
-  Injectable,
-  inject
-} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
-import {
-  Observable
-} from 'rxjs';
+import { Observable } from 'rxjs';
+
+import { API_BASE_URL } from './api.base-url';
 
 import type {
   PaginatedPointsAddingListList,
   PointsAddingCause,
   PointsAddingCreate,
-  PointsAddingListParams
+  PointsAddingListParams,
 } from './models';
-
-
-
 
 interface HttpClientOptions {
   readonly headers?: HttpHeaders | Record<string, string | string[]>;
   readonly context?: HttpContext;
   readonly params?:
-        | HttpParams
-      | Record<string, string | number | boolean | Array<string | number | boolean>>;
+    HttpParams | Record<string, string | number | boolean | Array<string | number | boolean>>;
   readonly reportProgress?: boolean;
   readonly withCredentials?: boolean;
   readonly credentials?: RequestCredentials;
@@ -51,7 +36,7 @@ interface HttpClientOptions {
   readonly referrer?: string;
   readonly integrity?: string;
   readonly referrerPolicy?: ReferrerPolicy;
-  readonly transferCache?: {includeHeaders?: string[]} | boolean;
+  readonly transferCache?: { includeHeaders?: string[] } | boolean;
   readonly timeout?: number;
 }
 
@@ -110,9 +95,7 @@ function filterParams(
       const filtered = value.filter(
         (item) =>
           item != null &&
-          (typeof item === 'string' ||
-            typeof item === 'number' ||
-            typeof item === 'boolean'),
+          (typeof item === 'string' || typeof item === 'number' || typeof item === 'boolean'),
       ) as Array<string | number | boolean>;
       if (filtered.length) {
         filteredParams[key] = filtered;
@@ -125,9 +108,7 @@ function filterParams(
       filteredParams[key] = preserveRequiredNullables ? null : '';
     } else if (
       value != null &&
-      (typeof value === 'string' ||
-        typeof value === 'number' ||
-        typeof value === 'boolean')
+      (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean')
     ) {
       filteredParams[key] = value;
     }
@@ -135,137 +116,146 @@ function filterParams(
   return filteredParams;
 }
 
-
-
-
-
 @Injectable({ providedIn: 'root' })
 export class PointsService {
   private readonly http = inject(HttpClient);
- pointsAddingList<TData = PaginatedPointsAddingListList>(params?: PointsAddingListParams, options?: HttpClientBodyOptions): Observable<TData>;
- pointsAddingList<TData = PaginatedPointsAddingListList>(params?: PointsAddingListParams, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- pointsAddingList<TData = PaginatedPointsAddingListList>(params?: PointsAddingListParams, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  private readonly baseUrl = inject(API_BASE_URL);
   pointsAddingList<TData = PaginatedPointsAddingListList>(
-    params?: PointsAddingListParams, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
-    const filteredParams = filterParams({...params, ...options?.params}, new Set<string>([]));
+    params?: PointsAddingListParams,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  pointsAddingList<TData = PaginatedPointsAddingListList>(
+    params?: PointsAddingListParams,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  pointsAddingList<TData = PaginatedPointsAddingListList>(
+    params?: PointsAddingListParams,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  pointsAddingList<TData = PaginatedPointsAddingListList>(
+    params?: PointsAddingListParams,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    const filteredParams = filterParams({ ...params, ...options?.params }, new Set<string>([]));
 
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/points/adding`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/points/adding`, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/points/adding`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/points/adding`, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/points/adding`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-        params: filteredParams,}
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/points/adding`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+      params: filteredParams,
+    });
   }
- pointsAddingCreate<TData = PointsAddingCreate>(pointsAddingCreateBody: PointsAddingCreate, options?: HttpClientBodyOptions): Observable<TData>;
- pointsAddingCreate<TData = PointsAddingCreate>(pointsAddingCreateBody: PointsAddingCreate, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- pointsAddingCreate<TData = PointsAddingCreate>(pointsAddingCreateBody: PointsAddingCreate, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   pointsAddingCreate<TData = PointsAddingCreate>(
-    pointsAddingCreateBody: PointsAddingCreate, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    pointsAddingCreateBody: PointsAddingCreate,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  pointsAddingCreate<TData = PointsAddingCreate>(
+    pointsAddingCreateBody: PointsAddingCreate,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  pointsAddingCreate<TData = PointsAddingCreate>(
+    pointsAddingCreateBody: PointsAddingCreate,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  pointsAddingCreate<TData = PointsAddingCreate>(
+    pointsAddingCreateBody: PointsAddingCreate,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.post<TData>(
-      `/api/v1/points/adding`,
-      pointsAddingCreateBody,{
+      return this.http.post<TData>(`${this.baseUrl}/api/v1/points/adding`, pointsAddingCreateBody, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.post<TData>(
-      `/api/v1/points/adding`,
-      pointsAddingCreateBody,{
+      return this.http.post<TData>(`${this.baseUrl}/api/v1/points/adding`, pointsAddingCreateBody, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.post<TData>(
-      `/api/v1/points/adding`,
-      pointsAddingCreateBody,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.post<TData>(`${this.baseUrl}/api/v1/points/adding`, pointsAddingCreateBody, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
- pointsAddingDestroy<TData = void>(id: number, options?: HttpClientBodyOptions): Observable<TData>;
- pointsAddingDestroy<TData = void>(id: number, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- pointsAddingDestroy<TData = void>(id: number, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  pointsAddingDestroy<TData = void>(id: number, options?: HttpClientBodyOptions): Observable<TData>;
   pointsAddingDestroy<TData = void>(
-    id: number, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    id: number,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  pointsAddingDestroy<TData = void>(
+    id: number,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  pointsAddingDestroy<TData = void>(
+    id: number,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.delete<TData>(
-      `/api/v1/points/adding/${id}`,{
+      return this.http.delete<TData>(`${this.baseUrl}/api/v1/points/adding/${id}`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.delete<TData>(
-      `/api/v1/points/adding/${id}`,{
+      return this.http.delete<TData>(`${this.baseUrl}/api/v1/points/adding/${id}`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.delete<TData>(
-      `/api/v1/points/adding/${id}`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.delete<TData>(`${this.baseUrl}/api/v1/points/adding/${id}`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
- pointsAddingCauseList<TData = PointsAddingCause[]>( options?: HttpClientBodyOptions): Observable<TData>;
- pointsAddingCauseList<TData = PointsAddingCause[]>( options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- pointsAddingCauseList<TData = PointsAddingCause[]>( options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   pointsAddingCauseList<TData = PointsAddingCause[]>(
-     options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  pointsAddingCauseList<TData = PointsAddingCause[]>(
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  pointsAddingCauseList<TData = PointsAddingCause[]>(
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  pointsAddingCauseList<TData = PointsAddingCause[]>(
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/points/adding/cause`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/points/adding/cause`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/points/adding/cause`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/points/adding/cause`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/points/adding/cause`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/points/adding/cause`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
-};
-
+}

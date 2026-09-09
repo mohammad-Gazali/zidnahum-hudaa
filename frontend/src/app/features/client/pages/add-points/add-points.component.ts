@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
-  LayoutService,
+  LOADING,
   MasjedPipe,
   MasjedService,
   PointsAddingCause,
@@ -59,7 +59,7 @@ export class AddPointsComponent {
   private points = inject(PointsService);
   private snackbar = inject(SnackbarService);
   private mobileUtils = inject(MobileUtilsService);
-  private loading = inject(LayoutService).loading;
+  private loading = inject(LOADING);
 
   protected studentsResponse = signal<StudentList[]>([]);
   protected selectedStudents = signal<StudentList[]>([]);

@@ -22,7 +22,7 @@ import {
 } from '@angular/material/sidenav';
 import { MatToolbar } from '@angular/material/toolbar';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { AuthService, CurrentUser, LayoutService } from '@shared';
+import { AuthService, CurrentUser, LayoutService, LOADING } from '@shared';
 import { ClientRoutesService, ClientRoute } from '@client/services';
 import { HomeStudentListService } from '../pages/home/home-student-list.service';
 
@@ -61,6 +61,7 @@ export class LayoutComponent {
   protected clientRoutes = inject(ClientRoutesService);
   protected router = inject(Router);
   protected layout = inject(LayoutService);
+  protected loading = inject(LOADING);
 
   protected currentUser = this.auth.currentUser;
 

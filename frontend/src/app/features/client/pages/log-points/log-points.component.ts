@@ -2,7 +2,7 @@ import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import {
   ConfirmationService,
-  LayoutService,
+  LOADING,
   MasjedPipe,
   PointsAddingList,
   PointsService,
@@ -46,7 +46,7 @@ export class LogPointsComponent {
   private confirmation = inject(ConfirmationService);
   private destroyRef = inject(DestroyRef);
   private snackbar = inject(SnackbarService);
-  protected loading = inject(LayoutService).loading;
+  protected loading = inject(LOADING);
 
   private page$ = new BehaviorSubject(1);
   private refresh$ = new BehaviorSubject(null);

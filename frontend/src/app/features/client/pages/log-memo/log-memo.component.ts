@@ -1,7 +1,7 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import {
   ConfirmationService,
-  LayoutService,
+  LOADING,
   MasjedPipe,
   MemoPipe,
   MemorizeMessage,
@@ -53,7 +53,7 @@ export class LogMemoComponent {
   private confirmation = inject(ConfirmationService);
   private destroyRef = inject(DestroyRef);
   private snackbar = inject(SnackbarService);
-  public loading = inject(LayoutService).loading;
+  public loading = inject(LOADING);
 
   private page$ = new BehaviorSubject(1);
   private refresh$ = new BehaviorSubject(null);

@@ -18,7 +18,7 @@ import { finalize } from 'rxjs';
 import {
   ReportsService,
   MasjedService,
-  LayoutService,
+  LOADING,
   MasjedPipe,
   ReportsStudentCategoryOrGroupStudent,
   ReportsStudentCategoryOrGroupResponse,
@@ -60,7 +60,7 @@ export class ReportsComponent {
   private reports = inject(ReportsService);
   private destroyRef = inject(DestroyRef);
   public masjed = inject(MasjedService);
-  public loading = inject(LayoutService).loading;
+  public loading = inject(LOADING);
 
   public masjeds = this.masjed.masjedOptions;
 

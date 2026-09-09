@@ -12,7 +12,7 @@ import { MatDivider } from '@angular/material/divider';
 import {
   AuthService,
   Group,
-  LayoutService,
+  LOADING,
   MasjedPipe,
   StudentsService,
 } from '@shared';
@@ -45,7 +45,7 @@ export class HomeComponent {
   private auth = inject(AuthService);
   private dialog = inject(MatDialog);
   private mobileUtils = inject(MobileUtilsService);
-  protected loading = inject(LayoutService).loading;
+  protected loading = inject(LOADING);
   protected currentUser = inject(AuthService).currentUser;
 
   protected response = this.list.lastResponse;

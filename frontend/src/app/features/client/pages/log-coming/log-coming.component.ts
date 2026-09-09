@@ -5,7 +5,7 @@ import {
   ComingsListParams,
   ComingsService,
   ConfirmationService,
-  LayoutService,
+  LOADING,
   MasjedPipe,
   MasjedService,
   SnackbarService,
@@ -97,7 +97,7 @@ export class LogComingComponent {
   private snackbar = inject(SnackbarService);
   private fb = inject(NonNullableFormBuilder);
   private masjed = inject(MasjedService);
-  protected loading = inject(LayoutService).loading;
+  protected loading = inject(LOADING);
 
   protected masjedOptions = this.masjed.masjedOptions;
   protected searchForm = this.fb.group({

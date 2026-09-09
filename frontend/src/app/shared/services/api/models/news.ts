@@ -4,7 +4,7 @@
  * Zidnahum Hudaa Project API
  * OpenAPI spec version: 1.0.0
  */
-import type { MasjedEnum } from './masjedEnum';
+import type { MasjedEnum } from './masjed-enum';
 
 export interface News {
   readonly id: number;

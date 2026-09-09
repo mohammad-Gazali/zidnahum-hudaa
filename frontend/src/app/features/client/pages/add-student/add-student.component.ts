@@ -1,6 +1,6 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import {
-  LayoutService,
+  LOADING,
   MasjedPipe,
   MasjedService,
   SnackbarService,
@@ -71,7 +71,7 @@ export class AddStudentComponent {
   private destroyRef = inject(DestroyRef);
   private snackbar = inject(SnackbarService);
   private masjed = inject(MasjedService);
-  private loading = inject(LayoutService).loading;
+  private loading = inject(LOADING);
   private mobileUtils = inject(MobileUtilsService);
 
   protected masjedOptions = this.masjed.masjedOptions;

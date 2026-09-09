@@ -7,10 +7,15 @@ export default defineConfig({
     },
     output: {
       client: 'angular',
-      target: 'src/app/shared/services/api',
+      target: 'src/app/shared/services/api/api.ts',
       mode: 'tags',
-      schemas: {
-        path: 'src/app/shared/services/api/models',
+      formatter: 'prettier',
+      namingConvention: 'kebab-case',
+      schemas: 'src/app/shared/services/api/models',
+      override: {
+        angular: {
+          baseUrl: { apiId: 'api' },
+        },
       },
       indexFiles: true,
       clean: true,

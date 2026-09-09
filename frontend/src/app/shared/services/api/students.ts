@@ -4,25 +4,14 @@
  * Zidnahum Hudaa Project API
  * OpenAPI spec version: 1.0.0
  */
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpResponse as AngularHttpResponse
-} from '@angular/common/http';
-import type {
-  HttpContext,
-  HttpEvent,
-  HttpParams
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse as AngularHttpResponse } from '@angular/common/http';
+import type { HttpContext, HttpEvent, HttpParams } from '@angular/common/http';
 
-import {
-  Injectable,
-  inject
-} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
-import {
-  Observable
-} from 'rxjs';
+import { Observable } from 'rxjs';
+
+import { API_BASE_URL } from './api.base-url';
 
 import type {
   MemorizeNotesCreate,
@@ -45,18 +34,14 @@ import type {
   StudentsUpdateQmemoUpdate200,
   StudentsUpdateQtestUpdate200,
   StudentsUpdateQviewingUpdate200,
-  StudentsWithComingRegistrationListParams
+  StudentsWithComingRegistrationListParams,
 } from './models';
-
-
-
 
 interface HttpClientOptions {
   readonly headers?: HttpHeaders | Record<string, string | string[]>;
   readonly context?: HttpContext;
   readonly params?:
-        | HttpParams
-      | Record<string, string | number | boolean | Array<string | number | boolean>>;
+    HttpParams | Record<string, string | number | boolean | Array<string | number | boolean>>;
   readonly reportProgress?: boolean;
   readonly withCredentials?: boolean;
   readonly credentials?: RequestCredentials;
@@ -68,7 +53,7 @@ interface HttpClientOptions {
   readonly referrer?: string;
   readonly integrity?: string;
   readonly referrerPolicy?: ReferrerPolicy;
-  readonly transferCache?: {includeHeaders?: string[]} | boolean;
+  readonly transferCache?: { includeHeaders?: string[] } | boolean;
   readonly timeout?: number;
 }
 
@@ -127,9 +112,7 @@ function filterParams(
       const filtered = value.filter(
         (item) =>
           item != null &&
-          (typeof item === 'string' ||
-            typeof item === 'number' ||
-            typeof item === 'boolean'),
+          (typeof item === 'string' || typeof item === 'number' || typeof item === 'boolean'),
       ) as Array<string | number | boolean>;
       if (filtered.length) {
         filteredParams[key] = filtered;
@@ -142,9 +125,7 @@ function filterParams(
       filteredParams[key] = preserveRequiredNullables ? null : '';
     } else if (
       value != null &&
-      (typeof value === 'string' ||
-        typeof value === 'number' ||
-        typeof value === 'boolean')
+      (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean')
     ) {
       filteredParams[key] = value;
     }
@@ -152,620 +133,792 @@ function filterParams(
   return filteredParams;
 }
 
-
-
-
-
 @Injectable({ providedIn: 'root' })
 export class StudentsService {
   private readonly http = inject(HttpClient);
- studentsList<TData = PaginatedStudentListList>(params?: StudentsListParams, options?: HttpClientBodyOptions): Observable<TData>;
- studentsList<TData = PaginatedStudentListList>(params?: StudentsListParams, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- studentsList<TData = PaginatedStudentListList>(params?: StudentsListParams, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  private readonly baseUrl = inject(API_BASE_URL);
   studentsList<TData = PaginatedStudentListList>(
-    params?: StudentsListParams, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
-    const filteredParams = filterParams({...params, ...options?.params}, new Set<string>([]));
+    params?: StudentsListParams,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  studentsList<TData = PaginatedStudentListList>(
+    params?: StudentsListParams,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  studentsList<TData = PaginatedStudentListList>(
+    params?: StudentsListParams,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  studentsList<TData = PaginatedStudentListList>(
+    params?: StudentsListParams,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    const filteredParams = filterParams({ ...params, ...options?.params }, new Set<string>([]));
 
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/students/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/students/`, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/students/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/students/`, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/students/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-        params: filteredParams,}
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/students/`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+      params: filteredParams,
+    });
   }
- studentsCreate<TData = StudentCreate>(studentCreate: StudentCreate, options?: HttpClientBodyOptions): Observable<TData>;
- studentsCreate<TData = StudentCreate>(studentCreate: StudentCreate, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- studentsCreate<TData = StudentCreate>(studentCreate: StudentCreate, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   studentsCreate<TData = StudentCreate>(
-    studentCreate: StudentCreate, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    studentCreate: StudentCreate,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  studentsCreate<TData = StudentCreate>(
+    studentCreate: StudentCreate,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  studentsCreate<TData = StudentCreate>(
+    studentCreate: StudentCreate,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  studentsCreate<TData = StudentCreate>(
+    studentCreate: StudentCreate,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.post<TData>(
-      `/api/v1/students/`,
-      studentCreate,{
+      return this.http.post<TData>(`${this.baseUrl}/api/v1/students/`, studentCreate, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.post<TData>(
-      `/api/v1/students/`,
-      studentCreate,{
+      return this.http.post<TData>(`${this.baseUrl}/api/v1/students/`, studentCreate, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.post<TData>(
-      `/api/v1/students/`,
-      studentCreate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.post<TData>(`${this.baseUrl}/api/v1/students/`, studentCreate, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
- studentsRetrieve<TData = StudentDetails>(id: number, options?: HttpClientBodyOptions): Observable<TData>;
- studentsRetrieve<TData = StudentDetails>(id: number, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- studentsRetrieve<TData = StudentDetails>(id: number, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   studentsRetrieve<TData = StudentDetails>(
-    id: number, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    id: number,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  studentsRetrieve<TData = StudentDetails>(
+    id: number,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  studentsRetrieve<TData = StudentDetails>(
+    id: number,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  studentsRetrieve<TData = StudentDetails>(
+    id: number,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/students/${id}`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/students/${id}`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/students/${id}`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/students/${id}`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/students/${id}`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/students/${id}`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
- studentsCategoryList<TData = StudentCategory[]>( options?: HttpClientBodyOptions): Observable<TData>;
- studentsCategoryList<TData = StudentCategory[]>( options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- studentsCategoryList<TData = StudentCategory[]>( options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   studentsCategoryList<TData = StudentCategory[]>(
-     options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  studentsCategoryList<TData = StudentCategory[]>(
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  studentsCategoryList<TData = StudentCategory[]>(
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  studentsCategoryList<TData = StudentCategory[]>(
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/students/category`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/students/category`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/students/category`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/students/category`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/students/category`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/students/category`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
- studentsGroupList<TData = StudentGroup[]>( options?: HttpClientBodyOptions): Observable<TData>;
- studentsGroupList<TData = StudentGroup[]>( options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- studentsGroupList<TData = StudentGroup[]>( options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  studentsGroupList<TData = StudentGroup[]>(options?: HttpClientBodyOptions): Observable<TData>;
   studentsGroupList<TData = StudentGroup[]>(
-     options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  studentsGroupList<TData = StudentGroup[]>(
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  studentsGroupList<TData = StudentGroup[]>(
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/students/group`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/students/group`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/students/group`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/students/group`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/students/group`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/students/group`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
- studentsMemorizeMessageList<TData = PaginatedMemorizeMessageList>(params?: StudentsMemorizeMessageListParams, options?: HttpClientBodyOptions): Observable<TData>;
- studentsMemorizeMessageList<TData = PaginatedMemorizeMessageList>(params?: StudentsMemorizeMessageListParams, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- studentsMemorizeMessageList<TData = PaginatedMemorizeMessageList>(params?: StudentsMemorizeMessageListParams, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   studentsMemorizeMessageList<TData = PaginatedMemorizeMessageList>(
-    params?: StudentsMemorizeMessageListParams, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
-    const filteredParams = filterParams({...params, ...options?.params}, new Set<string>([]));
+    params?: StudentsMemorizeMessageListParams,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  studentsMemorizeMessageList<TData = PaginatedMemorizeMessageList>(
+    params?: StudentsMemorizeMessageListParams,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  studentsMemorizeMessageList<TData = PaginatedMemorizeMessageList>(
+    params?: StudentsMemorizeMessageListParams,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  studentsMemorizeMessageList<TData = PaginatedMemorizeMessageList>(
+    params?: StudentsMemorizeMessageListParams,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    const filteredParams = filterParams({ ...params, ...options?.params }, new Set<string>([]));
 
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/students/memorize-message`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/students/memorize-message`, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/students/memorize-message`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/students/memorize-message`, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/students/memorize-message`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-        params: filteredParams,}
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/students/memorize-message`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+      params: filteredParams,
+    });
   }
- studentsMemorizeMessageDestroy<TData = void>(id: number, options?: HttpClientBodyOptions): Observable<TData>;
- studentsMemorizeMessageDestroy<TData = void>(id: number, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- studentsMemorizeMessageDestroy<TData = void>(id: number, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   studentsMemorizeMessageDestroy<TData = void>(
-    id: number, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    id: number,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  studentsMemorizeMessageDestroy<TData = void>(
+    id: number,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  studentsMemorizeMessageDestroy<TData = void>(
+    id: number,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  studentsMemorizeMessageDestroy<TData = void>(
+    id: number,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.delete<TData>(
-      `/api/v1/students/memorize-message/${id}`,{
+      return this.http.delete<TData>(`${this.baseUrl}/api/v1/students/memorize-message/${id}`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.delete<TData>(
-      `/api/v1/students/memorize-message/${id}`,{
+      return this.http.delete<TData>(`${this.baseUrl}/api/v1/students/memorize-message/${id}`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.delete<TData>(
-      `/api/v1/students/memorize-message/${id}`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.delete<TData>(`${this.baseUrl}/api/v1/students/memorize-message/${id}`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
- studentsMemorizeNotesCreate<TData = MemorizeNotesCreate>(memorizeNotesCreate: MemorizeNotesCreate, options?: HttpClientBodyOptions): Observable<TData>;
- studentsMemorizeNotesCreate<TData = MemorizeNotesCreate>(memorizeNotesCreate: MemorizeNotesCreate, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- studentsMemorizeNotesCreate<TData = MemorizeNotesCreate>(memorizeNotesCreate: MemorizeNotesCreate, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   studentsMemorizeNotesCreate<TData = MemorizeNotesCreate>(
-    memorizeNotesCreate: MemorizeNotesCreate, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    memorizeNotesCreate: MemorizeNotesCreate,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  studentsMemorizeNotesCreate<TData = MemorizeNotesCreate>(
+    memorizeNotesCreate: MemorizeNotesCreate,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  studentsMemorizeNotesCreate<TData = MemorizeNotesCreate>(
+    memorizeNotesCreate: MemorizeNotesCreate,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  studentsMemorizeNotesCreate<TData = MemorizeNotesCreate>(
+    memorizeNotesCreate: MemorizeNotesCreate,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.post<TData>(
-      `/api/v1/students/memorize-notes`,
-      memorizeNotesCreate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/students/memorize-notes`,
+        memorizeNotesCreate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.post<TData>(
-      `/api/v1/students/memorize-notes`,
-      memorizeNotesCreate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/students/memorize-notes`,
+        memorizeNotesCreate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.post<TData>(
-      `/api/v1/students/memorize-notes`,
-      memorizeNotesCreate,{
+      `${this.baseUrl}/api/v1/students/memorize-notes`,
+      memorizeNotesCreate,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
- studentsMemorizeNotesDestroy<TData = void>(id: number, options?: HttpClientBodyOptions): Observable<TData>;
- studentsMemorizeNotesDestroy<TData = void>(id: number, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- studentsMemorizeNotesDestroy<TData = void>(id: number, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   studentsMemorizeNotesDestroy<TData = void>(
-    id: number, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    id: number,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  studentsMemorizeNotesDestroy<TData = void>(
+    id: number,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  studentsMemorizeNotesDestroy<TData = void>(
+    id: number,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  studentsMemorizeNotesDestroy<TData = void>(
+    id: number,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.delete<TData>(
-      `/api/v1/students/memorize-notes/${id}`,{
+      return this.http.delete<TData>(`${this.baseUrl}/api/v1/students/memorize-notes/${id}`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.delete<TData>(
-      `/api/v1/students/memorize-notes/${id}`,{
+      return this.http.delete<TData>(`${this.baseUrl}/api/v1/students/memorize-notes/${id}`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.delete<TData>(
-      `/api/v1/students/memorize-notes/${id}`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.delete<TData>(`${this.baseUrl}/api/v1/students/memorize-notes/${id}`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
- studentsUpdateAlarbaeinAlnawawiaUpdate<TData = void>(id: number,
-    studentUpdateAlarbaeinAlnawawia: StudentUpdateAlarbaeinAlnawawia, options?: HttpClientBodyOptions): Observable<TData>;
- studentsUpdateAlarbaeinAlnawawiaUpdate<TData = void>(id: number,
-    studentUpdateAlarbaeinAlnawawia: StudentUpdateAlarbaeinAlnawawia, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- studentsUpdateAlarbaeinAlnawawiaUpdate<TData = void>(id: number,
-    studentUpdateAlarbaeinAlnawawia: StudentUpdateAlarbaeinAlnawawia, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   studentsUpdateAlarbaeinAlnawawiaUpdate<TData = void>(
     id: number,
-    studentUpdateAlarbaeinAlnawawia: StudentUpdateAlarbaeinAlnawawia, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    studentUpdateAlarbaeinAlnawawia: StudentUpdateAlarbaeinAlnawawia,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  studentsUpdateAlarbaeinAlnawawiaUpdate<TData = void>(
+    id: number,
+    studentUpdateAlarbaeinAlnawawia: StudentUpdateAlarbaeinAlnawawia,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  studentsUpdateAlarbaeinAlnawawiaUpdate<TData = void>(
+    id: number,
+    studentUpdateAlarbaeinAlnawawia: StudentUpdateAlarbaeinAlnawawia,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  studentsUpdateAlarbaeinAlnawawiaUpdate<TData = void>(
+    id: number,
+    studentUpdateAlarbaeinAlnawawia: StudentUpdateAlarbaeinAlnawawia,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.put<TData>(
-      `/api/v1/students/update/alarbaein-alnawawia/${id}`,
-      studentUpdateAlarbaeinAlnawawia,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/students/update/alarbaein-alnawawia/${id}`,
+        studentUpdateAlarbaeinAlnawawia,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.put<TData>(
-      `/api/v1/students/update/alarbaein-alnawawia/${id}`,
-      studentUpdateAlarbaeinAlnawawia,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/students/update/alarbaein-alnawawia/${id}`,
+        studentUpdateAlarbaeinAlnawawia,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.put<TData>(
-      `/api/v1/students/update/alarbaein-alnawawia/${id}`,
-      studentUpdateAlarbaeinAlnawawia,{
+      `${this.baseUrl}/api/v1/students/update/alarbaein-alnawawia/${id}`,
+      studentUpdateAlarbaeinAlnawawia,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
- studentsUpdateAllahNamesUpdate<TData = void>(id: number, options?: HttpClientBodyOptions): Observable<TData>;
- studentsUpdateAllahNamesUpdate<TData = void>(id: number, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- studentsUpdateAllahNamesUpdate<TData = void>(id: number, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   studentsUpdateAllahNamesUpdate<TData = void>(
-    id: number, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    id: number,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  studentsUpdateAllahNamesUpdate<TData = void>(
+    id: number,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  studentsUpdateAllahNamesUpdate<TData = void>(
+    id: number,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  studentsUpdateAllahNamesUpdate<TData = void>(
+    id: number,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.put<TData>(
-      `/api/v1/students/update/allah-names/${id}`,
-      undefined,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/students/update/allah-names/${id}`,
+        undefined,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.put<TData>(
-      `/api/v1/students/update/allah-names/${id}`,
-      undefined,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/students/update/allah-names/${id}`,
+        undefined,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.put<TData>(
-      `/api/v1/students/update/allah-names/${id}`,
-      undefined,{
+      `${this.baseUrl}/api/v1/students/update/allah-names/${id}`,
+      undefined,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
- studentsUpdateExtraHadeethUpdate<TData = void>(id: number,
-    studentUpdateExtraHadeeth: StudentUpdateExtraHadeeth, options?: HttpClientBodyOptions): Observable<TData>;
- studentsUpdateExtraHadeethUpdate<TData = void>(id: number,
-    studentUpdateExtraHadeeth: StudentUpdateExtraHadeeth, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- studentsUpdateExtraHadeethUpdate<TData = void>(id: number,
-    studentUpdateExtraHadeeth: StudentUpdateExtraHadeeth, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   studentsUpdateExtraHadeethUpdate<TData = void>(
     id: number,
-    studentUpdateExtraHadeeth: StudentUpdateExtraHadeeth, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    studentUpdateExtraHadeeth: StudentUpdateExtraHadeeth,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  studentsUpdateExtraHadeethUpdate<TData = void>(
+    id: number,
+    studentUpdateExtraHadeeth: StudentUpdateExtraHadeeth,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  studentsUpdateExtraHadeethUpdate<TData = void>(
+    id: number,
+    studentUpdateExtraHadeeth: StudentUpdateExtraHadeeth,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  studentsUpdateExtraHadeethUpdate<TData = void>(
+    id: number,
+    studentUpdateExtraHadeeth: StudentUpdateExtraHadeeth,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.put<TData>(
-      `/api/v1/students/update/extra-hadeeth/${id}`,
-      studentUpdateExtraHadeeth,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/students/update/extra-hadeeth/${id}`,
+        studentUpdateExtraHadeeth,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.put<TData>(
-      `/api/v1/students/update/extra-hadeeth/${id}`,
-      studentUpdateExtraHadeeth,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/students/update/extra-hadeeth/${id}`,
+        studentUpdateExtraHadeeth,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.put<TData>(
-      `/api/v1/students/update/extra-hadeeth/${id}`,
-      studentUpdateExtraHadeeth,{
+      `${this.baseUrl}/api/v1/students/update/extra-hadeeth/${id}`,
+      studentUpdateExtraHadeeth,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
- studentsUpdatePartsReceivedUpdate<TData = void>(id: number,
-    studentUpdatePartsReceived: StudentUpdatePartsReceived, options?: HttpClientBodyOptions): Observable<TData>;
- studentsUpdatePartsReceivedUpdate<TData = void>(id: number,
-    studentUpdatePartsReceived: StudentUpdatePartsReceived, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- studentsUpdatePartsReceivedUpdate<TData = void>(id: number,
-    studentUpdatePartsReceived: StudentUpdatePartsReceived, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   studentsUpdatePartsReceivedUpdate<TData = void>(
     id: number,
-    studentUpdatePartsReceived: StudentUpdatePartsReceived, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    studentUpdatePartsReceived: StudentUpdatePartsReceived,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  studentsUpdatePartsReceivedUpdate<TData = void>(
+    id: number,
+    studentUpdatePartsReceived: StudentUpdatePartsReceived,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  studentsUpdatePartsReceivedUpdate<TData = void>(
+    id: number,
+    studentUpdatePartsReceived: StudentUpdatePartsReceived,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  studentsUpdatePartsReceivedUpdate<TData = void>(
+    id: number,
+    studentUpdatePartsReceived: StudentUpdatePartsReceived,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.put<TData>(
-      `/api/v1/students/update/parts-received/${id}`,
-      studentUpdatePartsReceived,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/students/update/parts-received/${id}`,
+        studentUpdatePartsReceived,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.put<TData>(
-      `/api/v1/students/update/parts-received/${id}`,
-      studentUpdatePartsReceived,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/students/update/parts-received/${id}`,
+        studentUpdatePartsReceived,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.put<TData>(
-      `/api/v1/students/update/parts-received/${id}`,
-      studentUpdatePartsReceived,{
+      `${this.baseUrl}/api/v1/students/update/parts-received/${id}`,
+      studentUpdatePartsReceived,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
- studentsUpdateQmemoUpdate<TData = StudentsUpdateQmemoUpdate200>(id: number,
-    studentUpdateQMemo: StudentUpdateQMemo, options?: HttpClientBodyOptions): Observable<TData>;
- studentsUpdateQmemoUpdate<TData = StudentsUpdateQmemoUpdate200>(id: number,
-    studentUpdateQMemo: StudentUpdateQMemo, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- studentsUpdateQmemoUpdate<TData = StudentsUpdateQmemoUpdate200>(id: number,
-    studentUpdateQMemo: StudentUpdateQMemo, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   studentsUpdateQmemoUpdate<TData = StudentsUpdateQmemoUpdate200>(
     id: number,
-    studentUpdateQMemo: StudentUpdateQMemo, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    studentUpdateQMemo: StudentUpdateQMemo,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  studentsUpdateQmemoUpdate<TData = StudentsUpdateQmemoUpdate200>(
+    id: number,
+    studentUpdateQMemo: StudentUpdateQMemo,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  studentsUpdateQmemoUpdate<TData = StudentsUpdateQmemoUpdate200>(
+    id: number,
+    studentUpdateQMemo: StudentUpdateQMemo,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  studentsUpdateQmemoUpdate<TData = StudentsUpdateQmemoUpdate200>(
+    id: number,
+    studentUpdateQMemo: StudentUpdateQMemo,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.put<TData>(
-      `/api/v1/students/update/qmemo/${id}`,
-      studentUpdateQMemo,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/students/update/qmemo/${id}`,
+        studentUpdateQMemo,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.put<TData>(
-      `/api/v1/students/update/qmemo/${id}`,
-      studentUpdateQMemo,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/students/update/qmemo/${id}`,
+        studentUpdateQMemo,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.put<TData>(
-      `/api/v1/students/update/qmemo/${id}`,
-      studentUpdateQMemo,{
+      `${this.baseUrl}/api/v1/students/update/qmemo/${id}`,
+      studentUpdateQMemo,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
- studentsUpdateQtestUpdate<TData = StudentsUpdateQtestUpdate200>(id: number,
-    studentUpdateQTest: StudentUpdateQTest, options?: HttpClientBodyOptions): Observable<TData>;
- studentsUpdateQtestUpdate<TData = StudentsUpdateQtestUpdate200>(id: number,
-    studentUpdateQTest: StudentUpdateQTest, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- studentsUpdateQtestUpdate<TData = StudentsUpdateQtestUpdate200>(id: number,
-    studentUpdateQTest: StudentUpdateQTest, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   studentsUpdateQtestUpdate<TData = StudentsUpdateQtestUpdate200>(
     id: number,
-    studentUpdateQTest: StudentUpdateQTest, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    studentUpdateQTest: StudentUpdateQTest,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  studentsUpdateQtestUpdate<TData = StudentsUpdateQtestUpdate200>(
+    id: number,
+    studentUpdateQTest: StudentUpdateQTest,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  studentsUpdateQtestUpdate<TData = StudentsUpdateQtestUpdate200>(
+    id: number,
+    studentUpdateQTest: StudentUpdateQTest,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  studentsUpdateQtestUpdate<TData = StudentsUpdateQtestUpdate200>(
+    id: number,
+    studentUpdateQTest: StudentUpdateQTest,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.put<TData>(
-      `/api/v1/students/update/qtest/${id}`,
-      studentUpdateQTest,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/students/update/qtest/${id}`,
+        studentUpdateQTest,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.put<TData>(
-      `/api/v1/students/update/qtest/${id}`,
-      studentUpdateQTest,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/students/update/qtest/${id}`,
+        studentUpdateQTest,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.put<TData>(
-      `/api/v1/students/update/qtest/${id}`,
-      studentUpdateQTest,{
+      `${this.baseUrl}/api/v1/students/update/qtest/${id}`,
+      studentUpdateQTest,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
- studentsUpdateQviewingUpdate<TData = StudentsUpdateQviewingUpdate200>(id: number,
-    studentUpdateQViewing: StudentUpdateQViewing, options?: HttpClientBodyOptions): Observable<TData>;
- studentsUpdateQviewingUpdate<TData = StudentsUpdateQviewingUpdate200>(id: number,
-    studentUpdateQViewing: StudentUpdateQViewing, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- studentsUpdateQviewingUpdate<TData = StudentsUpdateQviewingUpdate200>(id: number,
-    studentUpdateQViewing: StudentUpdateQViewing, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   studentsUpdateQviewingUpdate<TData = StudentsUpdateQviewingUpdate200>(
     id: number,
-    studentUpdateQViewing: StudentUpdateQViewing, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    studentUpdateQViewing: StudentUpdateQViewing,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  studentsUpdateQviewingUpdate<TData = StudentsUpdateQviewingUpdate200>(
+    id: number,
+    studentUpdateQViewing: StudentUpdateQViewing,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  studentsUpdateQviewingUpdate<TData = StudentsUpdateQviewingUpdate200>(
+    id: number,
+    studentUpdateQViewing: StudentUpdateQViewing,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  studentsUpdateQviewingUpdate<TData = StudentsUpdateQviewingUpdate200>(
+    id: number,
+    studentUpdateQViewing: StudentUpdateQViewing,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.put<TData>(
-      `/api/v1/students/update/qviewing/${id}`,
-      studentUpdateQViewing,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/students/update/qviewing/${id}`,
+        studentUpdateQViewing,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.put<TData>(
-      `/api/v1/students/update/qviewing/${id}`,
-      studentUpdateQViewing,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/students/update/qviewing/${id}`,
+        studentUpdateQViewing,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.put<TData>(
-      `/api/v1/students/update/qviewing/${id}`,
-      studentUpdateQViewing,{
+      `${this.baseUrl}/api/v1/students/update/qviewing/${id}`,
+      studentUpdateQViewing,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
- studentsUpdateRiadAlsaalihinUpdate<TData = void>(id: number,
-    studentUpdateRiadAlsaalihin: StudentUpdateRiadAlsaalihin, options?: HttpClientBodyOptions): Observable<TData>;
- studentsUpdateRiadAlsaalihinUpdate<TData = void>(id: number,
-    studentUpdateRiadAlsaalihin: StudentUpdateRiadAlsaalihin, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- studentsUpdateRiadAlsaalihinUpdate<TData = void>(id: number,
-    studentUpdateRiadAlsaalihin: StudentUpdateRiadAlsaalihin, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   studentsUpdateRiadAlsaalihinUpdate<TData = void>(
     id: number,
-    studentUpdateRiadAlsaalihin: StudentUpdateRiadAlsaalihin, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    studentUpdateRiadAlsaalihin: StudentUpdateRiadAlsaalihin,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  studentsUpdateRiadAlsaalihinUpdate<TData = void>(
+    id: number,
+    studentUpdateRiadAlsaalihin: StudentUpdateRiadAlsaalihin,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  studentsUpdateRiadAlsaalihinUpdate<TData = void>(
+    id: number,
+    studentUpdateRiadAlsaalihin: StudentUpdateRiadAlsaalihin,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  studentsUpdateRiadAlsaalihinUpdate<TData = void>(
+    id: number,
+    studentUpdateRiadAlsaalihin: StudentUpdateRiadAlsaalihin,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.put<TData>(
-      `/api/v1/students/update/riad-alsaalihin/${id}`,
-      studentUpdateRiadAlsaalihin,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/students/update/riad-alsaalihin/${id}`,
+        studentUpdateRiadAlsaalihin,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.put<TData>(
-      `/api/v1/students/update/riad-alsaalihin/${id}`,
-      studentUpdateRiadAlsaalihin,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/students/update/riad-alsaalihin/${id}`,
+        studentUpdateRiadAlsaalihin,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.put<TData>(
-      `/api/v1/students/update/riad-alsaalihin/${id}`,
-      studentUpdateRiadAlsaalihin,{
+      `${this.baseUrl}/api/v1/students/update/riad-alsaalihin/${id}`,
+      studentUpdateRiadAlsaalihin,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
- studentsWithComingRegistrationList<TData = PaginatedStudentListWithComingRegistrationList>(comingCategoryId: number,
-    params?: StudentsWithComingRegistrationListParams, options?: HttpClientBodyOptions): Observable<TData>;
- studentsWithComingRegistrationList<TData = PaginatedStudentListWithComingRegistrationList>(comingCategoryId: number,
-    params?: StudentsWithComingRegistrationListParams, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- studentsWithComingRegistrationList<TData = PaginatedStudentListWithComingRegistrationList>(comingCategoryId: number,
-    params?: StudentsWithComingRegistrationListParams, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   studentsWithComingRegistrationList<TData = PaginatedStudentListWithComingRegistrationList>(
     comingCategoryId: number,
-    params?: StudentsWithComingRegistrationListParams, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
-    const filteredParams = filterParams({...params, ...options?.params}, new Set<string>([]));
+    params?: StudentsWithComingRegistrationListParams,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  studentsWithComingRegistrationList<TData = PaginatedStudentListWithComingRegistrationList>(
+    comingCategoryId: number,
+    params?: StudentsWithComingRegistrationListParams,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  studentsWithComingRegistrationList<TData = PaginatedStudentListWithComingRegistrationList>(
+    comingCategoryId: number,
+    params?: StudentsWithComingRegistrationListParams,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  studentsWithComingRegistrationList<TData = PaginatedStudentListWithComingRegistrationList>(
+    comingCategoryId: number,
+    params?: StudentsWithComingRegistrationListParams,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    const filteredParams = filterParams({ ...params, ...options?.params }, new Set<string>([]));
 
     if (options?.observe === 'events') {
       return this.http.get<TData>(
-      `/api/v1/students/with-coming-registration/${comingCategoryId}`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-        params: filteredParams,}
-    );
+        `${this.baseUrl}/api/v1/students/with-coming-registration/${comingCategoryId}`,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+          params: filteredParams,
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.get<TData>(
-      `/api/v1/students/with-coming-registration/${comingCategoryId}`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-        params: filteredParams,}
-    );
+        `${this.baseUrl}/api/v1/students/with-coming-registration/${comingCategoryId}`,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+          params: filteredParams,
+        },
+      );
     }
 
     return this.http.get<TData>(
-      `/api/v1/students/with-coming-registration/${comingCategoryId}`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      `${this.baseUrl}/api/v1/students/with-coming-registration/${comingCategoryId}`,
+      {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-        params: filteredParams,}
+        params: filteredParams,
+      },
     );
   }
-};
-
+}

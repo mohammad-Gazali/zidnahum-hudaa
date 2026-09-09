@@ -45,5 +45,4 @@ export class LayoutService {
     }
   }
 
-  public loading = signal(false);
 }

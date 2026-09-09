@@ -6,7 +6,7 @@ import { MatButton } from '@angular/material/button';
 import {
   ComingCategory,
   ComingsService,
-  LayoutService,
+  LOADING,
   MasjedPipe,
   MasjedService,
   SnackbarService,
@@ -50,7 +50,7 @@ export class AddComingComponent {
   private snackbar = inject(SnackbarService);
   private masjed = inject(MasjedService);
   private mobileUtils = inject(MobileUtilsService);
-  protected loading = inject(LayoutService).loading;
+  protected loading = inject(LOADING);
 
   protected response = this.list.lastResponse;
   protected searchForm = this.list.searchForm;

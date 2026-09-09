@@ -4,25 +4,14 @@
  * Zidnahum Hudaa Project API
  * OpenAPI spec version: 1.0.0
  */
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpResponse as AngularHttpResponse
-} from '@angular/common/http';
-import type {
-  HttpContext,
-  HttpEvent,
-  HttpParams
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse as AngularHttpResponse } from '@angular/common/http';
+import type { HttpContext, HttpEvent, HttpParams } from '@angular/common/http';
 
-import {
-  Injectable,
-  inject
-} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
-import {
-  Observable
-} from 'rxjs';
+import { Observable } from 'rxjs';
+
+import { API_BASE_URL } from './api.base-url';
 
 import type {
   ActionBooleanUpdate,
@@ -32,18 +21,14 @@ import type {
   UserDetails,
   UserList,
   UserUpdate,
-  UserUpdatePassword
+  UserUpdatePassword,
 } from './models';
-
-
-
 
 interface HttpClientOptions {
   readonly headers?: HttpHeaders | Record<string, string | string[]>;
   readonly context?: HttpContext;
   readonly params?:
-        | HttpParams
-      | Record<string, string | number | boolean | Array<string | number | boolean>>;
+    HttpParams | Record<string, string | number | boolean | Array<string | number | boolean>>;
   readonly reportProgress?: boolean;
   readonly withCredentials?: boolean;
   readonly credentials?: RequestCredentials;
@@ -55,7 +40,7 @@ interface HttpClientOptions {
   readonly referrer?: string;
   readonly integrity?: string;
   readonly referrerPolicy?: ReferrerPolicy;
-  readonly transferCache?: {includeHeaders?: string[]} | boolean;
+  readonly transferCache?: { includeHeaders?: string[] } | boolean;
   readonly timeout?: number;
 }
 
@@ -114,9 +99,7 @@ function filterParams(
       const filtered = value.filter(
         (item) =>
           item != null &&
-          (typeof item === 'string' ||
-            typeof item === 'number' ||
-            typeof item === 'boolean'),
+          (typeof item === 'string' || typeof item === 'number' || typeof item === 'boolean'),
       ) as Array<string | number | boolean>;
       if (filtered.length) {
         filteredParams[key] = filtered;
@@ -129,9 +112,7 @@ function filterParams(
       filteredParams[key] = preserveRequiredNullables ? null : '';
     } else if (
       value != null &&
-      (typeof value === 'string' ||
-        typeof value === 'number' ||
-        typeof value === 'boolean')
+      (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean')
     ) {
       filteredParams[key] = value;
     }
@@ -139,293 +120,341 @@ function filterParams(
   return filteredParams;
 }
 
-
-
-
-
 @Injectable({ providedIn: 'root' })
 export class AdminUserService {
   private readonly http = inject(HttpClient);
- adminActionsUserActiveUpdate<TData = void>(actionBooleanUpdate: ActionBooleanUpdate, options?: HttpClientBodyOptions): Observable<TData>;
- adminActionsUserActiveUpdate<TData = void>(actionBooleanUpdate: ActionBooleanUpdate, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminActionsUserActiveUpdate<TData = void>(actionBooleanUpdate: ActionBooleanUpdate, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  private readonly baseUrl = inject(API_BASE_URL);
   adminActionsUserActiveUpdate<TData = void>(
-    actionBooleanUpdate: ActionBooleanUpdate, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    actionBooleanUpdate: ActionBooleanUpdate,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminActionsUserActiveUpdate<TData = void>(
+    actionBooleanUpdate: ActionBooleanUpdate,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminActionsUserActiveUpdate<TData = void>(
+    actionBooleanUpdate: ActionBooleanUpdate,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminActionsUserActiveUpdate<TData = void>(
+    actionBooleanUpdate: ActionBooleanUpdate,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.put<TData>(
-      `/api/v1/admin/actions/user/active`,
-      actionBooleanUpdate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/actions/user/active`,
+        actionBooleanUpdate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.put<TData>(
-      `/api/v1/admin/actions/user/active`,
-      actionBooleanUpdate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/actions/user/active`,
+        actionBooleanUpdate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.put<TData>(
-      `/api/v1/admin/actions/user/active`,
-      actionBooleanUpdate,{
+      `${this.baseUrl}/api/v1/admin/actions/user/active`,
+      actionBooleanUpdate,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
- adminActionsUserDeleteCreate<TData = void>(idsAction: IdsAction, options?: HttpClientBodyOptions): Observable<TData>;
- adminActionsUserDeleteCreate<TData = void>(idsAction: IdsAction, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminActionsUserDeleteCreate<TData = void>(idsAction: IdsAction, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   adminActionsUserDeleteCreate<TData = void>(
-    idsAction: IdsAction, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    idsAction: IdsAction,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminActionsUserDeleteCreate<TData = void>(
+    idsAction: IdsAction,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminActionsUserDeleteCreate<TData = void>(
+    idsAction: IdsAction,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminActionsUserDeleteCreate<TData = void>(
+    idsAction: IdsAction,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.post<TData>(
-      `/api/v1/admin/actions/user/delete`,
-      idsAction,{
+      return this.http.post<TData>(`${this.baseUrl}/api/v1/admin/actions/user/delete`, idsAction, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.post<TData>(
-      `/api/v1/admin/actions/user/delete`,
-      idsAction,{
+      return this.http.post<TData>(`${this.baseUrl}/api/v1/admin/actions/user/delete`, idsAction, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.post<TData>(
-      `/api/v1/admin/actions/user/delete`,
-      idsAction,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.post<TData>(`${this.baseUrl}/api/v1/admin/actions/user/delete`, idsAction, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
- adminActionsUserPasswordUpdate<TData = void>(userUpdatePassword: UserUpdatePassword, options?: HttpClientBodyOptions): Observable<TData>;
- adminActionsUserPasswordUpdate<TData = void>(userUpdatePassword: UserUpdatePassword, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminActionsUserPasswordUpdate<TData = void>(userUpdatePassword: UserUpdatePassword, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   adminActionsUserPasswordUpdate<TData = void>(
-    userUpdatePassword: UserUpdatePassword, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    userUpdatePassword: UserUpdatePassword,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminActionsUserPasswordUpdate<TData = void>(
+    userUpdatePassword: UserUpdatePassword,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminActionsUserPasswordUpdate<TData = void>(
+    userUpdatePassword: UserUpdatePassword,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminActionsUserPasswordUpdate<TData = void>(
+    userUpdatePassword: UserUpdatePassword,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.put<TData>(
-      `/api/v1/admin/actions/user/password`,
-      userUpdatePassword,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/actions/user/password`,
+        userUpdatePassword,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.put<TData>(
-      `/api/v1/admin/actions/user/password`,
-      userUpdatePassword,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/actions/user/password`,
+        userUpdatePassword,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.put<TData>(
-      `/api/v1/admin/actions/user/password`,
-      userUpdatePassword,{
+      `${this.baseUrl}/api/v1/admin/actions/user/password`,
+      userUpdatePassword,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminAuthUserList<TData = UserList[]>(params?: AdminAuthUserListParams, options?: HttpClientBodyOptions): Observable<TData>;
- adminAuthUserList<TData = UserList[]>(params?: AdminAuthUserListParams, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminAuthUserList<TData = UserList[]>(params?: AdminAuthUserListParams, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminAuthUserList<TData = UserList[]>(
-    params?: AdminAuthUserListParams, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
-    const filteredParams = filterParams({...params, ...options?.params}, new Set<string>([]));
+    params?: AdminAuthUserListParams,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminAuthUserList<TData = UserList[]>(
+    params?: AdminAuthUserListParams,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminAuthUserList<TData = UserList[]>(
+    params?: AdminAuthUserListParams,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminAuthUserList<TData = UserList[]>(
+    params?: AdminAuthUserListParams,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    const filteredParams = filterParams({ ...params, ...options?.params }, new Set<string>([]));
 
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/admin/auth/user/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/auth/user/`, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/admin/auth/user/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/auth/user/`, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/admin/auth/user/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-        params: filteredParams,}
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/auth/user/`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+      params: filteredParams,
+    });
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminAuthUserCreate<TData = UserCreate>(userCreate: UserCreate, options?: HttpClientBodyOptions): Observable<TData>;
- adminAuthUserCreate<TData = UserCreate>(userCreate: UserCreate, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminAuthUserCreate<TData = UserCreate>(userCreate: UserCreate, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminAuthUserCreate<TData = UserCreate>(
-    userCreate: UserCreate, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    userCreate: UserCreate,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminAuthUserCreate<TData = UserCreate>(
+    userCreate: UserCreate,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminAuthUserCreate<TData = UserCreate>(
+    userCreate: UserCreate,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminAuthUserCreate<TData = UserCreate>(
+    userCreate: UserCreate,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.post<TData>(
-      `/api/v1/admin/auth/user/`,
-      userCreate,{
+      return this.http.post<TData>(`${this.baseUrl}/api/v1/admin/auth/user/`, userCreate, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.post<TData>(
-      `/api/v1/admin/auth/user/`,
-      userCreate,{
+      return this.http.post<TData>(`${this.baseUrl}/api/v1/admin/auth/user/`, userCreate, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.post<TData>(
-      `/api/v1/admin/auth/user/`,
-      userCreate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.post<TData>(`${this.baseUrl}/api/v1/admin/auth/user/`, userCreate, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminAuthUserRetrieve<TData = UserDetails>(id: number, options?: HttpClientBodyOptions): Observable<TData>;
- adminAuthUserRetrieve<TData = UserDetails>(id: number, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminAuthUserRetrieve<TData = UserDetails>(id: number, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminAuthUserRetrieve<TData = UserDetails>(
-    id: number, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    id: number,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminAuthUserRetrieve<TData = UserDetails>(
+    id: number,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminAuthUserRetrieve<TData = UserDetails>(
+    id: number,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminAuthUserRetrieve<TData = UserDetails>(
+    id: number,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/admin/auth/user/${id}/`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/auth/user/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/admin/auth/user/${id}/`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/auth/user/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/admin/auth/user/${id}/`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/auth/user/${id}/`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminAuthUserUpdate<TData = UserUpdate>(id: number,
-    userUpdate: UserUpdate, options?: HttpClientBodyOptions): Observable<TData>;
- adminAuthUserUpdate<TData = UserUpdate>(id: number,
-    userUpdate: UserUpdate, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminAuthUserUpdate<TData = UserUpdate>(id: number,
-    userUpdate: UserUpdate, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminAuthUserUpdate<TData = UserUpdate>(
     id: number,
-    userUpdate: UserUpdate, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    userUpdate: UserUpdate,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminAuthUserUpdate<TData = UserUpdate>(
+    id: number,
+    userUpdate: UserUpdate,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminAuthUserUpdate<TData = UserUpdate>(
+    id: number,
+    userUpdate: UserUpdate,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminAuthUserUpdate<TData = UserUpdate>(
+    id: number,
+    userUpdate: UserUpdate,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.put<TData>(
-      `/api/v1/admin/auth/user/${id}/`,
-      userUpdate,{
+      return this.http.put<TData>(`${this.baseUrl}/api/v1/admin/auth/user/${id}/`, userUpdate, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.put<TData>(
-      `/api/v1/admin/auth/user/${id}/`,
-      userUpdate,{
+      return this.http.put<TData>(`${this.baseUrl}/api/v1/admin/auth/user/${id}/`, userUpdate, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.put<TData>(
-      `/api/v1/admin/auth/user/${id}/`,
-      userUpdate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.put<TData>(`${this.baseUrl}/api/v1/admin/auth/user/${id}/`, userUpdate, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminAuthUserDestroy<TData = void>(id: number, options?: HttpClientBodyOptions): Observable<TData>;
- adminAuthUserDestroy<TData = void>(id: number, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminAuthUserDestroy<TData = void>(id: number, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminAuthUserDestroy<TData = void>(
-    id: number, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    id: number,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminAuthUserDestroy<TData = void>(
+    id: number,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminAuthUserDestroy<TData = void>(
+    id: number,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminAuthUserDestroy<TData = void>(
+    id: number,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.delete<TData>(
-      `/api/v1/admin/auth/user/${id}/`,{
+      return this.http.delete<TData>(`${this.baseUrl}/api/v1/admin/auth/user/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.delete<TData>(
-      `/api/v1/admin/auth/user/${id}/`,{
+      return this.http.delete<TData>(`${this.baseUrl}/api/v1/admin/auth/user/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.delete<TData>(
-      `/api/v1/admin/auth/user/${id}/`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.delete<TData>(`${this.baseUrl}/api/v1/admin/auth/user/${id}/`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
-};
-
+}

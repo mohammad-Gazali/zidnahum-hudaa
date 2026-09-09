@@ -7,7 +7,7 @@ import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
-  LayoutService,
+  LOADING,
   MemoService,
   SnackbarService,
   StudentList,
@@ -56,7 +56,7 @@ export class AddMemoComponent {
   private route = inject(ActivatedRoute);
   private studentsService = inject(StudentsService);
   private destroyRef = inject(DestroyRef);
-  private loading = inject(LayoutService).loading;
+  private loading = inject(LOADING);
   private snackbar = inject(SnackbarService);
   private matSnackbar = inject(MatSnackBar);
   private memo = inject(MemoService);

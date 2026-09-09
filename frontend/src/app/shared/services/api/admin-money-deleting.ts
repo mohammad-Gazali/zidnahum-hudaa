@@ -4,25 +4,14 @@
  * Zidnahum Hudaa Project API
  * OpenAPI spec version: 1.0.0
  */
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpResponse as AngularHttpResponse
-} from '@angular/common/http';
-import type {
-  HttpContext,
-  HttpEvent,
-  HttpParams
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse as AngularHttpResponse } from '@angular/common/http';
+import type { HttpContext, HttpEvent, HttpParams } from '@angular/common/http';
 
-import {
-  Injectable,
-  inject
-} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
-import {
-  Observable
-} from 'rxjs';
+import { Observable } from 'rxjs';
+
+import { API_BASE_URL } from './api.base-url';
 
 import type {
   ActionBooleanUpdate,
@@ -30,18 +19,14 @@ import type {
   AddMoneyDeletingNormalRequestSerailizer,
   AdminMoneyDeletingListParams,
   MoneyDeletingList,
-  PaginatedMoneyDeletingListList
+  PaginatedMoneyDeletingListList,
 } from './models';
-
-
-
 
 interface HttpClientOptions {
   readonly headers?: HttpHeaders | Record<string, string | string[]>;
   readonly context?: HttpContext;
   readonly params?:
-        | HttpParams
-      | Record<string, string | number | boolean | Array<string | number | boolean>>;
+    HttpParams | Record<string, string | number | boolean | Array<string | number | boolean>>;
   readonly reportProgress?: boolean;
   readonly withCredentials?: boolean;
   readonly credentials?: RequestCredentials;
@@ -53,7 +38,7 @@ interface HttpClientOptions {
   readonly referrer?: string;
   readonly integrity?: string;
   readonly referrerPolicy?: ReferrerPolicy;
-  readonly transferCache?: {includeHeaders?: string[]} | boolean;
+  readonly transferCache?: { includeHeaders?: string[] } | boolean;
   readonly timeout?: number;
 }
 
@@ -112,9 +97,7 @@ function filterParams(
       const filtered = value.filter(
         (item) =>
           item != null &&
-          (typeof item === 'string' ||
-            typeof item === 'number' ||
-            typeof item === 'boolean'),
+          (typeof item === 'string' || typeof item === 'number' || typeof item === 'boolean'),
       ) as Array<string | number | boolean>;
       if (filtered.length) {
         filteredParams[key] = filtered;
@@ -127,9 +110,7 @@ function filterParams(
       filteredParams[key] = preserveRequiredNullables ? null : '';
     } else if (
       value != null &&
-      (typeof value === 'string' ||
-        typeof value === 'number' ||
-        typeof value === 'boolean')
+      (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean')
     ) {
       filteredParams[key] = value;
     }
@@ -137,181 +118,232 @@ function filterParams(
   return filteredParams;
 }
 
-
-
-
-
 @Injectable({ providedIn: 'root' })
 export class AdminMoneyDeletingService {
   private readonly http = inject(HttpClient);
- adminActionsMoneyDeletingActiveUpdate<TData = void>(actionBooleanUpdate: ActionBooleanUpdate, options?: HttpClientBodyOptions): Observable<TData>;
- adminActionsMoneyDeletingActiveUpdate<TData = void>(actionBooleanUpdate: ActionBooleanUpdate, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminActionsMoneyDeletingActiveUpdate<TData = void>(actionBooleanUpdate: ActionBooleanUpdate, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  private readonly baseUrl = inject(API_BASE_URL);
   adminActionsMoneyDeletingActiveUpdate<TData = void>(
-    actionBooleanUpdate: ActionBooleanUpdate, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    actionBooleanUpdate: ActionBooleanUpdate,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminActionsMoneyDeletingActiveUpdate<TData = void>(
+    actionBooleanUpdate: ActionBooleanUpdate,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminActionsMoneyDeletingActiveUpdate<TData = void>(
+    actionBooleanUpdate: ActionBooleanUpdate,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminActionsMoneyDeletingActiveUpdate<TData = void>(
+    actionBooleanUpdate: ActionBooleanUpdate,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.put<TData>(
-      `/api/v1/admin/actions/money-deleting/active`,
-      actionBooleanUpdate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/actions/money-deleting/active`,
+        actionBooleanUpdate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.put<TData>(
-      `/api/v1/admin/actions/money-deleting/active`,
-      actionBooleanUpdate,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/actions/money-deleting/active`,
+        actionBooleanUpdate,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.put<TData>(
-      `/api/v1/admin/actions/money-deleting/active`,
-      actionBooleanUpdate,{
+      `${this.baseUrl}/api/v1/admin/actions/money-deleting/active`,
+      actionBooleanUpdate,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
- adminExtraAddMoneyDeletingCategoryCreate<TData = AddMoneyDeletingCategoryRequestSerailizer>(addMoneyDeletingCategoryRequestSerailizer: AddMoneyDeletingCategoryRequestSerailizer, options?: HttpClientBodyOptions): Observable<TData>;
- adminExtraAddMoneyDeletingCategoryCreate<TData = AddMoneyDeletingCategoryRequestSerailizer>(addMoneyDeletingCategoryRequestSerailizer: AddMoneyDeletingCategoryRequestSerailizer, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminExtraAddMoneyDeletingCategoryCreate<TData = AddMoneyDeletingCategoryRequestSerailizer>(addMoneyDeletingCategoryRequestSerailizer: AddMoneyDeletingCategoryRequestSerailizer, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   adminExtraAddMoneyDeletingCategoryCreate<TData = AddMoneyDeletingCategoryRequestSerailizer>(
-    addMoneyDeletingCategoryRequestSerailizer: AddMoneyDeletingCategoryRequestSerailizer, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    addMoneyDeletingCategoryRequestSerailizer: AddMoneyDeletingCategoryRequestSerailizer,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminExtraAddMoneyDeletingCategoryCreate<TData = AddMoneyDeletingCategoryRequestSerailizer>(
+    addMoneyDeletingCategoryRequestSerailizer: AddMoneyDeletingCategoryRequestSerailizer,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminExtraAddMoneyDeletingCategoryCreate<TData = AddMoneyDeletingCategoryRequestSerailizer>(
+    addMoneyDeletingCategoryRequestSerailizer: AddMoneyDeletingCategoryRequestSerailizer,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminExtraAddMoneyDeletingCategoryCreate<TData = AddMoneyDeletingCategoryRequestSerailizer>(
+    addMoneyDeletingCategoryRequestSerailizer: AddMoneyDeletingCategoryRequestSerailizer,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.post<TData>(
-      `/api/v1/admin/extra/add-money-deleting-category`,
-      addMoneyDeletingCategoryRequestSerailizer,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/extra/add-money-deleting-category`,
+        addMoneyDeletingCategoryRequestSerailizer,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.post<TData>(
-      `/api/v1/admin/extra/add-money-deleting-category`,
-      addMoneyDeletingCategoryRequestSerailizer,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/extra/add-money-deleting-category`,
+        addMoneyDeletingCategoryRequestSerailizer,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.post<TData>(
-      `/api/v1/admin/extra/add-money-deleting-category`,
-      addMoneyDeletingCategoryRequestSerailizer,{
+      `${this.baseUrl}/api/v1/admin/extra/add-money-deleting-category`,
+      addMoneyDeletingCategoryRequestSerailizer,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
- adminExtraAddMoneyDeletingNormalCreate<TData = AddMoneyDeletingNormalRequestSerailizer>(addMoneyDeletingNormalRequestSerailizer: AddMoneyDeletingNormalRequestSerailizer, options?: HttpClientBodyOptions): Observable<TData>;
- adminExtraAddMoneyDeletingNormalCreate<TData = AddMoneyDeletingNormalRequestSerailizer>(addMoneyDeletingNormalRequestSerailizer: AddMoneyDeletingNormalRequestSerailizer, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminExtraAddMoneyDeletingNormalCreate<TData = AddMoneyDeletingNormalRequestSerailizer>(addMoneyDeletingNormalRequestSerailizer: AddMoneyDeletingNormalRequestSerailizer, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
   adminExtraAddMoneyDeletingNormalCreate<TData = AddMoneyDeletingNormalRequestSerailizer>(
-    addMoneyDeletingNormalRequestSerailizer: AddMoneyDeletingNormalRequestSerailizer, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    addMoneyDeletingNormalRequestSerailizer: AddMoneyDeletingNormalRequestSerailizer,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminExtraAddMoneyDeletingNormalCreate<TData = AddMoneyDeletingNormalRequestSerailizer>(
+    addMoneyDeletingNormalRequestSerailizer: AddMoneyDeletingNormalRequestSerailizer,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminExtraAddMoneyDeletingNormalCreate<TData = AddMoneyDeletingNormalRequestSerailizer>(
+    addMoneyDeletingNormalRequestSerailizer: AddMoneyDeletingNormalRequestSerailizer,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminExtraAddMoneyDeletingNormalCreate<TData = AddMoneyDeletingNormalRequestSerailizer>(
+    addMoneyDeletingNormalRequestSerailizer: AddMoneyDeletingNormalRequestSerailizer,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
       return this.http.post<TData>(
-      `/api/v1/admin/extra/add-money-deleting-normal`,
-      addMoneyDeletingNormalRequestSerailizer,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'events',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/extra/add-money-deleting-normal`,
+        addMoneyDeletingNormalRequestSerailizer,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'events',
+        },
+      );
     }
 
     if (options?.observe === 'response') {
       return this.http.post<TData>(
-      `/api/v1/admin/extra/add-money-deleting-normal`,
-      addMoneyDeletingNormalRequestSerailizer,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'response',
-      }
-    );
+        `${this.baseUrl}/api/v1/admin/extra/add-money-deleting-normal`,
+        addMoneyDeletingNormalRequestSerailizer,
+        {
+          ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+          observe: 'response',
+        },
+      );
     }
 
     return this.http.post<TData>(
-      `/api/v1/admin/extra/add-money-deleting-normal`,
-      addMoneyDeletingNormalRequestSerailizer,{
+      `${this.baseUrl}/api/v1/admin/extra/add-money-deleting-normal`,
+      addMoneyDeletingNormalRequestSerailizer,
+      {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'body',
-      }
+      },
     );
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminMoneyDeletingList<TData = PaginatedMoneyDeletingListList>(params?: AdminMoneyDeletingListParams, options?: HttpClientBodyOptions): Observable<TData>;
- adminMoneyDeletingList<TData = PaginatedMoneyDeletingListList>(params?: AdminMoneyDeletingListParams, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminMoneyDeletingList<TData = PaginatedMoneyDeletingListList>(params?: AdminMoneyDeletingListParams, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminMoneyDeletingList<TData = PaginatedMoneyDeletingListList>(
-    params?: AdminMoneyDeletingListParams, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
-    const filteredParams = filterParams({...params, ...options?.params}, new Set<string>([]));
+    params?: AdminMoneyDeletingListParams,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminMoneyDeletingList<TData = PaginatedMoneyDeletingListList>(
+    params?: AdminMoneyDeletingListParams,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminMoneyDeletingList<TData = PaginatedMoneyDeletingListList>(
+    params?: AdminMoneyDeletingListParams,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminMoneyDeletingList<TData = PaginatedMoneyDeletingListList>(
+    params?: AdminMoneyDeletingListParams,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    const filteredParams = filterParams({ ...params, ...options?.params }, new Set<string>([]));
 
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/admin/money/deleting/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/money/deleting/`, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/admin/money/deleting/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/money/deleting/`, {
+        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-        params: filteredParams,}
-    );
+        params: filteredParams,
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/admin/money/deleting/`,{
-    ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-        params: filteredParams,}
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/money/deleting/`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+      params: filteredParams,
+    });
   }
-/**
- * A base class that inherit from `ModelViewSet` applying
- * django filter package filters and ordering filter
- */
- adminMoneyDeletingRetrieve<TData = MoneyDeletingList>(id: number, options?: HttpClientBodyOptions): Observable<TData>;
- adminMoneyDeletingRetrieve<TData = MoneyDeletingList>(id: number, options?: HttpClientEventOptions): Observable<HttpEvent<TData>>;
- adminMoneyDeletingRetrieve<TData = MoneyDeletingList>(id: number, options?: HttpClientResponseOptions): Observable<AngularHttpResponse<TData>>;
+  /**
+   * A base class that inherit from `ModelViewSet` applying
+   * django filter package filters and ordering filter
+   */
   adminMoneyDeletingRetrieve<TData = MoneyDeletingList>(
-    id: number, options?: HttpClientObserveOptions): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
+    id: number,
+    options?: HttpClientBodyOptions,
+  ): Observable<TData>;
+  adminMoneyDeletingRetrieve<TData = MoneyDeletingList>(
+    id: number,
+    options?: HttpClientEventOptions,
+  ): Observable<HttpEvent<TData>>;
+  adminMoneyDeletingRetrieve<TData = MoneyDeletingList>(
+    id: number,
+    options?: HttpClientResponseOptions,
+  ): Observable<AngularHttpResponse<TData>>;
+  adminMoneyDeletingRetrieve<TData = MoneyDeletingList>(
+    id: number,
+    options?: HttpClientObserveOptions,
+  ): Observable<TData | HttpEvent<TData> | AngularHttpResponse<TData>> {
     if (options?.observe === 'events') {
-      return this.http.get<TData>(
-      `/api/v1/admin/money/deleting/${id}/`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/money/deleting/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'events',
-      }
-    );
+      });
     }
 
     if (options?.observe === 'response') {
-      return this.http.get<TData>(
-      `/api/v1/admin/money/deleting/${id}/`,{
+      return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/money/deleting/${id}/`, {
         ...(options as Omit<NonNullable<typeof options>, 'observe'>),
         observe: 'response',
-      }
-    );
+      });
     }
 
-    return this.http.get<TData>(
-      `/api/v1/admin/money/deleting/${id}/`,{
-        ...(options as Omit<NonNullable<typeof options>, 'observe'>),
-        observe: 'body',
-      }
-    );
+    return this.http.get<TData>(`${this.baseUrl}/api/v1/admin/money/deleting/${id}/`, {
+      ...(options as Omit<NonNullable<typeof options>, 'observe'>),
+      observe: 'body',
+    });
   }
-};
-
+}
