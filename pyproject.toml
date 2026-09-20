@@ -3,23 +3,23 @@ name = "zidnahum-hudaa"
 version = "1.0.0"
 description = "A management system for Masjid (Muslim house of worship)."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.14"
 dependencies = [
-    "django>=5.2.11",
+    "django>=6.1.1",
     "django-cors-headers>=4.9.0",
-    "django-filter>=25.2",
-    "django-stubs-ext>=5.2.9",
-    "djangorestframework>=3.16.1",
+    "django-filter>=26.1",
+    "django-stubs-ext>=6.1.1",
+    "djangorestframework>=3.18.1",
     "djangorestframework-simplejwt>=5.5.1",
-    "drf-spectacular>=0.29.0",
+    "drf-spectacular>=0.30.0",
     "openpyxl>=3.1.5",
-    "pillow>=12.1.1",
+    "pillow>=12.3.0",
 ]
 
 [dependency-groups]
 dev = [
-    "django-stubs>=5.2.9",
-    "djangorestframework-stubs>=3.16.8",
+    "django-stubs>=6.1.1",
+    "djangorestframework-stubs>=3.18.1",
 ]
 
 [tool.ruff]
