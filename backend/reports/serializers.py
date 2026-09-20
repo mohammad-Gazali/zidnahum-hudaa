@@ -12,6 +12,8 @@ class ReportsRequestWithMasjedSerializer(serializers.Serializer):
     masjed = serializers.ChoiceField(choices=StudentMasjedChoice.choices)
 
 class ReportMemorizeMessageSerializer(serializers.ModelSerializer):
+    changes = serializers.ListField(child=serializers.IntegerField(), required=False)
+
     class Meta:
         model = MemorizeMessage
         exclude = ['student']

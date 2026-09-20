@@ -1,3 +1,5 @@
+import re
+from functools import lru_cache
 from typing import Any, Dict, List, Literal, Type
 
 from django.contrib.auth import get_user_model
@@ -82,6 +84,24 @@ def create_serializer(
   `ref_name`.
   """
 
+  cache_fields = (
+    serializer_fields
+    if isinstance(serializer_fields, str)
+    else tuple(serializer_fields)
+  )
+
+  return _create_serializer_cached(
+    model_class, cache_fields, exclude_fields, extra_ref
+  )
+
+
+@lru_cache(maxsize=None)
+def _create_serializer_cached(
+  model_class: Type[Model],
+  serializer_fields: List[str] | Literal["__all__"],
+  exclude_fields: bool,
+  extra_ref: Any,
+) -> Type[ModelSerializer]:
   if exclude_fields:
 
     class Result(ModelSerializer):
@@ -124,6 +144,7 @@ def create_serializer(
 
   return Result
 
+
 def create_model_view_set(
   model: Type[Model],
   fields: List[str] | Literal["__all__"] = "__all__",
@@ -165,6 +186,7 @@ def create_model_view_set(
   - `no_pagination` removes the pagination if it is True
   """
 
+  @extend_schema(tags=[f"admin-{pascal_to_kebab(model.__name__)}"])
   class Result(BaseViewSet):
     permission_classes = [IsSuperUser if superuser else IsAdminUser]
     http_method_names = methods or ["get", "post", "put", "delete"]
@@ -301,3 +323,11 @@ def create_model_view_set(
       return super().perform_create(serializer)
 
   return Result
+
+
+def pascal_to_kebab(name):
+  """
+  PascalCase -> pascal-case
+  MyVariableName -> my-variable-name
+  """
+  return re.sub(r"(?<!^)(?=[A-Z])", "-", name).lower()

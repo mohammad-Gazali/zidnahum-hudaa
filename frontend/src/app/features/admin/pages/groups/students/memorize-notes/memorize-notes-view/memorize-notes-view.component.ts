@@ -1,0 +1,52 @@
+import { Component, inject } from '@angular/core';
+import { map } from 'rxjs';
+import { ViewComponent, ViewComponentConfig } from '@admin/components';
+import { MemorizeNotesList, AdminUserService } from '@shared';
+import { StudentsBase } from '../../students.base';
+
+@Component({
+  selector: 'app-memorize-notes-view',
+  imports: [ViewComponent],
+  templateUrl: './memorize-notes-view.component.html',
+  styleUrl: './memorize-notes-view.component.scss',
+})
+export class MemorizeNotesViewComponent extends StudentsBase {
+  private auth = inject(AdminUserService);
+
+  public config: ViewComponentConfig<MemorizeNotesList> = {
+    groupName: 'students',
+    itemNameAndRouteName: 'memorize-notes',
+    viewFunc: (id) => this.memorizeNotes.adminStudentsMemorizeNotesRetrieve(Number(id)),
+    deleteFunc: (id) =>
+      this.memorizeNotes.adminActionsMemorizeNotesDeleteCreate({ ids: [Number(id)] }),
+    fieldsInfo: {
+      sended_at: {
+        type: 'datetime',
+      },
+      master: {
+        type: 'relation',
+        relationType: 'nullable',
+        getFieldValueFunc: () =>
+          this.auth.adminAuthUserList().pipe(
+            map((list) =>
+              list.map((u) => ({
+                id: u.id,
+                name: String(u.first_name) + ' ' + String(u.last_name),
+              })),
+            ),
+          ),
+      },
+      student: {
+        type: 'link',
+        stringField: 'student_name',
+        getUrlFunc: (id) => `/students/student/view/${id}`,
+      },
+      student_name: {
+        type: 'ignore',
+      },
+      content: {
+        type: 'string',
+      },
+    },
+  };
+}

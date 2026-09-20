@@ -167,6 +167,11 @@ SPECTACULAR_SETTINGS = {
   "VERSION": "1.0.0",
   "SERVE_INCLUDE_SCHEMA": False,
   "SCHEMA_PATH_PREFIX": "/api/v1",
+
+  "POSTPROCESSING_HOOKS": [
+    "backend.schema_hooks.disambiguate_duplicate_schema_names",
+    "backend.schema_hooks.set_enum_varnames",
+  ],
 }
 
 

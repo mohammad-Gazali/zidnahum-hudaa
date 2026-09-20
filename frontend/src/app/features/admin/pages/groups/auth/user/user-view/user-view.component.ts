@@ -1,0 +1,58 @@
+import { Component } from '@angular/core';
+import { ViewComponent, ViewComponentConfig } from '@admin/components';
+import {
+  UserUpdate,
+  UserDetails,
+} from '@shared';
+import { Validators } from '@angular/forms';
+import { AuthBase } from '../../auth.base';
+
+@Component({
+  selector: 'app-user-view',
+  imports: [ViewComponent],
+  templateUrl: './user-view.component.html',
+  styleUrl: './user-view.component.scss',
+})
+export class UserViewComponent extends AuthBase {
+  public config: ViewComponentConfig<UserDetails, UserUpdate> = {
+    fieldsInfo: {
+      username: {
+        type: 'string',
+        validators: [Validators.required],
+      },
+      first_name: {
+        type: 'string',
+        validators: [Validators.required],
+      },
+      last_name: {
+        type: 'string',
+        validators: [Validators.required],
+      },
+      is_active: {
+        type: 'boolean',
+      },
+      is_staff: {
+        type: 'boolean',
+      },
+      is_superuser: {
+        type: 'boolean',
+      },
+      groups: {
+        type: 'relation',
+        relationType: 'multiple',
+        getFieldValueFunc: () => this.groups.adminAuthGroupList(),
+        getUrlFunc: (id) => `/auth/group/view/${id}`,
+      },
+    },
+    groupName: 'auth',
+    itemNameAndRouteName: 'user',
+    viewFunc: (id) => this.auth.adminAuthUserRetrieve(Number(id)),
+    deleteFunc: (id) => this.auth.adminAuthUserDestroy(Number(id)),
+    updateFunc: (id, data) => this.auth.adminAuthUserUpdate(Number(id), data),
+    extraAction: {
+      name: 'Reset Password',
+      icon: 'lock',
+      link: (id) => `/auth/user/update-password/${id}`,
+    },
+  };
+}

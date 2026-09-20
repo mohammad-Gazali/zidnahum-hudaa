@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from comings.models import ComingCategory, Coming
+from students.models import StudentMasjedChoice
 
 
 class ComingCategorySerializer(serializers.ModelSerializer):
@@ -16,7 +17,7 @@ class ComingCreateSerializer(serializers.ModelSerializer):
 
 class ComingListSerializer(serializers.ModelSerializer):
     student = serializers.CharField(source="student.name")
-    masjed = serializers.IntegerField(source="student.masjed")
+    masjed = serializers.ChoiceField(choices=StudentMasjedChoice.choices, source="student.masjed")
     
     class Meta:
         model = Coming

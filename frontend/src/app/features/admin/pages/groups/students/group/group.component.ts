@@ -1,0 +1,32 @@
+import { Component } from '@angular/core';
+import { TableComponent, TableComponentConfig } from '@admin/components';
+import { deleteModelAction } from '@admin/helpers';
+import { StudentGroupList } from '@shared';
+import { StudentsBase } from '../students.base';
+
+@Component({
+  selector: 'app-student-group',
+  imports: [TableComponent],
+  templateUrl: './group.component.html',
+  styleUrl: './group.component.scss',
+})
+export class StudentGroupComponent extends StudentsBase {
+  public config: TableComponentConfig<StudentGroupList> = {
+    createUrl: '/students/student-group/create',
+    getUrlFunc: (id) => `/students/student-group/view/${id}`,
+    dataFunc: (options) => {
+      return this.studentsGroup.adminStudentsGroupList(options);
+    },
+    hasPagination: false,
+    actions: [
+      deleteModelAction('مجموعات الطلاب', (ids) =>
+        this.studentsGroup.adminActionsStudentGroupDeleteCreate({ ids }),
+      ),
+    ],
+    columns: {
+      name: {
+        display: 'normal',
+      },
+    },
+  };
+}

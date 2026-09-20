@@ -1,0 +1,153 @@
+import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import {
+  NonNullableFormBuilder,
+  FormGroupDirective,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatCard } from '@angular/material/card';
+import { MatFormField, MatOption, MatSelect } from '@angular/material/select';
+import { MatError, MatInput, MatLabel } from '@angular/material/input';
+import { MatChipRemove, MatChipRow } from '@angular/material/chips';
+import { MatIcon } from '@angular/material/icon';
+import {
+  MatRadioButton,
+  MatRadioChange,
+  MatRadioGroup,
+} from '@angular/material/radio';
+import { MatButton } from '@angular/material/button';
+import { finalize } from 'rxjs';
+import { StudentSearchComponent, SearchStudent } from '@admin/components';
+import {
+  AdminStudentCategoryService,
+  MasjedService,
+  SnackbarService,
+  LOADING,
+  TranslatePipe,
+  MasjedEnum,
+} from '@shared';
+import { MoneyBase } from '../money.base';
+
+@Component({
+  selector: 'app-add-money-deleting',
+  templateUrl: './add-money-deleting.component.html',
+  styleUrl: './add-money-deleting.component.scss',
+  imports: [
+    MatCard,
+    MatSelect,
+    MatOption,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatError,
+    MatRadioGroup,
+    MatRadioButton,
+    MatButton,
+    MatChipRow,
+    MatChipRemove,
+    MatIcon,
+    StudentSearchComponent,
+    ReactiveFormsModule,
+    TranslatePipe,
+  ],
+})
+export class AddMoneyDeletingComponent extends MoneyBase {
+  private studentCategory = inject(AdminStudentCategoryService);
+  private fb = inject(NonNullableFormBuilder);
+  private masjed = inject(MasjedService);
+  private snackbar = inject(SnackbarService);
+  private destroyRef = inject(DestroyRef);
+  public loading = inject(LOADING);
+
+  public selectedStudents = signal<Set<SearchStudent>>(new Set());
+  public mode = signal<'normal' | 'category'>('normal');
+  public causes = toSignal(
+    this.moneyDeletingCause.adminMoneyDeletingCauseList(),
+  );
+  public categories = toSignal(this.studentCategory.adminStudentsCategoryList());
+  public masjeds = toSignal(this.masjed.getMasjeds());
+
+  public normalForm = this.fb.group({
+    cause: this.fb.control<number | undefined>(undefined, [
+      Validators.required,
+    ]),
+    value: this.fb.control<number | undefined>(undefined, [
+      Validators.required,
+    ]),
+  });
+
+  public categoryForm = this.fb.group({
+    masjed: this.fb.control<MasjedEnum | undefined>(undefined, [
+      Validators.required,
+    ]),
+    category: this.fb.control<number | undefined>(undefined, [
+      Validators.required,
+    ]),
+    cause: this.fb.control<number | undefined>(undefined, [
+      Validators.required,
+    ]),
+    value: this.fb.control<number | undefined>(undefined, [
+      Validators.required,
+    ]),
+  });
+
+  removeStudent(student: SearchStudent) {
+    this.selectedStudents.update(
+      (pre) => new Set([...pre].filter((s) => s.id !== student.id)),
+    );
+  }
+
+  public radioChange(change: MatRadioChange) {
+    this.mode.set(change.value);
+  }
+
+  public normalSubmit(form: FormGroupDirective) {
+    if (!this.normalForm.valid || this.loading()) return;
+    if (this.selectedStudents().size === 0) {
+      this.snackbar.error('يجب اختيار الطلاب قبل الإضافة');
+      return;
+    }
+
+    this.loading.set(true);
+
+    this.money
+      .adminExtraAddMoneyDeletingNormalCreate({
+        students: [...this.selectedStudents()].map((s) => s.id),
+        value: this.normalForm.value.value ?? 0,
+        cause: this.normalForm.value.cause ?? -1,
+      })
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.loading.set(false)),
+      )
+      .subscribe(() => {
+        this.selectedStudents.set(new Set());
+        this.snackbar.success('تمت الإضافة بنجاح');
+        form.resetForm();
+      });
+  }
+
+  public categorySubmit(form: FormGroupDirective) {
+    if (!this.categoryForm.valid || this.loading()) return;
+
+    this.loading.set(true);
+
+    this.money
+      .adminExtraAddMoneyDeletingCategoryCreate({
+        masjed: this.categoryForm.value.masjed ?? 1,
+        category: this.categoryForm.value.category ?? -1,
+        value: this.categoryForm.value.value ?? 0,
+        cause: this.categoryForm.value.cause ?? -1,
+      })
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        finalize(() => this.loading.set(false)),
+      )
+      .subscribe(() => {
+        this.selectedStudents.set(new Set());
+        this.snackbar.success('تمت الإضافة بنجاح');
+        form.resetForm();
+      });
+  }
+}

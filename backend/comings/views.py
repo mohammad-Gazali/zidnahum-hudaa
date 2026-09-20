@@ -48,6 +48,9 @@ class ComingListCreateView(ListCreateAPIView):
       return ComingListSerializer
 
   def get_queryset(self):
+    if getattr(self, "swagger_fake_view", False):
+      return Coming.objects.none()
+
     student_name = self.request.GET.get("student__name")
 
     if student_name:
@@ -92,3 +95,4 @@ class ComingListCreateView(ListCreateAPIView):
 class ComingDeleteView(DestroyAPIView):
   permission_classes = [IsComingGroup, IsMasterForComing]
   queryset = Coming.objects.all()
+  serializer_class = ComingListSerializer

@@ -280,7 +280,10 @@ class StudentUpdateAlarbaeinAlnawawiaView(HandledExceptionAPIView):
   permission_classes = [IsHadeethGroup]
   http_method_names = ["put"]
 
-  @extend_schema(request=StudentUpdateAlarbaeinAlnawawiaSerializer)
+  @extend_schema(
+    request=StudentUpdateAlarbaeinAlnawawiaSerializer,
+    responses={HTTP_204_NO_CONTENT: None},
+  )
   @transaction.atomic
   def put(self, *args, **kwargs):
     pk: int = kwargs.get("pk")
@@ -322,7 +325,10 @@ class StudentUpdateExtraHadeethView(HandledExceptionAPIView):
   permission_classes = [IsHadeethGroup]
   http_method_names = ["put"]
 
-  @extend_schema(request=StudentUpdateExtraHadeethSerializer)
+  @extend_schema(
+    request=StudentUpdateExtraHadeethSerializer,
+    responses={HTTP_204_NO_CONTENT: None},
+  )
   @transaction.atomic
   def put(self, *args, **kwargs):
     pk: int = kwargs.get("pk")
@@ -361,7 +367,10 @@ class StudentUpdateRiadAlsaalihinView(HandledExceptionAPIView):
   permission_classes = [IsHadeethGroup]
   http_method_names = ["put"]
 
-  @extend_schema(request=StudentUpdateRiadAlsaalihinSerializer)
+  @extend_schema(
+    request=StudentUpdateRiadAlsaalihinSerializer,
+    responses={HTTP_204_NO_CONTENT: None},
+  )
   @transaction.atomic
   def put(self, *args, **kwargs):
     pk: int = kwargs.get("pk")
@@ -399,6 +408,10 @@ class StudentUpdateAllahNamesView(HandledExceptionAPIView):
   permission_classes = [IsHadeethGroup]
   http_method_names = ["put"]
 
+  @extend_schema(
+    request=OpenApiTypes.NONE,
+    responses={HTTP_204_NO_CONTENT: None},
+  )
   @transaction.atomic
   def put(self, *args, **kwargs):
     pk: int = kwargs.get("pk")
@@ -428,7 +441,10 @@ class StudentUpdatePartsReceivedView(HandledExceptionAPIView):
   permission_classes = [IsMemoGroup]
   http_method_names = ["put"]
 
-  @extend_schema(request=StudentUpdatePartsReceivedSerializer)
+  @extend_schema(
+    request=StudentUpdatePartsReceivedSerializer,
+    responses={HTTP_204_NO_CONTENT: None},
+  )
   def put(self, *args, **kwargs):
     pk: int = kwargs.get("pk")
     student: Student = get_object_or_404(Student, pk=pk)

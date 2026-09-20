@@ -23,3 +23,4 @@ class MemorizeMessageDeleteView(DestroyAPIView):
     # but it is rare so I ignore it
     permission_classes = [IsMemoGroup, IsMasterForMessage]
     queryset = MemorizeMessage.objects.all()
+    serializer_class = MemorizeMessageSerializer

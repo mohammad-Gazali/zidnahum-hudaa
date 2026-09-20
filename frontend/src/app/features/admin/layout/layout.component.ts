@@ -1,0 +1,70 @@
+import {
+  Component,
+  inject,
+  linkedSignal,
+  signal,
+  viewChild,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  MatSidenav,
+  MatSidenavContainer,
+  MatSidenavContent,
+} from '@angular/material/sidenav';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { SidenavComponent } from './sidenav/sidenav.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { AuthService } from '@shared';
+import { RouterOutlet } from '@angular/router';
+
+@Component({
+  selector: 'app-admin-layout',
+  templateUrl: './layout.component.html',
+  styleUrl: './layout.component.scss',
+  imports: [
+    NavbarComponent,
+    SidenavComponent,
+    MatSidenavContainer,
+    MatSidenavContent,
+    MatSidenav,
+    RouterOutlet,
+  ],
+})
+export class LayoutComponent {
+  public breakpointObserver = inject(BreakpointObserver);
+  private auth = inject(AuthService);
+
+  public mode = signal<'over' | 'side'>('side');
+  public open = linkedSignal(() => {
+    const details = this.auth.currentUser();
+
+    if (!details) return false;
+
+    const sidenavState = localStorage.getItem('zidnahum-sidenav') ?? 'close';
+
+    return sidenavState === 'open';
+  });
+
+  public sidenav = viewChild.required(MatSidenav);
+
+  constructor() {
+    this.breakpointObserver
+      .observe([Breakpoints.XSmall, Breakpoints.Small, Breakpoints.Medium])
+      .pipe(takeUntilDestroyed())
+      .subscribe((result) => {
+        if (result.matches) {
+          this.mode.set('over');
+        } else {
+          this.mode.set('side');
+        }
+      });
+  }
+
+  handleSidenavChange(opened: boolean) {
+    localStorage.setItem('zidnahum-sidenav', opened ? 'open' : 'close');
+  }
+
+  handleSidenavItemClick() {
+    if (this.mode() === 'over') this.sidenav().close();
+  }
+}
