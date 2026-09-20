@@ -43,6 +43,10 @@ The `make` targets call `@python`/`@ng` — activate the venv first (`source .ve
 - Run a single app's tests: `python -W ignore::RuntimeWarning backend/manage.py test backend/students`
 - Serve frontend in dev: `ng serve` in `frontend/` (client at `/`, admin at `/admin`)
 
+### Custom management commands
+
+Besides `build`, `points`, and `reset-data`
+
 ## Lint & format
 
 - Ruff with indent-width 2, double quotes, space indent
