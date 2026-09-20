@@ -28,20 +28,20 @@
                         }
                     } @else if (field.type === 'date') {
                         <span dir="ltr">
-                            {{ date.format(field.value, 'yyyy/MM/dd') || '-' }}
+                            {{ date.format($any(field.value), 'yyyy/MM/dd') || '-' }}
                         </span>
                     } @else if (field.type === 'datetime') {
                         <span dir="ltr">
-                            {{ date.format(field.value, 'yyyy/MM/dd hh:mm a') || '-' }}
+                            {{ date.format($any(field.value), 'yyyy/MM/dd hh:mm a') || '-' }}
                         </span>
                     } @else if (field.type === 'relation') {
                         @if (extraData()[field.name].getUrlFunc !== undefined && field.value !== null) {
-                            <a class="primary" routerLink="{{ '/admin' + extraData()[field.name].getUrlFunc!(field.value) }}">
-                                {{ extraData()[field.name].map.get(field.value) ?? '-' }}
+                            <a class="primary" routerLink="{{ '/admin' + extraData()[field.name].getUrlFunc!($any(field.value)) }}">
+                                {{ extraData()[field.name].map.get($any(field.value)) ?? '-' }}
                             </a>
                         } @else {
                             <span>
-                                {{ extraData()[field.name].map.get(field.value) ?? '-' }}
+                                {{ extraData()[field.name].map.get($any(field.value)) ?? '-' }}
                             </span>
                         }
                     } @else if (field.type === 'link') {
@@ -86,11 +86,11 @@
                 } @else if (field.type === 'date' || field.type === 'datetime') {
                     @if (field.type === 'date') {
                         <span [class.hidden]="editMode()" dir="ltr">
-                            {{ date.format(field.value, 'yyyy/MM/dd') || '-' }}
+                            {{ date.format($any(field.value), 'yyyy/MM/dd') || '-' }}
                         </span>
                     } @else {
                         <span [class.hidden]="editMode()" dir="ltr">
-                            {{ date.format(field.value, 'yyyy/MM/dd hh:mm a') || '-' }}
+                            {{ date.format($any(field.value), 'yyyy/MM/dd hh:mm a') || '-' }}
                         </span>
                     }
                     <mat-form-field [class.hidden]="!editMode()">
@@ -102,7 +102,7 @@
                 } @else if (field.type === 'relation') {
                     @if (extraData()[field.name].getUrlFunc !== undefined && field.value !== null) {
                         @if (field.relationType === 'multiple') {
-                            @for (item of field.value; track item) {
+                            @for (item of $any(field.value); track item) {
                                 <a class="primary" [class.hidden]="editMode()" routerLink="{{ '/admin' + extraData()[field.name].getUrlFunc!(item) }}">
                                     {{ extraData()[field.name].map.get(item) ?? '-' }}
                                 </a>
@@ -111,14 +111,14 @@
                                 <span [class.hidden]="editMode()">-</span>
                             }
                         } @else {
-                            <a class="primary" [class.hidden]="editMode()" routerLink="{{ '/admin' + extraData()[field.name].getUrlFunc!(field.value) }}">
-                                {{ extraData()[field.name].map.get(field.value) ?? '-' }}
+                            <a class="primary" [class.hidden]="editMode()" routerLink="{{ '/admin' + extraData()[field.name].getUrlFunc!($any(field.value)) }}">
+                                {{ extraData()[field.name].map.get($any(field.value)) ?? '-' }}
                             </a>
                         }
                     } @else {
                         @if (field.relationType === 'multiple') {
                             <span [class.hidden]="editMode()">
-                                @for (item of field.value; track item) {
+@for (item of $any(field.value); track item) {
                                     {{ extraData()[field.name].map.get(item) ?? '-' }}
                                     <span [class.hidden]="editMode()">@if (!$last) {&nbsp;,&nbsp;}</span>
                                 } @empty {
@@ -127,7 +127,7 @@
                             </span>
                         } @else {
                             <span [class.hidden]="editMode()">
-                                {{ extraData()[field.name].map.get(field.value) ?? '-' }}
+                                {{ extraData()[field.name].map.get($any(field.value)) ?? '-' }}
                             </span>
                         }
                     }
@@ -172,8 +172,8 @@
                 } @else if (field.type === 'changes') {
                     <!-- memorize message specific -->
                     <app-changes-field
-                    [content]="field.value"
-                    [type]="findMessageType()"></app-changes-field>
+                    [content]="$any(field.value)"
+                    [type]="$any(findMessageType())"></app-changes-field>
 
                 } @else if (field.type === 'file-link') {
                     <a class="primary" target="_blank" [href]="field.value">

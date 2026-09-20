@@ -28,10 +28,10 @@ import { AuthService } from '@shared';
 })
 export class SidenavComponent {
   public groupsService = inject(GroupsService);
-  public onItemClick = output();
+  public itemClick = output();
   public userDetails = inject(AuthService).currentUser;
 
   close() {
-    this.onItemClick.emit();
+    this.itemClick.emit();
   }
 }

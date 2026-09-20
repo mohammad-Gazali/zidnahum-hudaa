@@ -1,7 +1,6 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { inject, Injectable, signal } from '@angular/core';
 import { map, shareReplay } from 'rxjs';
-import { Group } from '@shared';
 
 @Injectable({
   providedIn: 'root'

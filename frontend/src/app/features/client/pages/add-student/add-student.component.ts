@@ -1,6 +1,7 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import {
   LOADING,
+  MasjedEnum,
   MasjedPipe,
   MasjedService,
   SnackbarService,
@@ -75,23 +76,23 @@ export class AddStudentComponent {
   private mobileUtils = inject(MobileUtilsService);
 
   protected masjedOptions = this.masjed.masjedOptions;
-  protected categories = toSignal<StudentCategory[]>(
+  protected categories = toSignal(
     this.students.studentsCategoryList(),
     {
-      initialValue: [] as any,
+      initialValue: [] as StudentCategory[],
     },
   );
-  protected groups = toSignal<StudentGroup[]>(
+  protected groups = toSignal(
     this.students.studentsGroupList(),
     {
-      initialValue: [] as any,
+      initialValue: [] as StudentGroup[],
     },
   );
   protected form = this.fb.group({
     name: this.fb.control('', [Validators.required]),
     mother_name: this.fb.control('', [Validators.required]),
     birthdate: this.fb.control<Date | null>(null),
-    masjed: this.fb.control<1 | 2 | 3 | 4>(undefined as any, [
+    masjed: this.fb.control<MasjedEnum | undefined>(undefined, [
       Validators.required,
     ]),
     address: this.fb.control(''),
@@ -121,6 +122,7 @@ export class AddStudentComponent {
         birthdate: value.birthdate
           ? formatDate(value.birthdate, 'yyyy-MM-dd', 'en-Us')
           : null,
+        masjed: value.masjed as MasjedEnum,
       })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({

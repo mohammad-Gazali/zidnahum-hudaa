@@ -74,8 +74,8 @@ export class LogMemoComponent {
   protected hasNext = signal(false);
   protected hasPrevious = signal(false);
   protected loadingIds = signal<number[]>([]);
-  protected messages = toSignal<MemorizeMessage[]>(this.messages$, {
-    initialValue: [] as any,
+  protected messages = toSignal(this.messages$, {
+    initialValue: [] as MemorizeMessage[],
   });
 
   nextPage() {

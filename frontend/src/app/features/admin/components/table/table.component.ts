@@ -48,9 +48,8 @@ import { DateService, HelperService } from '@admin/services';
 import { MasjedService } from '@shared';
 import { ChangesFieldComponent } from '../changes-field/changes-field.component';
 import { LOADING } from '@shared';
-import { TableConfirmationDialogComponent } from './table-confirmation-dialog/table-confirmation-dialog.component';
-import { TableConfirmationDialogData } from './table-confirmation-dialog/table-confirmation-dialog.interface';
 import { SnackbarService } from '@shared';
+import { ConfirmationService } from '@shared';
 
 @Component({
   selector: 'app-table',
@@ -90,6 +89,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
   private masjed = inject(MasjedService);
   private destroyRef = inject(DestroyRef);
   private snackbar = inject(SnackbarService);
+  private confirmation = inject(ConfirmationService);
   public loading = inject(LOADING);
   public date = inject(DateService);
   public helper = inject(HelperService);
@@ -107,18 +107,13 @@ export class TableComponent<T extends { id: number }> implements OnInit {
   public changesFieldHidden = signal(true);
   private pageSizeOptions = [20, 40, 100, 200];
 
-  public _config = input.required<TableComponentConfig<T>>({
-    alias: 'config',
-  });
-  get config() {
-    return this._config();
-  }
+  public readonly config = input.required<TableComponentConfig<T>>();
 
   private paginator = viewChild.required(MatPaginator);
   private sort = viewChild.required(MatSort);
 
   public displayedColumns = computed(() => {
-    const columns = Object.entries<TableFieldConfig>(this.config.columns)
+    const columns = Object.entries<TableFieldConfig>(this.config().columns)
       .filter(([, field]) => field.display !== 'ignore')
       .filter(([name]) => name !== 'changes' || !this.changesFieldHidden())
       .map(([name]) => name);
@@ -128,7 +123,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
   });
 
   ngOnInit(): void {
-    Object.entries<TableFieldConfig>(this.config.columns).forEach(
+    Object.entries<TableFieldConfig>(this.config().columns).forEach(
       ([name, config]) => {
         if (config.display === 'relation') {
           config
@@ -152,7 +147,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
       },
     );
 
-    if (this.config.useStudentMasjedFilter) {
+    if (this.config().useStudentMasjedFilter) {
       this.isFilters.set(true);
       this.masjed
         .getMasjeds()
@@ -170,7 +165,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
   }
 
   onPageChange() {
-    if (!this.config.hasPagination) return;
+    if (!this.config().hasPagination) return;
 
     this.fetchData(false, false);
   }
@@ -212,9 +207,11 @@ export class TableComponent<T extends { id: number }> implements OnInit {
   }
 
   masterToggle() {
-    this.isAllSelected()
-      ? this.selection.clear()
-      : this.dataSource.data.forEach((row) => this.selection.select(row));
+    if (this.isAllSelected()) {
+      this.selection.clear();
+    } else {
+      this.dataSource.data.forEach((row) => this.selection.select(row));
+    }
   }
 
   addFilter(filter: Filter) {
@@ -239,7 +236,9 @@ export class TableComponent<T extends { id: number }> implements OnInit {
   }
 
   searchSubmit() {
-    if (!this.config.searchField || !this.config.hasPagination) return;
+    const config = this.config();
+
+    if (!config.searchField || !config.hasPagination) return;
 
     const searchValue = this.searchForm.value.searchValue;
 
@@ -255,7 +254,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
 
     const newFilter: Filter = {
       type: 'search',
-      name: this.config.searchField,
+      name: config.searchField,
       value: searchValue,
     };
 
@@ -267,7 +266,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
   }
 
   openFiltersDialog() {
-    const fieldsFilters = Object.entries<TableFieldConfig>(this.config.columns)
+    const fieldsFilters = Object.entries<TableFieldConfig>(this.config().columns)
       .filter(([_, config]) => {
         return config.filterType !== undefined;
       })
@@ -304,7 +303,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
         width: '600px',
         data: {
           extraData: this.extraData,
-          filters: this.config.useStudentMasjedFilter
+          filters: this.config().useStudentMasjedFilter
             ? [...fieldsFilters, masjedFilter]
             : fieldsFilters,
         },
@@ -344,7 +343,7 @@ export class TableComponent<T extends { id: number }> implements OnInit {
 
     if (!resetSort && this.sort().direction !== '') {
       const activeField = this.sort().active;
-      options.ordering =
+      options['ordering'] =
         this.sort().direction === 'asc' ? `${activeField}` : `-${activeField}`;
     }
 
@@ -353,13 +352,16 @@ export class TableComponent<T extends { id: number }> implements OnInit {
     }
     this.loading.set(true);
 
-    if (this.config.hasPagination) {
+    const config = this.config();
+
+    if (config.hasPagination) {
       if (!resetPagination) {
-        options.limit = this.paginator().pageSize;
-        options.offset = this.paginator().pageIndex * this.paginator().pageSize;
+        options['limit'] = this.paginator().pageSize;
+        options['offset'] =
+          this.paginator().pageIndex * this.paginator().pageSize;
       }
 
-      this.config
+      config
         .dataFunc(options)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe((res) => {
@@ -377,13 +379,13 @@ export class TableComponent<T extends { id: number }> implements OnInit {
           this.loading.set(false);
         });
     } else {
-      this.config
+      config
         // here we passed directly ordering because when the there is one query
         // param the function accept it directly without being wrapped in object
         //! === Warning ===
         //! SO be careful if there if any new query param added to non-pagination
         //! tables
-        .dataFunc(options?.ordering)
+        .dataFunc(options['ordering'])
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe((res) => {
           this.dataSource.data = res;
@@ -394,14 +396,14 @@ export class TableComponent<T extends { id: number }> implements OnInit {
   }
 
   activeFiltersToOptions() {
-    const result: any = {};
+    const result: Record<string, string | number> = {};
 
     this.activeFilters().forEach((filter) => {
       if (filter.type === 'search' || filter.type === 'select') {
         result[this.helper.snakeToCamel(filter.name)] = filter.value;
       } else if (filter.type === 'date') {
         if (
-          this.config.columns[filter.name as keyof Omit<T, 'id'>].filterType ===
+          this.config().columns[filter.name as keyof Omit<T, 'id'>].filterType ===
           'datetime_date'
         ) {
           result[this.helper.snakeToCamel(filter.name + '_date')] =
@@ -438,33 +440,22 @@ export class TableComponent<T extends { id: number }> implements OnInit {
     const ids = this.selection.selected.map((item) => item.id);
 
     if (action.confirmation) {
-      const ref = this.dialog.open<
-        TableConfirmationDialogComponent,
-        TableConfirmationDialogData
-      >(TableConfirmationDialogComponent, {
-        data: {
-          message: action.confirmation.message,
+      this.confirmation.confirm({
+        message: action.confirmation.message,
+        onConfirm: () => {
+          this.loading.set(true);
+          action
+            .delegateFunc(ids)
+            .pipe(
+              takeUntilDestroyed(this.destroyRef),
+              finalize(() => this.loading.set(false)),
+            )
+            .subscribe(() => {
+              this.snackbar.success('تم الإجراء بنجاح');
+              this.fetchData();
+            });
         },
       });
-
-      ref
-        .afterClosed()
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe((res) => {
-          if (res) {
-            this.loading.set(true);
-            action
-              .delegateFunc(ids)
-              .pipe(
-                takeUntilDestroyed(this.destroyRef),
-                finalize(() => this.loading.set(false)),
-              )
-              .subscribe(() => {
-                this.snackbar.success('تم الإجراء بنجاح');
-                this.fetchData();
-              });
-          }
-        });
     } else {
       this.loading.set(true);
       action

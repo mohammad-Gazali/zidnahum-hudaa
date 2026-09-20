@@ -20,8 +20,10 @@ import {
   MasjedService,
   LOADING,
   MasjedPipe,
+  ReportExportService,
   ReportsStudentCategoryOrGroupStudent,
   ReportsStudentCategoryOrGroupResponse,
+  MasjedEnum,
 } from '@shared';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
@@ -61,11 +63,12 @@ export class ReportsComponent {
   private destroyRef = inject(DestroyRef);
   public masjed = inject(MasjedService);
   public loading = inject(LOADING);
+  private reportExport = inject(ReportExportService);
 
   public masjeds = this.masjed.masjedOptions;
 
   public form = this.fb.group({
-    masjed: this.fb.control<1 | 2 | 3 | 4 | undefined>(undefined, [
+    masjed: this.fb.control<MasjedEnum | undefined>(undefined, [
       Validators.required,
     ]),
     start_date: this.fb.control<Date | undefined>(undefined, [
@@ -92,13 +95,13 @@ export class ReportsComponent {
     };
 
     if (excel) {
-      this.reports
-        .reportsStudentAllCreate(data, { excel: true })
+      this.reportExport
+        .allStudentsReportExcel(data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
         )
-        .subscribe((res) => this.downloadBlob(res as any));
+        .subscribe((res) => this.downloadBlob(res));
     } else {
       this.reports
         .reportsStudentAllCreate(data, { excel: false })
@@ -119,13 +122,13 @@ export class ReportsComponent {
     };
 
     if (excel) {
-      this.reports
-        .reportsCategoryAllCreate(data, { excel: true })
+      this.reportExport
+        .allCategoriesReportExcel(data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
         )
-        .subscribe((res) => this.downloadBlob(res as any));
+        .subscribe((res) => this.downloadBlob(res));
     } else {
       this.reports
         .reportsCategoryAllCreate(data, { excel: false })
@@ -152,13 +155,13 @@ export class ReportsComponent {
     };
 
     if (excel) {
-      this.reports
-        .reportsGroupAllCreate(data, { excel: true })
+      this.reportExport
+        .allGroupsReportExcel(data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
         )
-        .subscribe((res) => this.downloadBlob(res as any));
+        .subscribe((res) => this.downloadBlob(res));
     } else {
       this.reports
         .reportsGroupAllCreate(data, { excel: false })

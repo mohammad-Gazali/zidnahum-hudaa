@@ -6,7 +6,7 @@ import { SnackbarService } from '@shared';
 
 export const deleteModelAction = (
   model: string,
-  delegateFunc: (ids: number[]) => Observable<any>
+  delegateFunc: (ids: number[]) => Observable<unknown>
 ): TableAction => {
   const snackbar = inject(SnackbarService);
 

@@ -1,12 +1,12 @@
 <mat-card>
-  <div (click)="open()" class="card-image-container">
+  <button type="button" (click)="open()" class="card-image-container">
     <div class="image-opacity"></div>
     <img
       mat-card-image
       [src]="news().low_quality_image"
       [alt]="news().title"
     />
-  </div>
+  </button>
   <mat-card-header>
     <mat-card-title>
       {{ news().title }}

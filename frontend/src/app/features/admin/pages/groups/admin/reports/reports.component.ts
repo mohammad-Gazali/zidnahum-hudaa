@@ -15,13 +15,14 @@ import {
   provideNativeDateAdapter,
 } from '@angular/material/core';
 import { finalize } from 'rxjs';
-import { SnackbarService } from '@shared';
+import { MasjedEnum, SnackbarService } from '@shared';
 import { TranslatePipe } from '@shared';
 import {
   AdminUserService,
   StudentsService,
 } from '@shared';
 import { ReportsService } from '@shared';
+import { ReportExportService } from '@shared';
 import {
   ReportsStudentCategoryOrGroupResponse,
   ReportsStudentCategoryOrGroupStudent,
@@ -34,7 +35,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MasjedService } from '@shared';
 import { LOADING } from '@shared';
 import { MatTableModule } from '@angular/material/table';
-import { MemorizeMessageTypeService } from '@shared';
+import { MemorizeMessageTypeService } from '@admin/services';
 import { DatePipe } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCard } from '@angular/material/card';
@@ -78,6 +79,7 @@ export class ReportsComponent {
   private messageType = inject(MemorizeMessageTypeService);
   public masjed = inject(MasjedService);
   public loading = inject(LOADING);
+  private reportExport = inject(ReportExportService);
 
   public selectedStudent = signal<SearchStudent | null>(null);
   public categories = toSignal(this.students.studentsCategoryList());
@@ -129,7 +131,7 @@ export class ReportsComponent {
   });
 
   public form = this.fb.group({
-    masjed: this.fb.control<1 | 2 | 3 | 4 | undefined>(undefined),
+    masjed: this.fb.control<MasjedEnum | undefined>(undefined),
     category: this.fb.control<number | undefined>(undefined),
     group: this.fb.control<number | undefined>(undefined),
     start_date: this.fb.control<Date | undefined>(undefined, [
@@ -196,13 +198,13 @@ export class ReportsComponent {
   private studentSubmit(excel?: boolean): void {
     const id = this.selectedStudent()!.id;
     if (excel) {
-      this.reports
-        .reportsStudentCreate(id, this.getDurationData())
+      this.reportExport
+        .studentReportExcel(id, this.getDurationData())
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
         )
-        .subscribe();
+        .subscribe((res) => this.downloadBlob(res));
     } else {
       this.reports
         .reportsStudentCreate(id, this.getDurationData())
@@ -221,13 +223,13 @@ export class ReportsComponent {
     };
 
     if (excel) {
-      this.reports
-        .reportsStudentAllCreate(data)
+      this.reportExport
+        .allStudentsReportExcel(data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
         )
-        .subscribe();
+        .subscribe((res) => this.downloadBlob(res));
     } else {
       this.reports
         .reportsStudentAllCreate(data)
@@ -249,13 +251,13 @@ export class ReportsComponent {
     };
 
     if (excel) {
-      this.reports
-        .reportsCategoryCreate(id, data)
+      this.reportExport
+        .categoryReportExcel(id, data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
         )
-        .subscribe();
+        .subscribe((res) => this.downloadBlob(res));
     } else {
       this.reports
         .reportsCategoryCreate(id, data)
@@ -274,13 +276,13 @@ export class ReportsComponent {
       masjed: this.form.value.masjed!,
     };
     if (excel) {
-      this.reports
-        .reportsGroupCreate(id, data)
+      this.reportExport
+        .groupReportExcel(id, data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
         )
-        .subscribe();
+        .subscribe((res) => this.downloadBlob(res));
     } else {
       this.reports
         .reportsGroupCreate(id, data)
@@ -299,13 +301,13 @@ export class ReportsComponent {
     };
 
     if (excel) {
-      this.reports
-        .reportsCategoryAllCreate(data)
+      this.reportExport
+        .allCategoriesReportExcel(data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
         )
-        .subscribe();
+        .subscribe((res) => this.downloadBlob(res));
     } else {
       this.reports
         .reportsCategoryAllCreate(data)
@@ -332,13 +334,13 @@ export class ReportsComponent {
     };
 
     if (excel) {
-      this.reports
-        .reportsGroupAllCreate(data)
+      this.reportExport
+        .allGroupsReportExcel(data)
         .pipe(
           takeUntilDestroyed(this.destroyRef),
           finalize(() => this.loading.set(false)),
         )
-        .subscribe();
+        .subscribe((res) => this.downloadBlob(res));
     } else {
       this.reports
         .reportsGroupAllCreate(data)

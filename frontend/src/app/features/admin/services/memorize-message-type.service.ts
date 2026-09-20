@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { MessageTypeEnum } from '../services/api/models';
-import { MESSAGE_TYPE_LABELS } from '../constants/labels.const';
+import { MESSAGE_TYPE_LABELS, MessageTypeEnum } from '@shared';
 
 @Injectable({
   providedIn: 'root',

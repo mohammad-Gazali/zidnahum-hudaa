@@ -24,10 +24,6 @@ export class AuthService {
     return this._token;
   }
 
-  get refreshToken() {
-    return this._refreshToken;
-  }
-
   set token(newVal) {
     if (newVal === null) {
       this._token = null;
@@ -36,6 +32,10 @@ export class AuthService {
       this._token = newVal;
       localStorage.setItem('zidnahum-token', newVal);
     }
+  }
+
+  get refreshToken() {
+    return this._refreshToken;
   }
 
   set refreshToken(newVal) {
@@ -112,7 +112,7 @@ export class AuthService {
           }
           return EMPTY;
         }),
-        tap((res: any) => {
+        tap((res) => {
           this.token = res.access;
           this.refreshToken = res.refresh;
         }),

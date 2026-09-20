@@ -3,6 +3,7 @@ import { QuranMemorzieService } from '@admin/services/quran/quran-memorize.servi
 import { QuranTestService } from '@admin/services/quran/quran-test.service';
 import { MatCard } from '@angular/material/card';
 import { QuranEliteTestService } from '@admin/services/quran/quran-elite-test.service';
+import { MessageTypeEnum } from '@shared';
 
 @Component({
   selector: 'app-changes-field',
@@ -16,5 +17,5 @@ export class ChangesFieldComponent {
   public eliteTest = inject(QuranEliteTestService);
 
   public content = input.required<number[]>();
-  public type = input.required<1 | 2 | 3 | 4 | 5 | 6 | 7 | 8>();
+  public type = input.required<MessageTypeEnum>();
 }

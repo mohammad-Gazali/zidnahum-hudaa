@@ -99,15 +99,17 @@ export class TableFiltersDialogComponent {
   }
 
   submitFilters() {
-    let usedFilters: Filter[] = [];
-    const formValue = this.form.value as any;
+    const usedFilters: Filter[] = [];
+    const formValue = this.form.value as Record<string, unknown>;
 
     this.data.filters.forEach((filter) => {
       if (filter.type === 'date' || filter.type === 'datetime_date') {
         if (formValue[filter.name + '_type'] === 'single') {
-          if (formValue[filter.name] instanceof Date) {
+          const singleValue = formValue[filter.name];
+
+          if (singleValue instanceof Date) {
             const dateValue = this.date.format(
-              formValue[filter.name],
+              singleValue,
               'yyyy-MM-dd',
             );
 
@@ -118,16 +120,16 @@ export class TableFiltersDialogComponent {
             });
           }
         } else {
-          if (
-            formValue[filter.name + '_gt'] instanceof Date &&
-            formValue[filter.name + '_lt'] instanceof Date
-          ) {
+          const gtValue = formValue[filter.name + '_gt'];
+          const ltValue = formValue[filter.name + '_lt'];
+
+          if (gtValue instanceof Date && ltValue instanceof Date) {
             const startDateValue = this.date.format(
-              formValue[filter.name + '_gt'],
+              gtValue,
               'yyyy-MM-dd',
             );
             const endDateValue = this.date.format(
-              formValue[filter.name + '_lt'],
+              ltValue,
               'yyyy-MM-dd',
             );
 
@@ -139,7 +141,7 @@ export class TableFiltersDialogComponent {
           }
         }
       } else if (filter.type === 'exact_null') {
-        const value = formValue[filter.name];
+        const value = formValue[filter.name] as string;
 
         if (value !== '') {
           usedFilters.push({
@@ -149,7 +151,7 @@ export class TableFiltersDialogComponent {
           });
         }
       } else if (filter.type === 'exact') {
-        const value = formValue[filter.name];
+        const value = formValue[filter.name] as string;
 
         if (value !== '') {
           usedFilters.push({
@@ -159,7 +161,7 @@ export class TableFiltersDialogComponent {
           });
         }
       } else if (filter.type === 'boolean') {
-        const value = formValue[filter.name];
+        const value = formValue[filter.name] as string;
 
         usedFilters.push({
           name: filter.name,

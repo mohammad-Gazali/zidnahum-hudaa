@@ -4,9 +4,8 @@ import { ViewComponent, ViewComponentConfig } from '@admin/components';
 import {
   MemorizeMessageList,
   AdminUserService,
-  MemorizeMessageTypeService,
-  LevelService,
 } from '@shared';
+import { LevelService, MemorizeMessageTypeService } from '@admin/services';
 import { StudentsBase } from '../../students.base';
 
 @Component({

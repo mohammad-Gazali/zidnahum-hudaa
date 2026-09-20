@@ -13,10 +13,10 @@ import { MatCard, MatCardContent } from '@angular/material/card';
 export class FilesComponent {
   private globals = inject(GlobalsService);
 
-  protected categories = toSignal<AssetCategory[]>(
+  protected categories = toSignal(
     this.globals.globalsAssetList(),
     {
-      initialValue: [] as any,
+      initialValue: [] as AssetCategory[],
     },
   );
 }

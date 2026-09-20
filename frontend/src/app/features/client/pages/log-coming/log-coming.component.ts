@@ -6,6 +6,7 @@ import {
   ComingsService,
   ConfirmationService,
   LOADING,
+  MasjedEnum,
   MasjedPipe,
   MasjedService,
   SnackbarService,
@@ -105,7 +106,7 @@ export class LogComingComponent {
     startDate: this.fb.control<Date | undefined>(undefined),
     endDate: this.fb.control<Date | undefined>(undefined),
     category: this.fb.control<number | undefined>(undefined),
-    masjed: this.fb.control<1 | 2 | 3 | 4 | undefined>(undefined),
+    masjed: this.fb.control<MasjedEnum | undefined>(undefined),
   });
 
   private page$ = new BehaviorSubject(1);
@@ -151,11 +152,11 @@ export class LogComingComponent {
   protected hasNext = signal(false);
   protected hasPrevious = signal(false);
   protected loadingIds = signal<number[]>([]);
-  protected messages = toSignal<ComingList[]>(this.messages$, {
-    initialValue: [] as any,
+  protected messages = toSignal(this.messages$, {
+    initialValue: [] as ComingList[],
   });
-  protected categories = toSignal<ComingCategory[]>(this.categories$, {
-    initialValue: [] as any,
+  protected categories = toSignal(this.categories$, {
+    initialValue: [] as ComingCategory[],
   });
   protected categoriesMap = toSignal<Map<number, string>>(
     this.categories$.pipe(
@@ -208,5 +209,5 @@ interface SearchFormValue {
   startDate?: Date;
   endDate?: Date;
   category?: number;
-  masjed?: 1 | 2 | 3 | 4;
+  masjed?: MasjedEnum;
 }

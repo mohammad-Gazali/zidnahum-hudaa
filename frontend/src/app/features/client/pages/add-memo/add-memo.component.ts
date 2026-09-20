@@ -118,7 +118,7 @@ export class AddMemoComponent {
 
     const q_memo = [...value.exact];
 
-    value.single && q_memo.push(value.single);
+    if (value.single) q_memo.push(value.single);
 
     if (value.from && value.to) {
       for (let item = value.from; item <= value.to; item++) {
@@ -218,7 +218,7 @@ export class AddMemoComponent {
 
     const q_viewing = [...value.exact];
 
-    value.single && q_viewing.push(value.single);
+    if (value.single) q_viewing.push(value.single);
 
     if (value.from && value.to) {
       for (let item = value.from; item <= value.to; item++) {

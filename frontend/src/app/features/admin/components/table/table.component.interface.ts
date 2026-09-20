@@ -55,7 +55,7 @@ export type TableComponentConfig<T> = {
     }
   | {
       hasPagination: false;
-      dataFunc: (options: any) => Observable<Array<T>>;
+      dataFunc: (options: any) => Observable<T[]>;
     }
 );
 
@@ -67,12 +67,12 @@ export interface PaginationSortOptions<T> {
 }
 
 // Type for response containing a list of items
-type PaginationListResponse<T> = {
+export interface PaginationListResponse<T> {
   count: number;
   next?: null | string;
   previous?: null | string;
-  results: Array<T>;
-};
+  results: T[];
+}
 
 export type TableExtraData = {
   [key: string]: {
@@ -82,7 +82,7 @@ export type TableExtraData = {
     }[];
     map: Map<number, string>;
   };
-};
+}
 
 export interface Filter {
   type: 'search' | 'select' | 'select_null' | 'date' | 'date_range' | 'boolean';
@@ -92,7 +92,7 @@ export interface Filter {
 
 export interface TableAction {
   name: string;
-  delegateFunc: (ids: number[]) => Observable<any>;
+  delegateFunc: (ids: number[]) => Observable<unknown>;
   confirmation?: {
     message: string;
   };

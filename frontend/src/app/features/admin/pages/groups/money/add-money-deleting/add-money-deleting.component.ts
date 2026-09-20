@@ -25,6 +25,7 @@ import {
   SnackbarService,
   LOADING,
   TranslatePipe,
+  MasjedEnum,
 } from '@shared';
 import { MoneyBase } from '../money.base';
 
@@ -77,7 +78,7 @@ export class AddMoneyDeletingComponent extends MoneyBase {
   });
 
   public categoryForm = this.fb.group({
-    masjed: this.fb.control<1 | 2 | 3 | 4 | undefined>(undefined, [
+    masjed: this.fb.control<MasjedEnum | undefined>(undefined, [
       Validators.required,
     ]),
     category: this.fb.control<number | undefined>(undefined, [

@@ -31,7 +31,7 @@ import { MatIcon } from '@angular/material/icon';
 export class TestFormComponent {
   private fb = inject(NonNullableFormBuilder);
 
-  public onSubmit = output<TestSubmit>();
+  public submitted = output<TestSubmit>();
 
   protected form = this.fb.group({
     type: this.fb.control<'quarter' | 'half' | 'whole'>('quarter', [
@@ -44,7 +44,7 @@ export class TestFormComponent {
   submit(ngForm: FormGroupDirective) {
     if (this.form.invalid) return;
 
-    this.onSubmit.emit(this.form.getRawValue() as TestSubmit);
+    this.submitted.emit(this.form.getRawValue() as TestSubmit);
     ngForm.resetForm();
   }
 }

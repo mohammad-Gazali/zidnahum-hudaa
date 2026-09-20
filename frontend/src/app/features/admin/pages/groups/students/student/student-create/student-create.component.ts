@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { CreateComponent, CreateComponentConfig } from '@admin/components';
-import { MasjedService, LevelService, StudentCreate } from '@shared';
+import { LevelService } from '@admin/services';
+import { MasjedService, StudentCreate } from '@shared';
 import { StudentsBase } from '../../students.base';
 
 @Component({

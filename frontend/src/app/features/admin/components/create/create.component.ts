@@ -116,24 +116,26 @@ export class CreateComponent<T> implements OnInit {
   }
 
   submit() {
-    const value: any = this.form.value;
+    const value = this.form.value as Record<string, unknown>;
 
     this.fields().forEach((f) => {
+      const fieldValue = value[f.name];
+
       if (
         f.config.type === 'relation' &&
         f.config.relationType === 'nullable' &&
-        value[f.name] === -1
+        fieldValue === -1
       ) {
         value[f.name] = null;
-      } else if (f.config.type === 'date' && value[f.name] instanceof Date) {
-        value[f.name] = this.date.format(value[f.name], 'yyyy-MM-dd');
+      } else if (f.config.type === 'date' && fieldValue instanceof Date) {
+        value[f.name] = this.date.format(fieldValue, 'yyyy-MM-dd');
       }
     });
 
     if (this.form.valid && !this.loading()) {
       this.loading.set(true);
       this.config()
-        .createFunc(value)
+        .createFunc(value as T)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           this.snackbar.success('تمت الإضافة بنجاح');

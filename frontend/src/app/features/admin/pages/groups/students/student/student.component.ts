@@ -2,7 +2,8 @@ import { Component, inject } from '@angular/core';
 import { TableComponent, TableComponentConfig } from '@admin/components';
 import { StudentList } from '@shared';
 import { deleteModelAction } from '@admin/helpers';
-import { MasjedService, LevelService } from '@shared';
+import { MasjedService } from '@shared';
+import { LevelService } from '@admin/services';
 import { StudentsBase } from '../students.base';
 
 @Component({

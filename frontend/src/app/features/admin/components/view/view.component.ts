@@ -140,7 +140,7 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
       .subscribe((res) => {
         this.loading.set(false);
         this.fields.set(
-          Object.entries<any>(res as { [key: string]: any })
+          Object.entries(res as Record<string, unknown>)
             .filter(([name]) => name !== 'id')
             .map(([name, value]) => {
               const fieldsInfo = (this.config().fieldsInfo as any)[name] as
@@ -220,7 +220,7 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
                   type: 'link',
                   nonEditable: fieldsInfo?.nonEditable,
                   stringFieldValue: (res as any)[fieldsInfo.stringField],
-                  url: fieldsInfo.getUrlFunc(value),
+                  url: fieldsInfo.getUrlFunc(value as number),
                 };
               }
 
@@ -242,18 +242,20 @@ export class ViewComponent<T, U> implements OnInit, OnDestroy {
   }
 
   submitUpdate() {
-    const value: any = this.form.value;
+    const value = this.form.value as Record<string, unknown>;
 
     // here we returning the -1 values in the relation field type to null
     // before sending it to the server
     this.fields().forEach((field) => {
+      const fieldValue = value[field.name];
+
       if (field.type === 'relation') {
-        value[field.name] = value[field.name] === -1 ? null : value[field.name];
+        value[field.name] = fieldValue === -1 ? null : fieldValue;
       } else if (
-        value[field.name] instanceof Date &&
+        fieldValue instanceof Date &&
         (field.type === 'date' || field.type === 'datetime')
       ) {
-        value[field.name] = this.date.format(value[field.name], 'yyyy-MM-dd');
+        value[field.name] = this.date.format(fieldValue, 'yyyy-MM-dd');
       }
     });
 

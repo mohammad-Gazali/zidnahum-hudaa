@@ -76,7 +76,7 @@ export class AddComingComponent {
     const params = new URLSearchParams(url?.split('?')[1]);
 
     const query = params.get('query') ?? this.searchForm.value.search;
-    const masjed: any = params.get('masjed') ?? this.searchForm.value.masjed;
+    const masjed = params.get('masjed') ?? this.searchForm.value.masjed;
     const page = Number(params.get('page')) || 1;
     const comingCategoryId =
       url?.split('?')[0].split('/').at(-1) ??

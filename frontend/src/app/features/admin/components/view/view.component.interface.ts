@@ -10,7 +10,7 @@ export interface ViewComponentConfig<T, U = null> {
     itemNameAndRouteName: string;
     viewFunc: (id: string) => Observable<T>;
     deleteFunc?: (id: string) => Observable<null>;
-    updateFunc?: (id: string, data: U) => Observable<any>;
+    updateFunc?: (id: string, data: U) => Observable<unknown>;
     extraAction?: {
         name: string;
         icon: string;
@@ -43,12 +43,12 @@ export type ViewFieldConfig = ({
 
 export type ViewField = {
     name: string;
-    value: any;
+    value: unknown;
     type: 'string' | 'boolean' | 'number' | 'date' | 'datetime' | 'q_memorize' | 'q_test' | 'q_elite_test' | 'q_test_awqaf' | 'changes' | 'file-link';
     nonEditable?: boolean;
 } | {
     name: string;
-    value: any;
+    value: unknown;
     type: 'relation';
     nonEditable?: boolean;
     relationType: 'nullable' | 'multiple' | 'normal';
@@ -61,7 +61,7 @@ export type ViewField = {
 } | {
     name: string;
     type: 'ignore';
-    value: any;
+    value: unknown;
     nonEditable?: boolean;
 }
 

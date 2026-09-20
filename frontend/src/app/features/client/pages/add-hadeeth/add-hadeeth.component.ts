@@ -30,7 +30,6 @@ import {
   filter,
   map,
   merge,
-  Observable,
   Subject,
   switchMap,
   tap,
@@ -171,7 +170,7 @@ export class AddHadeethComponent {
     const value = this.form.getRawValue();
     const type = value.type;
 
-    const observable: Observable<any> =
+    const observable =
       type === 'alarbaein-alnawawia'
         ? this.studentsService.studentsUpdateAlarbaeinAlnawawiaUpdate(
             student.id,

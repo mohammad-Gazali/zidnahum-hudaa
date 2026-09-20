@@ -39,7 +39,7 @@ export class MemoFormComponent {
   private fb = inject(NonNullableFormBuilder);
   private snackbar = inject(SnackbarService);
 
-  protected onSubmit = output<MemoSubmit>();
+  protected submitted = output<MemoSubmit>();
 
   protected fromToError = signal(false);
 
@@ -85,7 +85,7 @@ export class MemoFormComponent {
       return;
     }
 
-    this.onSubmit.emit({
+    this.submitted.emit({
       ...formValue,
       exact,
     });

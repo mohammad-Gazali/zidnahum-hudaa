@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { StudentLevelEnum } from './api/models';
-import { STUDENT_LEVEL_LABELS } from '../constants/labels.const';
+import { STUDENT_LEVEL_LABELS, StudentLevelEnum } from '@shared';
 
 @Injectable({
   providedIn: 'root',

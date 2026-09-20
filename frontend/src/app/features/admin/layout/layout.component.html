@@ -1,6 +1,6 @@
 <mat-sidenav-container>
     <mat-sidenav fixedInViewport (openedChange)="handleSidenavChange($event)" [(opened)]="open" [mode]="mode()">
-        <app-sidenav (onItemClick)="handleSidenavItemClick()" />
+        <app-sidenav (itemClick)="handleSidenavItemClick()" />
     </mat-sidenav>
     <mat-sidenav-content>
         <app-navbar (clickMenu)="sidenav().toggle()" />

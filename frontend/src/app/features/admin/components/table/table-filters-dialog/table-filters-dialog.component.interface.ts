@@ -17,4 +17,4 @@ export type ExtraData = {
     }[];
     map: Map<number, string>;
   };
-};
+}

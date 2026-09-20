@@ -5,9 +5,8 @@ import { deleteModelAction } from '@admin/helpers';
 import {
   MemorizeMessageList,
   AdminUserService,
-  MemorizeMessageTypeService,
-  LevelService,
 } from '@shared';
+import { LevelService, MemorizeMessageTypeService } from '@admin/services';
 import { StudentsBase } from '../students.base';
 
 @Component({

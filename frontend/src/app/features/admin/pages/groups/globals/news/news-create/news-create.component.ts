@@ -15,7 +15,7 @@ export class NewsCreateComponent extends GlobalsBase {
 
   public config: CreateComponentConfig<NewsCreate> = {
     tableRoute: '/globals/news',
-    createFunc: (body) => this.globalsNews.adminGlobalsNewsCreate(body as any),
+    createFunc: (body) => this.globalsNews.adminGlobalsNewsCreate(body),
     fields: {
       title: {
         type: 'string',

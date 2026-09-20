@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ViewComponent, ViewComponentConfig } from '@admin/components';
+import { LevelService } from '@admin/services';
 import {
   StudentDetails,
   StudentUpdate,
   MasjedService,
-  LevelService,
   AdminStudentService,
   EXTRA_HADEETH_LIMIT,
 } from '@shared';
