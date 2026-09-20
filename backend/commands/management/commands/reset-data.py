@@ -47,6 +47,8 @@ class Command(BaseCommand):
       student.q_awqaf_test_looking = make_array_old(student.q_awqaf_test_looking)
       student.q_awqaf_test_explaining = make_array_old(student.q_awqaf_test_explaining)
       student.q_elite_test = make_array_old(student.q_elite_test)
+      student.q_viewing = make_array_old(student.q_viewing)
+      student.extra_hadeeth = 0
 
       student.save()
 
