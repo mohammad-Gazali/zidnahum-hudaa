@@ -14,10 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".." / ".env")
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get(
-  "SECRET_KEY",
-  "django-insecure--dev-only-key-not-for-production",
-)
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # Local dev defaults to True so `make` just works; production must set this
 # explicitly (compose .env has DEBUG=false).
