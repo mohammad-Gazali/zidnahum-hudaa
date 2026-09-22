@@ -5,7 +5,6 @@
 - **`backend/`** — Django 6 + DRF monolith (Python 3.14, SQLite, JWT auth, drf-spectacular)
   - Apps: `accounts`, `adminstration`, `awqaf`, `comings`, `globals`, `money`, `points`, `students`, `reports`, `commands`
   - Entry point: `backend/manage.py` (settings module: `backend.settings`)
-  - Env config: `backend/backend/env.py` (**gitignored, not committed** — create it locally; Docker generates it from env vars). Keys: `SECRET_KEY`, `DEBUG`, `ALLOWED_HOST`, `Q_COMING_CATEGORY_ID`
   - API: all endpoints under `/api/v1/`; admin endpoints under `/api/v1/admin/`
   - Serves the SPA via a single template view (`backend/templates/index.html`): `path("")` plus a `re_path(r"^(?P<path>.*)/$")` catch-all appended after all `api/v1/...` routes in `backend/backend/urls.py` (`docs/` and the MEDIA handler are DEBUG-only)
 - **`frontend/`** — one merged Angular 22 app (public-facing client **and** admin dashboard), package manager: **bun**
@@ -30,9 +29,9 @@ The `make` targets call `@python`/`@ng` — activate the venv first (`source .ve
 
 The repo ships with a Docker setup (added in the "initial docker and docker compose setup" commit):
 
-- `Dockerfile` — multi-stage: builder (Python + Node) runs `manage.py build` + `collectstatic`; slim runtime stage runs Gunicorn. It generates `backend/backend/env.py` from env vars at build/run time, so no committed `env.py` is needed.
-- `docker-compose.yml` — `web` (Gunicorn) behind `nginx` (serves `/static/` and `/media/` directly, proxies the rest). Named volumes for SQLite (`/app/db-data`) and media. Reads `env_file: .env` — **no `.env.example` is committed; create `.env` with `SECRET_KEY`, `DEBUG`, `ALLOWED_HOST`, `Q_COMING_CATEGORY_ID`**.
-- `docker-entrypoint.sh` — symlinks SQLite into the named volume, runs `migrate` + `collectstatic` before serving (only for the `gunicorn` command).
+- `Dockerfile` — multi-stage: builder (Python + Node) runs `manage.py build` + `collectstatic`; slim runtime stage runs Gunicorn.
+- `docker-compose.yml` — `web` (Gunicorn) behind `nginx` (serves `/static/` and `/media/` directly, proxies the rest). Named volumes for SQLite (`/app/db-data`) and media. Reads `env_file: .env` — **copy `.env.example` → `.env` (gitignored) and fill in `SECRET_KEY`, `DEBUG`, `ALLOWED_HOST`, `Q_COMING_CATEGORY_ID`**. `web` has a `/` healthcheck that `nginx` gates on (`service_healthy`).
+- `docker-entrypoint.sh` — symlinks SQLite into the named volume, runs `migrate` + `collectstatic` before serving (only for the `gunicorn` command). This is why Django needs no dotenv loader.
 - `nginx.conf` — matches `STATIC_URL` (`static/`) and `MEDIA_URL` (`/media/`).
 
 Run with `docker compose up --build`.

@@ -35,11 +35,15 @@ RUN npm install -g @angular/cli@22 bun
 
 WORKDIR /app
 
+# --- uv, taken from Astral's own image (no pip anywhere in the build) ---
+# `latest` resolves to the newest uv release, mirroring how the NodeSource 22.x
+# line above always resolves to the newest 22.x patch.
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+
 # --- Backend dependencies (own layer, cached unless pyproject.toml/uv.lock change) ---
-RUN pip install --no-cache-dir uv
 COPY pyproject.toml uv.lock ./
 RUN uv export --frozen --no-dev --format requirements-txt -o requirements.txt \
-    && pip install --no-cache-dir -r requirements.txt gunicorn
+    && uv pip install --system -r requirements.txt gunicorn
 
 # --- Frontend dependencies (own layer, cached unless package.json/bun.lock change) ---
 COPY frontend/package.json frontend/bun.lock ./frontend/
@@ -48,30 +52,6 @@ RUN cd frontend && bun install --frozen-lockfile
 # --- Now the actual source ---
 COPY backend ./backend
 COPY frontend ./frontend
-
-# backend/env.py is intentionally gitignored in this repo (see .gitignore) — it's
-# supplied per-deployment, not committed. Rather than inventing a different config
-# mechanism, this generates the exact file settings.py already expects
-# (`from . import env`), as a thin adapter that reads from real environment
-# variables so the same image works across environments via `docker run -e` /
-# compose `environment:`, without changing a single line of application code.
-RUN cat <<'PYEOF' > backend/backend/env.py
-import os
-
-SECRET_KEY = os.environ["SECRET_KEY"]
-DEBUG = os.environ.get("DEBUG", "false").strip().lower() in ("1", "true", "yes")
-ALLOWED_HOST = os.environ.get("ALLOWED_HOST", "localhost")
-Q_COMING_CATEGORY_ID = int(os.environ.get("Q_COMING_CATEGORY_ID", "1"))
-PYEOF
-
-# Build-time-only values: nothing here needs to be the real production secret,
-# since management commands just need *some* valid settings to import to run
-# `build`/`collectstatic` — the real values are supplied again at container
-# start via docker-entrypoint.sh/compose `environment:` and matter for actually
-# serving traffic, not for building assets.
-ENV SECRET_KEY=build-time-placeholder-not-used-at-runtime
-ENV DEBUG=false
-ENV ALLOWED_HOST=localhost
 
 RUN python backend/manage.py build \
     && python backend/manage.py collectstatic --no-input
@@ -82,12 +62,12 @@ RUN python backend/manage.py build \
 ########################
 FROM python:3.14-slim AS runtime
 
-RUN pip install --no-cache-dir uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 WORKDIR /app
 
 COPY pyproject.toml uv.lock ./
 RUN uv export --frozen --no-dev --format requirements-txt -o requirements.txt \
-    && pip install --no-cache-dir -r requirements.txt gunicorn \
+    && uv pip install --system -r requirements.txt gunicorn \
     && rm requirements.txt
 
 # Application code + the build output produced in Stage 1
@@ -95,17 +75,6 @@ COPY backend ./backend
 COPY --from=builder /app/backend/static ./backend/static
 COPY --from=builder /app/backend/templates ./backend/templates
 COPY --from=builder /app/staticfiles ./staticfiles
-
-# The env.py adapter is identical in shape to Stage 1's — regenerated here rather
-# than copied, so this stage has no dependency on Stage 1's placeholder ENV values.
-RUN cat <<'PYEOF' > backend/backend/env.py
-import os
-
-SECRET_KEY = os.environ["SECRET_KEY"]
-DEBUG = os.environ.get("DEBUG", "false").strip().lower() in ("1", "true", "yes")
-ALLOWED_HOST = os.environ.get("ALLOWED_HOST", "localhost")
-Q_COMING_CATEGORY_ID = int(os.environ.get("Q_COMING_CATEGORY_ID", "1"))
-PYEOF
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh \

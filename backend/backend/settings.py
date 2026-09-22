@@ -1,9 +1,9 @@
+import os
 from datetime import timedelta
 from pathlib import Path
 
 import django_stubs_ext
-
-from . import env
+from dotenv import load_dotenv
 
 django_stubs_ext.monkeypatch()
 
@@ -11,16 +11,25 @@ django_stubs_ext.monkeypatch()
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env.SECRET_KEY
+load_dotenv(BASE_DIR / ".." / ".env")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.DEBUG
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get(
+  "SECRET_KEY",
+  "django-insecure--dev-only-key-not-for-production",
+)
+
+# Local dev defaults to True so `make` just works; production must set this
+# explicitly (compose .env has DEBUG=false).
+DEBUG = os.environ.get("DEBUG", "True").strip().lower() in ("1", "true", "yes")
+
+# ALLOWED_HOST — feeds ALLOWED_HOSTS, CORS, and CSRF_TRUSTED below.
+ALLOWED_HOST = os.environ.get("ALLOWED_HOST", "localhost")
 
 ALLOWED_HOSTS = [
   "127.0.0.1",
   "localhost",
-  env.ALLOWED_HOST,
+  ALLOWED_HOST,
 ]
 
 
@@ -157,8 +166,8 @@ CORS_ALLOWED_ORIGINS = [
   "http://localhost:4200",
   "http://127.0.0.1:8000",
   "http://127.0.0.1:4200",
-  f"https://{env.ALLOWED_HOST}",
-  f"http://{env.ALLOWED_HOST}",
+  f"https://{ALLOWED_HOST}",
+  f"http://{ALLOWED_HOST}",
 ]
 
 # drf-spectacular settings
@@ -176,4 +185,4 @@ SPECTACULAR_SETTINGS = {
 
 
 # constants
-Q_COMING_CATEGORY_ID = env.Q_COMING_CATEGORY_ID
+Q_COMING_CATEGORY_ID = int(os.environ.get("Q_COMING_CATEGORY_ID", "1"))

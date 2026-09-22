@@ -34,12 +34,9 @@ A management system for Masjid (Muslim house of worship). Backend is a [Django](
    bun install --cwd frontend
    ```
 
-3. Create `backend/backend/env.py` (gitignored — Django imports it from `settings.py`; if you pulled the repo fresh it won't exist):
-   ```python
-   SECRET_KEY = "django-insecure-<generate-a-real-secret>"
-   DEBUG = True
-   ALLOWED_HOST = "localhost"
-   Q_COMING_CATEGORY_ID = 1
+3. Copy `.env.example` to `.env`:
+   ```bash
+   cp .env.example .env
    ```
 
 4. Perform migrations:
@@ -62,7 +59,7 @@ Other `make` targets: `make test` (backend tests), `make build` (compiles the An
 
 The repo includes a multi-stage `Dockerfile` (frontend built with `ng build` inside the builder stage, served by Gunicorn in a slim runtime stage) and a `docker-compose.yml` with a `web` (Gunicorn) service behind an `nginx` reverse proxy that serves `/static/` and `/media/` directly.
 
-Create a `.env` in the repo root with the same keys as `env.py` above (`SECRET_KEY`, `DEBUG`, `ALLOWED_HOST`, `Q_COMING_CATEGORY_ID`), then:
+Copy `.env.example` to `.env` (gitignored), then:
 
 ```bash
 docker compose up --build
