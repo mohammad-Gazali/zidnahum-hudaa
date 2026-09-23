@@ -176,13 +176,28 @@ SPECTACULAR_SETTINGS = {
   "VERSION": "1.0.0",
   "SERVE_INCLUDE_SCHEMA": False,
   "SCHEMA_PATH_PREFIX": "/api/v1",
-
   "POSTPROCESSING_HOOKS": [
     "backend.schema_hooks.disambiguate_duplicate_schema_names",
     "backend.schema_hooks.set_enum_varnames",
   ],
 }
 
+
+# logging
+LOGGING = {
+  "version": 1,
+  "disable_existing_loggers": False,
+  "handlers": {
+    "console": {"class": "logging.StreamHandler"},
+  },
+  "loggers": {
+    "django.request": {
+      "handlers": ["console"],
+      "level": "ERROR",
+      "propagate": False,
+    },
+  },
+}
 
 # constants
 Q_COMING_CATEGORY_ID = int(os.environ.get("Q_COMING_CATEGORY_ID", "1"))
