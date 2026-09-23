@@ -1,22 +1,28 @@
-# For when you're ready to run this via Compose rather than just `docker build`/`docker run`.
+# Production stack: Django (Gunicorn) behind Traefik with automatic Let's Encrypt TLS.
 #
-# Two services: the Django app (behind Gunicorn) with Traefik in front of it.
-# Traefik terminates TLS with Let's Encrypt (always on); /static/ is served by
-# Whitenoise and /media/ by Django's static.serve view, so Traefik only ever
-# proxies — no shared asset volumes, no nginx.
+#   cp .env.example .env        # set ALLOWED_HOST and ACME_EMAIL (plus the app's own vars)
+#   docker compose up -d --build
 #
-# Usage:
-#   cp .env.example .env   # fill in real values
-#   docker compose up --build
+# Where things live:
+#   - Routing (host rule, TLS, compression, upstream port) -> labels on `web`
+#   - Traefik install config                               -> `command:` on `traefik`
+#   - There is no traefik/ directory and no templated file. Compose reads ALLOWED_HOST and
+#     ACME_EMAIL from .env at `up` time, so Traefik never receives the app's secrets.
 #
-# SSL notes:
-#   - HTTPS on :443 (Let's Encrypt certs); :80 only redirects to :443.
-#   - ACME_EMAIL must be set (ACME/Let's Encrypt account email).
-#   - ALLOWED_HOST must be the public domain (used by Traefik's Host rule, and
-#     the ACME certificate is issued for it). Point it at this host.
-#   - The CA server is fixed to Let's Encrypt production below; swap it for the
-#     staging CA (https://acme-staging-v02.api.letsencrypt.org/directory) while
-#     testing to avoid rate limits.
+# TLS notes:
+#   - :443 serves HTTPS, :80 only redirects to it (and answers the ACME HTTP challenge).
+#   - To test without hitting Let's Encrypt rate limits, add this to .env:
+#       ACME_CA=https://acme-staging-v02.api.letsencrypt.org/directory
+#     When you switch back to production, delete the acme_data volume first
+#     (docker compose down && docker volume rm <project>_acme_data), otherwise Traefik
+#     keeps serving the staging certificate it already stored.
+#   - /static/ is served by Whitenoise and /media/ by Django, so Traefik only proxies.
+
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
 
 services:
   web:
@@ -24,68 +30,66 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    logging: *default-logging
     healthcheck:
-      # Django serves the SPA root (path "") as a 200 even on a fresh boot, so a
-      # plain GET to / tells us Gunicorn + the entrypoint's migrate/collectstatic
-      # have finished. urllib is stdlib — no extra package needed for the probe.
+      # Plain GET / returns 200 once Gunicorn is up and the entrypoint's
+      # migrate/collectstatic have finished. urllib is stdlib, so no extra package.
       test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/', timeout=3).status == 200 else 1)"]
       interval: 30s
       timeout: 5s
       retries: 3
       start_period: 20s
     volumes:
-      # Both need to survive `docker compose down`/image rebuilds — everything
-      # else the container needs is either baked into the image or safely
-      # rebuilt on every start (see docker-entrypoint.sh). Static files are NOT
-      # shared anymore: Whitenoise serves them from inside this container.
       - sqlite_data:/app/db-data
       - media_data:/app/media
     expose:
       - "8000"
-    # Uncomment to reach Gunicorn directly without Traefik (e.g. while testing
-    # this compose file for the first time):
-    # ports:
-    #   - "8000:8000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`${ALLOWED_HOST}`)"
+      - "traefik.http.routers.app.entrypoints=websecure"
+      - "traefik.http.routers.app.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.app.middlewares=app-compress"
+      - "traefik.http.middlewares.app-compress.compress=true"
+      - "traefik.http.services.app.loadbalancer.server.port=8000"
 
   traefik:
     image: traefik:v3.7-alpine
     restart: unless-stopped
-    env_file:
-      - .env
-    # All of Traefik's install (static) config is passed as TRAEFIK_* env vars;
-    # the routing (dynamic) config lives in traefik/dynamic/ (a template that
-    # reads ALLOWED_HOST from the same .env). TLS is always on.
-    environment:
-      - TRAEFIK_LOG_LEVEL=INFO
-      - TRAEFIK_ACCESSLOG=true
-      - TRAEFIK_GLOBAL_SENDANONYMOUSUSAGE=false
-      # Healthcheck endpoint (internal entrypoint, see below). Not published.
-      - TRAEFIK_PING=true
-      - TRAEFIK_ENTRYPOINTS_TRAEFIK_ADDRESS=:8080
-      - TRAEFIK_ENTRYPOINTS_WEB_ADDRESS=:80
-      - TRAEFIK_ENTRYPOINTS_WEBSECURE_ADDRESS=:443
-      - TRAEFIK_PROVIDERS_FILE_DIRECTORY=/etc/traefik/dynamic
-      - TRAEFIK_PROVIDERS_FILE_WATCH=true
-      # ACME resolver for the app's certificate (referenced from the routing
-      # config's `tls.certResolver`), so it must be configured since TLS is on.
-      - TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_EMAIL=${ACME_EMAIL}
-      - TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_STORAGE=/letsencrypt/acme.json
-      - TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_HTTPCHALLENGE_ENTRYPOINT=web
-      - TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_CASERVER=https://acme-v02.api.letsencrypt.org/directory
+    security_opt:
+      - no-new-privileges:true
+    logging: *default-logging
+    command:
+      - "--log.level=INFO"
+      - "--accesslog=true"
+      - "--global.sendanonymoususage=false"
+      # Health endpoint on the internal :8080 entrypoint (not published).
+      - "--ping=true"
+      - "--entrypoints.traefik.address=:8080"
+      # :80 redirects everything to HTTPS (the ACME HTTP challenge is still answered).
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
+      - "--entrypoints.websecure.address=:443"
+      # Only containers with traefik.enable=true are routed.
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      # Let's Encrypt
+      - "--certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.letsencrypt.acme.caserver=${ACME_CA:-https://acme-v02.api.letsencrypt.org/directory}"
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      # Dynamic routing config (always HTTPS — see traefik/dynamic/app.yml).
-      - ./traefik/dynamic:/etc/traefik/dynamic:ro
-      # Lets Encrypt account key + certificates persist across restarts.
+      # Read by the Docker provider to discover the labels on `web`.
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - acme_data:/letsencrypt
-    depends_on:
-      web:
-        condition: service_healthy
     healthcheck:
-      # Hits Traefik's own /ping on its internal :8080 entrypoint.
-      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:8080/ping"]
+      # Uses the default `traefik` entrypoint (:8080), which is why it's kept as-is above.
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -97,15 +101,8 @@ volumes:
   acme_data:
 
 # --- Outgrowing SQLite ---
-# SQLite (the app's current, unmodified default) is genuinely fine at this
-# scale — a single mosque's data, one writer process. If that ever changes,
-# swap in Postgres by:
-#   1. adding a `db: image: postgres:16-alpine` service here, with its own
-#      named volume for /var/lib/postgresql/data,
-#   2. adding `psycopg2-binary` to the backend's dependencies, and
-#   3. changing `DATABASES` in backend/backend/settings.py to read the
-#      connection details from environment variables instead of the current
-#      hardcoded sqlite3 block.
-# None of that is done here — it's a real change to application code and
-# dependencies, not a Compose-only addition, so it's left as a deliberate
-# future step rather than pre-built and unused.
+# Fine for one mosque's data. Note Gunicorn runs several worker processes, so there can be
+# concurrent writers; if you ever see "database is locked", move to Postgres:
+#   1. add a `db: image: postgres:16-alpine` service with its own named volume,
+#   2. add `psycopg[binary]` to the backend's dependencies,
+#   3. read DATABASES from environment variables in backend/backend/settings.py.
