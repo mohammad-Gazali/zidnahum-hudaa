@@ -1,0 +1,39 @@
+# Dynamic routing config for the `traefik` service in docker-compose.prod.yml.
+# Traefik's file provider renders this as a Go template; ALLOWED_HOST comes from
+# the same .env the service loads. SSL is always on: the app is reached over
+# HTTPS on :443 with a Let's Encrypt certificate, and :80 only exists to
+# redirect to HTTPS.
+#
+# /static/ is served by Whitenoise and /media/ by Django, so every route here
+# just proxies to Gunicorn.
+
+http:
+  routers:
+    web:
+      rule: "Host(`{{ env "ALLOWED_HOST" }}`)"
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+      service: web
+
+    redirect-to-https:
+      rule: "Host(`{{ env "ALLOWED_HOST" }}`)"
+      entryPoints:
+        - web
+      middlewares:
+        - redirect-https
+      service: web
+
+  middlewares:
+    redirect-https:
+      redirectScheme:
+        scheme: https
+        permanent: true
+
+  services:
+    web:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: "http://web:8000"

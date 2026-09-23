@@ -21,10 +21,9 @@ fi
 case "$1" in
     gunicorn)
         python backend/manage.py migrate --no-input
-        # Re-run on every start, not just at image build time: when staticfiles/
-        # is served from a volume shared with a reverse proxy (see the compose
-        # file), a freshly-created empty volume would otherwise hide the files
-        # already baked into the image. Safe to repeat — it's idempotent.
+        # Re-run on every start, not just at image build time: Whitenoise serves
+        # /static/ from this directory, and a fresh container should never serve
+        # stale assets. Safe to repeat — it's idempotent.
         python backend/manage.py collectstatic --no-input
         ;;
 esac

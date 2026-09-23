@@ -59,6 +59,9 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
   "django.middleware.security.SecurityMiddleware",
+  # Serves /static/ from STATIC_ROOT in production (there is no nginx in front
+  # of Gunicorn anymore — see docker-compose.prod.yml).
+  "whitenoise.middleware.WhiteNoiseMiddleware",
   "django.contrib.sessions.middleware.SessionMiddleware",
   # for external app
   "corsheaders.middleware.CorsMiddleware",

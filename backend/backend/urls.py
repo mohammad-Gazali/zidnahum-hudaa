@@ -24,6 +24,11 @@ urlpatterns: List[URLResolver | URLPattern] = [
   path("api/v1/admin/extra/", include("adminstration.extra_urls")),
 ]
 
+# Media uploads are served by Django's static serve view in both DEBUG and
+# production — Traefik proxies everything to Gunicorn and there is no separate
+# reverse proxy serving /media/ anymore (see docker-compose.prod.yml).
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 if settings.DEBUG:
   urlpatterns += [
     path("docs/schema/", SpectacularAPIView.as_view(), name="schema"),
@@ -33,7 +38,6 @@ if settings.DEBUG:
       name="swagger-ui",
     ),
   ]
-  urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 app_view = TemplateView.as_view(template_name="index.html")

@@ -1,13 +1,22 @@
 # For when you're ready to run this via Compose rather than just `docker build`/`docker run`.
 #
-# Two services: the Django app (behind Gunicorn) and an nginx in front of it that
-# serves static/media directly and reverse-proxies everything else. TLS
-# termination and the HTTP→HTTPS redirect are provided by the hosting platform's
-# Traefik (this stack only ever speaks plain HTTP on port 80).
+# Two services: the Django app (behind Gunicorn) with Traefik in front of it.
+# Traefik terminates TLS with Let's Encrypt (always on); /static/ is served by
+# Whitenoise and /media/ by Django's static.serve view, so Traefik only ever
+# proxies — no shared asset volumes, no nginx.
 #
 # Usage:
 #   cp .env.example .env   # fill in real values
 #   docker compose up --build
+#
+# SSL notes:
+#   - HTTPS on :443 (Let's Encrypt certs); :80 only redirects to :443.
+#   - ACME_EMAIL must be set (ACME/Let's Encrypt account email).
+#   - ALLOWED_HOST must be the public domain (used by Traefik's Host rule, and
+#     the ACME certificate is issued for it). Point it at this host.
+#   - The CA server is fixed to Let's Encrypt production below; swap it for the
+#     staging CA (https://acme-staging-v02.api.letsencrypt.org/directory) while
+#     testing to avoid rate limits.
 
 services:
   web:
@@ -27,34 +36,56 @@ services:
     volumes:
       # Both need to survive `docker compose down`/image rebuilds — everything
       # else the container needs is either baked into the image or safely
-      # rebuilt on every start (see docker-entrypoint.sh).
+      # rebuilt on every start (see docker-entrypoint.sh). Static files are NOT
+      # shared anymore: Whitenoise serves them from inside this container.
       - sqlite_data:/app/db-data
       - media_data:/app/media
-      # Shared with nginx so it can serve these directly instead of proxying
-      # every asset request through Gunicorn.
-      - static_data:/app/staticfiles
     expose:
       - "8000"
-    # Uncomment to reach it directly without nginx (e.g. while testing this
-    # compose file for the first time):
+    # Uncomment to reach Gunicorn directly without Traefik (e.g. while testing
+    # this compose file for the first time):
     # ports:
     #   - "8000:8000"
 
-  nginx:
-    image: nginx:1.27-alpine
+  traefik:
+    image: traefik:v3.7-alpine
     restart: unless-stopped
+    env_file:
+      - .env
+    # All of Traefik's install (static) config is passed as TRAEFIK_* env vars;
+    # the routing (dynamic) config lives in traefik/dynamic/ (a template that
+    # reads ALLOWED_HOST from the same .env). TLS is always on.
+    environment:
+      - TRAEFIK_LOG_LEVEL=INFO
+      - TRAEFIK_ACCESSLOG=true
+      - TRAEFIK_GLOBAL_SENDANONYMOUSUSAGE=false
+      # Healthcheck endpoint (internal entrypoint, see below). Not published.
+      - TRAEFIK_PING=true
+      - TRAEFIK_ENTRYPOINTS_TRAEFIK_ADDRESS=:8080
+      - TRAEFIK_ENTRYPOINTS_WEB_ADDRESS=:80
+      - TRAEFIK_ENTRYPOINTS_WEBSECURE_ADDRESS=:443
+      - TRAEFIK_PROVIDERS_FILE_DIRECTORY=/etc/traefik/dynamic
+      - TRAEFIK_PROVIDERS_FILE_WATCH=true
+      # ACME resolver for the app's certificate (referenced from the routing
+      # config's `tls.certResolver`), so it must be configured since TLS is on.
+      - TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_EMAIL=${ACME_EMAIL}
+      - TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_STORAGE=/letsencrypt/acme.json
+      - TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_HTTPCHALLENGE_ENTRYPOINT=web
+      - TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_CASERVER=https://acme-v02.api.letsencrypt.org/directory
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # Dynamic routing config (always HTTPS — see traefik/dynamic/app.yml).
+      - ./traefik/dynamic:/etc/traefik/dynamic:ro
+      # Lets Encrypt account key + certificates persist across restarts.
+      - acme_data:/letsencrypt
     depends_on:
       web:
         condition: service_healthy
-    # Plain HTTP only — the platform's Traefik fronts this on 80/443.
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - static_data:/app/staticfiles:ro
-      - media_data:/app/media:ro
     healthcheck:
-      test: ["CMD-SHELL", "test -f /var/run/nginx.pid && kill -0 $$(cat /var/run/nginx.pid)"]
+      # Hits Traefik's own /ping on its internal :8080 entrypoint.
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:8080/ping"]
       interval: 30s
       timeout: 5s
       retries: 3
@@ -63,7 +94,7 @@ services:
 volumes:
   sqlite_data:
   media_data:
-  static_data:
+  acme_data:
 
 # --- Outgrowing SQLite ---
 # SQLite (the app's current, unmodified default) is genuinely fine at this
