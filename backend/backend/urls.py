@@ -1,9 +1,9 @@
 from typing import List
 
 from django.conf import settings
-from django.conf.urls.static import static
 from django.urls import URLPattern, URLResolver, include, path, re_path
 from django.views.generic import TemplateView
+from django.views.static import serve
 from drf_spectacular.views import (
   SpectacularAPIView,
   SpectacularSwaggerView,
@@ -26,8 +26,16 @@ urlpatterns: List[URLResolver | URLPattern] = [
 
 # Media uploads are served by Django's static serve view in both DEBUG and
 # production — Traefik proxies everything to Gunicorn and there is no separate
-# reverse proxy serving /media/ anymore (see docker-compose.prod.yml).
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# reverse proxy serving /media/ anymore (see docker-compose.prod.yml). This
+# route is registered explicitly because Django's static() helper returns []
+# when DEBUG is False, which would silently drop /media/ in production.
+urlpatterns += [
+  re_path(
+    rf"^{settings.MEDIA_URL.strip('/')}/(?P<path>.*)$",
+    serve,
+    kwargs={"document_root": settings.MEDIA_ROOT},
+  ),
+]
 
 if settings.DEBUG:
   urlpatterns += [
