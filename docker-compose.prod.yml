@@ -1,18 +1,12 @@
 # For when you're ready to run this via Compose rather than just `docker build`/`docker run`.
 #
-# Three services: the Django app (behind Gunicorn), an nginx in front of it that
-# serves static/media directly and reverse-proxies everything else while
-# terminating HTTPS, and a certbot sidecar that issues/renews the Let's Encrypt
-# certificate. Everything certificate-related is handled inside docker (named
-# volumes only — nothing is set up or stored on the host): on first boot nginx
-# seeds a self-signed fallback so it can start, then certbot replaces it with a
-# real certificate for the domain in DOMAIN (default wazidnahm.com) and renews
-# it forever. Requirements outside the repo are just network-level:
-#   - DNS A record for the domain pointing at this host's public IP, and
-#   - ports 80 (for the ACME challenge + HTTP→HTTPS redirect) and 443 open.
+# Two services: the Django app (behind Gunicorn) and an nginx in front of it that
+# serves static/media directly and reverse-proxies everything else. TLS
+# termination and the HTTP→HTTPS redirect are provided by the hosting platform's
+# Traefik (this stack only ever speaks plain HTTP on port 80).
 #
 # Usage:
-#   cp .env.example .env   # fill in real values (DOMAIN, LETSENCRYPT_EMAIL, ...)
+#   cp .env.example .env   # fill in real values
 #   docker compose up --build
 
 services:
@@ -51,21 +45,13 @@ services:
     depends_on:
       web:
         condition: service_healthy
-    env_file: .env
-    # HTTPS on 443, HTTP on 80 (redirect + ACME challenge).
+    # Plain HTTP only — the platform's Traefik fronts this on 80/443.
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./nginx-entrypoint.sh:/usr/local/bin/nginx-entrypoint.sh:ro
       - static_data:/app/staticfiles:ro
       - media_data:/app/media:ro
-      # Certificate lifecycle is fully docker-internal: nginx and certbot share
-      # these two named volumes (no certificate data lives on the host).
-      - certbot_conf:/etc/letsencrypt
-      - certbot_www:/var/www/certbot
-    entrypoint: /usr/local/bin/nginx-entrypoint.sh
     healthcheck:
       test: ["CMD-SHELL", "test -f /var/run/nginx.pid && kill -0 $$(cat /var/run/nginx.pid)"]
       interval: 30s
@@ -73,27 +59,10 @@ services:
       retries: 3
       start_period: 10s
 
-  # Issues the real Let's Encrypt certificate on first boot (HTTP-01 challenge,
-  # served by nginx on port 80), then renews it forever. No host-side tooling.
-  certbot:
-    image: certbot/certbot
-    restart: unless-stopped
-    depends_on:
-      nginx:
-        condition: service_healthy
-    env_file: .env
-    volumes:
-      - certbot_conf:/etc/letsencrypt
-      - certbot_www:/var/www/certbot
-      - ./certbot-entrypoint.sh:/usr/local/bin/certbot-entrypoint.sh:ro
-    entrypoint: /usr/local/bin/certbot-entrypoint.sh
-
 volumes:
   sqlite_data:
   media_data:
   static_data:
-  certbot_conf:
-  certbot_www:
 
 # --- Outgrowing SQLite ---
 # SQLite (the app's current, unmodified default) is genuinely fine at this
