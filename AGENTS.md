@@ -30,9 +30,11 @@ The `make` targets call `@python`/`@ng` — activate the venv first (`source .ve
 The repo ships with a Docker setup (added in the "initial docker and docker compose setup" commit):
 
 - `Dockerfile` — multi-stage: builder (Python + Node) runs `manage.py build` + `collectstatic`; slim runtime stage runs Gunicorn.
-- `docker-compose.yml` — `web` (Gunicorn) behind `nginx` (serves `/static/` and `/media/` directly, proxies the rest). Named volumes for SQLite (`/app/db-data`) and media. Reads `env_file: .env` — **copy `.env.example` → `.env` (gitignored) and fill in `SECRET_KEY`, `DEBUG`, `ALLOWED_HOST`, `Q_COMING_CATEGORY_ID`**. `web` has a `/` healthcheck that `nginx` gates on (`service_healthy`).
+- `docker-compose.prod.yml` — `web` (Gunicorn) behind `nginx` (serves `/static/` and `/media/` directly, proxies the rest) plus a `certbot` sidecar; terminates HTTPS (Let's Encrypt, wait for `DOMAIN` DNS + ports 80/443) and redirects HTTP→HTTPS. Named volumes for SQLite (`/app/db-data`), media, and the certificate lifecycle (`certbot_conf`, `certbot_www` — certs never touch the host). Reads `env_file: .env` — **copy `.env.example` → `.env` (gitignored) and fill in `SECRET_KEY`, `DEBUG`, `ALLOWED_HOST`, `DOMAIN`, `LETSENCRYPT_EMAIL`, `Q_COMING_CATEGORY_ID`**. `web` has a `/` healthcheck that `nginx` gates on (`service_healthy`); `certbot` gates on `nginx`.
 - `docker-entrypoint.sh` — symlinks SQLite into the named volume, runs `migrate` + `collectstatic` before serving (only for the `gunicorn` command). This is why Django needs no dotenv loader.
-- `nginx.conf` — matches `STATIC_URL` (`static/`) and `MEDIA_URL` (`/media/`).
+- `nginx-entrypoint.sh` — nginx's entrypoint: seeds a self-signed fallback cert into the shared `certbot_conf` volume so nginx boots before the real cert exists, then reloads nginx every 6h so renewed certs apply.
+- `certbot-entrypoint.sh` — certbot's entrypoint: first-boot `certonly --webroot` for `DOMAIN` (replaces the self-signed fallback via `--force-renewal`), then renews forever.
+- `nginx.conf` — matches `STATIC_URL` (`static/`), `MEDIA_URL` (`/media/`), and `DOMAIN`; serves `/.well-known/acme-challenge/` on port 80.
 
 Run with `docker compose up --build`.
 
