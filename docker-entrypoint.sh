@@ -21,10 +21,11 @@ fi
 case "$1" in
     gunicorn)
         python backend/manage.py migrate --no-input
-        python backend/manage.py build
-        # Re-run on every start, not just at image build time: Whitenoise serves
-        # /static/ from this directory, and a fresh container should never serve
-        # stale assets. Safe to repeat — it's idempotent.
+        # The frontend is built once, during image build (the builder stage runs
+        # `manage.py build`); this slim runtime image ships no frontend/ source
+        # or Node toolchain, so it must never rebuild here. collectstatic just
+        # republishes the built assets from the image — a fresh container should
+        # never serve stale ones. Safe to repeat — it's idempotent.
         python backend/manage.py collectstatic --no-input
         ;;
 esac
