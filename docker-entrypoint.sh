@@ -21,6 +21,7 @@ fi
 case "$1" in
     gunicorn)
         python backend/manage.py migrate --no-input
+        python backend/manage.py build
         # Re-run on every start, not just at image build time: Whitenoise serves
         # /static/ from this directory, and a fresh container should never serve
         # stale assets. Safe to repeat — it's idempotent.
