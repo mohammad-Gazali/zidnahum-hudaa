@@ -10,7 +10,7 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { routes } from './app.routes';
 import { interceptors } from './interceptors';
 import { provideApiBaseUrl, AuthService } from '@shared';
-import { environment } from '../environments/environment.development';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
