@@ -53,6 +53,9 @@ RUN cd frontend && bun install --frozen-lockfile
 COPY backend ./backend
 COPY frontend ./frontend
 
+# Place holder for django SECRET_KEY for building process
+ENV SECRET_KEY="django-insecure--this-is-a-placeholder-for-building-process-only"
+
 RUN python backend/manage.py build \
     && python backend/manage.py collectstatic --no-input
 
