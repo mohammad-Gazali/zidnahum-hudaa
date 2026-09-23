@@ -38,7 +38,7 @@ WORKDIR /app
 # --- uv, taken from Astral's own image (no pip anywhere in the build) ---
 # `latest` resolves to the newest uv release, mirroring how the NodeSource 22.x
 # line above always resolves to the newest 22.x patch.
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+COPY --from=ghcr.io/astral-sh/uv:0.12.18 /uv /usr/local/bin/uv
 
 # --- Backend dependencies (own layer, cached unless pyproject.toml/uv.lock change) ---
 COPY pyproject.toml uv.lock ./
@@ -65,7 +65,7 @@ RUN python backend/manage.py build \
 ########################
 FROM python:3.14-slim AS runtime
 
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+COPY --from=ghcr.io/astral-sh/uv:0.12.18 /uv /usr/local/bin/uv
 WORKDIR /app
 
 COPY pyproject.toml uv.lock ./

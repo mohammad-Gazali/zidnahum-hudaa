@@ -54,7 +54,7 @@ services:
       - "traefik.http.services.app.loadbalancer.server.port=8000"
 
   traefik:
-    image: traefik:v3.7-alpine
+    image: traefik:v3.7.13
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
