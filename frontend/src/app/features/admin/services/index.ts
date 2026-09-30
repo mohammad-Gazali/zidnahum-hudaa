@@ -1,6 +1,5 @@
 export * from './date.service';
 export * from './groups.service';
-export * from './helper.service';
 export * from './level.service';
 export * from './memorize-message-type.service';
 export * from './quran/quran-awqaf-test.service';
