@@ -62,12 +62,12 @@
           @if (filter.type === 'search') {
             {{ filter.value }}
           } @else if (filter.type === 'select') {
-            {{ extraData[filter.name].map.get(helper.parseInt(filter.value)) }}
+            {{ extraData[filter.name].map.get(parseInt(filter.value)) }}
           } @else if (filter.type === 'select_null') {
             @if (filter.value === '-1') {
               {{ 'empty value' | translate }}
             } @else {
-              {{ extraData[filter.name].map.get(helper.parseInt(filter.value)) }}
+              {{ extraData[filter.name].map.get(parseInt(filter.value)) }}
             }
           } @else if (filter.type === 'date') {
             <span dir="ltr">{{ filter.value.replaceAll('-', '/') }}</span>

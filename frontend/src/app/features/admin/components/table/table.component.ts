@@ -44,7 +44,7 @@ import {
   TableAction,
 } from './table.component.interface';
 import { TranslatePipe } from '@shared';
-import { DateService, HelperService } from '@admin/services';
+import { DateService } from '@admin/services';
 import { MasjedService } from '@shared';
 import { ChangesFieldComponent } from '../changes-field/changes-field.component';
 import { LOADING } from '@shared';
@@ -92,7 +92,6 @@ export class TableComponent<T extends { id: number }> implements OnInit {
   private confirmation = inject(ConfirmationService);
   public loading = inject(LOADING);
   public date = inject(DateService);
-  public helper = inject(HelperService);
 
   public dataSource = new MatTableDataSource<T>([]);
   public selection = new SelectionModel<T>(true, []);
@@ -400,35 +399,35 @@ export class TableComponent<T extends { id: number }> implements OnInit {
 
     this.activeFilters().forEach((filter) => {
       if (filter.type === 'search' || filter.type === 'select') {
-        result[this.helper.snakeToCamel(filter.name)] = filter.value;
+        result[(filter.name)] = filter.value;
       } else if (filter.type === 'date') {
         if (
           this.config().columns[filter.name as keyof Omit<T, 'id'>].filterType ===
           'datetime_date'
         ) {
-          result[this.helper.snakeToCamel(filter.name + '_date')] =
+          result[(filter.name + '_date')] =
             filter.value;
         } else {
-          result[this.helper.snakeToCamel(filter.name)] = filter.value;
+          result[(filter.name)] = filter.value;
         }
       } else if (filter.type === 'select_null') {
         if (filter.value === '-1') {
-          result[this.helper.snakeToCamel(filter.name + '_isnull')] = 'True';
+          result[filter.name + '_isnull'] = 'True';
         } else {
-          result[this.helper.snakeToCamel(filter.name)] = filter.value;
+          result[filter.name] = filter.value;
         }
       } else if (filter.type === 'date_range') {
         const [startDate, endDate] = this.date.extractTwoDates(filter.value);
 
-        result[this.helper.snakeToCamel(filter.name + '_gt')] = startDate;
-        result[this.helper.snakeToCamel(filter.name + '_lt')] = endDate;
+        result[filter.name + '_gt'] = startDate;
+        result[filter.name + '_lt'] = endDate;
       } else if (filter.type === 'boolean') {
         if (filter.value === '1') {
-          result[this.helper.snakeToCamel(filter.name)] = 'true';
+          result[filter.name] = 'true';
         } else if (filter.value === '2') {
-          result[this.helper.snakeToCamel(filter.name)] = 'false';
+          result[filter.name] = 'false';
         } else {
-          delete result[this.helper.snakeToCamel(filter.name)];
+          delete result[filter.name];
         }
       }
     });
@@ -470,5 +469,9 @@ export class TableComponent<T extends { id: number }> implements OnInit {
           setTimeout(() => this.fetchData(), 1);
         });
     }
+  }
+
+  parseInt(value: string) {
+    return Number(value);
   }
 }
