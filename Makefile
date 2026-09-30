@@ -22,3 +22,9 @@ reset-data:
 build:
 	@python ./backend/manage.py build
 	@python ./backend/manage.py collectstatic --no-input
+
+sync-prod:
+	@git checkout production
+	@git pull origin master
+	@git push
+	@git checkout master
